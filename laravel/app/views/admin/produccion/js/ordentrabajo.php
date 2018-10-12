@@ -100,7 +100,8 @@ function initClockPicker(){
     if(date("l",$strFecha)==$diaFin){
         $fechaFin= date("Y-m-d",$strFecha);
     }
-    return Array("fechaInicio"=>$fechaInicio,"fechaFin"=>$fechaFin);
+    //return Array("fechaInicio"=>$fechaInicio,"fechaFin"=>$fechaFin);
+    return Array("fechaInicio"=>date("Y-m-d",strtotime("-1 day")),"fechaFin"=>date("Y-m-d"));
     }
     $fechas=inicio_fin_semana(); 
 ?>
