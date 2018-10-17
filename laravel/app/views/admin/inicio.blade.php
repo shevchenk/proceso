@@ -32,17 +32,7 @@
                 </section><!-- /.content -->
                 <script>
                     $(document).ready(function() { 
-                        $('#inicioModal').on('show.bs.modal', function (event) {
 
-                        var modal = $(this); //captura el modal
-                        modal.find('.modal-title').text('Responder');
-                        $('#form_mensajes_modal [data-toggle="tooltip"]').css("display","none");
-                        $("#form_mensajes_modal input[type='hidden']").remove();
-                        
-                    });
-                    <?php if(Session::get('respuesta_id')!=1 and Session::get('respuesta_id')!=2 and Session::get('respuesta_id')!=3 ){?>
-                        $('#inicioModal').modal({backdrop: 'static', keyboard: false});
-                    <?php }?>
                     }); 
                     GrabarAuditoriaInicio=function(respuesta_id){
                         dataG={respuesta_id:respuesta_id};
@@ -85,7 +75,3 @@
                                     },
                     };
                 </script>
-@stop
-@section('formulario')
-     @include( 'layouts.form.inicio' )
-@stop
