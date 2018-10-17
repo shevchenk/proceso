@@ -19,7 +19,7 @@
                         </div>
 
                         <div class="pull-left info">
-                            <p>Hello, {{ Auth::user()->nombre }}</p>
+                            <p>Hola, {{ Auth::user()->nombre }}</p>
 
                             <a href="#"><i class="fa fa-circle text-success"></i> {{ trans('greetings.inicio_sesion') }}</a>
                         </div>
