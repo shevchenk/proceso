@@ -34,8 +34,15 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
+                                <?php
+                                if(is_file("img/user/".md5('u'.Auth::user()->id).'/'.Auth::user()->imagen)){
+                                    $perfil = "img/user/".md5('u'.Auth::user()->id).'/'.Auth::user()->imagen;
+                                }else{
+                                    $perfil = "img/default_profile.jpeg";
+                                }
+                                ?>
                                 <li class="user-header bg-light-blue" data-toggle="modal" data-target="#imagenModal">
-                                    <img src="img/user/<?= md5('u'.Auth::user()->id).'/'.Auth::user()->imagen; ?>" class="img-circle" alt="User Image" />
+                                    <img src="<?=$perfil;?>" class="img-circle" alt="User Image" />
                                     <p>
                                         {{ Auth::user()->paterno." ".Auth::user()->materno." ".Auth::user()->nombre }}
                                         <small>{{ trans('greetings.desde_usuario') }} <?php echo date( "Y-m-d",strtotime(Auth::user()->created_at) ); ?></small>

@@ -3,9 +3,19 @@
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
                     <!-- Sidebar user panel -->
+
+                    <?php
+                        if(is_file("img/user/".md5('u'.Auth::user()->id).'/'.Auth::user()->imagen)){
+                            $perfil = "img/user/".md5('u'.Auth::user()->id).'/'.Auth::user()->imagen;
+                        }else{
+                            $perfil = "img/default_profile.jpeg";
+                        }
+                    ?>
+
+
                     <div class="user-panel">
                         <div class="pull-left image" data-toggle="modal" data-target="#imagenModal">
-                            <img src="img/user/<?= md5('u'.Auth::user()->id).'/'.Auth::user()->imagen; ?>" class="img-circle" alt="User Image" />
+                            <img src="<?=$perfil;?>" class="img-circle" alt="User Image" />
                         </div>
 
                         <div class="pull-left info">
