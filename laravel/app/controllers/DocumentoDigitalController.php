@@ -267,7 +267,7 @@ class DocumentoDigitalController extends \BaseController {
             }
             
             $html = Input::get('word', '');
-            $html=str_replace('http://proceso.munindependencia.pe/', '', $html);
+            $html=str_replace('http://proceso.jssoluciones.pe/', '', $html);
             $jefe = DB::table('personas')
              ->where(         
                         function($query){
@@ -461,7 +461,7 @@ class DocumentoDigitalController extends \BaseController {
     {
         if ( Request::ajax() ) {
             $html = Input::get('word', '');
-            $html=str_replace('http://proceso.munindependencia.pe/', '', $html);
+            $html=str_replace('http://proceso.jssoluciones.pe/', '', $html);
             $jefe = DB::table('personas')
              ->where(         
                         function($query){
@@ -667,7 +667,7 @@ class DocumentoDigitalController extends \BaseController {
         /*end get destinatario data*/
         $vistaprevia='';        
         $size = 80; // TAMAÑO EN PX 
-        $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.munindependencia.pe/documentodig/vistauserqrvalida/".$rol_id."/".$area_id."/".$id."/".$tamano."/".$tipo);
+        $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.jssoluciones.pe/documentodig/vistauserqrvalida/".$rol_id."/".$area_id."/".$id."/".$tamano."/".$tipo);
         $png = base64_encode($png);
         $png= "<img src='data:image/png;base64," . $png . "' width='65' height='65'>";
         //$meses=array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Setiembre','Octubre','Noviembre','Diciembre');
@@ -715,7 +715,7 @@ class DocumentoDigitalController extends \BaseController {
         $vistaprevia='Documento Vista Previa';
         
         $size = 80; // TAMAÑO EN PX 
-        $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.munindependencia.pe/documentodig/vistauserqrvalida/".$rol_id."/".$area_id."/".$id."/".$tamano."/".$tipo);
+        $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.jssoluciones.pe/documentodig/vistauserqrvalida/".$rol_id."/".$area_id."/".$id."/".$tamano."/".$tipo);
         $png = base64_encode($png);
         $png= "<img src='data:image/png;base64," . $png . "' width='65' height='65'>";
         //$meses=array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Setiembre','Octubre','Noviembre','Diciembre');
@@ -805,7 +805,7 @@ class DocumentoDigitalController extends \BaseController {
 
     public function ObtenerQR($rol_id, $area_id,$dni,$tamano,$tipo) {
       $size = 80;
-      $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.munindependencia.pe/documentodig/vistauserqrvalida/".$rol_id."/".$area_id."/".$dni."/".$tamano."/".$tipo);
+      $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.jssoluciones.pe/documentodig/vistauserqrvalida/".$rol_id."/".$area_id."/".$dni."/".$tamano."/".$tipo);
       $png = base64_encode($png);
       $png = "<img class='img-thumbnail' src='data:image/png;base64," . $png . "' width='65' height='65'>";
       
@@ -828,13 +828,13 @@ class DocumentoDigitalController extends \BaseController {
                     ->size($size)
                     //->color(0,0,0)
                     //->backgroundColor(10,14,244)
-                    ->generate("http://proceso.munindependencia.pe/documentodig/vistauserqrvalida/".$rol_id."/".$area_id."/".$id."/".$tamano."/".$tipo);
+                    ->generate("http://proceso.jssoluciones.pe/documentodig/vistauserqrvalida/".$rol_id."/".$area_id."/".$id."/".$tamano."/".$tipo);
         */
         $png = QrCode::format('png')
                     ->margin(0)
                     ->size($size)
                     ->color(40,40,40)
-                    ->generate("http://proceso.munindependencia.pe/documentodig/vistauserqrvalida/".$rol_id."/".$area_id."/".$id."/".$tamano."/".$tipo)
+                    ->generate("http://proceso.jssoluciones.pe/documentodig/vistauserqrvalida/".$rol_id."/".$area_id."/".$id."/".$tamano."/".$tipo)
                     ;
         
         file_put_contents("img/carnet/temp.png", $png);
@@ -852,9 +852,9 @@ class DocumentoDigitalController extends \BaseController {
         $area = $oData[0]->area;
         $codInspector = $oData[0]->cod_inspector;
         $resolucion = $oData[0]->resolucion;
-        $rutaFoto = "http://proceso.munindependencia.pe/img/carnet/".$oData[0]->imagen_dni;
+        $rutaFoto = "http://proceso.jssoluciones.pe/img/carnet/".$oData[0]->imagen_dni;
 
-        //http://proceso.munindependencia.pe/img/carnet/42892330.jpg
+        //http://proceso.jssoluciones.pe/img/carnet/42892330.jpg
         $rutaQR = "img/carnet/temp.png";
 
         $im = $this->crearCarnet($nombres,$apellidos,$dni,$rol_id, $cargo,$area,$codInspector,$resolucion,$rutaFoto,$rutaQR, $area_id);
@@ -866,7 +866,7 @@ class DocumentoDigitalController extends \BaseController {
 
     public function crearCarnet($nombres,$apellidos,$dni,$rol_id, $cargo,$area,$codInspector,$resolucion,$rutaFoto,$rutaQR, $area_id)
     {
-        $im = imagecreatefromjpeg ('http://proceso.munindependencia.pe/img/carnet/model2_nuevo2.jpg');
+        $im = imagecreatefromjpeg ('http://proceso.jssoluciones.pe/img/carnet/model2_nuevo2.jpg');
 
         $black = imagecolorallocate($im, 0, 0, 0);
 
@@ -1086,7 +1086,7 @@ class DocumentoDigitalController extends \BaseController {
                  $size=115;
             }
             
-            $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.munindependencia.pe/documentodig/vista/".$id."/".$tamano."/0");
+            $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.jssoluciones.pe/documentodig/vista/".$id."/".$tamano."/0");
             $png = base64_encode($png);
             $png= "<img src='data:image/png;base64," . $png . "'>";
             $meses=array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Setiembre','Octubre','Noviembre','Diciembre');
@@ -1252,7 +1252,7 @@ class DocumentoDigitalController extends \BaseController {
                 $size=115;
            }
            
-           $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.munindependencia.pe/documentodig/vista/".$id."/".$tamano."/0");
+           $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.jssoluciones.pe/documentodig/vista/".$id."/".$tamano."/0");
            $png = base64_encode($png);
            $png= "<img src='data:image/png;base64," . $png . "'>";
            $meses=array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Setiembre','Octubre','Noviembre','Diciembre');

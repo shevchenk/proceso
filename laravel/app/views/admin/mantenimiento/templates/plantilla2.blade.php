@@ -12,7 +12,7 @@ body {
 }
 
 .carnet{
-  background-image: url("http://proceso.munindependencia.pe/img/carnet/model2_nuevo2.jpg");
+  background-image: url("http://proceso.jssoluciones.pe/img/carnet/model2_nuevo2.jpg");
   border: 0px solid #000;
   height: 214px;
   width: 336px;    
@@ -86,7 +86,7 @@ body {
       <tr>
        <td style="width: 30%;border: 0px solid blue;">
          <!-- <div class="f1"> -->
-           <div class="ff1"><img src="http://proceso.munindependencia.pe/img/carnet/<?php echo @$imagen_dni; ?>" style="border: 0px; height: 130px; width: 90px;"/></div>
+           <div class="ff1"><img src="http://proceso.jssoluciones.pe/img/carnet/<?php echo @$imagen_dni; ?>" style="border: 0px; height: 130px; width: 90px;"/></div>
          <!-- </div> -->
          <!--
          <div class="f2">
@@ -142,7 +142,7 @@ body {
                     <tr>
                        <td style="width: 30%;border: 0px solid blue;">
                         <!-- <div class="f1"> -->
-                           <div class="ff1"><img src="http://proceso.munindependencia.pe/img/carnet/<?php echo $val['imagen_dni']; ?>" style="border: 0px; height: 130px; width: 90px;"/></div>
+                           <div class="ff1"><img src="http://proceso.jssoluciones.pe/img/carnet/<?php echo $val['imagen_dni']; ?>" style="border: 0px; height: 130px; width: 90px;"/></div>
                         <!-- </div> -->
                         <!--
                          <div class="f2">
@@ -187,7 +187,7 @@ body {
                     <tr>
                        <td style="width: 30%;border: 0px solid blue;">
                         <!-- <div class="f1"> -->
-                           <div class="ff1"><img src="http://proceso.munindependencia.pe/img/carnet/<?php echo $val['imagen_dni']; ?>" style="border: 0px; height: 130px; width: 90px;"/></div>
+                           <div class="ff1"><img src="http://proceso.jssoluciones.pe/img/carnet/<?php echo $val['imagen_dni']; ?>" style="border: 0px; height: 130px; width: 90px;"/></div>
                         <!-- </div> -->
                         <!--
                          <div class="f2">
@@ -251,13 +251,13 @@ body {
         }
 ?> 
 <div class="carnet" style="margin: 10px auto;">
-  <div class="rotar1"><?php if($vistaprevia!=''){echo '<img src="http://proceso.munindependencia.pe/img/carnet/logo_muni.png"/>';} ?></div> 
+  <div class="rotar1"><?php if($vistaprevia!=''){echo '<img src="http://proceso.jssoluciones.pe/img/carnet/logo_muni.png"/>';} ?></div> 
   <table border="0" style="width: 100%;">
       <tr>
        <td style="width: 30%;border: 0px solid blue;">
          <!-- <div class="f1"> -->
            <div class="ff1" style="margin-top: 10px;">
-            <img src="http://proceso.munindependencia.pe/img/carnet/<?php echo @$imagen_dni; ?>" style="border: 0px; height: 130px; width: 90px;"/>                        
+            <img src="http://proceso.jssoluciones.pe/img/carnet/<?php echo @$imagen_dni; ?>" style="border: 0px; height: 130px; width: 90px;"/>                        
            </div>
            <div style="margin-top: 0px; margin-left: 6px;">
             <?php if($vistaprevia!=''){ ?> <?php echo '<label class="" style="'.$class_estado.'">&nbsp;&nbsp;&nbsp;&nbsp;'.$text_estado.'&nbsp;&nbsp;&nbsp;</label>';   ?><?php } ?>

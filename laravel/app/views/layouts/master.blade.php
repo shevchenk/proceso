@@ -16,7 +16,7 @@
 		@show
 		<title>
 			@section('titulo')
-				M. Independencia
+				JSProcesos
 			@show
 		</title>
 

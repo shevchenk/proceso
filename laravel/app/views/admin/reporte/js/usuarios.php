@@ -204,7 +204,7 @@ openImagen=function(rol_id, area_id,dni,tamano,tipo){
     //popup = window.open();
     //popup.document.write("<img src='documentodig/crearcarnetqr/"+area_id+"/"+dni+"/"+tamano+"/"+tipo>"'>");
     
-    //popup.document.write("<img src='http://proceso.munindependencia.pe/documentodig/crearcarnetqr/"+area_id+"/"+dni+"/"+tamano+"/"+tipo+"'>")    
+    //popup.document.write("<img src='http://proceso.jssoluciones.pe/documentodig/crearcarnetqr/"+area_id+"/"+dni+"/"+tamano+"/"+tipo+"'>")    
     /*popup.document.write("<img src='http://localhost/ingind/public/documentodig/crearcarnetqr/"+area_id+"/"+dni+"/"+tamano+"/"+tipo+"'>")    
     popup.focus(); //required for IE
     popup.print();*/

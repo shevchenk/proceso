@@ -9,7 +9,7 @@
         <link rel="shortcut icon" href="assets/ico/favicon.ico">
         <meta name="description" content="">
         <title>         
-                M. Independencia
+                JSProcesos
         </title>
 
         <meta name="token" id="token" value="{{ csrf_token() }}">
@@ -82,8 +82,8 @@
     <body id="registerUser" bgcolor="#FFF">
         <div id="mainWrap">
             <div id="register" class="col-md-8 col-md-offset-2">
-                <h2 class="titulo">{{-- <i class="fa fa-lock"></i> --}} MUNICIPALIDAD DE INDEPENDENCIA</h2>
-                {{-- <h1 style="text-align: center;"><i class="fa fa-lock"></i> MUN.INDEP. </h1> --}}
+                <h2 class="titulo">{{-- <i class="fa fa-lock"></i> --}}Registro de usuario</h2>
+                {{-- <h1 style="text-align: center;"><i class="fa fa-lock"></i> JSProcesos </h1> --}}
                 <h3 id="mensaje_msj"  class="label-success">
                 <?= Session::get('msj'); ?>
                 </h3>

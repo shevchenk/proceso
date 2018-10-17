@@ -9,7 +9,7 @@
 		<link rel="shortcut icon" href="assets/ico/favicon.ico">
 		<meta name="description" content="">
 		<title>	
-				M. Independencia
+				JSProcesos
 		</title>
 		<meta name="token" id="token" value="{{ csrf_token() }}">
         {{ HTML::style('css/login/login.css?v05') }}

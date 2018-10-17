@@ -202,7 +202,7 @@ class FormatoLicenciaController extends \BaseController
                     ->margin(0)
                     ->size(100)
                     //->color(40,40,40)
-                    ->generate("http://proceso.munindependencia.pe/formatolicencia/vistaqrliccontruccion/".$id."/".$tamano."/".$tipo);
+                    ->generate("http://proceso.jssoluciones.pe/formatolicencia/vistaqrliccontruccion/".$id."/".$tamano."/".$tipo);
 
         $png = base64_encode($png);
         $png= "<img src='data:image/png;base64," . $png . "' width='100' height='100'>";

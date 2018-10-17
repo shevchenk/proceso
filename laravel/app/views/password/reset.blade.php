@@ -9,7 +9,7 @@
         <link rel="shortcut icon" href="assets/ico/favicon.ico">
         <meta name="description" content="">
         <title>
-                M. Independencia
+                JSProcesos
         </title>
         {{ HTML::style('lib/font-awesome-4.2.0/css/font-awesome.min.css') }}
         {{ HTML::style('lib/bootstrap-3.3.1/css/bootstrap.min.css') }}
@@ -24,7 +24,7 @@
     <body id="resetPassword" bgcolor="#FFF">
         <div id="mainWrap">
             <div id="loggit">
-                <h1><i class="fa fa-lock"></i> MUN.INDEP. </h1>
+                <h1><i class="fa fa-lock"></i> JSProcesos </h1>
                 
                 <h3 v-if="mensaje_ok" id="mensaje_ok" class="label-success">
                     @{{ mensaje_ok }}

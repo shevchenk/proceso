@@ -9,7 +9,7 @@
         <link rel="shortcut icon" href="assets/ico/favicon.ico">
         <meta name="description" content="">
         <title>
-                M. Independencia
+                JSProcesos
         </title>
         <meta name="token" id="token" value="{{ csrf_token() }}">
         {{ HTML::style('lib/font-awesome-4.2.0/css/font-awesome.min.css') }}
@@ -35,7 +35,7 @@
     <body id="sendEmail" bgcolor="#FFF">
         <div id="mainWrap">
             <div id="loggit">
-                <h2 class="titulo">{{-- <i class="fa fa-lock"></i>  --}}MUN. INDEPENDENCIA </h2>
+                <h4 class="titulo">{{-- <i class="fa fa-lock"></i>  --}}Recuperación de clave </h4>
                 
                 <h3 v-if="mensaje_ok" id="mensaje_ok" class="label-success">
                     @{{ mensaje_ok }}

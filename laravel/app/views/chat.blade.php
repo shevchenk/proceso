@@ -101,7 +101,7 @@
         },
         ready: function () {
             //var socket = io('http://ingind:3000');
-            var socket = io('http://proceso.munindependencia.pe:3000');
+            var socket = io('http://proceso.jssoluciones.pe:3000');
             socket.on('welcome', function (data) {
                 console.log(data.message);
                 socket.emit('join', { room:  user_id });

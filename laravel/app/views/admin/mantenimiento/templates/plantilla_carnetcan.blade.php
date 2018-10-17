@@ -203,7 +203,7 @@ footer .izq {
     <div style="overflow:hidden;">
      <table style="width:100%">
         <tr>
-            <td><img src="http://proceso.munindependencia.pe/img/carnet_cane/<?php echo @$foto; ?>" style="border: 0px; height: 100px; width: 100px;"/></td>
+            <td><img src="http://proceso.jssoluciones.pe/img/carnet_cane/<?php echo @$foto; ?>" style="border: 0px; height: 100px; width: 100px;"/></td>
         </tr>
         <tr>
             <td>REGISTRO NUMERO:&nbsp;&nbsp; <strong>{{ $serie }}</strong></td>

@@ -48,4 +48,4 @@
 
 //$app->run();
 
-echo "Ingrese a <a href='mindependencia1.grupodsp.net'>mindependencia1.grupodsp.net</a>";
+echo "Ingrese a <a href='proceso.jssoluciones.pe'>proceso.jssoluciones.pe</a>";

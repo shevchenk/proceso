@@ -9,7 +9,7 @@
         <link rel="shortcut icon" href="assets/ico/favicon.ico">
         <meta name="description" content="">
         <title> 
-                M. Independencia
+                JSProcesos
         </title>
         <meta name="token" id="token" value="{{ csrf_token() }}">
         {{ HTML::style('css/login/login.css?v05') }}
@@ -34,25 +34,22 @@
                 <h3 id="mensaje_error" style="display:none" class="label-danger">           
                 </h3>
 
-                <h3 id="mensaje_inicio">Por Favor <strong>Logeate</strong></h3>            
+                <h3 id="mensaje_inicio">Por Favor <strong>Ingrese al sistema.</strong></h3>            
             
             <form action="login/signin" id="logForm" method="post" class="form-horizontal">
                 <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+
                                 <input type="text" name="usuario" id="usuario" class="form-control input-md" placeholder="Usuario" autocomplete="off" required>
                             </div>
-                        </div>
+                     
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
                                 <input type="password" name="password" id="password" class="form-control input-md" placeholder="Password" autocomplete="off" required>
-                            </div>
+               
                         </div>
                     </div>
                     <div class="form-group formSubmit">

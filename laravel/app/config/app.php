@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://proceso.munindependencia.pe',
+	'url' => 'http://proceso.jssoluciones.pe',
 
 	/*
 	|--------------------------------------------------------------------------

@@ -148,7 +148,7 @@ class CarnetCanesQRController extends \BaseController
                         ->margin(0)
                         ->size($size)
                         ->color(40,40,40)
-                        ->generate("http://proceso.munindependencia.pe/carnetcanes/vistacarnetqrvalida/".$id."/".$serie."/".$tamano."/".$tipo)
+                        ->generate("http://proceso.jssoluciones.pe/carnetcanes/vistacarnetqrvalida/".$id."/".$serie."/".$tamano."/".$tipo)
                         ;
         
         file_put_contents("img/carnet_cane/temp.png", $png);
@@ -165,9 +165,9 @@ class CarnetCanesQRController extends \BaseController
         $fecha_nace = $oData[0]->fecha_nace;
         $sexo = $oData[0]->sexo;
         $raza = $oData[0]->raza;
-        $rutaFoto = "http://proceso.munindependencia.pe/img/carnet_cane/".$oData[0]->foto;
+        $rutaFoto = "http://proceso.jssoluciones.pe/img/carnet_cane/".$oData[0]->foto;
 
-        //http://proceso.munindependencia.pe/img/carnet_cane/42892330.jpg
+        //http://proceso.jssoluciones.pe/img/carnet_cane/42892330.jpg
         $rutaQR = "img/carnet_cane/temp.png";
 
         $im = $this->crearCarnet($nombres, $apellidos, $serie, $fecha_entrega, $fecha_nace, $sexo, $raza, $rutaFoto, $rutaQR);
@@ -178,7 +178,7 @@ class CarnetCanesQRController extends \BaseController
 
     public function crearCarnet($nombres, $apellidos, $serie, $fecha_entrega, $fecha_nace, $sexo, $raza, $rutaFoto, $rutaQR)
     {
-        $im = imagecreatefromjpeg ('http://proceso.munindependencia.pe/img/carnet_cane/carnet.jpg');
+        $im = imagecreatefromjpeg ('http://proceso.jssoluciones.pe/img/carnet_cane/carnet.jpg');
 
         $black = imagecolorallocate($im, 0, 0, 0);
 
@@ -276,7 +276,7 @@ class CarnetCanesQRController extends \BaseController
         $vistaprevia='Documento Vista Previa';
         
         $size = 80; // TAMAÑO EN PX 
-        $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.munindependencia.pe/carnetcanes/vistacarnetqrvalida/".$id."/".$serie."/".$tamano."/".$tipo);
+        $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.jssoluciones.pe/carnetcanes/vistacarnetqrvalida/".$id."/".$serie."/".$tamano."/".$tipo);
         $png = base64_encode($png);
         $png= "<img src='data:image/png;base64," . $png . "' width='65' height='65'>";
         
