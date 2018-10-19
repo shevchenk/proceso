@@ -5,12 +5,12 @@ window.chartColors = {
     aqua:'rgb(64, 253, 251)',
     ligthred: 'rgb(237, 93, 100)',
     orange: 'rgb(255, 71, 15)',
-    green: 'rgb(2, 273, 21)',
+    //green: 'rgb(2, 273, 21)',
     blue: 'rgb(21, 2, 237)',
     ligthblue: 'rgb(75, 192, 192)',
     gray: 'rgb(78, 93, 100)',
     gold: 'rgb(239, 193, 30)',
-    red: 'rgb(209, 4, 4)',
+    //red: 'rgb(209, 4, 4)',
     purple: 'rgb(253, 0, 221)',
     marron:'rgb(137, 132, 88)',
     darkred:'rgb(113, 4, 4)',
@@ -25,12 +25,12 @@ window.chartColorsTransparents = {
     aqua:'rgba(64, 253, 251,0.65)',
     ligthred: 'rgba(237, 93, 100,0.65)',
     orange: 'rgba(255, 71, 15,0.65)',
-    green: 'rgba(2, 273, 21,0.65)',
+    //green: 'rgba(2, 273, 21,0.65)',
     blue: 'rgba(21, 2, 237,0.65)',
     ligthblue: 'rgba(75, 192, 192,0.65)',
     gray: 'rgba(78, 93, 100,0.65)',
     gold: 'rgba(239, 193, 30,0.65)',
-    red: 'rgba(209, 4, 4,0.65)',
+    //red: 'rgba(209, 4, 4,0.65)',
     purple: 'rgba(253, 0, 221,0.65)',
     marron:'rgba(137, 132, 88,0.65)',
     darkred:'rgba(113, 4, 4,0.65)',
@@ -66,7 +66,7 @@ var configChart = {
             responsive: true,
             title: {
                 display: true,
-                text: 'Comparacion grafica de los procesos por areas'
+                text: 'Comparacion grafica de los procesos por áreas'
             },
             tooltips: {
                 mode: 'index',
@@ -81,7 +81,7 @@ var configChart = {
                     display: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'Estadistica '
+                        labelString: 'Estadística '
                     }
                 }],
                 yAxes: [{
@@ -112,7 +112,7 @@ var configChartPendientes = {
             responsive: true,
             title: {
                 display: true,
-                text: 'Grafico de tramites Pendientes'
+                text: 'Trámites Pendientes'
             },
             tooltips: {
                 mode: 'index',
@@ -127,7 +127,7 @@ var configChartPendientes = {
                     display: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'Estadistica '
+                        labelString: 'Estadística '
                     }
                 }],
                 yAxes: [{
@@ -158,7 +158,7 @@ var configChartFinalizadas = {
             responsive: true,
             title: {
                 display: true,
-                text: 'Grafico de tramites Finalizados'
+                text: 'Trámites Finalizados'
             },
             tooltips: {
                 mode: 'index',
@@ -173,7 +173,7 @@ var configChartFinalizadas = {
                     display: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'Estadistica '
+                        labelString: 'Estadística '
                     }
                 }],
                 yAxes: [{
@@ -525,7 +525,7 @@ function loadEtapa2(idE2){
 
     configChartPendientes.data.datasets[configChartPendientes.data.datasets.length]={
         label: "Involucradas",
-        backgroundColor: chartColors.orange,
+        backgroundColor: chartColors.yellow,
         borderColor: newColorTransparent,
         data: mData0PInv,
         fill: false
@@ -533,7 +533,7 @@ function loadEtapa2(idE2){
 
     configChartPendientes.data.datasets[configChartPendientes.data.datasets.length]={
         label: "Asignadas",
-        backgroundColor: chartColors.green,
+        backgroundColor: chartColors.blue,
         borderColor: newColorTransparent,
         data: mData0PAsg,
         fill: false
@@ -550,7 +550,7 @@ function loadEtapa2(idE2){
 
     configChartFinalizadas.data.datasets[configChartFinalizadas.data.datasets.length]={
         label: "Involucradas",
-        backgroundColor: chartColors.orange,
+        backgroundColor: chartColors.yellow,
         borderColor: newColorTransparent,
         data: mData0FInv,
         fill: false
@@ -558,7 +558,7 @@ function loadEtapa2(idE2){
 
     configChartFinalizadas.data.datasets[configChartFinalizadas.data.datasets.length]={
         label: "Asignadas",
-        backgroundColor: chartColors.green,
+        backgroundColor: chartColors.blue,
         borderColor:newColor,
         data: mData0FAsg,
         fill: false

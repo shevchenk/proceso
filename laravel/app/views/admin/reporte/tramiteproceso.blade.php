@@ -24,7 +24,7 @@
     <section class="content-header">
         <h1 style="text-align: center; font-size: 35px">
             <b>        
-            Reporte de tramite por proceso.
+            Reporte de trámite por proceso.
             </b>            
             <small> </small>
         </h1>
@@ -92,15 +92,15 @@
                     <table id="t_reported_tab_1" class="table table-bordered" width="100%">
                         <thead>
                             <tr>
-                                <td>Documento inicial</td>
-                                <td>Documento actual</td>
-                                <td>Flujo inicial</td>
-                                <td>Flujo actual</td>
-                                <td>Paso actual</td>
-                                <td>Paso final</td>
+                                <td>Documento Inicial</td>
+                                <td>Documento Actual</td>
+                                <td>Flujo Inicial</td>
+                                <td>Flujo Actual</td>
+                                <td>Paso Actual</td>
+                                <td>Paso Final</td>
                                 <td>Fecha Inicial</td>
-                                <td>Fecha Tramite</td>
-                                <td>Fecha final</td>
+                                <td>Fecha Trámite</td>
+                                <td>Fecha Final</td>
                             </tr>
                         </thead>
                         <tbody id="contentTable">

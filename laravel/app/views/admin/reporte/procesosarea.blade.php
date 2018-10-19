@@ -32,13 +32,13 @@
             </style>
     <section class="content-header">
         <h1>
-            Cantidad de procesos generados por area
+            Cantidad de procesos generados por área
             <small> </small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
             <li><a href="#">Reporte</a></li>
-            <li class="active">Procesos por area</li>
+            <li class="active">Procesos por Áreas</li>
         </ol>
     </section>
 
@@ -51,7 +51,7 @@
                     <div class="row form-group" >
                         <div class="col-sm-12">
                             <div class="col-sm-4"><input type="hidden" id="area_id" name="area_id">
-                                <label class="control-label">Area:</label>
+                                <label class="control-label">Área:</label>
                                 <select class="form-control" name="area_id[]" id="slct_area_id" multiple>
                                 </select>
                             </div>
