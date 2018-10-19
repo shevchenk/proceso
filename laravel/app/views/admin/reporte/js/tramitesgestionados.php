@@ -1,8 +1,6 @@
-<script type="text/javascript">
+    <script type="text/javascript">
 window.chartColors = {
-
-
-    aqua:'rgb(64, 253, 251)',
+    aqua: 'rgb(64, 253, 251)',
     ligthred: 'rgb(237, 93, 100)',
     orange: 'rgb(255, 71, 15)',
     //green: 'rgb(2, 273, 21)',
@@ -12,17 +10,14 @@ window.chartColors = {
     gold: 'rgb(239, 193, 30)',
     //red: 'rgb(209, 4, 4)',
     purple: 'rgb(253, 0, 221)',
-    marron:'rgb(137, 132, 88)',
-    darkred:'rgb(113, 4, 4)',
+    marron: 'rgb(137, 132, 88)',
+    darkred: 'rgb(113, 4, 4)',
     darkgreen: 'rgb(35, 119, 30)',
     yellow: 'rgb(245, 242, 4)'
-    
 };
 
 window.chartColorsTransparents = {
-
-
-    aqua:'rgba(64, 253, 251,0.65)',
+    aqua: 'rgba(64, 253, 251,0.65)',
     ligthred: 'rgba(237, 93, 100,0.65)',
     orange: 'rgba(255, 71, 15,0.65)',
     //green: 'rgba(2, 273, 21,0.65)',
@@ -32,11 +27,10 @@ window.chartColorsTransparents = {
     gold: 'rgba(239, 193, 30,0.65)',
     //red: 'rgba(209, 4, 4,0.65)',
     purple: 'rgba(253, 0, 221,0.65)',
-    marron:'rgba(137, 132, 88,0.65)',
-    darkred:'rgba(113, 4, 4,0.65)',
+    marron: 'rgba(137, 132, 88,0.65)',
+    darkred: 'rgba(113, 4, 4,0.65)',
     darkgreen: 'rgba(35, 119, 30,0.65)',
     yellow: 'rgba(245, 242, 4,0.65)'
-    
 };
 
 
@@ -365,7 +359,7 @@ var datos = response.datos;
                 }
 
 
-                html = html + "<td "+ ((jx != 0 && fieldObj.total == 0) ? 'style="background-color:#fe4e4e"':'') +">"+fieldText+"</td>";
+                html = html + "<td "+ ((jx != 0 && fieldObj.total == 0) ? 'style="background-color:#fe4e4e"': '') +">"+fieldText+"</td>";
 
             }
 
@@ -464,6 +458,8 @@ function loadEtapa2(idE2){
 
     var tAreaName = $("#ce_"+idE2).find("td:eq(0)").text();
 
+    var tColorBG = $("#ce_"+idE2).css("background-color");
+
     configChartPendientes.data.datasets=[{
         label: 'Total Pendientes',
         //backgroundColor: 'rgba(102,102,102,0.65);',
@@ -481,8 +477,8 @@ function loadEtapa2(idE2){
 
 
     var colorName = colorNames[tempColor];
-    var newColor = window.chartColors[colorName];
-    var newColorTransparent = window.chartColorsTransparents[colorName];
+    var newColor = tColorBG.replace(",0.65", ",1");
+    var newColorTransparent = tColorBG;
 
     var mData0P = [];
     var mData0F = [];
@@ -570,10 +566,7 @@ function loadEtapa2(idE2){
     window.myLine3.update();
     //makeTableEtapa1();
 
-
-   // $("#e2_"+idE2).attr("style","background-color:red;");
-
-
+    // $("#e2_"+idE2).attr("style","background-color:red;");
 
 }
 
@@ -636,4 +629,4 @@ function cargarElemento(idD,nombreArea){
 
 
 
-</script>
+    </script>
