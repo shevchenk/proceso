@@ -121,3 +121,21 @@ function getMultiSelect(selector, element){
         errorMessage(e);
     }    
 }
+
+
+$(".mobileTitle").mouseenter(function () {
+    var $title = $(this).find(".title");
+    if (!$title.length) { 
+        $(this).append('<span class="title">' + $(this).attr("mobileTitle") + '</span>');
+    } else {
+        $title.remove();
+    }
+});
+
+$(".mobileTitle").mouseout(function () {
+    var $title = $(this).find(".title");
+    if (!$title.length) {
+    } else {
+        $title.remove();
+    }
+});

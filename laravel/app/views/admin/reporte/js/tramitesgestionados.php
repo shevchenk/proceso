@@ -268,7 +268,6 @@ makeHeader = function(data){
     var hdr = "";
     hdr = hdr + "<tr>";
     
-    
     var keys = Object.keys(data);
     configChart.data.labels=[];
     configChartFinalizadas.data.labels=[];
@@ -318,7 +317,7 @@ var datos = response.datos;
         for (var i = 0; i < datos.length; i++) {
 
             var totalAux = 0;
-            html = html + "<tr title=\" TOTAL ( PENDIENTES / FINALIZADAS ) \" id=\"ce_"+ datos[i].a+"\" onClick=\"cargarElemento('"+ datos[i].a+"','"+ datos[i].nombre+"');\">";
+            html = html + "<tr class=\"mobileTitle\" mobileTitle=\" TOTAL ( PENDIENTES / FINALIZADAS ) \" id=\"ce_"+ datos[i].a+"\" onClick=\"cargarElemento('"+ datos[i].a+"','"+ datos[i].nombre+"');\">";
             var auxA = datos[i].a;
             delete datos[i].a;
             var keys = Object.keys(datos[i]);

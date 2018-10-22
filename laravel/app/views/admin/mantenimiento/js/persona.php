@@ -30,7 +30,7 @@ $(document).ready(function() {
                 dni           :'onBlur|DNI|#DCE6F1', //#DCE6F1
                 sexo          :'3|Tipo de Sexo|#DCE6F1', //#DCE6F1
                 email         :'onBlur|Email|#DCE6F1', //#DCE6F1
-                email_mdi         :'onBlur|Email MDI|#DCE6F1', //#DCE6F1
+                email_mdi         :'onBlur|Email corporativo|#DCE6F1', //#DCE6F1
               //  password      :'onBlur|Password|#DCE6F1', //#DCE6F1
                 area          :'3|Área de la Persona|#DCE6F1', 
                 rol           :'3|Rol de la Persona|#DCE6F1', //#DCE6F1

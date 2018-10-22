@@ -49,34 +49,30 @@
             <div class="box">
                 <fieldset>
                     <form name="form_reporte" id="form_reporte">
-                    <div class="row form-group" >
-                        <div class="col-sm-12">
-                            <div class="col-sm-4"><input type="hidden" id="area_id" name="area_id">
-                                <label class="control-label">Área:</label>
-                                <select class="form-control" name="area_id[]" id="slct_area_id" multiple>
-                                </select>
-                            </div>
-                             <div class="col-sm-2">
-                                                <label class="control-label">Fecha inicial:</label>
-                                                <input type="text" class="form-control fechaMes" placeholder="AAAA/MM" id="fecha0" name="fecha_ini" onfocus="blur()"/>
-                            </div>
-                             <div class="col-sm-2">
-                                                <label class="control-label">Fecha final:</label>
-                                                <input type="text" class="form-control fechaMes" placeholder="AAAA/MM" id="fecha1" name="fecha_fin" onfocus="blur()"/>
-                            </div>
-                             <div class="col-sm-3">
-                                             <div class="col-sm-6">                            
-                                                <label class="control-label" style="color: white">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                                <input type="button" class="btn btn-info" id="generar" name="generar" value="Generar Reporte">
-                                             </div> 
+                        <div class="row form-group" >
+                            <div class="col-sm-12">
+                                <div class="col-sm-4"><input type="hidden" id="area_id" name="area_id">
+                                    <label class="control-label">Área:</label>
+                                    <select class="form-control" name="area_id[]" id="slct_area_id" multiple>
+                                    </select>
                                 </div>
-<!--                            <div class="col-sm-2">
-                                <label class="control-label"></label>
-                                <input type="button" class="form-control btn btn-primary" id="generar_area" name="generar_area" value="Mostrar">
-                            </div>-->
+                                <div class="col-sm-2">
+                                    <label class="control-label">Fecha inicial:</label>
+                                    <input type="text" class="form-control fechaMes" placeholder="AAAA/MM" id="fecha0" name="fecha_ini" onfocus="blur()"/>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label class="control-label">Fecha final:</label>
+                                    <input type="text" class="form-control fechaMes" placeholder="AAAA/MM" id="fecha1" name="fecha_fin" onfocus="blur()"/>
+                                </div>
+                                <div class="col-sm-3">
+                                     <div class="col-sm-6">                            
+                                        <label class="control-label" style="color: white">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                        <input type="button" class="btn btn-info" id="generar" name="generar" value="Generar Reporte">
+                                     </div> 
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
                 </fieldset>
             
                <div class="box-body">
@@ -104,7 +100,6 @@
                                         <thead>
                                             <tr>
                                                 <th>Área</th>
-
                                             </tr>
                                         </thead>
                                         <tbody id="body_etapa1">
@@ -129,9 +124,7 @@
                         </div>
                     </div>
                 </div>
-                
             </div><!-- /.box -->
-
             <!-- Finaliza contenido -->
         </div>
     </section><!-- /.content -->

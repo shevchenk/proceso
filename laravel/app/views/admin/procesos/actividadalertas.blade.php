@@ -53,7 +53,7 @@
                                 <th>Persona</th>
                                 <th>Actividad</th>
                                 <th>Minuto</th>
-                                <th>Email mdi</th>
+                                <th>Email corporativo</th>
                              
                             </tr>
                         </thead>

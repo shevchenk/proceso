@@ -55,7 +55,7 @@
                                 <th>Area</th>
                                 <th>Persona</th>
                                 <th>Email</th>
-                                <th>Email mdi</th>
+                                <th>Email corporativo</th>
                              
                             </tr>
                         </thead>

@@ -73,7 +73,7 @@ $(document).ready(function() {
             }
             else {
                 
-                 document.querySelector("#lblArea").innerHTML= " - "+AnioG+" - "+"MDI";
+                 document.querySelector("#lblArea").innerHTML= " - "+AnioG+" - "+"";
                  Plantillas.CargarCorrelativo({'tipo_doc':Documento.tipo_documento_id,'tipo_corre':0,'t':t,'p':p},HTMLCargarCorrelativo); 
             }
         }
@@ -222,7 +222,7 @@ openPlantilla=function(id,tamano,tipo){
 HTMLPlantilla = function(data){
     if(data.length > 0){
         var result = data[0];
-        var tittle = result.tipodoc + "N-XX-2016" + "/MDI";
+        var tittle = result.tipodoc + "N-XX-2016" + "";
         CKEDITOR.instances.plantillaWord.setData( result.cuerpo );
         
         Documento.tipo_documento_id=result.tipo_documento_id;
@@ -245,7 +245,7 @@ HTMLPlantilla = function(data){
                     }
                               }
             else{
-                  document.querySelector("#lblArea").innerHTML= " - "+AnioG+" - "+"MDI";
+                  document.querySelector("#lblArea").innerHTML= " - "+AnioG+" - ";
                   Plantillas.CargarCorrelativo({'tipo_doc':Documento.tipo_documento_id,'tipo_corre':0,'t':t,'p':p},HTMLCargarCorrelativo); 
 
             }

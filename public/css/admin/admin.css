@@ -6293,3 +6293,21 @@ ul.pagination {
     -webkit-transform: scale(0.6);
             transform: scale(0.6); }
 }
+
+
+.mobileTitle {
+  border-bottom: 1px dotted;
+  position: relative;
+}
+
+.mobileTitle .title {
+    position: absolute;
+    top: 20px;
+    background: rgba(200, 200, 200, 0.4);
+    padding: 4px;
+    left: 0;
+    white-space: nowrap;
+    border-radius:8px;
+    border: 2px solid rgba(215, 44, 44, 0.6);
+}
+

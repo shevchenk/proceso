@@ -24,7 +24,7 @@
                           <input type="text" maxlength="6" class="form-control txttittle" placeholder="Ingrese Titulo" name="txt_titulo" id="txt_titulo">
                       </div>
                       <div class="col-xs-4">
-                          <label id="lblArea" style="margin-top:5px;">-MDI</label>
+                          <label id="lblArea" style="margin-top:5px;"></label>
                       </div>                      
                     </div>
                     <input type="hidden" id="txt_titulofinal" name="txt_titulofinal" value="">

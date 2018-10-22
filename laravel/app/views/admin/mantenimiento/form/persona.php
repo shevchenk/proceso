@@ -91,7 +91,7 @@
                           <i class="fa fa-exclamation"></i>
                       </a>
                   </label>
-                  <input type="text" class="form-control" placeholder="Ingrese email MDI" name="txt_email_mdi" id="txt_email_mdi">
+                  <input type="text" class="form-control" placeholder="Ingrese Email corporativo" name="txt_email_mdi" id="txt_email_mdi">
                 </div>
                 <div class="col-sm-2">
                   <label class="control-label">Estado:

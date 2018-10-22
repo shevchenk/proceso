@@ -441,7 +441,7 @@ class IndedocsController extends \BaseController {
                         $correlativo++;
 
                         $documento_digital = new DocumentoDigital();                    
-                        $documento_digital->titulo = 'COMUNICADO EDUCATIVO - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $documento_digital->titulo = 'COMUNICADO EDUCATIVO - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $documento_digital->correlativo = $correlativo;
                         $documento_digital->asunto = 'COMUNICADO EDUCATIVO';
                         $documento_digital->plantilla_doc_id = 2177;
@@ -477,12 +477,12 @@ class IndedocsController extends \BaseController {
                                         WHERE tipo = 'DESMONTE' AND viapredio = 'VIA';";
                         $doc_digital_dvp = DB::select($select);
                         $codigo_vp = $doc_digital_dvp[0]->codigo_vp + 1;
-                        $tablarelacion->id_union = 'DESMONTE VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'DESMONTE VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $codigo_vp;
                     }
                     else {
                         //$correlativo++;
-                        $tablarelacion->id_union = 'COMUNICADO EDUCATIVO - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'COMUNICADO EDUCATIVO - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $correlativo;
                     }
                     
@@ -506,12 +506,12 @@ class IndedocsController extends \BaseController {
                                         WHERE tipo = 'MATERIALES';"; //  AND viapredio = 'VIA'
                         $doc_digital_dvp = DB::select($select);
                         $codigo_vp = $doc_digital_dvp[0]->codigo_vp + 1;
-                        $tablarelacion->id_union = 'MATERIAL DE CONSTRUCCION - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'MATERIAL DE CONSTRUCCION - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $codigo_vp;
                     /*}
                     else {
                         $correlativo++;
-                        $tablarelacion->id_union = 'MATERIAL DE CONSTRUCCION - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'MATERIAL DE CONSTRUCCION - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $correlativo;
                     }*/
 
@@ -533,12 +533,12 @@ class IndedocsController extends \BaseController {
                                         WHERE tipo = 'VEHICULO' AND viapredio = 'VIA';";
                         $doc_digital_dvp = DB::select($select);
                         $codigo_vp = $doc_digital_dvp[0]->codigo_vp + 1;
-                        $tablarelacion->id_union = 'VEHICULOS ABANDONADOS VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'VEHICULOS ABANDONADOS VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $codigo_vp;
                     }                        
                     else {
                         //$correlativo++;
-                        $tablarelacion->id_union = 'COMUNICADO EDUCATIVO - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'COMUNICADO EDUCATIVO - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $correlativo;
                     }
 
@@ -562,12 +562,12 @@ class IndedocsController extends \BaseController {
                                         WHERE tipo = 'BASURA' AND viapredio = 'VIA';";
                         $doc_digital_dvp = DB::select($select);
                         $codigo_vp = $doc_digital_dvp[0]->codigo_vp + 1;
-                        $tablarelacion->id_union = 'RESIDUOS SOLIDOS VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'RESIDUOS SOLIDOS VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $codigo_vp;
                     }
                     else {
                         //$correlativo++;
-                        $tablarelacion->id_union = 'COMUNICADO EDUCATIVO - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'COMUNICADO EDUCATIVO - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $correlativo;
                     }
 
@@ -591,12 +591,12 @@ class IndedocsController extends \BaseController {
                                         WHERE tipo = 'PODA' AND viapredio = 'VIA';";
                         $doc_digital_dvp = DB::select($select);
                         $codigo_vp = $doc_digital_dvp[0]->codigo_vp + 1;
-                        $tablarelacion->id_union = 'PODA DE JARDINES VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'PODA DE JARDINES VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $codigo_vp;
                     }
                     else {
                         //$correlativo++;
-                        $tablarelacion->id_union = 'COMUNICADO EDUCATIVO - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'COMUNICADO EDUCATIVO - Nº ' . str_pad($correlativo, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $correlativo;
                     }
 
@@ -620,7 +620,7 @@ class IndedocsController extends \BaseController {
                                         WHERE tipo = 'AMBULANTE' AND viapredio = 'VIA';";
                         $doc_digital_dvp = DB::select($select);
                         $codigo_vp = $doc_digital_dvp[0]->codigo_vp + 1;
-                        $tablarelacion->id_union = 'AMBULANTES INFORMALES VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'AMBULANTES INFORMALES VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $codigo_vp;
                     }
 
@@ -642,7 +642,7 @@ class IndedocsController extends \BaseController {
                                         WHERE tipo = 'PARADERO' AND viapredio = 'VIA';";
                         $doc_digital_dvp = DB::select($select);
                         $codigo_vp = $doc_digital_dvp[0]->codigo_vp + 1;
-                        $tablarelacion->id_union = 'PARADEROS NO AUTORIZADOS VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'PARADEROS NO AUTORIZADOS VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $codigo_vp;
                     }
 
@@ -664,7 +664,7 @@ class IndedocsController extends \BaseController {
                                         WHERE tipo = 'LOCAL' AND viapredio = 'VIA';";
                         $doc_digital_dvp = DB::select($select);
                         $codigo_vp = $doc_digital_dvp[0]->codigo_vp + 1;
-                        $tablarelacion->id_union = 'LOCALES NO AUTORIZADOS VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].' - MDI';
+                        $tablarelacion->id_union = 'LOCALES NO AUTORIZADOS VIA PUBLICA - Nº ' . str_pad($codigo_vp, 6, '0', STR_PAD_LEFT) . ' - '.$fecha[2].'';
                         $cod_correlativo = $codigo_vp;
                     }
 
