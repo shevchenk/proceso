@@ -84,9 +84,18 @@ Limpiar=function(text){
     $("#"+text).val("");
 }
 
-MostrarAjax=function(){
-    Close();
-    Bandeja.MostrarAjax();
+MostrarAjax=function(tt){
+    if (tt === "docs"){
+        if( columnDefsG.length>0 ){
+            dataTableG.CargarDatos(tt,'docs','cargar',columnDefsG);
+        }
+        else{
+            alert('Faltas datos');
+        }
+    }else{    
+        Close();
+        Bandeja.MostrarAjax();
+    }
 }
 
 hora=function(){
@@ -290,7 +299,8 @@ mostrarDetalleHTML=function(datos){
                     }
                 }else{
                     if(verbo=="Generar"){
-                        imagenadd= '<input name="txtdocumento[]" id="txtdocumento" rtverbo="'+detalle[i].split("=>")[0]+'" type="text" value="'+detalle[i].split("=>")[4]+'" class="txt_'+detalle[i].split("=>")[0]+'"/>';                            
+
+                        imagenadd= '<div id="d_'+i+'"><input name="txtdocumento[]" disabled id="txtdocumento" rtverbo="'+detalle[i].split("=>")[0]+'" doc_dig_id="-1" type="text" value="'+detalle[i].split("=>")[4].split(" <a")[0]+'" class="txt_'+detalle[i].split("=>")[0]+'"/><span id="btn_'+i+'" onkeyup="rmDis('+i+')" onclick="lapiz('+i+','+detalle[i].split("=>")[0]+')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></span><span onclick="getDoc('+i+','+detalle[i].split("=>")[0]+'); return false;" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-search"></i></span><div>';
                     }
                 }
 
@@ -397,6 +407,8 @@ guardarTodo=function(){
         }
     }
 }
+    
+
 
 eventoSlctGlobalSimple=function(slct,valores){
     if( slct=="slct_tipo_respuesta" ){
@@ -414,7 +426,7 @@ updateDoc = function(obj){
     var repeat = $("input[id='txtdocumento']").map(function(){return $(this);}).get();
     var objCambios = [];
     $.each(repeat,function(index, el) {
-        objCambios.push({'rutadetalleid':id,'rtverbo':el[0].getAttribute('rtverbo'),'edit':el[0].value});
+        objCambios.push({'rutadetalleid':id,'rtverbo':el[0].getAttribute('rtverbo'),'edit':el[0].value,'doc_dig_id':el[0].getAttribute('doc_dig_id')});
     });
     Bandeja.editNombDocumento(JSON.stringify(objCambios),mostrarDetallle);   
 }
@@ -430,4 +442,44 @@ updateDoc = function(obj){
     Bandeja.editTiempoTramite(JSON.stringify(datos),mostrarDetallle);
  }
 /*end update tiempo*/
+
+
+
+
+var actualIDI;
+
+
+function rmDis(id){
+    $("#d_"+id).find("#txtdocumento").attr('doc_dig_id','');
+}
+
+function lapiz(id,rdi){
+    $("#d_"+id).find("#txtdocumento").removeAttr("disabled");
+}
+
+function getDoc(id,rdi){
+
+    $("#docsModal").modal("show");
+    actualIDI = id;
+}
+
+function cargarDoc(id,referido,fecha){
+    $("#d_"+actualIDI).find("#txtdocumento").attr("disabled","disabled").val(referido);
+    $("#d_"+actualIDI).find("#txtdocumento").attr('doc_dig_id',id);
+    $("#docsModal").modal("hide");
+}
+
+if (typeof GeneraFn !== "function") { 
+  GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion fn
+    if(typeof(fn)!='undefined' && fn.col==3){
+        console.log(row);
+          var estadohtml='';
+        estadohtml='<span id="'+row.id+'" onClick="cargarDoc(\''+row.id+'\',\''+row.titulo.split("|")[0]+'\',\''+row.titulo.split("|")[1]+'\')" class="btn btn-success"><i class="fa fa-lg fa-check"></i></span>';
+        return estadohtml;
+    }
+  };
+}
+
+
+
 </script>

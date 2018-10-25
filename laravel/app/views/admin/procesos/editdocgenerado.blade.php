@@ -13,6 +13,10 @@
     @include( 'admin.ruta.js.ruta_ajax' )
     @include( 'admin.ruta.js.validar_ajax' )
 
+
+    @include( 'admin.ruta.js.docs' )
+    @include( 'admin.ruta.js.docs_ajax' )
+
     @include( 'admin.procesos.js.editdocgenerado_ajax' )
     @include( 'admin.procesos.js.editdocgenerado' )
 @stop
@@ -290,5 +294,7 @@
 @section('formulario')
      @include( 'admin.reporte.form.bandejatramite' )
      @include( 'admin.reporte.form.expediente' )
-     @include( 'admin.procesos.form.editfechatramite' )
+     @include( 'admin.procesos.form.editfechatramite' ) 
+     @include( 'admin.ruta.form.docs' )
+
 @stop

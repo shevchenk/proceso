@@ -173,24 +173,33 @@ class RutaDetalleController extends \BaseController
             $array_editables = Input::get('editables');
             foreach(json_decode($array_editables) as $value){
                 /*update in rutas_detalle_verbo*/
-                $rdv= RutaDetalleVerbo::find($value->rtverbo);
-                $rdv['documento'] = $value->edit;
-                $rdv['usuario_updated_at']= Auth::user()->id;
-                $rdv->save(); 
-                /*end update in rutas_detalle_verbo */
-                /*update in history(sustentos,referidos)*/
-                $referido = Referido::where('ruta_detalle_verbo_id', '=', $value->rtverbo)->get();
-                if($referido){
-                    $referido[0]['referido'] = $value->edit;
-                    $referido[0]['usuario_updated_at']= Auth::user()->id;
-                    $referido[0]->save();
-                }else{
-                    $sustento= Sustento::where('ruta_detalle_verbo_id', '=', $value->rtverbo)->get();
-                    $sustento[0]['sustento'] = $value->edit;
-                    $sustento[0]['usuario_updated_at']= Auth::user()->id;
-                    $sustento[0]->save(); 
+
+                if($value->doc_dig_id != -1){
+                    $doc_id = ($value->doc_dig_id == '' ? NULL : $value->doc_dig_id);
+                    $rdv= RutaDetalleVerbo::find($value->rtverbo);
+                    $rdv['documento'] = $value->edit;
+
+                    $rdv['doc_digital_id'] = $doc_id;
+                    
+                    $rdv['usuario_updated_at']= Auth::user()->id;
+                    $rdv->save(); 
+                    /*end update in rutas_detalle_verbo */
+                    /*update in history(sustentos,referidos)*/
+                    $referido = Referido::where('ruta_detalle_verbo_id', '=', $value->rtverbo)->get();
+                    if($referido){
+                        $referido[0]['referido'] = $value->edit;
+                        $referido[0]['doc_digital_id'] = $doc_id;
+                        $referido[0]['usuario_updated_at']= Auth::user()->id;
+                        $referido[0]->save();
+                    }else{
+                        $sustento= Sustento::where('ruta_detalle_verbo_id', '=', $value->rtverbo)->get();
+                        $sustento[0]['sustento'] = $value->edit;
+                        $sustento[0]['doc_digital_id'] = $doc_id;
+                        $sustento[0]['usuario_updated_at']= Auth::user()->id;
+                        $sustento[0]->save(); 
+                    }
+                    /*end update in history(sustentos,referidos)*/               
                 }
-                /*end update in history(sustentos,referidos)*/               
             }
             return Response::json(array(
                     'rst'=>'1',
