@@ -21,12 +21,11 @@ class ReporteProceso extends Eloquent
 
     			$m = (int)$dateIni[1];
     			$y = (int)$dateIni[0];
+        $fechaIniAux= $fechaIni;
+		$auxMonth = str_pad($m, 2, "0", STR_PAD_LEFT);
 
 
-    		while($y < intval($dateEnd[0]) || $m <= intval($dateEnd[1])){
-
-
-    			$auxMonth = str_pad($m, 2, "0", STR_PAD_LEFT);
+            while( $fechaIniAux<=$fechaFin ){
 	    		$pivots .= ",count(RFD$pv.id) as {$y}_{$m}\r\n";
 				$lefts .= "LEFT JOIN rutas_flujo_detalle as RFD$pv ON DATE_FORMAT(RFD$pv.created_at,'%Y-%m') = '$y-$auxMonth' AND RFD$pv.id = RFD.id\r\n";
 				
@@ -37,8 +36,8 @@ class ReporteProceso extends Eloquent
     				$m = 1;
     				$y++;
     			}
-				
-
+				$auxMonth = str_pad($m, 2, "0", STR_PAD_LEFT);
+                $fechaIniAux=$y.'/'.$auxMonth;
     		}
 
     		$filterMonth = "BETWEEN '$fechaIni' AND '$fechaFin'";
@@ -61,7 +60,7 @@ class ReporteProceso extends Eloquent
 			GROUP BY A.id;
 		";
 
-		echo $x;
+		
 		return DB::select($x);
    	}
 public static function getReporteTramites($areas,$fechaIni,$fechaFin)
