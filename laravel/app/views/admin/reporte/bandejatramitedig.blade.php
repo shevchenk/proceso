@@ -303,7 +303,7 @@ tr.shown td.details-control {
                                         <div class="col-sm-12">
                                             <div class="sectionmicro">
                                                 <div class="col-sm-3 text-right">
-                                                    <label class="control-label">Micro Procesos:</label>
+                                                    <label class="control-label">Sub Procesos:</label>
                                                 </div>    
                                                 <div class="col-sm-6">
                                                     

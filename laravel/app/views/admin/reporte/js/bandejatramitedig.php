@@ -338,7 +338,7 @@ mostrarDetalleHTML=function(datos){
         slctGlobal.listarSlctFuncion('ruta','listarmicro','slct_micro',null,null,dataG);
         $('#form_ruta_detalle #slct_micro').multiselect('destroy');
         $(".sectionmicro").css("display","");
-        $("#btn_siguiente_rd").show().html('<i class="glyphicon glyphicon-check"></i>&nbsp;Adjuntar Micro');
+        $("#btn_siguiente_rd").show().html('<i class="glyphicon glyphicon-check"></i>&nbsp;Activar Sub Proceso');
     }else{
         $("#btn_siguiente_rd").hide();
         $(".sectionmicro").css("display","none");}
@@ -1358,12 +1358,12 @@ pintarAreasG=function(permiso){
 // Nuevos procesos para boton Tramites
 asignarTramitePaso = function(ruta_id){
     if($('#form_ruta_detalle #slct_micro').val()!=''){
-      sweetalertG.confirm("Confirmación!", "Desea Agregar el MicroProceso Seleccionado?", function(){
+      sweetalertG.confirm("Confirmación!", "Desea Agregar el Sub Proceso Seleccionado?", function(){
         var data={ruta_id:ruta_id,ruta_detalle_micro_id:$('#form_ruta_detalle #slct_micro').val()};
         Bandeja.AdicionarMicroProceso(data);
     });
     }else{
-        swal("Mensaje", "Seleccione MicroProceso");
+        swal("Mensaje", "Seleccione Sub Proceso");
     }
 }
 // --
