@@ -316,7 +316,7 @@ footer .izq {
     <?php }
           if ($anio==2019) {  ?>
           <?php if($tamano == 5): ?>
-              <h4 class="nombre-anio" style="margin-left: -30px;">“Año de la lucha contra la corrupción e impunidad”</h4>
+              <h4 class="nombre-anio" style="margin-left: -40px;">“Año de la lucha contra la corrupción e impunidad”</h4>
           <?php else: ?>
               <h4 class="nombre-anio">“Año de la lucha contra la corrupción e impunidad”</h4>
           <?php endif; ?>
