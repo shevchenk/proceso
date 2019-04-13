@@ -143,7 +143,7 @@ hr {
 .qr {
   position: absolute;
   top: -21px; 
-  left: 590px;
+  left: 580px;
 }
 
 .body-rest{
@@ -238,7 +238,7 @@ footer .izq {
 .qr {
   position: absolute;
   top: -21px; 
-  left: 370px;
+  left: 380px;
 }
 .logo {
      left: 10px;position: absolute;top: -17px;
