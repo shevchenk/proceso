@@ -51,8 +51,8 @@ class ReporteProceso extends Eloquent
 			A.nombre as nombre
 			,count(RFD.id) as Total
 			$pivots
-			FROM procesos.rutas_flujo as RF 
-			INNER JOIN procesos.rutas_flujo_detalle as RFD ON RF.id = RFD.ruta_flujo_id AND RFD.estado = 1
+			FROM rutas_flujo as RF 
+			INNER JOIN rutas_flujo_detalle as RFD ON RF.id = RFD.ruta_flujo_id AND RFD.estado = 1
 			INNER JOIN areas as A ON RFD.area_id = A.id
 			$lefts
 			WHERE RFD.area_id IN($areas) AND DATE_FORMAT(RF.created_at,'%Y/%m') $filterMonth
@@ -107,7 +107,7 @@ public static function getReporteTramites($areas,$fechaIni,$fechaFin)
 
 
 
-                $lefts .= "LEFT JOIN procesos.rutas_detalle AS RD$pv ON rd.id=RD$pv.id  AND RD$pv.`fecha_inicio` IS NOT NULL AND DATE_FORMAT(RD$pv.`fecha_inicio`,'%Y-%m') = '$y-$auxMonth'\r\n";
+                $lefts .= "LEFT JOIN rutas_detalle AS RD$pv ON rd.id=RD$pv.id  AND RD$pv.`fecha_inicio` IS NOT NULL AND DATE_FORMAT(RD$pv.`fecha_inicio`,'%Y-%m') = '$y-$auxMonth'\r\n";
 
 				
 				$pv++;
@@ -136,9 +136,9 @@ public static function getReporteTramites($areas,$fechaIni,$fechaFin)
         A.nombre
         $pivots 
     FROM
-        procesos.rutas AS R
-        Inner join procesos.rutas_detalle rd on rd.ruta_id=R.id AND rd.condicion = 0 AND rd.estado=1
-        INNER JOIN procesos.areas AS A ON A.id = rd.area_id
+        rutas AS R
+        Inner join rutas_detalle rd on rd.ruta_id=R.id AND rd.condicion = 0 AND rd.estado=1
+        INNER JOIN areas AS A ON A.id = rd.area_id
         $lefts
 
     WHERE
