@@ -83,12 +83,10 @@ public static function getReporteTramites($areas,$fechaIni,$fechaFin)
 
     			$m = (int)$dateIni[1];
     			$y = (int)$dateIni[0];
+            $fechaIniAux= $fechaIni;
+            $auxMonth = str_pad($m, 2, "0", STR_PAD_LEFT);
 
-
-    		while($y < intval($dateEnd[0]) || $m <= intval($dateEnd[1])){
-
-
-    			$auxMonth = str_pad($m, 2, "0", STR_PAD_LEFT);
+    		while( $fechaIniAux<=$fechaFin ){
 
 				$pivots .= ",
 				    CONCAT(
@@ -119,7 +117,8 @@ public static function getReporteTramites($areas,$fechaIni,$fechaFin)
     				$m = 1;
     				$y++;
     			}
-				
+				$auxMonth = str_pad($m, 2, "0", STR_PAD_LEFT);
+                $fechaIniAux=$y.'/'.$auxMonth;
 
     		}
 
