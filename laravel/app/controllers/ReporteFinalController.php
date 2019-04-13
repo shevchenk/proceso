@@ -252,7 +252,7 @@ class ReporteFinalController extends BaseController
         $max=$cant;
 
       }
-      $nf = "";
+      /*$nf = "";
       $r2= array(); 
       if( $cant>10 ){
         for ($i=Input::get('start'); $i < $max; $i++) { 
@@ -302,7 +302,7 @@ class ReporteFinalController extends BaseController
                           $r2[$ind]->id_union .= ' <b><a href="javascript:loadVid('.($ind+1).');"<i class="fa fa-video-camera"><input type="hidden" id="vid_'.($ind+1).'" value="'.$new[$iFile].'"> </i></a></b>';
                         }
                 }
-        }
+        }*/
 
 
 
