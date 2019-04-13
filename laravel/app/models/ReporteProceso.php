@@ -61,7 +61,7 @@ class ReporteProceso extends Eloquent
 			GROUP BY A.id;
 		";
 
-		//echo $x;
+		echo $x;
 		return DB::select($x);
    	}
 public static function getReporteTramites($areas,$fechaIni,$fechaFin)
