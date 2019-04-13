@@ -305,7 +305,7 @@ class TramiteController extends BaseController {
 			            $carta['union']=1;
 			            $carta['usuario_updated_at']=Auth::user()->id;
 			            $carta['ruta_id']=$ruta->id;
-			            $carta->save();
+			            //$carta->save();
 
 
 			            /*********************************************************************/

@@ -354,8 +354,8 @@ generarTramite = function(){
     data+='"}';
 /*    img  = document.querySelector('#txt_file').files[0];*/
     var form = new FormData($("#FormTramite")[0]);
-    console.log(form);
-/*    Bandeja.GuardarTramite(data);*/
+    //console.log(form);
+    Bandeja.GuardarTramite(data);
 }
 
 cargarRutaId=function(ruta_flujo_id,permiso,ruta_id){
