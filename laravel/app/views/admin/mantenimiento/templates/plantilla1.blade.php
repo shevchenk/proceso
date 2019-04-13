@@ -143,7 +143,7 @@ hr {
 .qr {
   position: absolute;
   top: -21px; 
-  left: 580px;
+  left: 585px;
 }
 
 .body-rest{
