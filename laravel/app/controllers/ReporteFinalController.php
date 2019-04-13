@@ -252,7 +252,7 @@ class ReporteFinalController extends BaseController
         $max=$cant;
 
       }
-      /*$nf = "";
+      $nf = "";
       $r2= array(); 
       if( $cant>10 ){
         for ($i=Input::get('start'); $i < $max; $i++) { 
@@ -266,7 +266,7 @@ class ReporteFinalController extends BaseController
       else{
         $r2=$r;
       }
-
+/*
       $new = array();
       
         $ftp_server = "10.0.100.11";
