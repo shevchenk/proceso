@@ -1,0 +1,27 @@
+<!-- sidebar menu: : style can be found in sidebar.less -->
+                    <ul class="sidebar-menu">
+                        <?php if(isset($menus)): ?>
+                            <?php foreach( $menus as $key => $val): ?>
+                                <li class="treeview">
+                                    <a href="#">
+                                        <i class="fa <?php echo $val[0]->icon; ?>"></i> <span><?php echo $key; ?></span>
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </a>
+                                    <ul class="treeview-menu">
+                                        <?php foreach( $val as $k): ?>
+                                            <li><a href="admin.<?php echo $k->ruta; ?>"><i class="fa fa-angle-double-right"></i><?php echo $k->opcion; ?> </a></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </li>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-shield"></i> <span><?php echo trans('greetings.menu_info'); ?></span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="admin.mantenimiento.misdatos"><i class="fa fa-angle-double-right"></i><?php echo trans('greetings.menu_info_actualizar'); ?> </a></li>
+                            </ul>
+                        </li>
+                    </ul>

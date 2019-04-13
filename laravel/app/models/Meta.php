@@ -39,7 +39,7 @@ class Meta extends Base {
                         foreach ($rst as $value) {
                             $array[] = $value->cargo_id;
                         }
-                        if (!in_array(12, $array)) {
+                        if (!in_array(12, $array) && !in_array(22, $array)) {
                             $query->whereRaw('FIND_IN_SET(' . Auth::user()->area_id . ',area_multiple_id)');
                         }
                     }
