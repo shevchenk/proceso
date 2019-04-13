@@ -216,7 +216,7 @@ footer .izq {
     <div class="logo">
         <img align="left" src="img/logo_muni.png">
     </div> 
-    <h4 class="nombre-municipio">MUNICIPALIDAD DISTRITAL DE INDEPENDENCIA</h4>
+    <h4 class="nombre-municipio">MUNICIPALIDAD DISTRITAL DE XXXXXX</h4>
     <!--            <h4 class="gerencia">Gerencia x</h4>-->
     <?php if ($anio==2017) {   ?> 
         <h4 class="nombre-anio">“Año del Buen Servicio al Ciudadano”</h4>
@@ -309,16 +309,16 @@ footer .izq {
     <div class="logo">
         <img align="left" src="img/logo_muni.png">
     </div> 
-    <h4 class="nombre-municipio">MUNICIPALIDAD DISTRITAL DE INDEPENDENCIA</h4>
+    <h4 class="nombre-municipio">MUNICIPALIDAD DISTRITAL DE XXXXXX</h4>
     <!--            <h4 class="gerencia">Gerencia x</h4>--><br><br><br><br><br>
     <?php if ($anio==2017) {   ?> 
             <h4 class="nombre-anio">“Año del Buen Servicio al Ciudadano”</h4>
     <?php }
-          if ($anio==2018) {  ?>
+          if ($anio==2019) {  ?>
           <?php if($tamano == 5): ?>
-              <h4 class="nombre-anio" style="margin-left: -20px;">“Año del Diálogo y la Reconciliación Nacional”</h4>
+              <h4 class="nombre-anio" style="margin-left: -20px;">“Año de la lucha contra la corrupción e impunidad”</h4>
           <?php else: ?>
-              <h4 class="nombre-anio">“Año del Diálogo y la Reconciliación Nacional”</h4>
+              <h4 class="nombre-anio">“Año de la lucha contra la corrupción e impunidad”</h4>
           <?php endif; ?>
     <?php } ?>
 	<h4 class="nombre-anio">&nbsp;</h4>
