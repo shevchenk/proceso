@@ -200,7 +200,7 @@ footer .izq {
       <tr>
         <td>
             <p class="izq">
-                Av. Túpac Amaru Km. 4.5 - Independencia / Teléfono 712-4100
+                Av. Lima 1234 - Lima - Lima / Tel: 1234-123
             </p>
         </td>
         <td>
