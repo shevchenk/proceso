@@ -196,6 +196,7 @@ class TramiteController extends BaseController {
                     $clasificador = ClasificadorTramite::find($tramite->clasificador_tramite_id);
                     $ruta_flujo = RutaFlujo::find($clasificador->ruta_flujo_id);
                     $ruta_flujo_id = $ruta_flujo->id;
+                    //dd($ruta_flujo);
 		        	/* end get ruta flujo*/
 
 
@@ -392,9 +393,9 @@ class TramiteController extends BaseController {
 			                        }
 			                        $array['tiempo']=($rutaDetalle->dtiempo*$cantmin);
 			                        $array['area']=$rutaDetalle->area_id;
-			                        $ff=Carta::CalcularFechaFin($array);
+			                        //$ff=Carta::CalcularFechaFin($array);
 			                        $fi=$array['fecha'];
-			                        $array['fecha']=$ff;
+			                        //$array['fecha']=$ff;
 
 			                    $cartaDesglose= new CartaDesglose;
 			                    $cartaDesglose['carta_id']=$carta->id;
@@ -406,13 +407,13 @@ class TramiteController extends BaseController {
 			                    $cartaDesglose['area_id']=$rutaDetalle->area_id;
 			                    $cartaDesglose['recursos']="";
 			                    $cartaDesglose['fecha_inicio']=$fi;
-			                    $cartaDesglose['fecha_fin']=$ff;
+			                    //$cartaDesglose['fecha_fin']=$ff;
 			                    $cartaDesglose['hora_inicio']="08:00";
 			                    $cartaDesglose['hora_fin']="17:30";
-			                    $cartaDesglose['fecha_alerta']=$ff;
+			                    //$cartaDesglose['fecha_alerta']=$ff;
 			                }
 			                    $cartaDesglose['ruta_detalle_id']=$rutaDetalle->id;
-			                    $cartaDesglose->save();
+			                    //$cartaDesglose->save();
 
 
 					        if( $rd->norden==1 AND Input::has('carta_id') ){
