@@ -17,7 +17,7 @@ $(document).ready(function() {
     UsuarioId='<?php echo Auth::user()->id; ?>';
     DataUser = '<?php echo Auth::user(); ?>';
     /*Inicializar tramites*/
-    var data={'persona':UsuarioId,'estado':1};
+    var data={'persona':UsuarioId,'estado':1};  
     Bandeja.MostrarPreTramites(data,HTMLPreTramite);
     /*end Inicializar tramites*/
     
@@ -191,7 +191,10 @@ HTMLPreTramite = function(data){
             html+=    "<td>"+el.tramite+"</td>";
             html+=    "<td>"+el.fecha+"</td>";
             html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="Detallepret(this)"><i class="glyphicon glyphicon-th-list"></i></span></td>';
-            html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="Voucherpret(this)"><i class="glyphicon glyphicon-search"></i></span></td>';
+            
+            var url = "documentodig/ticket/"+el.pretramite;
+
+            html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="imprimirTicket('+url+')"><i class="glyphicon glyphicon-search"></i></span></td>';
             html+="</tr>";            
         });
         $("#tb_reporte").html(html);
