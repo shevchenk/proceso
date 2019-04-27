@@ -1,5 +1,18 @@
 <script type="text/javascript">var posicionDetalleVerboG=0;
+
+
+
+function imprimirTicket(url){
+    parametrosPop="height=600,width=350,toolbar=No,location = No,scrollbars=No,left=-15,top=800,status=No,resizable= No,fullscreen =No'";
+    printTicket=window.open(url,'tTicket',parametrosPop);
+    printTicket.focus();  
+};
+
+
+
 $(document).ready(function() {
+
+
 
     UsuarioId='<?php echo Auth::user()->id; ?>';
     DataUser = '<?php echo Auth::user(); ?>';

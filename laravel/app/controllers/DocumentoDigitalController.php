@@ -1699,4 +1699,192 @@ La persona quien recibe este cargo se compromete a atender y a responsabilizarse
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+//
+//  TICKET   TICKET   TICKET   TICKET   TICKET   TICKET   TICKET   TICKET   TICKET 
+//
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    public function getTicket($id){
+
+
+            // AACA TRAETE LOS DATOS DE ESE ID TRAMITE.
+
+
+            $printPage = '<style type="text/css">@media print {BODY {font-size: 14pt;font-family: Arial;}}@media screen {BODY {font-size: 12pt;font-family: Arial;}}@media screen , print {BODY {color: #000000;}}body {margin-left: 0px;margin-right: 0px;}.Estilo2 {font-size: 2px;font-weight: bold;}.Estilo4 {font-size: 14px;font-weight: bold;}.Estilo6 {font-size: 14px;text-align:center}.Estilo7 {font-size: 10px;font-weight: bold;}.Estilo8 {font-size: 30px;text-align:center}.Estilo9 {font-size: 14px;text-align:left}.MasGrande {font-size: 14px}.item {font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 10px;color: #000;font-weight:bold;}.titulo {font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 14px;color: #000;font-weight: bold;}.textoblack {font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 10px;color: #000000;text-decoration: none;text-transform: uppercase;font-weight: bold;}.textoblack2 {font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 13px;color: #000000;text-decoration: none;text-transform: uppercase;font-weight: bold;}body {font-family: Arial;}table {display: table;border-collapse: separate;border-spacing: 2px;border-color: gray;}td, th {display: table-cell;vertical-align: inherit;}</style>
+            <script type="text/javascript">
+                setTimeout(window.print(),1500);
+            </script>
+            <body><br>
+
+
+
+            <p align="center" class="titulo">MUNICIPALIDAD DE ALGUN LUGAR DE PERÚ<br />PRE-TRÁMITE</p>
+        
+
+
+            <table width="100%"  cellspacing="0" cellpadding="0">
+                <tr><td colspan="4" align="right"></td></tr>
+                <tr><td width="116" align="right">&nbsp;</td><td colspan="2" align="center" class="item">&nbsp;</td><td width="119">&nbsp;</td></tr>
+                <tr>
+                  <td align="right" class="item" height="20">Tipo de tramite:</td>
+                  <td colspan="2" class="textoblack2">Licencias<div></div></td>
+                  <td class="textoblack">&nbsp;&nbsp;</td>
+                </tr>
+                <tr><td align="right" class="item" ></td><td colspan="3" class="textoblack2">Licencias de construcción </td>
+                </tr>
+                </tr>
+                <tr>
+                  <td align="right" class="item" >Tipo Documento:</td>
+                  <td colspan="3" class="textoblack2">ACTA DE CLAUSURA</td>
+                <tr>
+                  <td colspan="4">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="25%" height="20" align="right" class="item">Folios:</td>
+                      <td width="20%" class="textoblack">2</td>
+                      <td width="25%" align="right" class="item"></td>
+                      <td width="30%" class="textoblack"></td>
+                    </tr>
+                    <tr>
+                      <td width="25%" height="20" align="right" class="item">Area:</td>
+                      <td width="20%" class="textoblack">Gerencia Municipal</td>
+                      <td width="25%" align="right" class="item"></td>
+                      <td width="30%" class="textoblack"></td>
+                    </tr>
+                    <tr>
+                      <td align="right" height="20" class="item">TIPO SOLICITANTE:</td>
+                      <td colspan="2" class="textoblack">&nbsp;&nbsp;Persona Natural</td>
+                      <td class="textoblack">&nbsp;&nbsp;</td>
+                    </tr>
+                    
+                </table>
+                
+
+
+
+                <p align="center" class="titulo">DATOS DEL SOLICITANTE</p>
+                
+
+
+                <table width="100%"  cellspacing="0" cellpadding="0">
+ 
+
+
+                <tr>            
+                  <td class="textoblack" colspan="4" align="center" height="20" class="item">
+                  JHOUBERT JOSE RINCON PORTILLO
+                  <br />
+                  Mi nueva empresa&nbsp;
+                  (New work)
+                  </td>
+                </tr>
+
+               <tr>            
+                  <td align="right" height="20" class="item">RUC:</td>
+                  <td class="textoblack" colspan="3">&nbsp;&nbsp;15603542328</td>
+                </tr>
+                <tr>
+                  <td align="right" height="20" class="item">Domicilio Fiscal:</td>
+                  <td class="textoblack" colspan="3">&nbsp;&nbsp;Av. Tomas Valle, 929, Bloq ñ Dep. 402</td>
+                </tr>
+
+  
+
+                <tr>
+                  <td align="right" height="20" class="item">Telefono:</td>
+                  <td class="textoblack" colspan="3">&nbsp;&nbsp;915929809</td>
+                </tr>
+
+                <tr>            
+                  <td align="right" height="20" class="item">Fecha vigencia:</td>
+                  <td class="textoblack" colspan="3">&nbsp;&nbsp;2016-11-01 23:59</td>
+                </tr>
+
+
+                <tr>            
+                  <td align="right" height="20" class="item">Rep. Legal:</td>
+                  <td class="textoblack" colspan="3">&nbsp;&nbsp; JORGE LUIS SALCEDO FRANCO</td>
+                </tr>
+
+
+                <tr>            
+                  <td align="right" height="20" class="item">Rep. DNI:</td>
+                  <td class="textoblack" colspan="3">&nbsp;&nbsp; 12312312</td>
+                </tr>
+                </table>
+                
+
+
+
+                <p align="center" class="titulo"><strong>DATOS DEL USUARIO</strong></p>
+                
+
+
+                <table width="100%"  cellspacing="0" cellpadding="0">
+
+
+                    <tr>            
+                      <td align="right" height="20" class="item">DNI:</td>
+                      <td class="textoblack" colspan="3">&nbsp;&nbsp; 12312312</td>
+                    </tr>
+
+                    <tr>            
+                      <td align="right" height="20" class="item">Nombres:</td>
+                      <td class="textoblack" colspan="3">&nbsp;&nbsp; JORGE LUIS</td>
+                    </tr>
+
+                    <tr>            
+                      <td align="right" height="20" class="item">Apellidos:</td>
+                      <td class="textoblack" colspan="3">&nbsp;&nbsp; SALCEDO FRANCO</td>
+                    </tr>
+
+                    <tr>            
+                      <td align="right" height="20" class="item">Telf.:</td>
+                      <td class="textoblack" colspan="3">&nbsp;&nbsp; </td>
+                    </tr>
+
+                    <tr>            
+                      <td align="right" height="20" class="item">Dirección:</td>
+                      <td class="textoblack" colspan="3">&nbsp;&nbsp; Dirección del usuario. OK.</td>
+                    </tr>
+
+                </table>
+
+              </td>
+            </tr>
+
+
+            <tr><td colspan="4" valign="top"><div id="scroll_requi"></div></td></tr>
+            </table>
+            <table border="0" width="100%">
+            <tr><td colspan="4" align="center"></td></tr></table>
+
+            </body>';
+
+
+            echo $printPage;
+        
+
+    }
+
 }
