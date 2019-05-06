@@ -26,15 +26,16 @@ class Tramite extends Eloquent {
         return $r; 
 	}
 
-	public static function getTramiteById(){
-		$sql = "select tr.id_union,t.id tramiteid,'' as area,t.persona_id personaid,t.tipo_documento_id tdocid,t.clasificador_tramite_id ctid,t.tipo_solicitante_id tsid,t.area_id areaid,t.fecha_tramite fregistro,p.dni dniU,p.nombre nombusuario,p.paterno apepusuario,p.materno apemusuario,
+	public static function getTramiteById($id){
+		$sql = "select tr.id_union,t.id tramiteid,a.nombre as area,t.persona_id personaid,t.tipo_documento_id tdocid,t.clasificador_tramite_id ctid,t.tipo_solicitante_id tsid,t.area_id areaid,t.fecha_tramite fregistro,p.dni dniU,p.nombre nombusuario,p.paterno apepusuario,p.materno apemusuario,
 				t.empresa_id empresaid,e.ruc ruc,CASE e.tipo_id when 1 then 'Natural' when 2 then 'Jurídica' when 3 then 'Organización Social' else e.tipo_id end as tipoempresa,e.razon_social as empresa,e.razon_social as empresa,e.nombre_comercial nomcomercial,e.direccion_fiscal edireccion,
 				e.telefono etelf,e.fecha_vigencia efvigencia,CONCAT_WS(' ',p2.nombre,p2.paterno,p2.materno) as reprelegal,
 				p2.dni repredni,
 				ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
-				t.fecha_tramite fecha ,t.nro_folios folio, t.documento as nrotipodoc,ts.pide_empresa statusemp 
+				t.fecha_tramite fecha ,t.nro_folios folio, t.documento as nrotipodoc,ts.pide_empresa statusemp, t.observacion
 				from tramites t 
-                                INNER JOIN tablas_relacion tr on tr.tramite_id=t.id
+				INNER JOIN areas a ON a.id=t.area_id
+               	INNER JOIN tablas_relacion tr on tr.tramite_id=t.id
 				INNER JOIN personas p on p.id=t.persona_id 
 				INNER JOIN clasificador_tramite ct on ct.id=t.clasificador_tramite_id
 				INNER JOIN tipo_tramite tt on tt.id=ct.tipo_tramite_id 
@@ -42,8 +43,16 @@ class Tramite extends Eloquent {
 				LEFT JOIN personas p2 on p2.id=e.persona_id
 				INNER JOIN tipo_solicitante ts on ts.id=t.tipo_solicitante_id 
 				INNER JOIN documentos d on d.id=t.tipo_documento_id 
-				WHERE t.estado = 1 and t.id=".Input::get('idtramite');
+				WHERE t.estado = 1 and t.id=";
+
+				if( trim($id)!='' ){
+					$sql.=$id;
+				}
+				else{
+					$sql.=Input::get('idtramite');
+				}
+				//echo $sql;
 		$r= DB::select($sql);
-        return $r; 
+        return $r[0]; 
 	}
 }

@@ -158,33 +158,154 @@ td, th{
                     <div class="col-md-3">
                         <span class="btn btn-primary btn-sm" id="btnTipoSolicitante">BUSCAR TIPO SOLICITANTE</span>
                     </div>
+                </div>
 
-<!--                    <div class="persona hidden">
-                      <div class="col-md-2">
-                        <span>SELECCIONE PERSONA:</span>
+                <div class="col-md-12 usuarioSeleccionado hidden" style="padding: 2% 4% 2% 4%;">
+                  <fieldset style="max-width: 100% !important;border: 3px solid #ddd;padding: 15px;">
+                    <legend style="width: 7%">Usuario</legend>
+                    <div class="col-md-12 form-group">
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>DNI: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_userdni2" id="txt_userdni2" class="form-control" disabled>
+                        </div>
                       </div>
-                      <div class="col-md-3">
-                        <select class="form-control" id="cbo_persona" name="cbo_persona" onchange="selectUser(this)">
-                              <option value="-1">Selecciona</option>
-                        </select>
-                      </div>
-                      <div class="col-md-1">
-                        <span class="btn btn-success btn-sm">Agregar Persona <i class="glyphicon glyphicon-plus"></i></span>
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>NOMBRE: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_usernomb2" id="txt_usernomb2" class="form-control" disabled>
+                        </div>
                       </div>
                     </div>
-                    <div class="emp hidden">
-                      <div class="col-md-2">
-                        <span>SELECCIONE EMPRESA:</span>
+                    <div class="col-md-12 form-group">
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>APELLIDO PATERNO: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_userapepat2" id="txt_userapepat2" class="form-control" disabled>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>APELLIDO MATERNO: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_userapemat2" id="txt_userapemat2" class="form-control" disabled>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>TELEFONO: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_usertelf2" id="txt_usertelf2" class="form-control" disabled>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>DIRECCION: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_userdirec2" id="txt_userdirec2" class="form-control" disabled>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <div class="col-md-12 empresa hidden" style="padding: 2% 6% 1% 4%;">
+                  <fieldset style="max-width: 100% !important;border: 3px solid #ddd;padding: 15px;">
+                    <legend style="width: 8%">Empresa</legend>
+                    <div class="col-md-12 form-group">
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>RUC: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="hidden" name="txt_idempresa" id="txt_idempresa" class="form-control">
+                          <input type="text" name="txt_ruc" id="txt_ruc" class="form-control" readonly>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>TIPO EMPRESA: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="hidden" name="txt_tipoempresa" id="txt_tipoempresa" class="form-control" disabled>
+                          <input type="text" name="txt_tipo" id="txt_tipo" class="form-control" disabled>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>RAZON SOCIAL: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_razonsocial" id="txt_razonsocial" class="form-control" readonly>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>NOMBRE COMERCIAL: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_nombcomercial" id="txt_nombcomercial" class="form-control" disabled>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>DOMICILIO FISCAL: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_domiciliofiscal" id="txt_domiciliofiscal" class="form-control" disabled>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>TELEFONO: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_emptelefono" id="txt_emptelefono" class="form-control" disabled>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                      <div class="col-md-3">
+                        <div class="col-md-6">
+                          <span>FECHA VIGENCIA: </span>
+                        </div>
+                        <div class="col-md-6">
+                          <input type="text" name="txt_empfechav" id="txt_empfechav" class="form-control" disabled>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>REPRES. LEGAL: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_reprelegal" id="txt_reprelegal" class="form-control" disabled>
+                        </div>
                       </div>
                       <div class="col-md-3">
-                        <select class="form-control" id="cbo_empresa" name="cbo_empresa" onchange="">
-                              <option value="-1">Selecciona</option>
-                        </select>
+                        <div class="col-md-5">
+                          <span>REPRESE. DNI: </span>
+                        </div>
+                        <div class="col-md-7">
+                          <input type="text" name="txt_repredni" id="txt_repredni" class="form-control" disabled>
+                        </div>
                       </div>
-                      {{-- <div class="col-md-1">
-                        <span class="btn btn-success btn-sm">Agregar Empresa <i class="glyphicon glyphicon-plus"></i></span>
-                      </div> --}}
-                    </div>-->
+                    </div>
+                  </fieldset>
                 </div>
 
                 <div class="col-md-12" style="margin-top:10px">
@@ -248,155 +369,6 @@ td, th{
                   </fieldset>
                 </div>
 
-                 <div class="col-md-12 empresa hidden" style="padding: 2% 6% 1% 4%;">
-                  <fieldset style="max-width: 100% !important;border: 3px solid #ddd;padding: 15px;">
-                    <legend style="width: 8%">Empresa</legend>
-                    <div class="col-md-12 form-group">
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>RUC: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="hidden" name="txt_idempresa" id="txt_idempresa" class="form-control">
-                          <input type="text" name="txt_ruc" id="txt_ruc" class="form-control" disabled>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>TIPO EMPRESA: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="hidden" name="txt_tipoempresa" id="txt_tipoempresa" class="form-control" disabled>
-                          <input type="text" name="txt_tipo" id="txt_tipo" class="form-control" disabled>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12 form-group">
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>RAZON SOCIAL: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="text" name="txt_razonsocial" id="txt_razonsocial" class="form-control" disabled>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>NOMBRE COMERCIAL: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="text" name="txt_nombcomercial" id="txt_nombcomercial" class="form-control" disabled>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12 form-group">
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>DOMICILIO FISCAL: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="text" name="txt_domiciliofiscal" id="txt_domiciliofiscal" class="form-control" disabled>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>TELEFONO: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="text" name="txt_emptelefono" id="txt_emptelefono" class="form-control" disabled>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12 form-group">
-                      <div class="col-md-3">
-                        <div class="col-md-6">
-                          <span>FECHA VIGENCIA: </span>
-                        </div>
-                        <div class="col-md-6">
-                          <input type="text" name="txt_empfechav" id="txt_empfechav" class="form-control" disabled>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>REPRES. LEGAL: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="text" name="txt_reprelegal" id="txt_reprelegal" class="form-control" disabled>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="col-md-5">
-                          <span>REPRESE. DNI: </span>
-                        </div>
-                        <div class="col-md-7">
-                          <input type="text" name="txt_repredni" id="txt_repredni" class="form-control" disabled>
-                        </div>
-                      </div>
-                    </div>
-                  </fieldset>
-                </div>
-
-                 <div class="col-md-12 usuarioSeleccionado hidden" style="padding: 2% 4% 2% 4%;">
-                  <fieldset style="max-width: 100% !important;border: 3px solid #ddd;padding: 15px;">
-                     <legend style="width: 7%">Usuario</legend>
-                    <div class="col-md-12 form-group">
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>DNI: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="text" name="txt_userdni2" id="txt_userdni2" class="form-control" disabled>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>NOMBRE: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="text" name="txt_usernomb2" id="txt_usernomb2" class="form-control" disabled>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12 form-group">
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>APELLIDO PATERNO: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="text" name="txt_userapepat2" id="txt_userapepat2" class="form-control" disabled>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>APELLIDO MATERNO: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="text" name="txt_userapemat2" id="txt_userapemat2" class="form-control" disabled>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12 form-group">
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>TELEFONO: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="text" name="txt_usertelf2" id="txt_usertelf2" class="form-control" disabled>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="col-md-4">
-                          <span>DIRECCION: </span>
-                        </div>
-                        <div class="col-md-8">
-                          <input type="text" name="txt_userdirec2" id="txt_userdirec2" class="form-control" disabled>
-                        </div>
-                      </div>
-                    </div>
-                  </fieldset>
-                </div>
-
-
                 <div class="col-md-12 usuario" style="padding: 2% 4% 2% 4%;">
                   <fieldset style="max-width: 100% !important;border: 3px solid #ddd;padding: 15px;">
                     <legend style="width: 8%">Operador</legend>
@@ -436,7 +408,7 @@ td, th{
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-12 form-group">
+                    <div class="col-md-12 form-group hidden">
                       <div class="col-md-6">
                         <div class="col-md-4">
                           <span>TELEFONO: </span>
@@ -457,6 +429,16 @@ td, th{
                   </fieldset>
                 </div>
 
+                <div class="col-md-12 usuario" style="padding: 2% 4% 2% 4%;">
+                  <fieldset style="max-width: 100% !important;border: 3px solid #ddd;padding: 15px;">
+                    <legend style="width: 8%">Observación</legend>
+                    <div class="col-md-12 form-group">
+                      <div class="col-md-12">
+                          <textarea name="txt_observacion" id="txt_observacion" rows="3" class="form-control"></textarea>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
 
                
 
@@ -465,13 +447,31 @@ td, th{
                 {{--   <input type="submit" class="btn btn-primary btn-sm btnAction" id="" value="Guardar" onclick="generarPreTramite()"> --}}
                   {{-- <span class="btn btn-primary btn-sm">CANCELAR</span>              --}}   
                 </div>
+                <br><hr><br>
+                <div class="col-md-12" id="reporte">
+                    <div class="box-body table-responsive">
+                        <table id="t_reporte" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>COD</th>
+                                    <th>NOMBRE DEL USUARIO</th>
+                                    <th>NOMBRE DEL SOLICITANTE</th>
+                                    <th>TIPO SOLICITANTE</th>
+                                    <th>TIPO TRAMITE</th>
+                                    <th>TIPO DOCUMENTO</th>
+                                    <th>NOMBRE TRAMITE</th>
+                                    <th>FECHA REGISTRADA</th>
+                                    <th>Imprimir</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tb_reporte">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
               </form>
             </div>
-
-                </div><!-- /.col (RIGHT) -->
-            </div>
             <!-- Finaliza contenido -->
-        </div>
     </section><!-- /.content -->
 @stop
 @section('formulario')

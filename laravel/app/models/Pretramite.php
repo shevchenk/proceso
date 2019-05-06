@@ -20,6 +20,24 @@ class Pretramite extends Eloquent {
         return $r; 		
     }
 
+    public static function getTramites(){
+        $sql = "select pt.id as idtramite,CONCAT_WS(' ',p.nombre,p.paterno,p.materno) as usuario,e.razon_social as empresa,
+                ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
+                pt.fecha_tramite fecha  
+                from tramites pt 
+                INNER JOIN personas p on p.id=pt.persona_id 
+                INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id
+                INNER JOIN tipo_tramite tt on tt.id=ct.tipo_tramite_id 
+                LEFT JOIN empresas e on e.id=pt.empresa_id 
+                INNER JOIN tipo_solicitante ts on ts.id=pt.tipo_solicitante_id 
+                INNER JOIN documentos d on d.id=pt.tipo_documento_id 
+                WHERE pt.estado = 1 AND pt.usuario_created_at=".Auth::user()->id.
+                " ORDER BY pt.id DESC 
+                LIMIT 0,10";
+        $r= DB::select($sql);
+        return $r;      
+    }
+
     public static function getPreTramiteById(){
         $sql = "";
     	$sql.= "select pt.id as pretramite,a.nombre as area,pt.persona_id personaid,pt.tipo_documento_id tdocid,pt.clasificador_tramite_id ctid,pt.tipo_solicitante_id tsid,pt.area_id areaid,pt.fecha_pretramite fregistro,p.dni dniU,p.nombre nombusuario,p.paterno apepusuario,p.materno apemusuario,
@@ -77,18 +95,23 @@ class Pretramite extends Eloquent {
     }
 
     public static function getClasificadoresTramite(){
-    	$clasificadores=DB::table('clasificador_tramite')
-                ->select()               
+    	$clasificadores=DB::table('clasificador_tramite AS ct')
+                ->join('rutas_flujo_detalle AS rfd',function($join){
+                    $join->on('rfd.ruta_flujo_id','=','ct.ruta_flujo_id')
+                    ->where('rfd.norden','=',2)
+                    ->where('rfd.estado','=',1);
+                })
+                ->select(DB::raw('ct.*, rfd.area_id'))
                 ->where( 
                     function($query){
                     	if ( Input::get('buscar') ) {
-                            $query->where('id','=',Input::get('buscar'));
-                            $query->orWhere('nombre_clasificador_tramite','LIKE','%'.Input::get('buscar').'%');
+                            $query->where('ct.id','=',Input::get('buscar'));
+                            $query->orWhere('ct.nombre_clasificador_tramite','LIKE','%'.Input::get('buscar').'%');
                         }
                         if ( Input::get('tipotra') ) {
-                            $query->where('tipo_tramite_id','=',Input::get('tipotra'));
+                            $query->where('ct.tipo_tramite_id','=',Input::get('tipotra'));
                         }
-                        $query->where('estado','=','1');
+                        $query->where('ct.estado','=','1');
                     }
                 )
                 ->get();  
