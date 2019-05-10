@@ -28,11 +28,13 @@ class Tramite extends Eloquent {
 
 	public static function getTramiteById($id){
 		$sql = "select tr.id_union,t.id tramiteid,a.nombre as area,t.persona_id personaid,t.tipo_documento_id tdocid,t.clasificador_tramite_id ctid,t.tipo_solicitante_id tsid,t.area_id areaid,t.fecha_tramite fregistro,p.dni dniU,p.nombre nombusuario,p.paterno apepusuario,p.materno apemusuario,
-				t.empresa_id empresaid,e.ruc ruc,CASE e.tipo_id when 1 then 'Natural' when 2 then 'JurÃ­dica' when 3 then 'OrganizaciÃ³n Social' else e.tipo_id end as tipoempresa,e.razon_social as empresa,e.razon_social as empresa,e.nombre_comercial nomcomercial,e.direccion_fiscal edireccion,
+				t.empresa_id empresaid,e.ruc ruc,(CASE e.tipo_id when 1 then 'Natural' when 2 then 'Jur¨ªdica' when 3 then 'Organizaci¨®n Social' else e.tipo_id end) as tipoempresa,e.razon_social as empresa,e.razon_social as empresa,e.nombre_comercial nomcomercial,e.direccion_fiscal edireccion,
 				e.telefono etelf,e.fecha_vigencia efvigencia,CONCAT_WS(' ',p2.nombre,p2.paterno,p2.materno) as reprelegal,
 				p2.dni repredni,
 				ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
-				t.fecha_tramite fecha ,t.nro_folios folio, t.documento as nrotipodoc,ts.pide_empresa statusemp, t.observacion
+				t.fecha_tramite fecha ,t.nro_folios folio, t.documento as nrotipodoc,ts.pide_empresa statusemp, t.observacion,
+				CONCAT(p3.paterno,' ',p3.materno,', ',p3.nombre) operador,
+				a2.nombre area_operador
 				from tramites t 
 				INNER JOIN areas a ON a.id=t.area_id
                	INNER JOIN tablas_relacion tr on tr.tramite_id=t.id
@@ -43,6 +45,8 @@ class Tramite extends Eloquent {
 				LEFT JOIN personas p2 on p2.id=e.persona_id
 				INNER JOIN tipo_solicitante ts on ts.id=t.tipo_solicitante_id 
 				INNER JOIN documentos d on d.id=t.tipo_documento_id 
+				INNER JOIN personas p3 on p3.id=t.usuario_created_at
+				INNER JOIN areas a2 on a2.id=p3.area_id
 				WHERE t.estado = 1 and t.id=";
 
 				if( trim($id)!='' ){

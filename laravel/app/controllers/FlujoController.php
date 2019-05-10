@@ -538,7 +538,7 @@ class FlujoController extends \BaseController
             foreach ($oData as $key => $lis)
             {
                 $array[] = $lis->cargo_id;
-                if (in_array(12, $array)){
+                if (in_array(1, $array)){
                     $cargo_master = true;
                     break;
                 }else
@@ -551,7 +551,7 @@ class FlujoController extends \BaseController
             {
                 $sSql = "SELECT c.id, c.nombre
                             FROM categorias c
-                            WHERE c.id = 20 AND estado = 1;";
+                            WHERE c.id = 2 AND estado = 1;";
                 $categoria = DB::select($sSql);
 
                 $valor = 0;

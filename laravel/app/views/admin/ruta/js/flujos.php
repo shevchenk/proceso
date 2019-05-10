@@ -30,7 +30,7 @@ $(document).ready(function() {
     slctGlobal.listarSlctFuncion('area','listara','slct_area_id','simple',null,data);
    
    
-    slctGlobalHtml('slct_tipo_flujo,#slct_estado','simple');
+    slctGlobalHtml('slct_estado','simple');
 
     var idG={   nombre       :'onBlur|Nombre|#DCE6F1', //#DCE6F1
                 categoria    :'3|Categoria|#DCE6F1', 
@@ -73,7 +73,7 @@ $(document).ready(function() {
       var modal = $(this); //captura el modal
       modal.find('.modal-title').text(titulo+' Proceso');
       $('#form_flujos_modal [data-toggle="tooltip"]').css("display","none");
-      $("#form_flujos_modal input[type='hidden']").remove();
+      $("#form_flujos_modal input[type='hidden']").not("#slct_tipo_flujo").remove();
 
         if(titulo=='Nuevo'){
             modal.find('.modal-footer .btn-primary').text('Guardar');
@@ -81,7 +81,7 @@ $(document).ready(function() {
 
             //ver porque no pide categoria
             $('#form_flujos_modal #slct_estado').val(1); 
-            $('#form_flujos_modal #slct_tipo_flujo').val('');
+            //$('#form_flujos_modal #slct_tipo_flujo').val('');
 
             Flujos.ObtenerRolUser();
             //$('#form_flujos_modal #slct_categoria_id').val('');
@@ -106,8 +106,8 @@ $(document).ready(function() {
     });
 
     $('#flujoModal').on('hide.bs.modal', function (event) {
-        $('#form_flujos_modal input').val('');
-        $('#form_flujos_modal #slct_categoria_id,#form_flujos_modal #slct_area_id,#form_flujos_modal #slct_tipo_flujo').val('');
+        $('#form_flujos_modal input').not('#slct_tipo_flujo').val('');
+        $('#form_flujos_modal #slct_categoria_id,#form_flujos_modal #slct_area_id').val('');
 /*
     $('#flujoModal').on('hide.bs.modal', function (event) {
       var modal = $(this); //captura el modal
@@ -279,10 +279,6 @@ validaFlujos = function(){
     }
     else if( $("#form_flujos_modal #slct_area_id").val()=='' ){
         alert("Seleccione Área");
-        r=false;
-    }
-    else if( $("#form_flujos_modal #slct_tipo_flujo").val()=='' ){
-        alert("Seleccione Tipo");
         r=false;
     }
 

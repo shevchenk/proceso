@@ -173,7 +173,9 @@ var Bandeja={
                     $('.usuarioSeleccionado').addClass('hidden');
                     $('.empresa').addClass('hidden');
                     $('#cbo_tiposolicitante,#cbo_tipotramite,#cbo_tipodoc,#cbo_persona,#cbo_empresa,#cbo_tipodocumento').multiselect('refresh');
-                    $('.persona,.emp').addClass('hidden');         
+                    $('.persona,.emp').addClass('hidden');
+                    var data={'persona':UsuarioId,'estado':1};
+                    Bandeja.MostrarTramites(data,HTMLTramite);
                 }
             },
             error: function(){

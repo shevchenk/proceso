@@ -193,7 +193,7 @@ HTMLTramite = function(data){
             if(el.empresa){
                 html+=    "<td>"+el.empresa+"</td>";
             }else{
-                html+=    "<td>"+el.usuario+"</td>";
+                html+=    "<td>&nbsp;</td>";
             }
             
             html+=    "<td>"+el.solicitante+"</td>";
@@ -355,7 +355,7 @@ selectEmpresa = function(obj){
 
 HTMLPersonas = function(data){
      $('#t_persona').dataTable().fnDestroy();
-    if(data.length > 1){
+    if(data.length > 0){
         var html = '';
         $.each(data,function(index, el) {
             html+='<tr id='+el.id+'>';
