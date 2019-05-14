@@ -121,7 +121,7 @@ tr.shown td.details-control {
   }
 }
 table>thead>tr>td,table>tfoot>tr>td{
-    font-size: 8px;
+    font-size: 10px;
 }
 </style>
             <!-- Content Header (Page header) -->
