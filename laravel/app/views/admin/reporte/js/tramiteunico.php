@@ -49,7 +49,7 @@ detalle=function(ruta_id, boton){
     var trs = tr.parentNode.children;
     for(var i =0;i<trs.length;i++)
         trs[i].style.backgroundColor="#f9f9f9";
-    tr.style.backgroundColor = "#CDCDCD";
+    tr.style.backgroundColor = "#E1E1E1";
 
     $("#form_tramiteunico").append("<input type='hidden' id='txt_ruta_id' name='txt_ruta_id' value='"+ruta_id+"'>");
     var datos=$("#form_tramiteunico").serialize().split("txt_").join("").split("slct_").join("");
@@ -71,11 +71,11 @@ HTMLreportet=function(datos){
     $.each(datos,function(index,data){
         btnruta='<a onclick="cargarRutaId('+data.ruta_flujo_id+',2,'+data.id+')" class="btn btn-warning btn-sm"><i class="fa fa-search-plus fa-lg"></i> </a>';
         btnexpediente='<a onclick="expedienteUnico('+data.id+')" class="btn btn-default btn-sm"><i class="fa fa-search-plus fa-lg"></i> </a>';
-        clases1="class='success'";
+        clases1="class='TramiteOk'";
         clases2="";
         if(data.detalle!=''){
             clases1="";
-            clases2="class='success'";
+            clases2="class='TramiteOk'";
         }
         html+="<tr>"+
             "<td "+clases1+">"+data.tramite+"</td>"+

@@ -6314,3 +6314,7 @@ ul.pagination {
 table>thead>tr>td,table>tfoot>tr>td{
     font-size: 12.5px;
 }
+
+.TramiteOk{
+  color: #00E880;
+}
