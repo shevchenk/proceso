@@ -159,14 +159,14 @@ table>thead>tr>td,table>tfoot>tr>td{
                                     <thead>
                                         <tr>
                                             <td>#</td>
-                                            <td id="th_dg" style='width:250px !important;' class="unread">Documento generado por <br>el paso anterior<br>
+                                            <td id="th_dg" style='width:250px !important;' class="unread">Documento generado por el paso anterior
                                             <input style='width:250px' name="txt_id_ant" id="txt_id_ant" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_dg',1)" onkeyup="Limpiar('txt_id_union,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
                                             </td>
                                             <td id="th_pd" style='width:250px !important;' class="unread">Primer documento ingresado<br>
                                             <input style='width:250px' name="txt_id_union" id="txt_id_union" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pd',1)" onkeyup="Limpiar('txt_id_ant,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
                                             </td>
                                             <td>Tiempo</td>
-                                            <td id="th_fi" style='width:250px !important;' class="unread">Fecha Inicio<br>
+                                            <td id="th_fi" style='width:250px !important;' class="unread">Fecha de Inicio<br>
                                             <input style='width:250px' name="txt_fecha_inicio_b" id="txt_fecha_inicio_b" onChange="MostrarAjax();" type="text" />
                                             </td>
                                             <td id="th_ep" style='width:250px !important;' class="unread">Estado de la Actividad<br>
@@ -190,10 +190,10 @@ table>thead>tr>td,table>tfoot>tr>td{
                                     <tfoot>
                                         <tr>
                                             <td>#</td>
-                                            <td>Doc. Generado por <br>el paso anterior</td>
-                                            <td>Primer Doc. ingresado <br>por Mesa de Partes</td>
+                                            <td>Doc. Generado por el paso anterior</td>
+                                            <td>Primer documento ingreso</td>
                                             <td>Tiempo</td>
-                                            <td>Fecha Inicio</td>
+                                            <td>Fecha de Inicio</td>
                                             <td>Estado de la Actividad</td>
                                             <td>Paso</td>
                                             <td>Proceso</td>
