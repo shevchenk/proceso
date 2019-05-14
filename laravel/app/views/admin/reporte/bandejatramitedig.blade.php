@@ -65,7 +65,7 @@
 }
 .mailbox .table-mailbox tr.unread > td {
   background-color: rgba(0, 0, 0, 0.05);
-  color: #000;
+  color: #0168E6;
   font-weight: 600;
 }
 .mailbox .table-mailbox .unread
@@ -124,7 +124,7 @@ table>thead>tr>td,table>tfoot>tr>td{
     font-size: 12.5px;
 }
 table>tbody>tr>td{
-    color: rgb(0,153,55);
+    color: #2888FF;
 }
 </style>
             <!-- Content Header (Page header) -->
