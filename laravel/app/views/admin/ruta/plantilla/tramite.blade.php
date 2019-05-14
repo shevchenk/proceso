@@ -11,7 +11,7 @@
 <body>
 
     <table width="100%"  cellspacing="0" cellpadding="0">
-        <tr><td colspan="4"><p align="center" class="titulo">MUNICIPALIDAD DE ALGUN LUGAR DE PERÚ</p><hr><p align="center" class="titulo">TRÁMITE</p></td></tr>
+        <tr><td colspan="4"><p align="center" class="titulo">UNIVERSIDAD PRIVADA TELESUP</p><hr><p align="center" class="titulo">DATOS DEL TRÁMITE</p></td></tr>
         <tr><td colspan="4" align="right">&nbsp;</td></tr>
         <tr>
             <td align="right" class="item" height="20">Fecha:</td>
@@ -43,7 +43,6 @@
           <td colspan="3" class="textoblack2">&nbsp;&nbsp;{{ $area }}</td>
         <tr>
         <tr><td colspan="4"><hr><p align="center" class="titulo">DATOS DEL SOLICITANTE</p></td></tr>
-        <tr><td colspan="4" align="right">&nbsp;</td></tr>
         <tr>
           <td align="right" class="item" >Tipo Solicitante:</td>
           <td colspan="3" class="textoblack2">&nbsp;&nbsp;{{ $solicitante }}</td>
@@ -59,7 +58,7 @@
         <?php if( trim($empresaid)!='' ){ ?>
         <tr>
           <td align="right" height="20" class="item">Razón Social:</td>
-          <td class="textoblack2" colspan="3">&nbsp;&nbsp;{{ $empresa.'('.$nomcomercial.')' }}</td>
+          <td class="textoblack2" colspan="3">&nbsp;&nbsp;{{ $empresa }}</td>
         </tr>
         <tr>
           <td align="right" height="20" class="item">RUC:</td>
@@ -74,19 +73,12 @@
           <td class="textoblack2" colspan="3">&nbsp;&nbsp;{{ $etelf }}</td>
         </tr>
         <?php } ?>
-        <tr><td colspan="4"><hr><p align="center" class="titulo">DATOS DEL USUARIO</p></td></tr>
-        <tr><td colspan="4" align="right">&nbsp;</td></tr>
+        <tr><td colspan="4"><hr><p align="center" class="titulo">OPERADOR</p></td></tr>
         <tr>
-          <td align="right" height="20" class="item">DNI:</td>
-          <td class="textoblack" colspan="3">&nbsp;&nbsp; 12312312</td>
+          <td align="center" class="textoblack" colspan="4">&nbsp;&nbsp; {{ $operador }}</td>
         </tr>
         <tr>
-          <td align="right" height="20" class="item">Nombres:</td>
-          <td class="textoblack" colspan="3">&nbsp;&nbsp; JORGE LUIS</td>
-        </tr>
-        <tr>
-          <td align="right" height="20" class="item">Apellidos:</td>
-          <td class="textoblack" colspan="3">&nbsp;&nbsp; SALCEDO FRANCO</td>
+          <td align="center" class="textoblack" colspan="4">&nbsp;&nbsp; {{ $area_operador }}</td>
         </tr>
         <tr><td colspan="4" valign="top"><div id="scroll_requi"></div></td></tr>
     </table>

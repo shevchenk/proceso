@@ -41,15 +41,7 @@
               </select>
           </div>
 
-
-          <div class="form-group">
-              <label class="control-label">Tipo del Proceso:</label>
-              <select class="form-control" name="slct_tipo_flujo" id="slct_tipo_flujo">
-                <option value="">.::Seleccione::.</option>
-                <option value="1">Trámite</option>c
-                <option value="2">Proceso de oficio</option>
-              </select>
-          </div>    
+          <input type="hidden" id="slct_tipo_flujo" name="slct_tipo_flujo" value=1>
                 
       <div class="form-group">
             <label class="control-label">Estado:

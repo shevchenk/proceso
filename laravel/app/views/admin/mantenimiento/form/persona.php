@@ -143,7 +143,7 @@
                   </select>
                 </div>
 
-                <div class="col-sm-2">
+                <div class="col-sm-2" style="display:none;">
                   <label class="control-label" style="color: red;">Documentos Privados:
                   </label>
                   <select class="form-control" name="slct_doc_privados" id="slct_doc_privados">                      

@@ -454,8 +454,8 @@ td, th{
                             <thead>
                                 <tr>
                                     <th>COD</th>
-                                    <th>NOMBRE DEL USUARIO</th>
-                                    <th>NOMBRE DEL SOLICITANTE</th>
+                                    <th>PERSONA SOLICITANTE</th>
+                                    <th>EMPRESA SOLICITANTE</th>
                                     <th>TIPO SOLICITANTE</th>
                                     <th>TIPO TRAMITE</th>
                                     <th>TIPO DOCUMENTO</th>
