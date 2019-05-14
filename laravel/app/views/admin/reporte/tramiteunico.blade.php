@@ -105,32 +105,32 @@
                         <thead>
                             <tr>
                                 <!-- COLSPAN, es como combinar celdas en excel. pones la cantidad de filas que se agrupara como titulo -->
-                                <td colspan="6" style='background-color:#DEFAFA; width: 30% !important;text-align: center; border: 2px solid;'>Datos del paso</td>
-                                <td style='background-color:#F5DF9D; width: 35% !important;text-align: center; border: 2px solid;'>Acciones a realizar</td>
-                                <td colspan="2" style='background-color:#FCD790; width: 35% !important;text-align: center; border: 2px solid;'>Acciones realizadas</td>
+                                <td colspan="6" style='background-color:#DEFAFA; width: 30% !important;text-align: center; border: 1px solid;'>Datos del paso</td>
+                                <td style='background-color:#F5DF9D; width: 35% !important;text-align: center; border: 1px solid;'>Acciones a realizar</td>
+                                <td colspan="2" style='background-color:#FCD790; width: 35% !important;text-align: center; border: 1px solid;'>Acciones realizadas</td>
                             </tr>
                             <tr>
                                 <!-- DATOS DEL PASO -->
-                                <td style='background-color:#DEFAFA;text-align: center; border: 2px solid;'>N°</td>
-                                <td style='background-color:#DEFAFA;text-align: center; border: 2px solid;'>Área</td>
-                                <td style='background-color:#DEFAFA;text-align: center; border: 2px solid;'>Tiempo</td>
-                                <td style='background-color:#DEFAFA;text-align: center; border: 2px solid;'>Inicio</td>
-                                <td style='background-color:#DEFAFA;text-align: center; border: 2px solid;'>Final</td>
-                                <td style='background-color:#DEFAFA;text-align: center; border: 2px solid;'>Estado final</td>
+                                <td style='background-color:#DEFAFA;text-align: center; border: 1px solid;'>N°</td>
+                                <td style='background-color:#DEFAFA;text-align: center; border: 1px solid;'>Área</td>
+                                <td style='background-color:#DEFAFA;text-align: center; border: 1px solid;'>Tiempo</td>
+                                <td style='background-color:#DEFAFA;text-align: center; border: 1px solid;'>Inicio</td>
+                                <td style='background-color:#DEFAFA;text-align: center; border: 1px solid;'>Final</td>
+                                <td style='background-color:#DEFAFA;text-align: center; border: 1px solid;'>Estado final</td>
                                 <!--**********************************************-->
                                 <!-- ACCIONES A REALIZAR -->
-                                <td style='background-color:#F5DF9D;text-align: center; border: 2px solid;'>Rol "tiene que"
+                                <td style='background-color:#F5DF9D;text-align: center; border: 1px solid;'>Rol "tiene que"
                                 Accion
                                 Tipo Doc.
                                 (Descripcion)
                                 </td>
                                 <!--**********************************************-->
                                 <!-- ACCIONES REALIZADAS -->
-                                <td style='background-color:#FCD790;text-align: center; border: 2px solid;'>Estado
+                                <td style='background-color:#FCD790;text-align: center; border: 1px solid;'>Estado
                                 (N° Doc.
                                 Descripcion)
                                 </td>
-                                <td style='background-color:#FCD790;text-align: center; border: 2px solid;'>Responsable
+                                <td style='background-color:#FCD790;text-align: center; border: 1px solid;'>Responsable
                                 de
                                 Retorno
                                 </td>
