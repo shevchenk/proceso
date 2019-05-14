@@ -127,7 +127,7 @@ table>thead>tr>td,table>tfoot>tr>td{
             <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Bandeja de Activades
+            Bandeja de Activades pendientes
             <small> </small>
         </h1>
         <ol class="breadcrumb">
