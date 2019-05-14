@@ -81,13 +81,13 @@
                             
                             <tr style="background-color:#E5E5E5;">
                                 
-                                <td style="width:15%; text-align: center; border: black 2px solid;">Trámite Asignado</td>
-                                <td style="width:15%; text-align: center; border: black 2px solid;">Trámite Bandeja</td>
-                                <td style="width:25%; text-align: center; border: black 2px solid;">Proceso</td>
-                                <td style="width:25%; text-align: center; border: black 2px solid;">Sumilla</td>
-                                <td style="width:5%; text-align: center; border: black 2px solid;">Estado</td>
-                                <td style="width:10%; text-align: center; border: black 2px solid;">Fecha de Inicio</td>
-                                <td style="width:5%; text-align: center; border: black 2px solid;"> [ ] </td>
+                                <td style="width:15%; text-align: center; border: 1;">Documento de Inicio</td>
+                                <td style="width:15%; text-align: center; border: 1;">Documento Generado</td>
+                                <td style="width:25%; text-align: center; border: 1;">Proceso</td>
+                                <td style="width:25%; text-align: center; border: 1;">Sumilla</td>
+                                <td style="width:5%; text-align: center; border: 1;">Estado</td>
+                                <td style="width:10%; text-align: center; border: 1;">Fecha de Inicio</td>
+                                <td style="width:5%; text-align: center; border: 1;"> [ ] </td>
                                 
                             </tr>
                             
@@ -105,35 +105,35 @@
                         <thead>
                             <tr>
                                 <!-- COLSPAN, es como combinar celdas en excel. pones la cantidad de filas que se agrupara como titulo -->
-                                <th colspan="6" style='background-color:#DEFAFA; width: 30% !important;text-align: center; border: black 2px solid;'>Datos del paso</th>
-                                <th style='background-color:#F5DF9D; width: 35% !important;text-align: center; border: black 2px solid;'>Acciones a realizar</th>
-                                <th colspan="2" style='background-color:#FCD790; width: 35% !important;text-align: center; border: black 2px solid;'>Acciones realizadas</th>
+                                <td colspan="6" style='background-color:#DEFAFA; width: 30% !important;text-align: center; border: black 2px solid;'>Datos del paso</td>
+                                <td style='background-color:#F5DF9D; width: 35% !important;text-align: center; border: black 2px solid;'>Acciones a realizar</td>
+                                <td colspan="2" style='background-color:#FCD790; width: 35% !important;text-align: center; border: black 2px solid;'>Acciones realizadas</td>
                             </tr>
                             <tr>
                                 <!-- DATOS DEL PASO -->
-                                <th style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>N°</th>
-                                <th style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>Área</th>
-                                <th style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>Tiempo</th>
-                                <th style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>Inicio</th>
-                                <th style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>Final</th>
-                                <th style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>Estado final</th>
+                                <td style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>N°</td>
+                                <td style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>Área</td>
+                                <td style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>Tiempo</td>
+                                <td style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>Inicio</td>
+                                <td style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>Final</td>
+                                <td style='background-color:#DEFAFA;text-align: center; border: black 2px solid;'>Estado final</td>
                                 <!--**********************************************-->
                                 <!-- ACCIONES A REALIZAR -->
-                                <th style='background-color:#F5DF9D;text-align: center; border: black 2px solid;'>Rol "tiene que"
+                                <td style='background-color:#F5DF9D;text-align: center; border: black 2px solid;'>Rol "tiene que"
                                 Accion
                                 Tipo Doc.
                                 (Descripcion)
-                                </th>
+                                </td>
                                 <!--**********************************************-->
                                 <!-- ACCIONES REALIZADAS -->
-                                <th style='background-color:#FCD790;text-align: center; border: black 2px solid;'>Estado
+                                <td style='background-color:#FCD790;text-align: center; border: black 2px solid;'>Estado
                                 (N° Doc.
                                 Descripcion)
-                                </th>
-                                <th style='background-color:#FCD790;text-align: center; border: black 2px solid;'>Responsable
+                                </td>
+                                <td style='background-color:#FCD790;text-align: center; border: black 2px solid;'>Responsable
                                 de
                                 Retorno
-                                </th>
+                                </td>
                                 <!--**********************************************-->
                             </tr>
                         </thead>
