@@ -120,6 +120,9 @@ tr.shown td.details-control {
     margin-top: 10px;
   }
 }
+table>thead>tr>td,table>tfoot>tr>td{
+    font-size: 8px;
+}
 </style>
             <!-- Content Header (Page header) -->
     <section class="content-header">
