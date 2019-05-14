@@ -81,13 +81,13 @@
                             
                             <tr style="background-color:#E5E5E5;">
                                 
-                                <td style="width:15%; text-align: center; border: 1;">Documento de Inicio</td>
-                                <td style="width:15%; text-align: center; border: 1;">Documento Generado</td>
-                                <td style="width:25%; text-align: center; border: 1;">Proceso</td>
-                                <td style="width:25%; text-align: center; border: 1;">Sumilla</td>
-                                <td style="width:5%; text-align: center; border: 1;">Estado</td>
-                                <td style="width:10%; text-align: center; border: 1;">Fecha de Inicio</td>
-                                <td style="width:5%; text-align: center; border: 1;"> [ ] </td>
+                                <td style="width:15%; text-align: center; border: 1 solid;">Documento de Inicio</td>
+                                <td style="width:15%; text-align: center; border: 1 solid;">Documento Generado</td>
+                                <td style="width:25%; text-align: center; border: 1 solid;">Proceso</td>
+                                <td style="width:25%; text-align: center; border: 1 solid;">Sumilla</td>
+                                <td style="width:5%; text-align: center; border: 1 solid;">Estado</td>
+                                <td style="width:10%; text-align: center; border: 1 solid;">Fecha de Inicio</td>
+                                <td style="width:5%; text-align: center; border: 1 solid;"> [ ] </td>
                                 
                             </tr>
                             
