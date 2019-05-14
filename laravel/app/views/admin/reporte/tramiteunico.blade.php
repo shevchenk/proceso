@@ -81,13 +81,13 @@
                             
                             <tr style="background-color:#E5E5E5;">
                                 
-                                <th style="width:15%; text-align: center; border: black 2px solid;">Tramite Asignado</th>
-                                <th style="width:15%; text-align: center; border: black 2px solid;">Tramite Bandeja</th>
-                                <th style="width:25%; text-align: center; border: black 2px solid;">Proceso</th>
-                                <th style="width:25%; text-align: center; border: black 2px solid;">Sumilla</th>
-                                <th style="width:5%; text-align: center; border: black 2px solid;">Estado</th>
-                                <th style="width:10%; text-align: center; border: black 2px solid;">Fecha Inicio</th>
-                                <th style="width:5%; text-align: center; border: black 2px solid;"> [ ] </th>
+                                <td style="width:15%; text-align: center; border: black 2px solid;">Trámite Asignado</td>
+                                <td style="width:15%; text-align: center; border: black 2px solid;">Trámite Bandeja</td>
+                                <td style="width:25%; text-align: center; border: black 2px solid;">Proceso</td>
+                                <td style="width:25%; text-align: center; border: black 2px solid;">Sumilla</td>
+                                <td style="width:5%; text-align: center; border: black 2px solid;">Estado</td>
+                                <td style="width:10%; text-align: center; border: black 2px solid;">Fecha de Inicio</td>
+                                <td style="width:5%; text-align: center; border: black 2px solid;"> [ ] </td>
                                 
                             </tr>
                             
