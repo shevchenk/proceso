@@ -127,7 +127,7 @@ table>thead>tr>td,table>tfoot>tr>td{
             <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Bandeja de Inconclusos y Gestión
+            Bandeja de Activades
             <small> </small>
         </h1>
         <ol class="breadcrumb">
