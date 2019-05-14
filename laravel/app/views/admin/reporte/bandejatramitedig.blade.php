@@ -123,6 +123,9 @@ tr.shown td.details-control {
 table>thead>tr>td,table>tfoot>tr>td{
     font-size: 12.5px;
 }
+table>tbody>tr>td{
+    color: rgb(0,153,55);
+}
 </style>
             <!-- Content Header (Page header) -->
     <section class="content-header">
