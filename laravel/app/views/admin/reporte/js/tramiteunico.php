@@ -49,7 +49,7 @@ detalle=function(ruta_id, boton){
     var trs = tr.parentNode.children;
     for(var i =0;i<trs.length;i++)
         trs[i].style.backgroundColor="#f9f9f9";
-    tr.style.backgroundColor = "#9CD9DE";
+    tr.style.backgroundColor = "#CDCDCD";
 
     $("#form_tramiteunico").append("<input type='hidden' id='txt_ruta_id' name='txt_ruta_id' value='"+ruta_id+"'>");
     var datos=$("#form_tramiteunico").serialize().split("txt_").join("").split("slct_").join("");
