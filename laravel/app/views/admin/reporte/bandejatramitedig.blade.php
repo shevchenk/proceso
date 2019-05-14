@@ -155,31 +155,31 @@ tr.shown td.details-control {
                                 <table id="t_reporte_ajax" class="table table-mailbox">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th id="th_dg" style='width:250px !important;' class="unread">Documento generado por <br>el paso anterior<br>
+                                            <td>#</td>
+                                            <td id="th_dg" style='width:250px !important;' class="unread">Documento generado por <br>el paso anterior<br>
                                             <input style='width:250px' name="txt_id_ant" id="txt_id_ant" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_dg',1)" onkeyup="Limpiar('txt_id_union,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
-                                            </th>
-                                            <th id="th_pd" style='width:250px !important;' class="unread">Primer documento ingresado<br>
+                                            </td>
+                                            <td id="th_pd" style='width:250px !important;' class="unread">Primer documento ingresado<br>
                                             <input style='width:250px' name="txt_id_union" id="txt_id_union" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pd',1)" onkeyup="Limpiar('txt_id_ant,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
-                                            </th>
-                                            <th>Tiempo</th>
-                                            <th id="th_fi" style='width:250px !important;' class="unread">Fecha Inicio<br>
+                                            </td>
+                                            <td>Tiempo</td>
+                                            <td id="th_fi" style='width:250px !important;' class="unread">Fecha Inicio<br>
                                             <input style='width:250px' name="txt_fecha_inicio_b" id="txt_fecha_inicio_b" onChange="MostrarAjax();" type="text" />
-                                            </th>
-                                            <th id="th_ep" style='width:250px !important;' class="unread">Estado de la Actividad<br>
+                                            </td>
+                                            <td id="th_ep" style='width:250px !important;' class="unread">Estado de la Actividad<br>
                                             <select name="slct_tiempo_final" id="slct_tiempo_final" onChange="MostrarAjax();" />
                                             <option value="">.::Todo::.</option>
                                             <option value="1">Dentro del Tiempo</option>
                                             <option value="0">Fuera del Tiempo</option>
                                             </select>
-                                            </th>
-                                            <th>Paso</th>
-                                            <th id="th_pr" style='width:250px !important;' class="unread">Proceso<br>
+                                            </td>
+                                            <td>Paso</td>
+                                            <td id="th_pr" style='width:250px !important;' class="unread">Proceso<br>
                                             <input style='width:250px' name="txt_proceso" id="txt_proceso" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pr',1)" onkeyup="Limpiar('txt_id_ant,#txt_id_union,#txt_solicitante');" type="text" placeholder="" />
-                                            </th>
-                                            <th id="th_so" style='width:250px !important;' class="unread">Solicitante<br>
+                                            </td>
+                                            <td id="th_so" style='width:250px !important;' class="unread">Solicitante<br>
                                             <input style='width:250px' name="txt_solicitante" id="txt_solicitante" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_so',1)" onkeyup="Limpiar('txt_id_ant,#txt_id_union,#txt_proceso');" type="text" placeholder="" />
-                                            </th>
+                                            </td>
                                         </tr>
                                     </thead>
                                     <tbody>
