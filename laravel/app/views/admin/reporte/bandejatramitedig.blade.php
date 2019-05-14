@@ -126,10 +126,9 @@ table>thead>tr>td,table>tfoot>tr>td{
 </style>
             <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h2>
-            Bandeja de Activades pendientes
-            <small> </small>
-        </h2>
+        <h1>
+            <small>Bandeja de Activades Pendientes</small>
+        </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
             <li><a href="#">Reporte</a></li>
