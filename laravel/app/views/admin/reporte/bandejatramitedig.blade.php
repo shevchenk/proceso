@@ -159,7 +159,7 @@ table>thead>tr>td,table>tfoot>tr>td{
                                     <thead>
                                         <tr>
                                             <td>#</td>
-                                            <td id="th_dg" style='width:250px !important;' class="unread">Documento generado por el paso anterior
+                                            <td id="th_dg" style='width:250px !important;' class="unread">Documento generado por el paso anterior<br>
                                             <input style='width:250px' name="txt_id_ant" id="txt_id_ant" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_dg',1)" onkeyup="Limpiar('txt_id_union,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
                                             </td>
                                             <td id="th_pd" style='width:250px !important;' class="unread">Primer documento ingresado<br>
