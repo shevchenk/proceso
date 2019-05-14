@@ -186,15 +186,15 @@ tr.shown td.details-control {
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Doc. Generado por <br>el paso anterior</th>
-                                            <th>Primer Doc. ingresado <br>por Mesa de Partes</th>
-                                            <th>Tiempo</th>
-                                            <th>Fecha Inicio</th>
-                                            <th>Estado de la Actividad</th>
-                                            <th>Paso</th>
-                                            <th>Proceso</th>
-                                            <th>Solicitante</th>
+                                            <td>#</td>
+                                            <td>Doc. Generado por <br>el paso anterior</td>
+                                            <td>Primer Doc. ingresado <br>por Mesa de Partes</td>
+                                            <td>Tiempo</td>
+                                            <td>Fecha Inicio</td>
+                                            <td>Estado de la Actividad</td>
+                                            <td>Paso</td>
+                                            <td>Proceso</td>
+                                            <td>Solicitante</td>
                                         </tr>
                                     </tfoot>
                                 </table>
