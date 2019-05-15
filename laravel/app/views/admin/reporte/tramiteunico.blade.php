@@ -24,9 +24,9 @@
 <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1 style="text-align: center; font-size: 35px">
-            <b>        
+            
             Vista de Trámites
-            </b>            
+            
             <small> </small>
         </h1>
         <ol class="breadcrumb">
