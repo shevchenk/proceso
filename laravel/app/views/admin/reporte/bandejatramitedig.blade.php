@@ -374,21 +374,21 @@ table>tbody>tr>td{
                                                 <table class="table table-bordered" id="tbldetalleverbo">
                                                 <thead>
                                                     <tr>
-                                                        <th style="text-align:center" rowspan="2">Nro</th>
-                                                        <th style="text-align:center;width:60px !important;" rowspan="2">¿cond- icional?</th>
-                                                        <th style="text-align:center" rowspan="2">Rol que Realiza</th>
-                                                        <th style="text-align:center" colspan="3">Acciones a Realizar</th>
-                                                        <th style="text-align:center" colspan="2">Acciones Realizadas</th>
-                                                        <th style="text-align:center;width:150px !important;" rowspan="2">Persona</th>
-                                                        <th style="text-align:center" rowspan="2">Fecha</th>
-                                                        <th style="text-align:center" rowspan="2">[-]</th>
+                                                        <td style="text-align:center" rowspan="2">Nro</td>
+                                                        <td style="text-align:center;width:60px !important;" rowspan="2">¿cond- icional?</td>
+                                                        <td style="text-align:center" rowspan="2">Rol que Realiza</td>
+                                                        <td style="text-align:center" colspan="3">Acciones a Realizar</td>
+                                                        <td style="text-align:center" colspan="2">Acciones Realizadas</td>
+                                                        <td style="text-align:center;width:150px !important;" rowspan="2">Persona</td>
+                                                        <td style="text-align:center" rowspan="2">Fecha</td>
+                                                        <td style="text-align:center" rowspan="2">[-]</td>
                                                     </tr>
                                                     <tr>
-                                                        <th style="text-align:center">Verbo</th>
-                                                        <th style="text-align:center">Tipo Documento</th>
-                                                        <th style="text-align:center;width:250px !important;">Descripcion</th>
-                                                        <th style="text-align:center; width: 250px;">Documento Generado</th>
-                                                        <th style="text-align:center">Observaciones</th>
+                                                        <td style="text-align:center">Verbo</td>
+                                                        <td style="text-align:center">Tipo Documento</td>
+                                                        <td style="text-align:center;width:250px !important;">Descripcion</td>
+                                                        <td style="text-align:center; width: 250px;">Documento Generado</td>
+                                                        <td style="text-align:center">Observaciones</td>
                                                         <!--th style="text-align:center">Adjuntar Doc. Generado</th-->
                                                     </tr>
                                                 </thead>
