@@ -23,7 +23,7 @@
 
 <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1 style="text-align: center; font-size: 35px">
+        <h1 style="text-align: center; font-size: 35px; color:#646464 ">
             
             Vista de Trámites
             
