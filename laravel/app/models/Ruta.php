@@ -324,7 +324,8 @@ class Ruta extends Eloquent
                 $rutaDetalle['archivado']=$rd->archivado;
                 if($rd->norden==1 or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){
                     $rutaDetalle['fecha_inicio']=$fecha_inicio;
-                    $sql="SELECT CalcularFechaFinal( '".$fecha_inicio."', (".$rd->dtiempo."*1440), ".$rd->area_id." ) fproy";
+                    $tiempoG= Tiempo::find($rd->tiempo_id);
+                    $sql="SELECT CalcularFechaFinal( '".$fecha_inicio."', (".$rd->dtiempo."*".$tiempoG->totalminutos."), ".$rd->area_id." ) fproy";
                     $fproy= DB::select($sql);
                     $rutaDetalle['fecha_proyectada']=$fproy[0]->fproy;
                 }
