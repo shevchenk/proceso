@@ -441,7 +441,7 @@ table>tbody>tr>td{
                                             <button id="btnAdd" class="btn btn-yellow" style="width: 100%;margin-top:-20px" type="button" onclick="Addtr(event)"><span class="glyphicon glyphicon-plus"></span> AGREGAR </button>
                                         </div>
                                         <div class="col-sm-12">
-                                            <div class="col-sm-3">
+                                            <!--div class="col-sm-3">
                                                 <label class="control-label">Tipo de respuesta de la Actividad:</label>
                                                 <select id="slct_tipo_respuesta" name="slct_tipo_respuesta">
                                                     <option>Seleccione</option>
@@ -452,9 +452,9 @@ table>tbody>tr>td{
                                                 <select id="slct_tipo_respuesta_detalle" name="slct_tipo_respuesta_detalle">
                                                     <option>Seleccione</option>
                                                 </select>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label class="control-label">Descripción de respuesta de la Actividad:</label>
+                                            </div-->
+                                            <div class="col-sm-6">
+                                                <label class="control-label">Descripción de la Actividad:</label>
                                                 <textarea class="form-control" id="txt_observacion" name="txt_observacion" rows="3"></textarea>
                                             </div>
                                             <div class="col-sm-3 sectionarchivado">

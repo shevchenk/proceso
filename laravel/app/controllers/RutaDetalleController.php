@@ -455,7 +455,7 @@ class RutaDetalleController extends \BaseController
             }
 
             $datos=array();
-            if ( Input::get('tipo_respuesta') ) { 
+            if ( Input::get('observacion') ) { 
                 //************************Archivado: Trámite que fue finalizado en cualquier de sus pasos//
                 //***********************Finalizado: Trámite que finaiizó correctamentte y no hay mas pasos******************//
                 if(Input::get('archivado')==2 && Input::has('archivado')){
@@ -465,8 +465,8 @@ class RutaDetalleController extends \BaseController
                     $rd['archivado']=2;
                 }
                 $rd['dtiempo_final']= Input::get('respuesta');
-                $rd['tipo_respuesta_id']= Input::get('tipo_respuesta');
-                $rd['tipo_respuesta_detalle_id']= Input::get('tipo_respuesta_detalle');
+                $rd['tipo_respuesta_id']= 1;
+                $rd['tipo_respuesta_detalle_id']= 1;
                 $rd['observacion']= Input::get('observacion');
                 $rd['alerta']= Input::get('alerta');
                 $rd['alerta_tipo']= Input::get('alerta_tipo');
@@ -486,8 +486,8 @@ class RutaDetalleController extends \BaseController
                             'usuario_updated_at' => Auth::user()->id
                                 )
                         );
-                }else{
-                    
+                }
+                else{
                     $parametros=array(
                         'email'     => Input::get('email')
                     );
@@ -578,7 +578,7 @@ class RutaDetalleController extends \BaseController
                                             }
                                         }
                                         else{
-    /*                                        var_dump($validaSiguiente);
+                                            /*var_dump($validaSiguiente);
                                             var_dump($i);
                                             var_dump($j);
                                             exit();*/

@@ -19,7 +19,7 @@ var RolIdG='';
 var UsuarioId='';
 var fechaAux="";
 $(document).ready(function() {
-
+    $('#txt_observacion').attr('disabled','true');
     slctGlobal.listarSlct2('rol','slct_rol_modal',data);
     slctGlobal.listarSlct2('verbo','slct_verbo_modal',data);
     slctGlobal.listarSlct2('documento','slct_documento_modal',data);
@@ -231,19 +231,7 @@ hora=function(){
 
     $("#div_cumple").removeClass("progress-bar-danger").removeClass("progress-bar-warning").addClass("progress-bar-success");
         
-        if ( fechaAux!='' && fechaAux < $("#txt_respuesta").val() ) {
-            $("#txt_alerta").val("1");
-            $("#txt_alerta_tipo").val("2");
-            $("#div_cumple").removeClass("progress-bar-success").removeClass("progress-bar-warning").addClass("progress-bar-danger");
-            $("#div_cumple>span").html("SE DETIENE FUERA DEL TIEMPO");
-        }
-        else if ( fechaAux!='' ) {
-            $("#txt_alerta").val("1");
-            $("#txt_alerta_tipo").val("3");
-            $("#div_cumple").removeClass("progress-bar-success").removeClass("progress-bar-danger").addClass("progress-bar-warning");
-            $("#div_cumple>span").html("SE DETIENE DENTRO DEL TIEMPO");
-        }
-        else if ( $("#txt_fecha_max").val() < $("#txt_respuesta").val() ) {
+        if ( $("#txt_fecha_max").val() < $("#txt_respuesta").val() ) {
             $("#txt_alerta").val("1");
             $("#txt_alerta_tipo").val("1");
             $("#div_cumple").removeClass("progress-bar-success").removeClass("progress-bar-warning").addClass("progress-bar-danger");
@@ -304,6 +292,17 @@ validacheck=function(val,idcheck){
     else{
         $("#"+idcheck).removeAttr("checked");
         alert(".::Ud no cuenta con permisos para realizar esta tarea::.");
+    }
+
+    $("#t_detalle_verbo input[type='checkbox']").each( function(){ 
+        if( !$(this).is(':checked') ){
+            validacheck++;
+        }
+    })
+    $('#txt_observacion').removeAttr('disabled');
+    if(validacheck>0){
+        $('#txt_observacion').val('');
+        $('#txt_observacion').attr('disabled','true');
     }
 }
 
@@ -380,8 +379,8 @@ mostrarDetalleHTML=function(datos){
         $("#slct_persona").html(datos.persona_responsable);
     }
     //$('#slct_tipo_respuesta,#slct_tipo_respuesta_detalle').attr('disabled',"true");
-    slctGlobal.listarSlct('tiporespuesta','slct_tipo_respuesta','simple',ids,data,0,'#slct_tipo_respuesta_detalle','TR');
-    slctGlobal.listarSlct('tiporespuestadetalle','slct_tipo_respuesta_detalle','simple',ids,data,1);
+    //slctGlobal.listarSlct('tiporespuesta','slct_tipo_respuesta','simple',ids,data,0,'#slct_tipo_respuesta_detalle','TR');
+    //slctGlobal.listarSlct('tiporespuestadetalle','slct_tipo_respuesta_detalle','simple',ids,data,1);
     $("#form_ruta_detalle [data-target='#expedienteModal']").attr("data-id",datos.id_tr);
     
     $("#form_ruta_detalle #txt_fecha_tramite").val(datos.fecha_tramite);
@@ -654,6 +653,8 @@ mostrarDetalleHTML=function(datos){
             $('#t_detalle_verbo .referidos[count='+last_ref+']').addClass('referidoSelect');
             /*end last referido */
         }
+    hora();
+    $("#txt_observacion").attr('disabled','true');
 
 }
 
@@ -729,19 +730,19 @@ guardarTodo=function(){
         $("#form_ruta_detalle").append("<input type='hidden' id='coddocdig' name='coddocdig' value='"+coddocdig+"'>");
     }
 
-    if( $("#slct_tipo_respuesta").val()=='' && conttotalcheck>0 && contcheck==0 && alerta==false ) {
-            alert("Seleccione al menos 1 check");
+    if( conttotalcheck>0 && contcheck==0 && alerta==false ) {
+            alert("Seleccione al menos 1 tarea (check)");
     }
-    else if ( $("#slct_tipo_respuesta").val()=='' && validacheck==0 && alerta==false ) {
+    /*else if ( $("#slct_tipo_respuesta").val()=='' && validacheck==0 && alerta==false ) {
         alert("Seleccione Tipo de Respuesta");
     }
     else if ( $("#slct_tipo_respuesta_detalle").val()=='' && validacheck==0 && alerta==false ) {
         alert("Seleccione Detalle Tipo Respuesta");
-    }
+    }*/
     else if ( $("#txt_observacion").val()=='' && validacheck==0 && alerta==false ) {
-        alert("Ingrese Descripción de respuesta de la Actividad");
+        alert("Ingrese Descripción de la Actividad");
     }
-    else if ( $("#slct_tipo_respuesta").val()!='' && validacheck==1 && alerta==false 
+    /*else if ( $("#slct_tipo_respuesta").val()!='' && validacheck==1 && alerta==false 
                 && $("#slct_tipo_respuesta option[value='"+$("#slct_tipo_respuesta").val()+"']").attr("data-evento").split("_")[1]=='0'
             ) {
         alert("El tipo de respuesta seleccionada solo esta permitida cuando este activada todas las tareas habilitadas");
@@ -751,7 +752,7 @@ guardarTodo=function(){
     }
     else if ( $("#txt_observacion").val()!='' && $("#slct_tipo_respuesta").val()=='' ) {
         alert("La Descripción de respuesta de la Actividad, solo esta permitido cuando seleccione Tipo de respuesta");
-    }
+    }*/
     else if( alerta==false ){
         /*if( confirm("Favor de confirmar para actualizar su información") ){
             if(validacheck==0 || $("#slct_tipo_respuesta").val()!=''){
