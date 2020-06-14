@@ -259,8 +259,18 @@ var Bandeja={
                     $("#cbo_persona").multiselect('destroy');
                     slctGlobal.listarSlct('persona','cbo_persona','simple',null,{estado_persona:1});
                 }
-                else{
-                     msjG.mensaje('danger','<b>Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.',4000);
+                else if(obj.rst==3){
+                     msjG.mensaje('warning',obj.msj,4000);
+                }
+                else{ 
+                    var cont = 0;
+                    $.each(obj.msj, function(index, datos){
+                        cont++;
+                        if(cont==1){
+                            msjG.mensaje('warning',datos[0],4000);
+                        }
+
+                    });
                 }
                 $(".overlay,.loading-img").remove();
             },

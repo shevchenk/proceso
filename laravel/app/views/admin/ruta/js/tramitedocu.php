@@ -417,12 +417,13 @@ poblateData = function(tipo,data){
     if(tipo== 'persona'){
         document.querySelector('#txt_persona_id').value=data.id;
         document.querySelector('#txt_idempresa').value='';
-        document.querySelector('#txt_userdni2').value=data.dni;
-        document.querySelector('#txt_usernomb2').value=data.nombre;
-        document.querySelector('#txt_userapepat2').value=data.paterno;
-        document.querySelector('#txt_userapemat2').value=data.materno;
-        document.querySelector('#txt_usertelf2').value=data.telefono;
-        document.querySelector('#txt_userdirec2').value=data.direccion;
+        document.querySelector('#txt_userdni2').value=$.trim(data.dni);
+        document.querySelector('#txt_usernomb2').value=$.trim(data.nombre);
+        document.querySelector('#txt_userapepat2').value=$.trim(data.paterno);
+        document.querySelector('#txt_userapemat2').value=$.trim(data.materno);
+        document.querySelector('#txt_usertelf2').value=$.trim(data.telefono)+' '+$.trim(data.celular);
+        document.querySelector('#txt_useremail2').value=$.trim(data.email);
+        document.querySelector('#txt_userdirec2').value=$.trim(data.direccion);
         $('.usuarioSeleccionado').removeClass('hidden');
         $('.empresa').addClass('hidden');
     }
@@ -602,6 +603,10 @@ generarUsuario = function(){
         alert('Digite su dni');
     }else if($("#email").val() == ''){
         alert('Digite su email');
+    }else if($("#sexo").val() == ''){
+        alert('Seleccione sexo');
+    }else if($("#celular").val() == '' && $("#telefono").val() == ''){
+        alert('Ingrese Celular y/o Teléfono');
     }else{
         Bandeja.guardarUsuario();        
     }

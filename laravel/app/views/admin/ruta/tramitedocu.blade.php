@@ -202,7 +202,7 @@ td, th{
                     <div class="col-md-12 form-group">
                       <div class="col-md-6">
                         <div class="col-md-4">
-                          <span>TELEFONO: </span>
+                          <span>TELEFONO/CELULAR: </span>
                         </div>
                         <div class="col-md-8">
                           <input type="text" name="txt_usertelf2" id="txt_usertelf2" class="form-control" disabled>
@@ -210,9 +210,19 @@ td, th{
                       </div>
                       <div class="col-md-6">
                         <div class="col-md-4">
-                          <span>DIRECCION: </span>
+                          <span>EMAIL: </span>
                         </div>
                         <div class="col-md-8">
+                          <input type="text" name="txt_useremail2" id="txt_useremail2" class="form-control" disabled>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                      <div class="col-md-12">
+                        <div class="col-md-2">
+                          <span>DIRECCION: </span>
+                        </div>
+                        <div class="col-md-10">
                           <input type="text" name="txt_userdirec2" id="txt_userdirec2" class="form-control" disabled>
                         </div>
                       </div>

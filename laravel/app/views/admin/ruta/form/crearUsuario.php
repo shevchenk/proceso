@@ -51,7 +51,7 @@
                             <div class="col-md-4">
                                 <div class="form-group padding-10">
                                     <label class="control-label">Sexo:</label>
-                                    <select name='sexo' class="form-control  pull-right" placeholder="Sexo" autocomplete="off">
+                                    <select name='sexo' id="sexo" class="form-control  pull-right" placeholder="Sexo" autocomplete="off">
                                         <option value="" selected="selected">.:: Seleccione genero ::.</option>
                                         <option value="M">Masculino</option>
                                         <option value="F">Femenino</option>
@@ -62,12 +62,12 @@
                                     <input type="text" id='fecha_nacimiento' name='fecha_nacimiento' class="form-control  pull-right" placeholder="AAAA-MM-DD" onfocus="blur()" autocomplete="off" placeholder="Fecha de Nacimiento">
                                 </div>
                                 <div class="form-group padding-10">
-                                    <label class="control-label">Telefono:</label>
-                                    <input type="text" name='telefono' maxlength="12" class="form-control  pull-right" placeholder="Telefono" autocomplete="off">
+                                    <label class="control-label">Teléfono:</label>
+                                    <input type="text" name='telefono' id='telefono' maxlength="12" class="form-control  pull-right" placeholder="Telefono" autocomplete="off">
                                 </div>
                                 <div class="form-group padding-10">
                                     <label class="control-label">Celular:</label>
-                                    <input type="text" name='celular' maxlength="12" class="form-control  pull-right" placeholder="Celular" autocomplete="off">
+                                    <input type="text" name='celular' id="celular" maxlength="12" class="form-control  pull-right" placeholder="Celular" autocomplete="off">
                                 </div>
                             </div>
                         </div>  

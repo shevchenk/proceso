@@ -303,6 +303,9 @@ class PersonaController extends BaseController
             $persona['nombre'] = Input::get('nombre');
             $persona['email'] = Input::get('email');
             $persona['email_mdi'] = Input::get('email_mdi');
+            $persona['celular'] = trim(Input::get('celular'));
+            $persona['telefono'] = trim(Input::get('telefono'));
+            $persona['direccion'] = trim(Input::get('direccion'));
             $persona['dni'] = Input::get('dni');
             $persona['sexo'] = Input::get('sexo');
             $persona['password'] = Input::get('password');
