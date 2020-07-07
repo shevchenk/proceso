@@ -594,13 +594,13 @@ mostrarDetalleHTML=function(datos){
                         if(verbo=="Generar"){
                             imagenadd= '<input data-pos="'+(i*1+1)+'" type="text" readonly class="form-control txt'+valorenviado+' txt_'+detalle[i].split("=>")[0]+'" id="documento_'+detalle[i].split("=>")[0]+'" name="documento_'+detalle[i].split("=>")[0]+'" value="" /><input type="hidden" id="txt_documento_id_'+detalle[i].split("=>")[0]+'" name="txt_documento_id_'+detalle[i].split("=>")[0]+'" value=""><input type="hidden" id="txt_doc_digital_id_'+detalle[i].split("=>")[0]+'" name="txt_doc_digital_id_'+detalle[i].split("=>")[0]+'" value="">'+
 
-                                        '   <span class="btn btn-success" data-toggle="modal" data-target="#listDocDigital" id="btn_list_digital" data-texto="documento_'+detalle[i].split("=>")[0]+'" data-id="txt_doc_digital_id_'+detalle[i].split("=>")[0]+'"><i class="glyphicon glyphicon-file"></i></span>'+
+                                        /*'   <span class="btn btn-success" data-toggle="modal" data-target="#listDocDigital" id="btn_list_digital" data-texto="documento_'+detalle[i].split("=>")[0]+'" data-id="txt_doc_digital_id_'+detalle[i].split("=>")[0]+'"><i class="glyphicon glyphicon-file"></i></span>'+*/
 //                                            '<span class="btn btn-success" data-toggle="modal" data-target="#NuevoDocDigital" id="btn_nuevo_docdigital" data-texto="documento_'+detalle[i].split("=>")[0]+'" data-id="txt_doc_digital_id_'+detalle[i].split("=>")[0]+'"><i class="glyphicon glyphicon-paperclip"></i></span>'+
 
 
-                                        '<span class="btn btn-primary" data-toggle="modal" data-target="#indedocsModal" data-texto="documento_'+detalle[i].split("=>")[0]+'" data-id="txt_documento_id_'+detalle[i].split("=>")[0]+'" id="btn_buscar_indedocs">'+
+                                        /*'<span class="btn btn-primary" data-toggle="modal" data-target="#indedocsModal" data-texto="documento_'+detalle[i].split("=>")[0]+'" data-id="txt_documento_id_'+detalle[i].split("=>")[0]+'" id="btn_buscar_indedocs">'+
                                             '<i class="fa fa-search fa-lg"></i>'+
-                                         '</span>'+
+                                         '</span>'+*/
                                          '<span class="btn btn-warning" onClick="Liberar(\'documento_'+detalle[i].split("=>")[0]+'\')" >'+
                                             '<i class="fa fa-pencil fa-lg"></i>'+
                                          '</span>';
