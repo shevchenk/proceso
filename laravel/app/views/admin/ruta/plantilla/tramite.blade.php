@@ -11,7 +11,7 @@
 <body>
 
     <table width="100%"  cellspacing="0" cellpadding="0">
-        <tr><td colspan="4"><p align="center" class="titulo">UNIVERSIDAD PRIVADA TELESUP</p><hr><p align="center" class="titulo">DATOS DEL TRÁMITE</p></td></tr>
+        <tr><td colspan="4"><p align="center" class="titulo"></p><hr><p align="center" class="titulo">DATOS DEL TRÁMITE</p></td></tr>
         <tr><td colspan="4" align="right">&nbsp;</td></tr>
         <tr>
             <td align="right" class="item" height="20">Fecha:</td>
