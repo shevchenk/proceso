@@ -170,6 +170,10 @@ class PersonaController extends BaseController
                 }
             }
 
+            if( Auth::user()->id != 1 ){
+                $array['where'].=" AND p.id != 1";
+            }
+
             $array['order']=" ORDER BY p.nombre ";
 
             $cant  = Persona::getCargarCount( $array );

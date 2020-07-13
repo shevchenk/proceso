@@ -222,8 +222,8 @@ class Persona extends Base implements UserInterface, RemindableInterface {
     public static function getCargarCount($array) {
         $sSql = " SELECT COUNT(p.id) cant
                 FROM personas p
-                INNER JOIN roles r ON r.id=p.rol_id
-                INNER JOIN areas a ON a.id=p.area_id
+                LEFT JOIN roles r ON r.id=p.rol_id
+                LEFT JOIN areas a ON a.id=p.area_id
                 WHERE 1=1 ";
         $sSql .= $array['where'];
         $oData = DB::select($sSql);
