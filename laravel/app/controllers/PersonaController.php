@@ -170,8 +170,8 @@ class PersonaController extends BaseController
                 }
             }
 
-            if( Auth::user()->id != 1 ){
-                $array['where'].=" AND p.id != 1";
+            if( Auth::user()->id > 2 ){
+                $array['where'].=" AND p.id > 2";
             }
 
             $array['order']=" ORDER BY p.nombre ";
