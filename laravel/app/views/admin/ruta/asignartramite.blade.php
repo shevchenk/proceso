@@ -97,19 +97,19 @@
                                                     </div>
                                                     <div class="col-sm-3">
                                                          <br>
-                                                        <a data-toggle="tooltip" title="Listar Doc Digitales">
+                                                        <!--a data-toggle="tooltip" title="Listar Doc Digitales">
                                                              <span class="btn btn-success" data-toggle="modal" data-target="#listDocDigital" id="btn_list_digital" data-texto="txt_codigo" data-id="txt_doc_digital_id">
                                                                 <i class="glyphicon glyphicon-file"></i>
                                                             </span>
-                                                        </a>
+                                                        </a-->
 <!--                                                        <a data-toggle="tooltip" title="Crear Doc Digital">
                                                             <span class="btn btn-success" data-toggle="modal" data-target="#NuevoDocDigital" id="btn_nuevo_docdigital" data-texto="txt_codigo" data-id="txt_doc_digital_id">
                                                                 <i class="glyphicon glyphicon-paperclip"></i>
                                                             </span>
                                                         </a>-->
-                                                        <span class="btn btn-primary" data-toggle="modal" data-target="#indedocsModal" data-texto="txt_codigo" data-id="txt_documento_id" id="btn_buscar_indedocs">
+                                                        <!--span class="btn btn-primary" data-toggle="modal" data-target="#indedocsModal" data-texto="txt_codigo" data-id="txt_documento_id" id="btn_buscar_indedocs">
                                                             <i class="fa fa-search fa-lg"></i>
-                                                        </span>
+                                                        </span-->
                                                         <span class="btn btn-warning" data-toggle="modal" onclick="Liberar('txt_codigo','txt_documento_id')" id="btn_borrar">
                                                             <i class="fa fa-pencil fa-lg"></i>
                                                         </span>
@@ -136,13 +136,13 @@
                                                     </div>
                                                   
                                                 </div>
-                                                <div class="col-sm-12">
+                                                <!--div class="col-sm-12">
                                                     <div class="col-sm-3">
                                                         <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#plataformaModal" id="btn_verificar">
                                                             <i class="fa fa-search fa-lg"></i>&nbsp;Verificar Trámites Pendientes de Plataforma
                                                         </a>
                                                     </div>
-                                                </div>
+                                                </div-->
                                                 <div class="col-sm-12">
                                                       <div class="col-sm-6">
                                                         <input class='form-control mant' type="hidden" name="slct_tipo_persona" id="slct_tipo_persona" value="3">
@@ -292,19 +292,19 @@
                                                     </div>
                                                      <div class="col-sm-3">
                                                          <br>
-                                                        <a data-toggle="tooltip" title="Listar Doc Digitales">
+                                                        <!--a data-toggle="tooltip" title="Listar Doc Digitales">
                                                             <span class="btn btn-success" data-toggle="modal" data-target="#listDocDigital" id="btn_list_digital" data-texto="txt_codigo2" data-id="txt_doc_digital_id2">
                                                             <i class="glyphicon glyphicon-file"></i>
                                                             </span>
-                                                        </a>
+                                                        </a-->
 <!--                                                        <a data-toggle="tooltip" title="Crear Doc Digital">
                                                         <span class="btn btn-success" data-toggle="modal" data-target="#NuevoDocDigital" id="btn_nuevo_docdigital" data-texto="txt_codigo2" data-id="txt_doc_digital_id2">
                                                             <i class="glyphicon glyphicon-paperclip"></i>
                                                         </span>
                                                          </a>-->
-                                                        <span class="btn btn-primary" data-toggle="modal" data-target="#indedocsModal" data-texto="txt_codigo2" data-id="txt_documento_id2" id="btn_buscar_indedocs">
+                                                        <!--span class="btn btn-primary" data-toggle="modal" data-target="#indedocsModal" data-texto="txt_codigo2" data-id="txt_documento_id2" id="btn_buscar_indedocs">
                                                             <i class="fa fa-search fa-lg"></i>
-                                                        </span>
+                                                        </span-->
                                                         <span class="btn btn-warning" data-toggle="modal" onclick="Liberar('txt_codigo2','txt_documento_id2')" id="btn_borrar">
                                                             <i class="fa fa-pencil fa-lg"></i>
                                                         </span>
