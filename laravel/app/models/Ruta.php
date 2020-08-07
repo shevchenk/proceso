@@ -828,7 +828,7 @@ class Ruta extends Eloquent
         $tablaRelacion['usuario_created_at']=Auth::user()->id;
         $tablaRelacion->save();
 
-        $rutaFlujo=RutaFlujo::find(3620);//3620
+        $rutaFlujo=RutaFlujo::find(1);//3620
 
         $ruta= new Ruta;
         $ruta['tabla_relacion_id']=$tablaRelacion->id;
