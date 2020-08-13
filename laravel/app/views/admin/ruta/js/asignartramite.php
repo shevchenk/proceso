@@ -238,7 +238,7 @@ mostrarRutaFlujoHTML=function(datos){
         if(cont==1){
             $("#form_asignar").append('<input type="hidden" id="txt_ruta_flujo_id" name="txt_ruta_flujo_id" value="'+data.id+'">');
             
-            imagen="<a id='ruta_flujo_id' data-id='"+data.id+"' class='btn btn-success btn-sm'><i class='fa fa-check-square fa-lg'></i></a>";
+            imagen="<a style='display:none;' id='ruta_flujo_id' data-id='"+data.id+"' class='btn btn-success btn-sm'><i class='fa fa-check-square fa-lg'></i></a>";
         }
     html+="<tr>"+
         "<td>"+cont+"</td>"+

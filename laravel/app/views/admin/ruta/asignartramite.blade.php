@@ -45,7 +45,7 @@
             <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Asignar Trámite al Proceso
+                        INICIA LA GESTIÓN INTERNA
                         <small> </small>
                     </h1>
                     <ol class="breadcrumb">
@@ -63,8 +63,8 @@
                             <div class="box">
                                 <div id="tabs">
                                     <ul>
-                                        <li><a href="#tabs-1">Asignación Proceso</a></li>
-                                        <li><a href="#tabs-2">Asignación Gestión</a></li> 
+                                        <li><a href="#tabs-1">A través de un proceso</a></li>
+                                        <li><a href="#tabs-2">A través de áreas</a></li> 
                                     </ul>
                                     <div id="tabs-1">
                                         <form name="form_asignar" id="form_asignar" method="POST" action="">
@@ -198,7 +198,7 @@
                                                 <div class="col-sm-12">
                                                     <div class="box-body table-responsive">
                                                         <table id="t_ruta_flujo" class="table table-bordered table-hover">
-                                                            <thead>
+                                                            <thead class="bg-info">
                                                                 <tr>
                                                                     <th>#</th>
                                                                     <th>Proceso</th>
@@ -213,7 +213,7 @@
                                                             <tbody id="tb_ruta_flujo">
                                                                 
                                                             </tbody>
-                                                            <tfoot>
+                                                            <tfoot class="bg-info">
                                                                 <tr>
                                                                     <th>#</th>
                                                                     <th>Proceso</th>

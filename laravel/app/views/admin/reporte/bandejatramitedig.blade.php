@@ -158,48 +158,48 @@ table>tbody>tr>td{
                             <!-- THE MESSAGES -->
                             <form name="form_filtros" id="form_filtros" method="POST" action="">
                                 <table id="t_reporte_ajax" class="table table-mailbox">
-                                    <thead>
+                                    <thead class="bg-info">
                                         <tr>
-                                            <td>#</td>
-                                            <td id="th_dg" style='width:250px !important;' class="unread">Documento generado por el paso anterior<br>
+                                            <th>#</th>
+                                            <th id="th_dg" style='width:250px !important;' class="unread">Documento generado por el paso anterior<br>
                                             <input style='width:250px' name="txt_id_ant" id="txt_id_ant" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_dg',1)" onkeyup="Limpiar('txt_id_union,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
-                                            </td>
-                                            <td id="th_pd" style='width:250px !important;' class="unread">Primer documento ingresado<br>
+                                            </th>
+                                            <th id="th_pd" style='width:250px !important;' class="unread">Primer documento ingresado<br>
                                             <input style='width:250px' name="txt_id_union" id="txt_id_union" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pd',1)" onkeyup="Limpiar('txt_id_ant,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
-                                            </td>
-                                            <td>Tiempo</td>
-                                            <td id="th_fi" style='width:250px !important;' class="unread">Fecha de Inicio<br>
+                                            </th>
+                                            <th>Tiempo</th>
+                                            <th id="th_fi" style='width:250px !important;' class="unread">Fecha de Inicio<br>
                                             <input style='width:250px' name="txt_fecha_inicio_b" id="txt_fecha_inicio_b" onChange="MostrarAjax();" type="text" />
-                                            </td>
-                                            <td id="th_ep" style='width:250px !important;' class="unread">Estado de la Actividad<br>
+                                            </th>
+                                            <th id="th_ep" style='width:250px !important;' class="unread">Estado de la Actividad<br>
                                             <select name="slct_tiempo_final" id="slct_tiempo_final" onChange="MostrarAjax();" />
                                             <option value="">.::Todo::.</option>
                                             <option value="1">Dentro del Tiempo</option>
                                             <option value="0">Fuera del Tiempo</option>
                                             </select>
                                             </td>
-                                            <td>Paso</td>
-                                            <td id="th_pr" style='width:250px !important;' class="unread">Proceso<br>
+                                            <th>Paso</th>
+                                            <th id="th_pr" style='width:250px !important;' class="unread">Proceso<br>
                                             <input style='width:250px' name="txt_proceso" id="txt_proceso" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pr',1)" onkeyup="Limpiar('txt_id_ant,#txt_id_union,#txt_solicitante');" type="text" placeholder="" />
-                                            </td>
-                                            <td id="th_so" style='width:250px !important;' class="unread">Solicitante<br>
+                                            </th>
+                                            <th id="th_so" style='width:250px !important;' class="unread">Solicitante<br>
                                             <input style='width:250px' name="txt_solicitante" id="txt_solicitante" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_so',1)" onkeyup="Limpiar('txt_id_ant,#txt_id_union,#txt_proceso');" type="text" placeholder="" />
-                                            </td>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     </tbody>
-                                    <tfoot>
+                                    <tfoot class="bg-info">
                                         <tr>
-                                            <td>#</td>
-                                            <td>Doc. Generado por el paso anterior</td>
-                                            <td>Primer documento ingreso</td>
-                                            <td>Tiempo</td>
-                                            <td>Fecha de Inicio</td>
-                                            <td>Estado de la Actividad</td>
-                                            <td>Paso</td>
-                                            <td>Proceso</td>
-                                            <td>Solicitante</td>
+                                            <th>#</th>
+                                            <th>Doc. Generado por el paso anterior</th>
+                                            <th>Primer documento ingreso</th>
+                                            <th>Tiempo</th>
+                                            <th>Fecha de Inicio</th>
+                                            <th>Estado de la Actividad</th>
+                                            <th>Paso</th>
+                                            <th>Proceso</th>
+                                            <th>Solicitante</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -372,30 +372,30 @@ table>tbody>tr>td{
                                                 </div>
 
                                                 <table class="table table-bordered" id="tbldetalleverbo">
-                                                <thead>
+                                                <thead class="bg-info">
                                                     <tr>
-                                                        <td style="text-align:center" rowspan="2">Nro</td>
-                                                        <td style="text-align:center;width:60px !important;" rowspan="2">¿cond- icional?</td>
-                                                        <td style="text-align:center" rowspan="2">Rol que Realiza</td>
-                                                        <td style="text-align:center" colspan="3">Acciones a Realizar</td>
-                                                        <td style="text-align:center" colspan="2">Acciones Realizadas</td>
-                                                        <td style="text-align:center;width:150px !important;" rowspan="2">Persona</td>
-                                                        <td style="text-align:center" rowspan="2">Fecha</td>
-                                                        <td style="text-align:center" rowspan="2">[-]</td>
+                                                        <th style="text-align:center" rowspan="2">Nro</th>
+                                                        <th style="text-align:center;width:60px !important;" rowspan="2">¿cond- icional?</th>
+                                                        <th style="text-align:center" rowspan="2">Rol que Realiza</th>
+                                                        <th style="text-align:center" colspan="3">Acciones a Realizar</th>
+                                                        <th style="text-align:center" colspan="2">Acciones Realizadas</th>
+                                                        <th style="text-align:center;width:150px !important;" rowspan="2">Persona</th>
+                                                        <th style="text-align:center" rowspan="2">Fecha</th>
+                                                        <th style="text-align:center" rowspan="2">[-]</th>
                                                     </tr>
                                                     <tr>
-                                                        <td style="text-align:center">Verbo</td>
-                                                        <td style="text-align:center">Tipo Documento</td>
-                                                        <td style="text-align:center;width:250px !important;">Descripcion</td>
-                                                        <td style="text-align:center; width: 250px;">Documento Generado</td>
-                                                        <td style="text-align:center">Observaciones</td>
+                                                        <th style="text-align:center">Verbo</th>
+                                                        <th style="text-align:center">Tipo Documento</th>
+                                                        <th style="text-align:center;width:250px !important;">Descripcion</th>
+                                                        <th style="text-align:center; width: 250px;">Documento Generado</th>
+                                                        <th style="text-align:center">Observaciones</th>
                                                         <!--th style="text-align:center">Adjuntar Doc. Generado</th-->
                                                     </tr>
                                                 </thead>
                                                 <tbody id="t_detalle_verbo">
                                                    
                                                 </tbody>
-                                                <tfoot>
+                                                <tfoot class="bg-info">
                                                      <tr class="trNuevo hidden">
                                                         <td id="tdNro" style="vertical-align : middle;">0</td>
                                                         <td id="tdCondicional" style="vertical-align : middle;">NO</td>
@@ -516,7 +516,7 @@ table>tbody>tr>td{
                                         <div class="col-sm-12">
                                             <div class="box-body table-responsive">
                                                 <table id="areasasignacion" class="table table-bordered" style="min-height:300px">
-                                                    <thead> 
+                                                    <thead class="bg-info"> 
                                                         <tr class="head">
                                                             <th style="width:250px !important;min-width: 200px !important;" >
                                                             </th>
@@ -527,7 +527,7 @@ table>tbody>tr>td{
                                                         <tr class="body">
                                                             <td>
                                                                 <table class="table table-bordered">
-                                                                    <thead>
+                                                                    <thead class="bg-info">
                                                                         <tr><th colspan="2">
                                                                         </th></tr>
                                                                         <tr class="head">
@@ -541,7 +541,7 @@ table>tbody>tr>td{
                                                             </td>
                                                         </tr>
                                                     </tbody>
-                                                    <tfoot>
+                                                    <tfoot class="bg-info">
                                                         <tr class="head">
                                                             <th>#</th>
                                                         </tr>
