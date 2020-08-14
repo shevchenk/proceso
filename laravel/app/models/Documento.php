@@ -18,7 +18,8 @@ class Documento extends Base
 
     public static function getCargar( $array )
     {
-        $sSql=" SELECT doc.id, doc.nombre, doc.area, doc.posicion, doc.posicion_fecha, doc.estado,
+        $sSql=" SELECT doc.id, doc.nombre, doc.tipo, doc.area, doc.posicion, doc.posicion_fecha, doc.estado, 
+               doc.tipo AS tipos,
                (
                CASE doc.area
                     WHEN '0' THEN 'Sin Siglas'

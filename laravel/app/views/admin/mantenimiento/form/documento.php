@@ -18,6 +18,15 @@
             <input type="text" class="form-control" name="txt_nombre" id="txt_nombre">
           </div>
 
+          <div class="form-group">
+            <label class="control-label">Tipo:</label>
+            <select class="form-control" name="slct_tipo" id="slct_tipo">
+                <option value="">.::Seleccione::.</option>
+                <option value='Ingreso'>Ingreso</option>
+                <option value='Salida'>Salida</option>
+            </select>
+          </div>
+
          <div class="form-group">
             <label class="control-label">Area:</label>
             <select class="form-control" name="slct_area" id="slct_area">
