@@ -18,19 +18,20 @@ $(document).ready(function() {
 
     /*inicializate selects*/
     slctGlobalHtml('cbo_tipodocumento','simple');
-    slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data); 
     slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);
     slctGlobal.listarSlct('persona','cbo_persona','simple',null,{estado_persona:1});
     slctGlobal.listarSlct('empresa','cbo_empresa','simple',null,{estado:1});    
     slctGlobal.listarSlctFuncion('tiposolicitante','listar?pretramite=1','cbo_tiposolicitante','simple',null,{'estado':1,'validado':1});
+    data = {estado:1, tipo:'Ingreso'};
+    slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data); 
     /*end inicializate selects*/
     
-        data = {estado:1};
+    data = {estado:1};
     var ids = [];
     slctGlobal.listarSlct('software','slct_software_id_modal','simple',ids,data);
     slctGlobal.listarSlct2('rol','slct_rol_modal',data);
     slctGlobal.listarSlct2('verbo','slct_verbo_modal',data);
-    data = {estado:1, tipo:'Ingreso'};
+    
     slctGlobal.listarSlct2('documento','slct_documento_modal',data);
     $('#rutaModal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget); // captura al boton
