@@ -54,12 +54,19 @@ class Documento extends Base
 
     public static function getDocumento(){
         $r=DB::table('documentos')
-                ->select('id', DB::raw('CONCAT_WS( " " ,nombre,IF(area=0," Sin Siglas","")) as nombre'),'estado','area','posicion','posicion_fecha')
+                ->select('id', DB::raw('CONCAT_WS( " " ,nombre,IF(area=0," Sin Siglas","")) as nombre'),'estado','area','posicion','posicion_fecha','tipo')
 
                 ->where( 
                     function($query){
                         if ( Input::get('estado') ) {
                             $query->where('estado','=','1');
+                        }
+
+                        if ( Input::get('tipo')=='Ingreso' ) {
+                            $query->where('tipo','=','Ingreso');
+                        }
+                        else{
+                            $query->where('tipo','=','Salida');
                         }
                     }
                 )
