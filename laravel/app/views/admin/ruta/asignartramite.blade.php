@@ -3,17 +3,15 @@
 
 @section('includes')
     @parent
-    {{ HTML::style('lib/datetime/css/bootstrap-datetimepicker.min.css') }}
     {{ HTML::style('lib/bootstrap-multiselect/dist/css/bootstrap-multiselect.css') }}
     {{ HTML::script('lib/bootstrap-multiselect/dist/js/bootstrap-multiselect.js') }}
-    {{ HTML::script('lib/datetime/js/bootstrap-datetimepicker.min.js') }}
     <script src="lib/jquery-ui-1.11.2/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="lib/jquery-ui-1.11.2/jquery-ui.min.css">
 
-  {{ HTML::script('lib/momentjs/2.9.0/moment.min.js') }}
-    {{ HTML::style('lib/daterangepicker/css/daterangepicker-bs3.css') }}
+    {{ HTML::style('lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}
   
-    {{ HTML::script('lib/daterangepicker/js/daterangepicker_single.js') }}
+    {{ HTML::script('lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}
+    {{ HTML::script('lib/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.es.js') }}
     {{ HTML::script('lib/ckeditor/ckeditor.js') }}
     {{ HTML::style('css/admin/plantilla.css') }}
     
@@ -97,11 +95,11 @@
                                                     </div>
                                                     <div class="col-sm-3">
                                                          <br>
-                                                        <!--a data-toggle="tooltip" title="Listar Doc Digitales">
+                                                        <!-- <a data-toggle="tooltip" title="Listar Doc Digitales">
                                                              <span class="btn btn-success" data-toggle="modal" data-target="#listDocDigital" id="btn_list_digital" data-texto="txt_codigo" data-id="txt_doc_digital_id">
                                                                 <i class="glyphicon glyphicon-file"></i>
                                                             </span>
-                                                        </a-->
+                                                        </a> -->
 <!--                                                        <a data-toggle="tooltip" title="Crear Doc Digital">
                                                             <span class="btn btn-success" data-toggle="modal" data-target="#NuevoDocDigital" id="btn_nuevo_docdigital" data-texto="txt_codigo" data-id="txt_doc_digital_id">
                                                                 <i class="glyphicon glyphicon-paperclip"></i>

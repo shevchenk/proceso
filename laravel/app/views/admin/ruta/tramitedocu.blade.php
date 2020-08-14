@@ -128,7 +128,7 @@ td, th{
             <!-- Inicia contenido -->
 
             <div class="crearPreTramite">
-              <h3>Tramite Documentario</h3>
+              <h3>Recepción de Documentos</h3>
 
               <form id="FormCrearPreTramite" method="post">
                 <div class="col-md-12" style="margin-top:10px">
@@ -156,7 +156,7 @@ td, th{
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <span class="btn btn-primary btn-sm" id="btnTipoSolicitante">BUSCAR TIPO SOLICITANTE</span>
+                        <span class="btn btn-primary btn-sm" id="btnTipoSolicitante">BUSCAR SOLICITANTE</span>
                     </div>
                 </div>
 
@@ -328,7 +328,7 @@ td, th{
                       </select>
                     </div>
                     <div class="col-md-4">
-                      <span class="btn btn-primary btn-sm" onclick="consultar()">BUSCAR TIPO DE TRÁMITE</span>
+                      <span class="btn btn-primary btn-sm" onclick="consultar()">BUSCAR TRÁMITE</span>
                     </div>
                 </div>
 
@@ -379,7 +379,7 @@ td, th{
                   </fieldset>
                 </div>
 
-                <div class="col-md-12 usuario" style="padding: 2% 4% 2% 4%;">
+                <div class="col-md-12" style="padding: 2% 4% 2% 4%; display:none;">
                   <fieldset style="max-width: 100% !important;border: 3px solid #ddd;padding: 15px;">
                     <legend style="width: 8%">Operador</legend>
                     <div class="col-md-12 form-group">

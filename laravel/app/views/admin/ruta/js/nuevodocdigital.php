@@ -1,6 +1,5 @@
 <script type="text/javascript">
 $(document).ready(function() {
-
     slctGlobal.listarSlctFuncion('plantilladoc','cargar','slct_plantilla','simple',null,{'area':1});
 /*
     slctGlobal.listarSlct('area','slct_areas','multiple',null,{estado:1,areagestion:1});
@@ -74,12 +73,21 @@ $(document).ready(function() {
     });
 
      $('#listDocDigital').on('show.bs.modal', function (event) {
+        $("#listDocDigital #fechaDoc").datetimepicker({
+            format: "yyyy-mm-dd",
+            language: 'es',
+            showMeridian: false,
+            time:false,
+            minView:2,
+            startView:2,
+            autoclose: true,
+            todayBtn: false
+        });
      	var button = $(event.relatedTarget); // captura al boton
 	    var text = $.trim( button.data('texto') );
 	    var id= $.trim( button.data('id') );
 	    var camposP = {'nombre':text,'id':id};
-            var data={activo:1, tipo:'asignar'};
-        docdigital.Cargar(HTMLCargar,camposP,data);
+        CargarDocumentosFecha();
     });
 
     function limpia(area) {
@@ -98,6 +106,13 @@ $(document).ready(function() {
         limpia(this);
     });
 });
+
+CargarDocumentosFecha = ()=>{
+    var camposP = {'nombre':'txt_codigo','id':'txt_doc_digital_id'};
+    var data={activo:1, tipo:'asignar', fecha: $("#listDocDigital #fechaDoc").val()};
+    docdigital.Cargar(HTMLCargar,camposP,data);
+}
+
 
 
 /*doc digital */
@@ -134,7 +149,6 @@ HTMLCargar=function(datos,campos){
       
         html+="<td>"+data.titulo+"</td>";
         html+="<td>"+data.asunto+"</td>";
-        html+="<td>"+data.plantilla+"</td>";
         html+="<td><a class='btn btn-success btn-sm' c_text='"+c_text+"' c_id='"+c_id+"'  id='"+data.id+"' title='"+data.titulo+"' onclick='SelectDocDig(this)'><i class='glyphicon glyphicon-ok'></i> </a></td>";
         if($.trim(data.ruta) != 0  || $.trim(data.rutadetallev) != 0){
             html+="<td><a class='btn btn-primary btn-sm' id='"+data.id+"' onclick='openPlantilla(this,0,4,1)'><i class='fa fa-eye'></i> </a></td>";

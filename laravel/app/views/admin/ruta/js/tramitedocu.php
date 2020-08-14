@@ -315,7 +315,7 @@ Mostrar = function(data){
 
 ValidacionEmpresa = function(data){
      $('#t_empresa').dataTable().fnDestroy();
-    if(data.length > 1){
+    //if(data.length > 1){
         var html = '';
         $.each(data,function(index, el) {
             html+='<tr id='+el.id+'>';
@@ -335,12 +335,12 @@ ValidacionEmpresa = function(data){
         $('#tb_empresa').html(html);
          $("#t_empresa").dataTable(); 
         $('#empresasbyuser').modal('show');
-    }else if(data.length == 1){
+    /*}else if(data.length == 1){
         poblateData('empresa',data[0]);
     }else{
         $(".empresa").addClass('hidden');
         alert('no cuenta con una empresa');
-    }
+    }*/
 }
 
 selectEmpresa = function(obj){
@@ -475,9 +475,9 @@ HTMLClasificadores = function(data){
             html+='<tr>';
             html+='<td>'+el.id+'</td>';
             html+='<td style="text-align: left">'+el.nombre_clasificador_tramite+'</td>';
-            html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onClick="getRequisitos(this)">Ver</span></td>';
+            html+='<td><span class="btn btn-info btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onClick="getRequisitos(this)">Ver</span></td>';
+            html+='<td><span class="btn btn-info btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onclick="cargarRutaId('+el.ruta_flujo_id+',2)">Ver Ruta</span></td>';
             html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" area_id="'+el.area_id+'" onclick="selectClaTramite(this)">Seleccionar</span></td>';
-            html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onclick="cargarRutaId('+el.ruta_flujo_id+',2)">Ver Ruta</span></td>';
             html+='</tr>';        
         });
         $("#tb_clasificador").html(html);

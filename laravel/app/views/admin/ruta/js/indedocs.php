@@ -2,10 +2,15 @@
 var textoIdG='';
 var documentoIdIG='';
 $(document).ready(function() {
-          $('#fechaI').daterangepicker({
-            format: 'YYYY-MM-DD',
-            singleDatePicker: true,
-            showDropdowns: true
+        $("#fechaI").datetimepicker({
+            format: "yyyy-mm-dd",
+            language: 'es',
+            showMeridian: false,
+            time:false,
+            minView:2,
+            startView:2,
+            autoclose: true,
+            todayBtn: false
         });
         
      $('#t_indedocs').dataTable();

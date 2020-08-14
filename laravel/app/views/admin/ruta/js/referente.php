@@ -36,11 +36,21 @@ $(document).ready(function() {
         columnDefsG=resG[0]; // registra las columnas del datatable
         targetsG=resG[1]; // registra los contadores
         
-        $('.fechaG').daterangepicker({
+        /*$('.fechaG').daterangepicker({
             format: 'YYYY-MM-DD',
             singleDatePicker: true,
             showDropdowns: true
-        });
+        });*/
+        /*$(".fechaG").datetimepicker({
+            format: "yyyy-mm-dd",
+            language: 'es',
+            showMeridian: false,
+            time:false,
+            minView:2,
+            startView:2,
+            autoclose: true,
+            todayBtn: false
+        });*/
         //MostrarAjax('referente');
     });
 

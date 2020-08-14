@@ -922,7 +922,7 @@ class Ruta extends Eloquent
                 if (is_array($tiempo)){
                     $rutaDetalle['dtiempo']=$tiempo[$index];                    
                 }else{*/
-                    $rutaDetalle['dtiempo']=$val->tiempo;
+                    $rutaDetalle['dtiempo']=1;
 /*                }
 */
                 $rutaDetalle['norden']=$cero.($index+1);
@@ -1153,14 +1153,9 @@ class Ruta extends Eloquent
                         $rutaDetalleVerbo['condicion']= 0;
 
                         if($value == 5){
-                            $Area = Area::find($val->area_id);
-                            if($Area->area_gestion == 1){
-                                $rutaDetalleVerbo['rol_id']= 8;     
-                            }elseif($Area->area_gestion == 2){
-                                $rutaDetalleVerbo['rol_id']= 9;                                    
-                            }
+                            $rutaDetalleVerbo['rol_id']= 26;
                         }else{
-                            $rutaDetalleVerbo['rol_id']= 1;                                
+                            $rutaDetalleVerbo['rol_id']= 3;
                         }
 
                         $rutaDetalleVerbo['verbo_id']= $value;
