@@ -142,6 +142,10 @@ validaDocumentos = function(){
         alert("Ingrese Nombre del Documento");
         r=false;
     }
+    else if( $("#form_documentos_modal #slct_tipo").val()=='' ){
+        alert("Seleccione Tipo documento");
+        r=false;
+    }
     else if( $("#form_documentos_modal #slct_area").val()=='' ){
         alert("Seleccione Area");
         r=false;
