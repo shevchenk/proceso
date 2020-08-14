@@ -133,7 +133,7 @@ td, th{
               <form id="FormCrearPreTramite" method="post">
                 <div class="col-md-12" style="margin-top:10px">
                     <div class="col-md-2" style="padding-top: 5px;">
-                      <span>TIPO: </span>
+                      <span>TIPO DOC. INGRESO: </span>
                     </div>
                     <div class="col-md-3">
                       <select class="form-control" id="cbo_tipodocumento" name="cbo_tipodocumento">

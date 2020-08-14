@@ -30,6 +30,7 @@ $(document).ready(function() {
     slctGlobal.listarSlct('software','slct_software_id_modal','simple',ids,data);
     slctGlobal.listarSlct2('rol','slct_rol_modal',data);
     slctGlobal.listarSlct2('verbo','slct_verbo_modal',data);
+    data = {estado:1, tipo:'Ingreso'};
     slctGlobal.listarSlct2('documento','slct_documento_modal',data);
     $('#rutaModal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget); // captura al boton
