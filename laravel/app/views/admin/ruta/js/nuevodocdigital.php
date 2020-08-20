@@ -1,14 +1,16 @@
 <script type="text/javascript">
+var camposP = {};
 $(document).ready(function() {
-    slctGlobal.listarSlctFuncion('plantilladoc','cargar','slct_plantilla','simple',null,{'area':1});
-/*
+    slctGlobal.listarSlctFuncion('area','listara','slct_area_id','simple',null,{estado:1,areapersona:1});
+/*    slctGlobal.listarSlctFuncion('plantilladoc','cargar','slct_plantilla','simple',null,{'area':1});
+
     slctGlobal.listarSlct('area','slct_areas','multiple',null,{estado:1,areagestion:1});
     slctGlobal.listarSlct('area','slct_copia','multiple',null,{estado:1,areagestion:1});*/
 
-    slctGlobal.listarSlctFuncion('area','areasgerencia','slct_areas','multiple',null,{estado:1,areagestion:1});
-    slctGlobal.listarSlctFuncion('area','areasgerencia','slct_copia','multiple',null,{estado:1,areagestion:1});
+    /*slctGlobal.listarSlctFuncion('area','areasgerencia','slct_areas','multiple',null,{estado:1,areagestion:1});
+    slctGlobal.listarSlctFuncion('area','areasgerencia','slct_copia','multiple',null,{estado:1,areagestion:1});*/
 
-    slctGlobalHtml('slct_tipoenvio','simple');
+    /*slctGlobalHtml('slct_tipoenvio','simple');
     slctGlobal.listarSlct('area','slct_areasp','simple',null,{estado:1,areagestion:1}); 
     HTML_Ckeditor(); 
 
@@ -59,10 +61,10 @@ $(document).ready(function() {
     $(document).on('click', '#btnCrear', function(event) {
         event.preventDefault();       
         Agregar();
-    });
+    });*/
 
 
-    $('#NuevoDocDigital').on('show.bs.modal', function (event) {
+    /*$('#NuevoDocDigital').on('show.bs.modal', function (event) {
         $("#slct_tipoenvio").multiselect('destroy');
         slctGlobalHtml('slct_tipoenvio','simple');
         var button = $(event.relatedTarget); // captura al boton
@@ -70,10 +72,10 @@ $(document).ready(function() {
 	    var id= $.trim( button.data('id') );
 	    $("#formNuevoDocDigital input[name='txt_campos']").remove();
         $("#formNuevoDocDigital").append("<input type='hidden' c_text='"+text+"' c_id='"+id+"' id='txt_campos' name='txt_campos'>");
-    });
+    });*/
 
      $('#listDocDigital').on('show.bs.modal', function (event) {
-        $("#listDocDigital #fechaDoc").datetimepicker({
+        $("#listDocDigital #fechaDoc, #listDocDigital #txt_fecha_documento").datetimepicker({
             format: "yyyy-mm-dd",
             language: 'es',
             showMeridian: false,
@@ -86,11 +88,14 @@ $(document).ready(function() {
      	var button = $(event.relatedTarget); // captura al boton
 	    var text = $.trim( button.data('texto') );
 	    var id= $.trim( button.data('id') );
-	    var camposP = {'nombre':text,'id':id};
-        CargarDocumentosFecha();
+	    camposP = {'nombre':text,'id':id};
+        
     });
 
-    function limpia(area) {
+    data = {estado:1};
+    slctGlobal.listarSlct('documento','slct_tipo_documento_id','simple',null,data); 
+
+    /*function limpia(area) {
         $(area).find('input[type="text"],input[type="hidden"],input[type="email"],textarea,select').val('');
         $("#lblDocumento").text('');
         $("#lblArea").text('');
@@ -104,19 +109,30 @@ $(document).ready(function() {
 
     $('#NuevoDocDigital').on('hidden.bs.modal', function(){
         limpia(this);
-    });
+    });*/
 });
 
+CalcularCorrelativo = ()=>{
+    if( $("#slct_area_id").val()=='' ){
+        msjG.mensaje('warning', 'Seleccione área', 5000);
+    }
+    else if( $("#slct_tipo_documento_id").val()=='' ){
+        msjG.mensaje('warning', 'Seleccione un Tipo de Documento', 5000);
+    }
+    else{
+        data = {'tipo_doc':$("#slct_tipo_documento_id").val(), tipo_corre:2, area_id:$("#slct_area_id").val() }
+        docdigital.CargarCorrelativo(data,HTMLCargarCorrelativo);
+    }
+}
+
 CargarDocumentosFecha = ()=>{
-    var camposP = {'nombre':'txt_codigo','id':'txt_doc_digital_id'};
     var data={activo:1, tipo:'asignar', fecha: $("#listDocDigital #fechaDoc").val()};
     docdigital.Cargar(HTMLCargar,camposP,data);
 }
 
 
-
 /*doc digital */
-HTML_Ckeditor=function(){
+/*HTML_Ckeditor=function(){
     CKEDITOR.replace( 'plantillaWord' );
 };
 
@@ -130,7 +146,7 @@ HTMLPlantilla = function(data){
         CKEDITOR.instances.plantillaWord.setData( result.cuerpo );
         docdigital.CargarCorrelativo({'tipo_doc':result.tipo_documento_id},HTMLCargarCorrelativo);
     }
-}
+}*/
 
 HTMLCargar=function(datos,campos){
 	var c_text = campos.nombre;
@@ -148,23 +164,42 @@ HTMLCargar=function(datos,campos){
         }
       
         html+="<td>"+data.titulo+"</td>";
-        html+="<td>"+data.asunto+"</td>";
-        html+="<td><a class='btn btn-success btn-sm' c_text='"+c_text+"' c_id='"+c_id+"'  id='"+data.id+"' title='"+data.titulo+"' onclick='SelectDocDig(this)'><i class='glyphicon glyphicon-ok'></i> </a></td>";
-        if($.trim(data.ruta) != 0  || $.trim(data.rutadetallev) != 0){
-            html+="<td><a class='btn btn-primary btn-sm' id='"+data.id+"' onclick='openPlantilla(this,0,4,1)'><i class='fa fa-eye'></i> </a></td>";
-        }else{
-             html+="<td></td>";
+        //html+="<td>"+data.asunto+"</td>";
+        vistaDoc = '';
+
+        if( $.trim(data.doc_url) != '' || $.trim(data.doc_archivo) != '' ){
+            vistaDoc = "<a class='btn btn-info btn-sm' id='"+data.id+"' onclick='verDocumento("+data.id+")'><i class='fa fa-eye'></i> </a>";
         }
+        
+        html+="<td>"+
+            vistaDoc+
+            "<a class='btn btn-warning btn-sm' id='"+data.id+"' onclick='ActualizarDoc("+data.id+")'><i class='fa fa-edit'></i> </a>"+
+            "</td>";
+        
+        html+="<td><a class='btn btn-success btn-sm' c_text='"+c_text+"' c_id='"+c_id+"'  id='"+data.id+"' title='"+data.titulo+"' onclick='SelectDocDig(this)'><i class='glyphicon glyphicon-ok'></i> </a></td>";
         html+="</tr>";
     });
     $("#tb_doc_digital").html(html);
     $("#t_doc_digital").dataTable();
 };
 
+verDocumento= (id)=>{
+    url = 'http://proceso.jssoluciones.pe/doc_digital/'+id;
+    window.open(url, '_blank');
+    return false;
+}
+
+ActualizarDoc= (id)=>{
+    var data = {doc_digital_id: id};
+    docdigital.ActualizarDoc(data);
+}
+
 SelectDocDig = function(obj,id){	
 	var id = obj.getAttribute('id');
 	var nombre = obj.getAttribute('title');
-	$("#"+obj.getAttribute('c_text')).val(nombre);
+    console.log("#"+obj.getAttribute('c_text'), "#"+obj.getAttribute('c_id'));
+    console.log(id, nombre);
+	$("#"+obj.getAttribute('c_text')).val(nombre).attr("readonly",'true');
 	$("#"+obj.getAttribute('c_id')).val(id);
 	$("#listDocDigital").modal('hide');
 }
@@ -181,11 +216,44 @@ openPlantilla=function(obj,id,tamano,tipo){
 
 HTMLCargarCorrelativo=function(obj){
     $(".txttittle").val("");
-    var ano= obj.ano;
-    var correlativo=obj.correlativo;
-    $(".txttittle").val(correlativo);
+    $(".txttittle").val(obj.correlativo);
+    console.log(obj.area+ " - " +obj.año);
+    $("#listDocDigital #txt_titulofinal").val($("#slct_tipo_documento_id option:selected").text()+ ' N° ' + obj.correlativo +' - '+obj.area+ " - " +obj.año);
+    $("#listDocDigital #lblArea").text(obj.area+ " - " +obj.año);
 }
 
+onArchivos = function (event,obj) {
+    var tr=obj.parentNode.parentNode;
+    console.log(tr);
+    var files = event.target.files || event.dataTransfer.files;
+    if (!files.length)
+        return;
+    var image = new Image();
+    var reader = new FileReader();
+    reader.onload = (e) => {
+        $(tr).find('input:eq(1)').val(e.target.result);
+    };
+    reader.readAsDataURL(files[0]);
+    $(tr).find('input:eq(0)').val(files[0].name);
+    console.log(files[0].name);
+}
+
+GenerarCodigo = ()=>{
+    if( $("#slct_area_id").val()=='' ){
+        msjG.mensaje('warning', 'Seleccione área', 5000);
+    }
+    else if( $("#slct_tipo_documento_id").val()=='' ){
+        msjG.mensaje('warning', 'Seleccione un Tipo de Documento', 5000);
+    }
+    else{
+        docdigital.GenerarDoc();
+    }
+}
+
+GuardarArchivo = ()=>{
+    docdigital.GuardarArchivo();
+}
+/*
 AreaSeleccionadas = function(){
     areasSelect = [];
     if($('#slct_tipoenvio').val() == 1){ //persona
@@ -213,6 +281,6 @@ copias = function(){
 
 Agregar=function(){
     docdigital.AgregarEditar(AreaSeleccionadas(),0,1);
-};
+};*/
 /*end doc digital */
 </script>

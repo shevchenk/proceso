@@ -304,7 +304,7 @@ class DocumentoDigitalController extends \BaseController {
             //$DocDigital->correlativo = Input::get('titulo');
             $DocDigital->asunto = Input::get('asunto');
             $DocDigital->cuerpo = $html;
-//            $DocDigital->plantilla_doc_id = Input::get('plantilla');
+            //$DocDigital->plantilla_doc_id = Input::get('plantilla');
             //$DocDigital->area_id = Auth::user()->area_id;
 
             if(Input::has('chk_todasareas') && Input::get('chk_todasareas') == 'allgesub'){
@@ -314,11 +314,11 @@ class DocumentoDigitalController extends \BaseController {
             }
 
             $DocDigital->tipo_envio = Input::get('tipoenvio');
-//            if(Input::get('tipoenvio')==3 or Input::get('tipoenvio')==5){
-//                $DocDigital->persona_id = Auth::user()->id;    
-//            }else{
-//                $DocDigital->persona_id = $jefe[0]->id;                
-//            }
+            /*if(Input::get('tipoenvio')==3 or Input::get('tipoenvio')==5){
+                $DocDigital->persona_id = Auth::user()->id;    
+            }else{
+                $DocDigital->persona_id = $jefe[0]->id;                
+            }*/
             
             $DocDigital->usuario_updated_at = Auth::user()->id;
             $DocDigital->save();       
@@ -351,91 +351,13 @@ class DocumentoDigitalController extends \BaseController {
                     $dd->save();
                 }
 
-                	$areas_envio = json_decode(Input::get('areasselect'));
-                        if(count($areas_envio)>=10){
-                            foreach ($areas_envio as $key => $value) {
-                                $validacion=Area::find($value->area_id);
-                                if($validacion->area_gestion_f==1){
-                                    if(Input::get('tipoenvio')==2){
-                                        if($value->area_id!=Auth::user()->area_id){
-                                            $DocDigitalArea = new DocumentoDigitalArea();
-                                            $DocDigitalArea->doc_digital_id = $DocDigital->id;
-                                            $DocDigitalArea->persona_id = $value->persona_id;
-                                            $DocDigitalArea->area_id = $value->area_id;
-                                            $DocDigitalArea->tipo = $value->tipo;
-                                            $DocDigitalArea->usuario_created_at = Auth::user()->id;
-                                            $DocDigitalArea->save();
-                                        }
-                                    }else {
-                                        $DocDigitalArea = new DocumentoDigitalArea();
-                                        $DocDigitalArea->doc_digital_id = $DocDigital->id;
-                                        $DocDigitalArea->persona_id = $value->persona_id;
-                                        $DocDigitalArea->area_id = $value->area_id;
-                                        $DocDigitalArea->tipo = $value->tipo;
-                                        $DocDigitalArea->usuario_created_at = Auth::user()->id;
-                                        $DocDigitalArea->save();
-                                    }
-                                }
-                            }
-                        }else {
-                            foreach ($areas_envio as $key => $value) {
-                                if((Input::get('tipoenvio')==1 or Input::get('tipoenvio')==5 or Input::get('tipoenvio')==6) AND $value->tipo!=2){
-                                    foreach($value->persona_id as $personas){
-                                        // Ingresar exoneracion por vacaciones
-                                        if($plantilla->tipo_documento_id==110){
-                                            
-                                            if($cambio_despues_de_proceso==1){
-                                                $doc_dig_hi->fecha_i_vacaciones=$DocDigital->fecha_i_vacaciones;
-                                                $doc_dig_hi->fecha_f_vacaciones=$DocDigital->fecha_f_vacaciones;
-                                                $doc_dig_hi->save();
-                                            }
-                                            $DocDigital->fecha_i_vacaciones = Input::get('fi_vacacion');
-                                            $DocDigital->fecha_f_vacaciones = Input::get('ff_vacacion');
-                                            $DocDigital->save();
-                                            
-                                            $persona = Persona::find($personas);
-                                            $persona->fecha_ini_exonera = Input::get('fi_vacacion');
-                                            $persona->fecha_fin_exonera = Input::get('ff_vacacion');
-                                            $persona->usuario_updated_at = Auth::user()->id;
-                                            $persona->save();
-
-
-                                            /*disable old dates*/
-                                            $OldDates = DB::table('persona_exoneracion')
-                                                ->where('persona_id', '=', $personas)
-                                                ->where('estado','=',1)
-                                                ->get();
-                                            if(count($OldDates)>0){
-                                                foreach ($OldDates as $key => $valueE) {
-                                                    $Changed = PersonaExoneracion::find($valueE->id);
-                                                    $Changed->estado = 0;
-                                                    $Changed->save();
-                                                }                
-                                            }
-                                            /*end disable old dates*/
-
-                                            $persona_exo = new PersonaExoneracion();
-                                            $persona_exo->persona_id = $personas;
-                                            $persona_exo->fecha_ini_exonera = $DocDigital->fecha_i_vacaciones.' 00:00:00';
-                                            $persona_exo->fecha_fin_exonera = $DocDigital->fecha_f_vacaciones.' 00:00:00';
-                                            $persona_exo->observacion =  'VACACIONES CON DOCUMENTO: '.$DocDigital->titulo;
-                                            $persona_exo->doc_digital_id=$DocDigital->id;
-                                            $persona_exo->estado=1;
-                                            $persona_exo->usuario_created_at = Auth::user()->id;
-                                            $persona_exo->save();
-
-                                        }
-                                        //*******************************************************/
-                                        $DocDigitalArea = new DocumentoDigitalArea();
-                                        $DocDigitalArea->doc_digital_id = $DocDigital->id;
-                                        $DocDigitalArea->persona_id = $personas;
-                                        $DocDigitalArea->area_id = $value->area_id;
-                                        $DocDigitalArea->tipo = $value->tipo;
-                                        $DocDigitalArea->usuario_created_at = Auth::user()->id;
-                                        $DocDigitalArea->save();
-                                    }
-                                 
-                                } else {
+                $areas_envio = json_decode(Input::get('areasselect'));
+                if(count($areas_envio)>=10){
+                    foreach ($areas_envio as $key => $value) {
+                        $validacion=Area::find($value->area_id);
+                        if($validacion->area_gestion_f==1){
+                            if(Input::get('tipoenvio')==2){
+                                if($value->area_id!=Auth::user()->area_id){
                                     $DocDigitalArea = new DocumentoDigitalArea();
                                     $DocDigitalArea->doc_digital_id = $DocDigital->id;
                                     $DocDigitalArea->persona_id = $value->persona_id;
@@ -444,9 +366,87 @@ class DocumentoDigitalController extends \BaseController {
                                     $DocDigitalArea->usuario_created_at = Auth::user()->id;
                                     $DocDigitalArea->save();
                                 }
-
+                            }else {
+                                $DocDigitalArea = new DocumentoDigitalArea();
+                                $DocDigitalArea->doc_digital_id = $DocDigital->id;
+                                $DocDigitalArea->persona_id = $value->persona_id;
+                                $DocDigitalArea->area_id = $value->area_id;
+                                $DocDigitalArea->tipo = $value->tipo;
+                                $DocDigitalArea->usuario_created_at = Auth::user()->id;
+                                $DocDigitalArea->save();
                             }
-                        }                    
+                        }
+                    }
+                }else {
+                    foreach ($areas_envio as $key => $value) {
+                        if((Input::get('tipoenvio')==1 or Input::get('tipoenvio')==5 or Input::get('tipoenvio')==6) AND $value->tipo!=2){
+                            foreach($value->persona_id as $personas){
+                                // Ingresar exoneracion por vacaciones
+                                if($plantilla->tipo_documento_id==110){
+                                    
+                                    if($cambio_despues_de_proceso==1){
+                                        $doc_dig_hi->fecha_i_vacaciones=$DocDigital->fecha_i_vacaciones;
+                                        $doc_dig_hi->fecha_f_vacaciones=$DocDigital->fecha_f_vacaciones;
+                                        $doc_dig_hi->save();
+                                    }
+                                    $DocDigital->fecha_i_vacaciones = Input::get('fi_vacacion');
+                                    $DocDigital->fecha_f_vacaciones = Input::get('ff_vacacion');
+                                    $DocDigital->save();
+                                    
+                                    $persona = Persona::find($personas);
+                                    $persona->fecha_ini_exonera = Input::get('fi_vacacion');
+                                    $persona->fecha_fin_exonera = Input::get('ff_vacacion');
+                                    $persona->usuario_updated_at = Auth::user()->id;
+                                    $persona->save();
+
+
+                                    /*disable old dates*/
+                                    $OldDates = DB::table('persona_exoneracion')
+                                        ->where('persona_id', '=', $personas)
+                                        ->where('estado','=',1)
+                                        ->get();
+                                    if(count($OldDates)>0){
+                                        foreach ($OldDates as $key => $valueE) {
+                                            $Changed = PersonaExoneracion::find($valueE->id);
+                                            $Changed->estado = 0;
+                                            $Changed->save();
+                                        }                
+                                    }
+                                    /*end disable old dates*/
+
+                                    $persona_exo = new PersonaExoneracion();
+                                    $persona_exo->persona_id = $personas;
+                                    $persona_exo->fecha_ini_exonera = $DocDigital->fecha_i_vacaciones.' 00:00:00';
+                                    $persona_exo->fecha_fin_exonera = $DocDigital->fecha_f_vacaciones.' 00:00:00';
+                                    $persona_exo->observacion =  'VACACIONES CON DOCUMENTO: '.$DocDigital->titulo;
+                                    $persona_exo->doc_digital_id=$DocDigital->id;
+                                    $persona_exo->estado=1;
+                                    $persona_exo->usuario_created_at = Auth::user()->id;
+                                    $persona_exo->save();
+
+                                }
+                                //*******************************************************/
+                                $DocDigitalArea = new DocumentoDigitalArea();
+                                $DocDigitalArea->doc_digital_id = $DocDigital->id;
+                                $DocDigitalArea->persona_id = $personas;
+                                $DocDigitalArea->area_id = $value->area_id;
+                                $DocDigitalArea->tipo = $value->tipo;
+                                $DocDigitalArea->usuario_created_at = Auth::user()->id;
+                                $DocDigitalArea->save();
+                            }
+                            
+                        } else {
+                            $DocDigitalArea = new DocumentoDigitalArea();
+                            $DocDigitalArea->doc_digital_id = $DocDigital->id;
+                            $DocDigitalArea->persona_id = $value->persona_id;
+                            $DocDigitalArea->area_id = $value->area_id;
+                            $DocDigitalArea->tipo = $value->tipo;
+                            $DocDigitalArea->usuario_created_at = Auth::user()->id;
+                            $DocDigitalArea->save();
+                        }
+
+                    }
+                }                    
             }
             DB::commit();
             return Response::json(array('rst'=>1, 'msj'=>'Registro actualizado correctamente'));
@@ -656,6 +656,178 @@ class DocumentoDigitalController extends \BaseController {
                                 WHERE dd.id='.$DocDigital->id;
                     DB::insert($sql);
             return Response::json(array('rst'=>1, 'msj'=>'Su documento generado es: '.$DocDigital->titulo,'iddocdigital'=>$DocDigital->id));
+        }
+    }
+
+    public function postGenerardoc()
+    {
+        if ( Request::ajax() ) {
+            DB::beginTransaction();
+            $plantilla = DB::table('plantilla_doc')
+                        ->where('tipo_documento_id', Input::get('tipo_documento_id'))
+                        ->where('area_id', Input::get('area_id'))
+                        ->first();
+
+            $area = DB::table('areas')
+                    ->select('nemonico')
+                    ->where('id',Input::get('area_id'))
+                    ->first();
+            $area = DB::table('documentos')
+                    ->select('nombre')
+                    ->where('id',Input::get('area_id'))
+                    ->first();
+
+
+            if( !isset($plantilla->id) ){
+                $plantilla = new PlantillaDocumento;
+                $plantilla->descripcion = '';
+                $plantilla->tipo_documento_id = Input::get('tipo_documento_id');
+                $plantilla->area_id = Input::get('area_id');
+                $plantilla->cuerpo = '.';
+                $plantilla->estado = 1;
+                $plantilla->usuario_created_at = Auth::user()->id;
+                $plantilla->save();
+            }
+
+            $DocDigital = new DocumentoDigital;
+            $DocDigital->titulo = trim(Input::get('titulofinal'));
+            $DocDigital->asunto = '';
+            $DocDigital->correlativo = Input::get('titulo');
+            $DocDigital->doc_privado = (Input::has('doc_privado') ? Input::get('doc_privado') : 0);
+            $DocDigital->cuerpo = '.';
+            $DocDigital->plantilla_doc_id = $plantilla->id;
+            $DocDigital->area_id = Input::get('area_id');
+            $DocDigital->envio_total = 0;
+            $DocDigital->tipo_envio = 1;
+            $DocDigital->persona_id = Auth::user()->id; 
+            $DocDigital->usuario_created_at = Auth::user()->id;
+            
+            $cantidad=true;
+            $conteo=0;
+            $conteoMax=10;
+            $correlativoinicial=str_pad(Input::get('titulo'),6,"0",STR_PAD_LEFT);
+            $correlativoaux=$correlativoinicial;
+            while ( $cantidad==true ) {
+                $cantidad=false;
+                try {
+                    $DocDigital->save();
+                } catch (Exception $e) {
+                    $d=explode("duplicate",strtolower($e));
+                    if(count($d)>1){
+                        $cantidad=true;
+                        $DocDigital->correlativo++;
+                        $correlativoaux=str_pad($DocDigital->correlativo,6,"0",STR_PAD_LEFT);
+                        $DocDigital->titulo=str_replace($correlativoinicial,$correlativoaux,$DocDigital->titulo);
+                    }
+                    else{
+                        $conteo=$conteoMax+1;
+                    }
+                }
+                $conteo++;
+                if($conteo==$conteoMax){
+                    $cantidad=false;
+                }
+            }
+
+            if($conteo==$conteoMax){
+                DB::rollback();
+                return Response::json(array('rst'=>3, 'msj'=>'Registro Inválido revise sus datos seleccionados','correlativo'=>$correlativoaux."|".$correlativoinicial));
+            }
+            elseif($conteo==$conteoMax+1){
+                DB::rollback();
+                return Response::json(array('rst'=>3, 'msj'=>'Registro Inválido o Existe un problema con el servidor, revise sus datos seleccionados','correlativo'=>$correlativoaux."|".$correlativoinicial));
+            }
+
+            if($DocDigital->id){
+                $created=Input::get('fecha').' '.date ("h:i:s");     
+                $DocHistorial = new DocumentoFechaH;
+                $DocHistorial->documento_id = $DocDigital->id;
+                $DocHistorial->fecha_documento = $DocDigital->created_at;
+                $DocHistorial->comentario ='Inicio';
+                $DocHistorial->usuario_created_at = Auth::user()->id;
+                $DocHistorial->save();
+
+                $sql= DB::table("doc_digital_temporal")
+                        ->insert([
+                            'id' => $DocDigital->id,
+                            'plantilla_doc_id' => $plantilla->id,
+                            'titulo' => $DocDigital->titulo,
+                            'asunto' => '',
+                            'correlativo' => $DocDigital->correlativo,
+                            'doc_privado' => (Input::has('doc_privado') ? Input::get('doc_privado') : 0),
+                            'plantilla_doc_id' => $plantilla->id,
+                            'area_id' => Input::get('area_id'),
+                            'envio_total' => 0,
+                            'tipo_envio' => 1,
+                            'usuario_created_at' => Auth::user()->id,
+                            'persona_id' => Auth::user()->id,
+                            'created_at' => date('Y-m-d H:i:s')
+                        ]);
+            }
+            
+            $size = 80; // TAMAÑO EN PX 
+            $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.jssoluciones.pe/doc_digital/".$DocDigital->id);
+            $png = base64_encode($png);
+
+            DB::commit();
+            return Response::json(array('rst'=>1, 'msj'=>'Su documento generado es: '.$DocDigital->titulo
+                                    ,'doc_digital_id'=>$DocDigital->id, 'titulo'=>$DocDigital->titulo, 'correlativo'=>$correlativoaux, 'png' => 'data:image/png;base64,'.$png
+                                ));
+        }
+    }
+
+    public function postGuardararchivo()
+    {
+        $r = Input::all();
+        if ( Request::ajax() ) {
+            $docDigital= DocumentoDigital::find($r['doc_digital_id']);
+            $docDigitalT = DocumentoDigitalTemporal::find($r['doc_digital_id']);
+            $extension = '';
+            if( trim($r['doc_nombre'])!='' ){
+                $type=explode(".",$r['doc_nombre']);
+                $extension=".".$type[1];
+            }
+            if( trim($r['doc_nombre'])!='' AND strtoupper($extension)!='.PDF' ){ 
+                return Response::json(array('rst'=>2, 'msj'=>'Archivo incorrecto, solo se permiten archivos con extensión ".PDF"', 'extensión'=>$extension));
+            }
+            $url = "upload/doc_digital/doc_".$docDigital->id.$extension; 
+            if( trim($r['doc_archivo'])!='' ){
+                $docDigital->doc_archivo=$url;
+                $docDigital->doc_url = '';
+                $docDigital->save();
+                $docDigitalT->doc_archivo=$url;
+                $docDigitalT->doc_url = '';
+                $docDigitalT->save();
+                Menu::fileToFile($r['doc_archivo'], $url);
+            }
+
+            if( trim($r['doc_url'])!='' ){
+                $docDigital->doc_archivo = '';
+                $docDigital->doc_url = $r['doc_url'];
+                $docDigital->save();
+                $docDigitalT->doc_archivo = '';
+                $docDigitalT->doc_url = $r['doc_url'];
+                $docDigitalT->save();
+            }
+            return Response::json(array('rst'=>1, 'msj'=>'Archivo / Url guardado correctamente'));
+        }
+    }
+
+    public function postActualizararchivo()
+    {
+        if ( Request::ajax() ) {
+            $r = Input::all();
+            $DocDigital = DocumentoDigital::find($r['doc_digital_id']);
+            $size = 80; // TAMAÑO EN PX 
+            $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.jssoluciones.pe/doc_digital/".$DocDigital->id);
+            $png = base64_encode($png);
+
+            return Response::json(
+                array(  'rst'=>1, 'doc_digital_id'=>$DocDigital->id, 
+                        'titulo'=>$DocDigital->titulo, 'png' => 'data:image/png;base64,'.$png,
+                        'doc_url'=> $DocDigital->doc_url, 'doc_archivo'=> $DocDigital->doc_archivo
+                )
+            );
         }
     }
 

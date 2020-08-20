@@ -2,13 +2,13 @@
 @extends('layouts.master')  
 
 @section('includes')
-    @parent
-    {{ HTML::style('lib/daterangepicker/css/daterangepicker-bs3.css') }}
-    {{ HTML::style('lib/bootstrap-multiselect/dist/css/bootstrap-multiselect.css') }}
-    {{ HTML::script('lib/daterangepicker/js/daterangepicker.js') }}
+    @parent    
+    {{ HTML::style('lib/bootstrap-multiselect/dist/css/bootstrap-multiselect.css') }}    
     {{ HTML::script('lib/bootstrap-multiselect/dist/js/bootstrap-multiselect.js') }}
-    {{ HTML::script('lib/momentjs/2.9.0/moment.min.js') }} 
-    {{ HTML::script('lib/daterangepicker/js/daterangepicker_single.js') }}
+
+    {{ HTML::style('lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}  
+    {{ HTML::script('lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}
+    {{ HTML::script('lib/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.es.js') }}
 
     {{ HTML::style('css/checkbox.css') }}
     {{ HTML::script('lib/jssonido.js') }}
@@ -32,8 +32,6 @@
     @include( 'admin.ruta.js.nuevodocdigital_ajax' )
     @include( 'admin.ruta.js.nuevodocdigital' )
 
-    @include( 'admin.ruta.js.indedocs' )
-    @include( 'admin.ruta.js.indedocs_ajax' )
 @stop
 <!-- Right side column. Contains the navbar and content of the page -->
 @section('contenido')
@@ -169,7 +167,7 @@ table>tbody>tr>td{
                                             </th>
                                             <th>Tiempo</th>
                                             <th id="th_fi" style='width:250px !important;' class="unread">Fecha de Inicio<br>
-                                            <input style='width:250px' name="txt_fecha_inicio_b" id="txt_fecha_inicio_b" onChange="MostrarAjax();" type="text" />
+                                            <input style='width:250px' name="txt_fecha_inicio_c" id="txt_fecha_inicio_c" onChange="MostrarAjax();" type="text" />
                                             </th>
                                             <th id="th_ep" style='width:250px !important;' class="unread">Estado de la Actividad<br>
                                             <select name="slct_tiempo_final" id="slct_tiempo_final" onChange="MostrarAjax();" />
@@ -387,7 +385,7 @@ table>tbody>tr>td{
                                                         <th style="text-align:center">Verbo</th>
                                                         <th style="text-align:center">Tipo Documento</th>
                                                         <th style="text-align:center;width:250px !important;">Descripcion</th>
-                                                        <th style="text-align:center; width: 250px;">Documento Generado</th>
+                                                        <th style="text-align:center; width: 300px;">Documento Generado</th>
                                                         <th style="text-align:center">Observaciones</th>
                                                         <!--th style="text-align:center">Adjuntar Doc. Generado</th-->
                                                     </tr>
@@ -565,7 +563,6 @@ table>tbody>tr>td{
 @section('formulario')
     @include( 'admin.reporte.form.bandejatramite' )
     @include( 'admin.reporte.form.expediente' )
-    @include( 'admin.ruta.form.indedocs' )
     @include( 'admin.ruta.form.ruta' )
     @include( 'admin.mantenimiento.form.docdigital' )
     @include( 'admin.ruta.form.ListdocDigital' )

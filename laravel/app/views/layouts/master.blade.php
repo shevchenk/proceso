@@ -66,7 +66,7 @@
             @yield('contenido')
 
 
-            @include('templates/chat')
+            {{-- @include('templates/chat') --}}
             
 
 

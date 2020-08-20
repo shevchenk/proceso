@@ -15,7 +15,11 @@ class DocumentoDigital extends Base {
                                 ->where('dda.estado', '=', 1);
                     })->leftjoin('areas as a','dda.area_id', '=', 'a.id')
                     ->leftjoin('personas as p','dda.persona_id', '=', 'p.id')
-                    ->select('dd.id', 'dd.titulo', 'dd.asunto', 'pd.descripcion as plantilla', 'dd.plantilla_doc_id' ,'a.nombre as area','dda.area_id as area_id','p.nombre as pnombre','p.paterno as ppaterno','p.materno as pmaterno','dd.cuerpo','dd.tipo_envio','dda.persona_id','dda.tipo','dd.envio_total','pd.tipo_documento_id','dd.fecha_i_vacaciones','dd.fecha_f_vacaciones')
+                    ->select('dd.id', 'dd.titulo', 'dd.asunto', 'pd.descripcion as plantilla', 'dd.plantilla_doc_id' 
+                    ,'a.nombre as area','dda.area_id as area_id','p.nombre as pnombre','p.paterno as ppaterno','p.materno as pmaterno','dd.cuerpo'
+                    ,'dd.tipo_envio','dda.persona_id','dda.tipo','dd.envio_total','pd.tipo_documento_id','dd.fecha_i_vacaciones','dd.fecha_f_vacaciones'
+                    , 'dd.doc_archivo', 'dd.doc_url'
+                    )
                     ->where( 
 
                         function($query){                    
@@ -42,11 +46,16 @@ class DocumentoDigital extends Base {
                                     )');
                                 }
                             } 
+
+                            if( Input::has('fecha') ){
+                                $query->whereRaw('DATE(dd.created_at) = "'.Input::get('fecha').'"');
+                            }
                             $query->where('dd.estado','=',1);
                         }
-                    )->whereRaw( 
-                        ((Auth::user()->rol_id != 8 && Auth::user()->rol_id != 9) ? 'IF(dd.doc_privado=1,dd.persona_id,\''.Auth::user()->id.'\')=\''.Auth::user()->id.'\'' : " 1 ")
                     )
+                    /*->whereRaw( // Para limitar los docs privados
+                        ((Auth::user()->rol_id != 8 && Auth::user()->rol_id != 9) ? 'IF(dd.doc_privado=1,dd.persona_id,\''.Auth::user()->id.'\')=\''.Auth::user()->id.'\'' : " 1 ")
+                    )*/
 //                    ->orderBy('dd.id')
                     ->get();
         }else{
@@ -63,8 +72,8 @@ class DocumentoDigital extends Base {
                                 . 'where r.estado=1 AND dd.id=rdv.doc_digital_id ) AS rutadetallev'),
                         DB::raw('(SELECT COUNT(r.id) '
                                 . 'FROM rutas r '
-                                . 'where r.estado=1 AND dd.id=r.doc_digital_id ) AS ruta')    
-                            )
+                                . 'where r.estado=1 AND dd.id=r.doc_digital_id ) AS ruta')
+                        , 'dd.doc_archivo', 'dd.doc_url')
                    	->where( 
                         function($query){
                             if(Auth::user()->vista_doc==0){
@@ -81,8 +90,12 @@ class DocumentoDigital extends Base {
                                         WHERE acp.estado=1
                                         AND cp.persona_id= '.$usu_id.'
                                     )');
+                                    
+                            if( Input::has('fecha') ){
+                                $query->whereRaw('DATE(dd.created_at) = "'.Input::get('fecha').'"');
+                            }
+                            else {
                                 $fin = date('Y-m-d');
-
                                 if(Input::get('tipo') == 'asignar' && Auth::user()->area_id == 53)
                                     $inicio = date('Y').'01-01';
                                 else
@@ -102,11 +115,13 @@ class DocumentoDigital extends Base {
                                                     INNER JOIN rutas_detalle_verbo as rdv on rdv.ruta_detalle_id=rd.id and rdv.estado=1
                                                     where r.estado=1 AND dd.id=rdv.doc_digital_id)=0
                                                     ))');
+                            }
                             
                         }
-                    )->whereRaw( 
-                        ((Auth::user()->rol_id != 8 && Auth::user()->rol_id != 9) ? 'IF(dd.doc_privado=1,dd.persona_id,\''.Auth::user()->id.'\')=\''.Auth::user()->id.'\'' : " 1 ")
                     )
+                    /*->whereRaw(  // Para validar si esta privado
+                        ((Auth::user()->rol_id != 8 && Auth::user()->rol_id != 9) ? 'IF(dd.doc_privado=1,dd.persona_id,\''.Auth::user()->id.'\')=\''.Auth::user()->id.'\'' : " 1 ")
+                    )*/
                     ->get();            
         } 
     }
@@ -256,26 +271,33 @@ class DocumentoDigital extends Base {
     }
 
     public static function Correlativo(){
+        $area_id = Auth::user()->area_id;
+        if( Input::has('area_id') ){
+            $area_id = Input::get('area_id');
+        }
+        $area = Area::find($area_id);
         if(Input::get('tipo_corre')==2){
     	$año= date("Y");
-        $r2=array(array('correlativo'=>'000001','ano'=>$año));
+        $r2=array(array('correlativo'=>'000001','año'=>$año, 'area'=>$area->nemonico));
     	/*$sql = "SELECT LPAD(id+1,6,'0') as correlativo,'$año' ano FROM doc_digital ORDER BY id DESC LIMIT 1";*/
-        $sql = "SELECT IFNULL(LPAD(MAX(dd.correlativo)+1,6,'0'),LPAD(1,6,'0')) as correlativo 
+        $sql = "SELECT IFNULL(LPAD(MAX(dd.correlativo)+1,6,'0'),LPAD(1,6,'0')) as correlativo, '$año' as año, '$area->nemonico' as area
                 FROM doc_digital_temporal dd 
                 INNER JOIN plantilla_doc pd on dd.plantilla_doc_id=pd.id 
                 AND pd.tipo_documento_id=".Input::get('tipo_doc')." 
-                AND pd.area_id= ".Input::get('area_id').
+                AND pd.area_id= ".$area_id.
                 " WHERE dd.estado=1 
                 AND YEAR(dd.created_at)=YEAR(CURDATE())";
-    	$r= DB::select($sql);
-        return (isset($r[0])) ? $r[0] : $r2[0];}
+        $r= DB::select($sql);
+        $rs = (isset($r[0])) ? $r[0] : $r2[0];        
+        return $rs;
+        }
         
         else if(Input::get('tipo_corre')==1){
     	$año= date("Y");
         $r2=array(array('correlativo'=>'000001','ano'=>$año));
     	/*$sql = "SELECT LPAD(id+1,6,'0') as correlativo,'$año' ano FROM doc_digital ORDER BY id DESC LIMIT 1";*/
         $sql = "SELECT IFNULL(LPAD(MAX(dd.correlativo)+1,6,'0'),LPAD(1,6,'0')) as correlativo from doc_digital_temporal dd 
-                INNER JOIN plantilla_doc pd on dd.plantilla_doc_id=pd.id and pd.area_id=".Input::get('area_id')." and pd.tipo_documento_id=".Input::get('tipo_doc')." and dd.persona_id= ".Auth::user()->id.
+                INNER JOIN plantilla_doc pd on dd.plantilla_doc_id=pd.id and pd.area_id=".$area_id." and pd.tipo_documento_id=".Input::get('tipo_doc')." and dd.persona_id= ".Auth::user()->id.
                 " WHERE dd.estado=1 
                 AND YEAR(dd.created_at)=YEAR(CURDATE())";
     	$r= DB::select($sql);

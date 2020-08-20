@@ -1,6 +1,6 @@
 <script type="text/javascript">
 var docdigital={
-       AgregarEditar:function(areas,event,poblate = 0){
+    AgregarEditar:function(areas,event,poblate = 0){
         $("#formNuevoDocDigital input[name='word']").remove();
         $("#formNuevoDocDigital").append("<input type='hidden' value='"+CKEDITOR.instances.plantillaWord.getData()+"' name='word'>");
         $("#txt_titulofinal").val($("#lblDocumento").text()+$(".txttittle").val()+$("#lblArea").text());
@@ -229,6 +229,98 @@ var docdigital={
                                         '<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+
                                         '<b><?php echo trans("greetings.mensaje_error"); ?></b>'+
                                     '</div>');
+            }
+        });
+    },
+    GenerarDoc:function(){
+        var accion="documentodig/generardoc";
+        var datos=$("#Form_lstDigital").serialize().split("txt_").join("").split("slct_").join("");
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay,.loading-img").remove();
+                if(obj.rst==1){
+                    alertBootstrap('success', obj.msj, 6);
+                    $("#listDocDigital #td_documento").text(obj.titulo);
+                    $("#listDocDigital #txt_titulofinal").val(obj.titulo);
+                    $("#listDocDigital #txt_titulo").val(obj.correlativo);
+                    $("#listDocDigital #txt_doc_digital_id").val(obj.doc_digital_id);
+                    $("#listDocDigital #img_qr").attr('src',obj.png);
+                    CargarDocumentosFecha();
+                }
+                else{
+                    alertBootstrap('warning', obj.msj, 6);
+                }
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                alertBootstrap('danger', 'Ocurrio una interrupción en el proceso,Favor de intentar nuevamente', 6);
+            }
+        });
+    },
+    GuardarArchivo:function(){
+        var accion="documentodig/guardararchivo";
+        var datos=$("#Form_lstDigital").serialize().split("txt_").join("").split("slct_").join("");
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay,.loading-img").remove();
+                if(obj.rst==1){
+                    alertBootstrap('success', obj.msj, 6);
+                    CargarDocumentosFecha();
+                }
+                else{
+                    alertBootstrap('warning', obj.msj, 6);
+                }
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                alertBootstrap('danger', 'Ocurrio una interrupción en el proceso,Favor de intentar nuevamente', 6);
+            }
+        });
+    },
+    ActualizarDoc:function(datos){
+        var accion="documentodig/actualizararchivo";
+        
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay,.loading-img").remove();
+                $("#listDocDigital #td_documento").text(obj.titulo);
+                $("#listDocDigital #txt_doc_digital_id").val(obj.doc_digital_id);
+                $("#listDocDigital #img_qr").attr('src',obj.png);
+                $("#listDocDigital #doc_url, #listDocDigital #doc_nombre").val('');
+                if(obj.doc_url != ''){
+                    $("#listDocDigital #doc_url").val(obj.doc_url);
+                }
+                else{
+                    $("#listDocDigital #doc_nombre").val(obj.doc_archivo);
+                }
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                alertBootstrap('danger', 'Ocurrio una interrupción en el proceso,Favor de intentar nuevamente', 6);
             }
         });
     },

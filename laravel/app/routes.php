@@ -81,6 +81,18 @@ Route::get('/areas/', array(
     'uses'   => 'AreaController@index'
 )); 
 
+Route::get(
+    'doc_digital/{doc}', function($doc){
+        $docDigital = DocumentoDigital::where('id', $doc)->select('doc_url', 'doc_archivo')->first();
+
+        if( $docDigital->doc_url != '' ){
+            return Redirect::to($docDigital->doc_url);
+        }
+        else{
+            return Redirect::to('/'.$docDigital->doc_archivo);
+        }
+    }
+);
 
 Route::get(
     '/', function () {
