@@ -111,8 +111,8 @@ class RutaDetalleController extends \BaseController
                     $docExp = explode("_", $d1[4]);
 
                     if(is_array($docExp) && count($docExp)>0 && isset($docExp[1])){
-                        $this->addVideoLink($docExp[0]);
-                        $d1[4] = $docExp[0].' <a target="_blank" href="documentodig/vista/'.$docExp[1].'/4/1"><span class="btn btn-default btn-sm" title="Ver documento"><i class="fa fa-eye"></i></span></a> ';
+                        //$this->addVideoLink($docExp[0]);
+                        $d1[4] = $docExp[0].' <a target="_blank" href="http://proceso.jssoluciones.pe/doc_digital/'.$docExp[1].'"><span class="btn btn-default btn-sm" title="Ver documento"><i class="fa fa-eye"></i></span></a> ';
                         $make=true;
                     }
 

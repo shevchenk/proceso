@@ -98,7 +98,7 @@
                                 <tr>
                                     <th style="width:40%"># Documento Generado</th>
                                     <th style="width:20%">QR Generado</th>
-                                    <th style="width:40%">Subir Archivo</th>
+                                    <th style="width:40%">Subir Archivo ó Registrar URL del Archivo</th>
                                 </tr>
                             </thead>
                             <tbody>
