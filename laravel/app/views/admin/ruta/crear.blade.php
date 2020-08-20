@@ -24,7 +24,7 @@
 <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Crear Ruta del Proceso - Trámite
+            Crear Ruta del Proceso
             <small> </small>
         </h1>
         <ol class="breadcrumb">
@@ -56,7 +56,7 @@
 
                                 <tr>
 
-                                <th colspan="5" style="text-align:center;background-color:#A7C0DC;"><h2>Crear Ruta del Proceso - Trámite</h2></th>
+                                <th colspan="5" style="text-align:center;background-color:#A7C0DC;"><h2>Crear Ruta del Proceso</h2></th>
 
                                 </tr>
                                 <tr></tr>

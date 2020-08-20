@@ -21,7 +21,7 @@
             <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Actualizar Estado Ruta del Proceso
+                        Actualizar estado de la ruta del proceso
                         <small> </small>
                     </h1>
                     <ol class="breadcrumb">

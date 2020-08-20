@@ -270,6 +270,7 @@ class Flujo extends Base
 
     public static function getCargar( $array )
     {
+        $usuario = Auth::user()->id;
         $sSql=" SELECT f.id,f.area_id,f.categoria_id,f.nombre,f.estado,
                 c.nombre categoria,a.nombre area, f.tipo_flujo tipo_flujo_id,
                 CASE f.tipo_flujo
@@ -279,7 +280,15 @@ class Flujo extends Base
                 FROM flujos f
                 INNER JOIN categorias c ON c.id=f.categoria_id
                 INNER JOIN areas a ON a.id=f.area_id
-                WHERE 1=1 ";
+                WHERE 1=1 
+                AND a.id IN (
+                        SELECT a.id
+                        FROM area_cargo_persona acp
+                        INNER JOIN areas a ON a.id=acp.area_id AND a.estado=1
+                        INNER JOIN cargo_persona cp ON cp.id=acp.cargo_persona_id AND cp.estado=1
+                        WHERE acp.estado=1
+                        AND cp.persona_id = $usuario
+                ) ";
         $sSql.= $array['where'].
                 $array['order'].
                 $array['limit'];
