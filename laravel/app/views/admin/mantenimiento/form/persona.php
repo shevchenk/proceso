@@ -9,6 +9,8 @@
         <h4 class="modal-title">New message</h4>
       </div>
       <div class="modal-body">
+        <form id="error" name="error" action="" method="post">
+        </form>
         <form id="form_personas_modal" name="form_personas_modal" action="" method="post">
           <fieldset>
             <legend>Datos personales</legend>
