@@ -10,14 +10,11 @@ $(document).ready(function() {
     */
 
     slctGlobalHtml('slct_area,#slct_posicion,#slct_posicion_fecha,#slct_estado,#slct_tipo','simple');
-
+    slctGlobal.listarSlctFuncion('area','listara','slct_area_id','simple',null,{estado:1,areapersona:1});
     var idG={   nombre           :'onBlur|Nombre del Documento|#DCE6F1', //#DCE6F1
                 tipos            :'4|Tipo Doc|#DCE6F1||tipo', //#DCE6F1
-                areas            :'4|Siglas?|#DCE6F1||area', //#DCE6F1
-                posiciones       :'4|Posicion|#DCE6F1||posicion', //#DCE6F1
-                posiciones_fecha :'4|Posicion Fecha|#DCE6F1||posicion_fecha', //#DCE6F1
+                areas            :'onBlur|Área|#DCE6F1', //#DCE6F1
                 estado           :'2|Estado|#DCE6F1', //#DCE6F1
-
              };
 
     var resG=dataTableG.CargarCab(idG);
@@ -50,18 +47,16 @@ $(document).ready(function() {
 
             $('#form_documentos_modal #txt_nombre').val( DocumentosG.nombre );
             $('#form_documentos_modal #slct_tipo').val( DocumentosG.tipo );
-            $('#form_documentos_modal #slct_area').val( DocumentosG.area );
-            $('#form_documentos_modal #slct_posicion').val( DocumentosG.posicion );
-            $('#form_documentos_modal #slct_posicion_fecha').val( DocumentosG.posicion_fecha );
+            $('#form_documentos_modal #slct_area_id').val( DocumentosG.area_id );
             $('#form_documentos_modal #slct_estado').val( DocumentosG.estado );
             $("#form_documentos_modal").append("<input type='hidden' value='"+DocumentosG.id+"' name='id'>");
         }
-             $('#form_documentos_modal select').multiselect('rebuild');
+             $('#form_documentos_modal select').not(".mant").multiselect('rebuild');
     });
 
     $('#documentoModal').on('hide.bs.modal', function (event) {
        $('#form_documentos_modal input').val('');
-       $('#form_documentos_modal select').val('');
+       $('#form_documentos_modal select').not('.mant').val('');
 
      //   var modal = $(this);
        // modal.find('.modal-body input').val('');
@@ -73,16 +68,15 @@ BtnEditar=function(btn,id){
     DocumentosG.id=id;
     DocumentosG.nombre=$(tr).find("td:eq(0)").text();
     DocumentosG.tipo=$(tr).find("td:eq(1) input[name='slct_tipo']").val();
-    DocumentosG.area=$(tr).find("td:eq(2) input[name='slct_area']").val();
-    DocumentosG.posicion=$(tr).find("td:eq(3) input[name='slct_posicion']").val();
-    DocumentosG.posicion_fecha=$(tr).find("td:eq(4) input[name='slct_posicion_fecha']").val();
-    DocumentosG.estado=$(tr).find("td:eq(5)>span").attr("data-estado");
+    DocumentosG.area_id=$(tr).find("td:eq(1) input[name='slct_area_id']").val();
+    DocumentosG.estado=$(tr).find("td:eq(3)>span").attr("data-estado");
     $("#BtnEditar").click();
 };
 
 MostrarAjax=function(t){
     if( t=="documentos" ){
         if( columnDefsG.length>0 ){
+            console.log(columnDefsG);
             dataTableG.CargarDatos(t,'documento','cargar',columnDefsG);
         }
         else{
@@ -92,19 +86,11 @@ MostrarAjax=function(t){
 }
 
 GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion fn
+        //console.log(row);
     if(typeof(fn)!='undefined' && fn.col==1){
-        return row.tipos+"<input type='hidden'name='slct_tipo' value='"+row.tipo+"'>";
-    }
-    if(typeof(fn)!='undefined' && fn.col==2){
-        return row.areas+"<input type='hidden'name='slct_area' value='"+row.area+"'>";
+        return row.tipos+"<input type='hidden' name='slct_tipo' value='"+row.tipo+"'> <input type='hidden' name='slct_area_id' value='"+$.trim(row.area_id)+"'>";
     }
     if(typeof(fn)!='undefined' && fn.col==3){
-        return row.posiciones+"<input type='hidden'name='slct_posicion' value='"+row.posicion+"'>";
-    }
-    if(typeof(fn)!='undefined' && fn.col==4){
-        return row.posiciones_fecha+"<input type='hidden'name='slct_posicion_fecha' value='"+row.posicion_fecha+"'>";
-    }
-    if(typeof(fn)!='undefined' && fn.col==5){
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" onClick="activar('+row.id+')" data-estado="'+row.estado+'" class="btn btn-danger">Inactivo</span>';
         if(row.estado==1){
@@ -146,18 +132,18 @@ validaDocumentos = function(){
         alert("Seleccione Tipo documento");
         r=false;
     }
-    else if( $("#form_documentos_modal #slct_area").val()=='' ){
+    /*else if( $("#form_documentos_modal #slct_area_id").val()=='' ){
         alert("Seleccione Area");
         r=false;
-    }
-    else if( $("#form_documentos_modal #slct_posicion").val()=='' ){
+    }*/
+    /*else if( $("#form_documentos_modal #slct_posicion").val()=='' ){
         alert("Seleccione Posicion");
         r=false;
     }
     else if( $("#form_documentos_modal #slct_posicion_fecha").val()=='' ){
         alert("Seleccione Posicion Fecha");
         r=false;
-    }
+    }*/
     return r;
 };
 </script>

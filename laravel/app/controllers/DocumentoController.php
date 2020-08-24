@@ -39,7 +39,7 @@ class DocumentoController extends \BaseController
             if( Input::has("areas") ){
                 $area=Input::get("areas");
                 if( trim( $area )!='' ){
-                    $array['where'].=" AND doc.area=".$area;
+                    $array['where'].=" AND a.area LIKE '%".$area."%'";
                 }
             }
             if( Input::has("posiciones") ){
@@ -117,6 +117,7 @@ class DocumentoController extends \BaseController
             $documento = new Documento;
             $documento['nombre']  = Input::get('nombre');
             $documento['tipo']  = Input::get('tipo');
+            $documento['area_id']    = Input::get('area_id');
             $documento['area']    = Input::get('area');
             $documento['posicion'] = Input::get('posicion');
             $documento['posicion_fecha'] = Input::get('posicion_fecha');
@@ -157,6 +158,7 @@ class DocumentoController extends \BaseController
             $documento = Documento::find($documentoId);
             $documento['nombre'] = Input::get('nombre');
             $documento['tipo']  = Input::get('tipo');
+            $documento['area_id']    = Input::get('area_id');
             $documento['area']   = Input::get('area');
             $documento['posicion'] = Input::get('posicion');
             $documento['posicion_fecha'] = Input::get('posicion_fecha');

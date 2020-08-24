@@ -27,30 +27,37 @@
             </select>
           </div>
 
-         <div class="form-group">
-            <label class="control-label">Area:</label>
-            <select class="form-control" name="slct_area" id="slct_area">
+          <div class="form-group">
+            <label class="control-label">Área:</label>
+            <select class="form-control" name="slct_area_id" id="slct_area_id">
+                <option value="">.::Seleccione::.</option>                
+            </select>
+          </div>
+
+         <div class="form-group" style="display:none;">
+            <label class="control-label">Siglas?:</label>
+            <select class="form-control mant" name="slct_area" id="slct_area">
                 <option value="">.::Seleccione::.</option>
-                <option value='0'>Sin Siglas</option>
+                <option value='0' selected>Sin Siglas</option>
                 <option value='1'>Con Siglas</option>
             </select>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" style="display:none;">
             <label class="control-label">Posición de Título:</label>
-            <select class="form-control" name="slct_posicion" id="slct_posicion">
+            <select class="form-control mant" name="slct_posicion" id="slct_posicion">
                 <option value="">.::Seleccione::.</option>
-                <option value='0'>Centro</option>
+                <option value='0' selected>Centro</option>
                 <option value='1'>Izquierda</option>
                 <option value='2'>Derecha</option>
             </select>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" style="display:none;">
             <label class="control-label">Posicion Fecha:</label>
-            <select class="form-control" name="slct_posicion_fecha" id="slct_posicion_fecha">
+            <select class="form-control mant" name="slct_posicion_fecha" id="slct_posicion_fecha">
                 <option value="">.::Seleccione::.</option>
-                <option value='0'>Sin Fecha</option>
+                <option value='0' selected>Sin Fecha</option>
                 <option value='1'>Arriba Izquierda</option>
                 <option value='2'>Arriba Derecha</option>
                 <option value='3'>Abajo Izquierda</option>

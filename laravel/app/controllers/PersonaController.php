@@ -316,9 +316,10 @@ class PersonaController extends BaseController
             $persona['doc_privados'] = Input::get('doc_privados');
             if (Input::get('fecha_nacimiento')<>'') 
             $persona['fecha_nacimiento'] = Input::get('fecha_nacimiento');        
-            if ($rol==9 or $rol==8){
+            /*if ($rol==9 or $rol==8){
             $persona['responsable_asigt']=1;
-            $persona['responsable_dert']=1;}
+            $persona['responsable_dert']=1;}*/
+            $persona['responsable_area'] = Input::get('responsable_area');
             $persona['area_id'] = Input::get('area');
             $persona['rol_id'] = Input::get('rol');
             $persona['modalidad'] = Input::get('modalidad');
@@ -488,6 +489,7 @@ class PersonaController extends BaseController
             if (Input::has('fecha_nacimiento'))
                 $persona['fecha_nacimiento'] = Input::get('fecha_nacimiento');
 
+            $persona['responsable_area'] = Input::get('responsable_area');
             $persona['modalidad'] = Input::get('modalidad');
             $persona['vista_doc'] = Input::get('vista_doc');
             $persona['estado'] = Input::get('estado');
@@ -609,7 +611,6 @@ class PersonaController extends BaseController
      */
     public function postCambiarestado()
     {
-
         if ( Request::ajax() ) {
             $persona = Persona::find(Input::get('id'));
             $persona->estado = Input::get('estado');

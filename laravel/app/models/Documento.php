@@ -10,6 +10,7 @@ class Documento extends Base
     {
         $sSql=" SELECT  COUNT(doc.id) cant
                 FROM documentos doc
+                LEFT JOIN areas a ON a.id = doc.area_id
                 WHERE 1=1 ";
         $sSql.= $array['where'];
         $oData = DB::select($sSql);
@@ -19,13 +20,7 @@ class Documento extends Base
     public static function getCargar( $array )
     {
         $sSql=" SELECT doc.id, doc.nombre, doc.tipo, doc.area, doc.posicion, doc.posicion_fecha, doc.estado, 
-               doc.tipo AS tipos,
-               (
-               CASE doc.area
-                    WHEN '0' THEN 'Sin Siglas'
-                    ELSE 'Con Siglas'
-                END
-               )as areas,
+               doc.tipo AS tipos, doc.area_id, a.nombre as areas,
                 (
                 CASE doc.posicion
                     WHEN '0' THEN 'Centro'
@@ -44,6 +39,7 @@ class Documento extends Base
                 ) as posiciones_fecha
 
                 FROM documentos doc
+                LEFT JOIN areas a ON a.id = doc.area_id
                                  
                 WHERE 1=1 ";
         $sSql.= $array['where'].

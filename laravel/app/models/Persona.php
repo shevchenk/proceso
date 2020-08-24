@@ -177,7 +177,7 @@ class Persona extends Base implements UserInterface, RemindableInterface {
         $sSql = " SELECT p.id ,a.id area_id,r.id rol_id, p.doc_privados, p.paterno, p.materno, p.nombre,p.dni,p.sexo sexo_id,p.fecha_nacimiento,
 
                                 a.nombre area,r.nombre rol, 
-                                p.estado,p.email, p.email_mdi, p.password,
+                                p.estado,p.email, p.email_mdi, p.password, p.responsable_area, 
                                 CASE p.sexo
                                 WHEN 'M' THEN 'Masculino'
                                 WHEN 'F' THEN 'Femenino'

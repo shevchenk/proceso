@@ -144,6 +144,15 @@
                       <option value='2'>Tercero</option>
                   </select>
                 </div>
+                <div class="col-sm-2">
+                  <label class="control-label">Es Responsable de área?:
+                  </label>
+                  <select class="form-control" name="slct_responsable_area" id="slct_responsable_area">
+                      <!-- <option value='' style="display:none">.:Seleccione:.</option> -->
+                      <option value='0' selected>No</option>
+                      <option value='1'>Si</option>
+                  </select>
+                </div>
 
                 <div class="col-sm-2" style="display:none;">
                   <label class="control-label" style="color: red;">Documentos Privados:

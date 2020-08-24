@@ -96,6 +96,7 @@ $(document).ready(function() {
             $('#form_personas_modal #slct_modalidad').val( PersonasG.modalidad );
             $('#form_personas_modal #slct_vista_doc').val( PersonasG.vista_doc );
             $('#form_personas_modal #slct_doc_privados').val( PersonasG.doc_privados );
+            $('#form_personas_modal #slct_responsable_area').val( PersonasG.responsable_area );
             
 
             $('#form_personas_modal #slct_estado').val( PersonasG.estado );
@@ -142,6 +143,7 @@ BtnEditar=function(btn,id){
     PersonasG.email_mdi=$(tr).find("td:eq(6)").text();
     // se detecta el atributo que se esta enviando atravez del hiden del txt_sexo
     PersonasG.fecha_nacimiento=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('fecha_nacimiento'); 
+    PersonasG.responsable_area=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('responsable_area'); 
       //PersonasG.password=$(tr).find("td:eq(6) input[name='txt_password']").val();
     PersonasG.area=$(tr).find("td:eq(7) input[name='txt_area']").val();   
     PersonasG.rol=$(tr).find("td:eq(8) input[name='txt_rol']").val();
@@ -170,7 +172,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
     
     if(typeof(fn)!='undefined' && fn.col==4){
         //se envia de manera ocultada la fecha de nacimiento en el txt_sexo
-        return row.sexo+"<input type='hidden'name='txt_sexo' fecha_nacimiento='"+row.fecha_nacimiento+"' value='"+row.sexo_id+"'>";
+        return row.sexo+"<input type='hidden'name='txt_sexo' fecha_nacimiento='"+row.fecha_nacimiento+"' responsable_area='"+row.responsable_area+"' value='"+row.sexo_id+"'>";
     }
 
 
