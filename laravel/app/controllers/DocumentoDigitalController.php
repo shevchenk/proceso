@@ -672,10 +672,13 @@ class DocumentoDigitalController extends \BaseController {
                     ->select('nemonico')
                     ->where('id',Input::get('area_id'))
                     ->first();
-            $area = DB::table('documentos')
-                    ->select('nombre')
-                    ->where('id',Input::get('area_id'))
+
+            $documento = DB::table('documentos')
+                    ->select('nombre', 'nemonico')
+                    ->where('id',Input::get('tipo_documento_id'))
                     ->first();
+
+            $titulofinal = $documento->nemonico.' N° '.Input::get('titulo').' - '.$area->nemonico." - ".date("Y");
 
 
             if( !isset($plantilla->id) ){
@@ -690,9 +693,9 @@ class DocumentoDigitalController extends \BaseController {
             }
 
             $DocDigital = new DocumentoDigital;
-            $DocDigital->titulo = trim(Input::get('titulofinal'));
+            $DocDigital->titulo = $titulofinal;
             $DocDigital->asunto = '';
-            $DocDigital->correlativo = Input::get('titulo');
+            $DocDigital->correlativo = Input::get('titulo')*1;
             $DocDigital->doc_privado = (Input::has('doc_privado') ? Input::get('doc_privado') : 0);
             $DocDigital->cuerpo = '.';
             $DocDigital->plantilla_doc_id = $plantilla->id;
@@ -718,6 +721,8 @@ class DocumentoDigitalController extends \BaseController {
                         $DocDigital->correlativo++;
                         $correlativoaux=str_pad($DocDigital->correlativo,6,"0",STR_PAD_LEFT);
                         $DocDigital->titulo=str_replace($correlativoinicial,$correlativoaux,$DocDigital->titulo);
+                        $DocDigital->correlativo = $correlativoaux*1;
+                        $correlativoinicial = $correlativoaux;
                     }
                     else{
                         $conteo=$conteoMax+1;

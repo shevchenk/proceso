@@ -66,7 +66,7 @@
                           <div class="col-md-12">
                             <div class="col-md-3">
                               <label>Área:</label>
-                              <select id="slct_area_id" name="slct_area_id" onChange="CalcularCorrelativo();"></select>
+                              <select id="slct_area_id" name="slct_area_id" onChange="ListarDocumentos(this.value);"></select>
                             </div>
                             <div class="col-md-5">
                               <label>Tipo de documento:</label>

@@ -19,6 +19,11 @@
           </div>
 
           <div class="form-group">
+            <label class="control-label">Nemónico:</label>
+            <input type="text" class="form-control" name="txt_nemonico" id="txt_nemonico">
+          </div>
+
+          <div class="form-group">
             <label class="control-label">Tipo:</label>
             <select class="form-control" name="slct_tipo" id="slct_tipo">
                 <option value="">.::Seleccione::.</option>

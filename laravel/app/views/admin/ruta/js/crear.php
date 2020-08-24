@@ -116,12 +116,17 @@ $(document).ready(function() {
     });
 
     $('#rutaModal').on('show.bs.modal', function (event) {
+      
       var button = $(event.relatedTarget); // captura al boton
       var text = $.trim( button.data('text') );
       var id= $.trim( button.data('id') );
       // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
       // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
       var modal = $(this); //captura el modal
+
+      var data = {estado:1, area_id: id.split("_")[0]};
+      slctGlobal.listarSlct2('documento','slct_documento_modal',data, false);
+
       $("#form_ruta_tiempo #txt_nombre").val(text);
       $("#form_ruta_tiempo").append('<input type="hidden" value="'+id.split("_")[0]+'" id="txt_area_id_modal">');
       /*alert(id);
@@ -134,10 +139,11 @@ $(document).ready(function() {
       $("#form_ruta_verbo #txt_nombre").val(text);
       $("#form_ruta_verbo").append('<input type="hidden" value="'+id.split("_")[0]+'" id="txt_area_id_modal">');
 
+    
       if( id.split("_").length>1 ){
           var position=tiempoGIdAuxi.indexOf(id.split("_")[0]);
           var posicioninicial=areasGIdAuxi.indexOf(id.split("_")[0]);
-      //alert("tiempo= "+position +" | areapos="+posicioninicial);
+            //alert("tiempo= "+position +" | areapos="+posicioninicial);
           var tid=0;
           var validapos=0;
           var detalle=""; var detalle2="";
@@ -184,12 +190,12 @@ $(document).ready(function() {
                     verboGAuxi[tid][i]=detalle2.join("_");
                 }
             }
-      pintarTiempoGAuxi(tid);
+        pintarTiempoGAuxi(tid);
       }
       else{
           var position=tiempoGId.indexOf(id);
           var posicioninicial=areasGId.indexOf(id);
-      //alert("tiempo= "+position +" | areapos="+posicioninicial);
+            //alert("tiempo= "+position +" | areapos="+posicioninicial);
           var tid=0;
           var validapos=0;
           var detalle=""; var detalle2="";
@@ -236,7 +242,7 @@ $(document).ready(function() {
                     verboG[tid][i]=detalle2.join("_");
                 }
             }
-      pintarTiempoG(tid);
+        pintarTiempoG(tid);
       }
 
 

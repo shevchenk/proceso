@@ -44,6 +44,10 @@ $(document).ready(function() {
       // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
       // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
       var modal = $(this); //captura el modal
+
+      var data = {estado:1, area_id: id.split("_")[0]};
+      slctGlobal.listarSlct2('documento','slct_documento_modal',data, false);
+
       $("#form_ruta_tiempo #txt_nombre").val(text);
       $("#form_ruta_tiempo").append('<input type="hidden" value="'+id+'" id="txt_area_id_modal">');
       /*alert(id);

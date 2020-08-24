@@ -253,6 +253,11 @@ var docdigital={
                     $("#listDocDigital #txt_titulo").val(obj.correlativo);
                     $("#listDocDigital #txt_doc_digital_id").val(obj.doc_digital_id);
                     $("#listDocDigital #img_qr").attr('src',obj.png);
+
+                    $("#listDocDigital #doc_nombre").val('');
+                    $("#listDocDigital #doc_archivo").val('');
+                    $("#listDocDigital #doc_url").val('');
+
                     CargarDocumentosFecha();
                 }
                 else{

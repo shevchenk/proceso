@@ -92,7 +92,7 @@ $(document).ready(function() {
         
     });
 
-    data = {estado:1};
+    data = {estado:1, area_id : 0};
     slctGlobal.listarSlct('documento','slct_tipo_documento_id','simple',null,data); 
 
     /*function limpia(area) {
@@ -111,6 +111,12 @@ $(document).ready(function() {
         limpia(this);
     });*/
 });
+
+ListarDocumentos = (val)=>{
+    $("#slct_tipo_documento_id").multiselect('destroy');
+    var data = {estado:1, area_id: val};
+    slctGlobal.listarSlct('documento','slct_tipo_documento_id','simple',null,data); 
+}
 
 CalcularCorrelativo = ()=>{
     if( $("#slct_area_id").val()=='' ){
@@ -156,9 +162,10 @@ HTMLCargar=function(datos,campos){
     var html="";
     $('#t_doc_digital').dataTable().fnDestroy();
     $.each(datos,function(index,data){
-        
+        vistaEditar = '';
         if($.trim(data.ruta) == 0 && $.trim(data.rutadetallev) == 0){
             html+="<tr class='danger'>";
+            vistaEditar = "<a class='btn btn-warning btn-sm' id='"+data.id+"' onclick='ActualizarDoc("+data.id+")'><i class='fa fa-edit'></i> </a>";
         }else{
             html+="<tr class='success'>";
         }
@@ -173,7 +180,7 @@ HTMLCargar=function(datos,campos){
         
         html+="<td>"+
             vistaDoc+
-            "<a class='btn btn-warning btn-sm' id='"+data.id+"' onclick='ActualizarDoc("+data.id+")'><i class='fa fa-edit'></i> </a>"+
+            vistaEditar+
             "</td>";
         
         html+="<td><a class='btn btn-success btn-sm' c_text='"+c_text+"' c_id='"+c_id+"'  id='"+data.id+"' title='"+data.titulo+"' onclick='SelectDocDig(this)'><i class='glyphicon glyphicon-ok'></i> </a></td>";

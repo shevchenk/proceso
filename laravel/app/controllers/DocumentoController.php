@@ -30,6 +30,13 @@ class DocumentoController extends \BaseController
                     $array['where'].=" AND doc.nombre LIKE '%".$nombre."%' ";
                 }
             }
+
+            if( Input::has("nemonico") ){
+                $nemonico=Input::get("nemonico");
+                if( trim( $nemonico )!='' ){
+                    $array['where'].=" AND doc.nemonico LIKE '%".$nemonico."%' ";
+                }
+            }
             if( Input::has("tipos") ){
                 $tipo=Input::get("tipos");
                 if( trim( $tipo )!='' ){
@@ -39,7 +46,7 @@ class DocumentoController extends \BaseController
             if( Input::has("areas") ){
                 $area=Input::get("areas");
                 if( trim( $area )!='' ){
-                    $array['where'].=" AND a.area LIKE '%".$area."%'";
+                    $array['where'].=" AND a.nombre LIKE '%".$area."%'";
                 }
             }
             if( Input::has("posiciones") ){
@@ -116,6 +123,7 @@ class DocumentoController extends \BaseController
 
             $documento = new Documento;
             $documento['nombre']  = Input::get('nombre');
+            $documento['nemonico'] = Input::get('nemonico');
             $documento['tipo']  = Input::get('tipo');
             $documento['area_id']    = Input::get('area_id');
             $documento['area']    = Input::get('area');
@@ -157,6 +165,7 @@ class DocumentoController extends \BaseController
             $documentoId = Input::get('id');
             $documento = Documento::find($documentoId);
             $documento['nombre'] = Input::get('nombre');
+            $documento['nemonico'] = Input::get('nemonico');
             $documento['tipo']  = Input::get('tipo');
             $documento['area_id']    = Input::get('area_id');
             $documento['area']   = Input::get('area');

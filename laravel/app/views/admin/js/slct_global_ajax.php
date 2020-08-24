@@ -68,13 +68,17 @@ var slctGlobal={
             }
         });
     },
-    listarSlct2:function(controlador,slct,data){
+    listarSlct2:function(controlador,slct,data, async){
+        if( typeof async == 'undefined' ){
+            async = true;
+        }
         $.ajax({
             url         : controlador+'/listar',
             type        : 'POST',
             cache       : false,
             dataType    : 'json',
             data        : data,
+            async       : async,
             beforeSend : function() {                
                 //$("body").append('<div class="overlay"></div><div class="loading-img"></div>');
             },
