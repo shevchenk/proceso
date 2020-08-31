@@ -278,9 +278,9 @@ class DocumentoDigital extends Base {
         $area = Area::find($area_id);
         if(Input::get('tipo_corre')==2){
     	$año= date("Y");
-        $r2=array(array('correlativo'=>'000001','año'=>$año, 'area'=>$area->nemonico));
+        $r2=array(array('correlativo'=>'1','año'=>$año, 'area'=>$area->nemonico));
     	/*$sql = "SELECT LPAD(id+1,6,'0') as correlativo,'$año' ano FROM doc_digital ORDER BY id DESC LIMIT 1";*/
-        $sql = "SELECT IFNULL(LPAD(MAX(dd.correlativo)+1,6,'0'),LPAD(1,6,'0')) as correlativo, '$año' as año, '$area->nemonico' as area
+        $sql = "SELECT IFNULL(MAX(dd.correlativo)+1,1) as correlativo, '$año' as año, '$area->nemonico' as area
                 FROM doc_digital_temporal dd 
                 INNER JOIN plantilla_doc pd on dd.plantilla_doc_id=pd.id 
                 AND pd.tipo_documento_id=".Input::get('tipo_doc')." 
@@ -296,7 +296,7 @@ class DocumentoDigital extends Base {
     	$año= date("Y");
         $r2=array(array('correlativo'=>'000001','ano'=>$año));
     	/*$sql = "SELECT LPAD(id+1,6,'0') as correlativo,'$año' ano FROM doc_digital ORDER BY id DESC LIMIT 1";*/
-        $sql = "SELECT IFNULL(LPAD(MAX(dd.correlativo)+1,6,'0'),LPAD(1,6,'0')) as correlativo from doc_digital_temporal dd 
+        $sql = "SELECT IFNULL(MAX(dd.correlativo)+1,1) as correlativo from doc_digital_temporal dd 
                 INNER JOIN plantilla_doc pd on dd.plantilla_doc_id=pd.id and pd.area_id=".$area_id." and pd.tipo_documento_id=".Input::get('tipo_doc')." and dd.persona_id= ".Auth::user()->id.
                 " WHERE dd.estado=1 
                 AND YEAR(dd.created_at)=YEAR(CURDATE())";
@@ -307,7 +307,7 @@ class DocumentoDigital extends Base {
     	$año= date("Y");
         $r2=array(array('correlativo'=>'000001','ano'=>$año));
     	/*$sql = "SELECT LPAD(id+1,6,'0') as correlativo,'$año' ano FROM doc_digital ORDER BY id DESC LIMIT 1";*/
-        $sql = "SELECT IFNULL(LPAD(MAX(dd.correlativo)+1,6,'0'),LPAD(1,6,'0')) as correlativo from doc_digital_temporal dd 
+        $sql = "SELECT IFNULL(MAX(dd.correlativo)+1,1) as correlativo from doc_digital_temporal dd 
                 INNER JOIN plantilla_doc pd on dd.plantilla_doc_id=pd.id and pd.tipo_documento_id=".Input::get('tipo_doc')." WHERE dd.estado=1 
                 AND YEAR(dd.created_at)=YEAR(CURDATE())";
     	$r= DB::select($sql);

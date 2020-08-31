@@ -678,7 +678,14 @@ class DocumentoDigitalController extends \BaseController {
                     ->where('id',Input::get('tipo_documento_id'))
                     ->first();
 
-            $titulofinal = $documento->nemonico.' N° '.Input::get('titulo').' - '.$area->nemonico." - ".date("Y");
+            $buscar = array('6@','5@','4@','3@','2@','1@','4#','2#');
+            $reemplazar = array( str_pad( Input::get('titulo'), 6, "0", STR_PAD_LEFT ), str_pad( Input::get('titulo'), 5, "0", STR_PAD_LEFT ),
+                str_pad( Input::get('titulo'), 4, "0", STR_PAD_LEFT ), str_pad( Input::get('titulo'), 3, "0", STR_PAD_LEFT ),
+                str_pad( Input::get('titulo'), 2, "0", STR_PAD_LEFT ), str_pad( Input::get('titulo'), 1, "0", STR_PAD_LEFT ),
+                date("Y"), date("y")
+            );
+            $titulofinal = str_replace( $buscar, $reemplazar, $documento->nemonico );
+            //$titulofinal = $documento->nemonico.' N° '.Input::get('titulo').' - '.$area->nemonico." - ".date("Y");
 
 
             if( !isset($plantilla->id) ){
@@ -708,7 +715,7 @@ class DocumentoDigitalController extends \BaseController {
             $cantidad=true;
             $conteo=0;
             $conteoMax=10;
-            $correlativoinicial=str_pad(Input::get('titulo'),6,"0",STR_PAD_LEFT);
+            $correlativoinicial=Input::get('titulo');
             $correlativoaux=$correlativoinicial;
             while ( $cantidad==true ) {
                 $cantidad=false;
@@ -719,8 +726,14 @@ class DocumentoDigitalController extends \BaseController {
                     if(count($d)>1){
                         $cantidad=true;
                         $DocDigital->correlativo++;
-                        $correlativoaux=str_pad($DocDigital->correlativo,6,"0",STR_PAD_LEFT);
-                        $DocDigital->titulo=str_replace($correlativoinicial,$correlativoaux,$DocDigital->titulo);
+                        $correlativoaux=$DocDigital->correlativo;
+                        $reemplazar = array( str_pad( $correlativoaux, 6, "0", STR_PAD_LEFT ), str_pad( $correlativoaux, 5, "0", STR_PAD_LEFT ),
+                            str_pad( $correlativoaux, 4, "0", STR_PAD_LEFT ), str_pad( $correlativoaux, 3, "0", STR_PAD_LEFT ),
+                            str_pad( $correlativoaux, 2, "0", STR_PAD_LEFT ), str_pad( $correlativoaux, 1, "0", STR_PAD_LEFT ),
+                            date("Y"), date("y")
+                        );
+                        $DocDigital->titulo = str_replace( $buscar, $reemplazar, $documento->nemonico );
+                        //$DocDigital->titulo=str_replace($correlativoinicial,$correlativoaux,$DocDigital->titulo);
                         $DocDigital->correlativo = $correlativoaux*1;
                         $correlativoinicial = $correlativoaux;
                     }

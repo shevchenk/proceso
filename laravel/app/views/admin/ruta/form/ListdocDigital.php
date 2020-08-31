@@ -76,12 +76,13 @@
                               <label>Correlativo:</label>
                               <input type="text" maxlength="6" class="form-control txttittle" placeholder="Ingrese Titulo" name="txt_titulo" id="txt_titulo">
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2" style="display:none;">
                               <label>Nemónico:</label>
                               <label id="lblArea" style="margin-top:5px;">AREA - 2020</label>
                             </div>
                           <div>
-                          <div class="col-md-4">
+                          <div class="col-md-12">
+                          <div class="col-md-3">
                           <br>
                             <label>Fecha del documento:</label>
                             <input type='text' id="txt_fecha_documento" name="txt_fecha_documento" value="<?php echo date("Y-m-d");?>" class='form-control' placeholder='YYYY-MM-DD'> 
@@ -89,6 +90,7 @@
                           <div class="col-md-4">
                           <br>
                             <a class="btn btn-info btn-lg" onclick='GenerarCodigo();' ><i class="fa fa-qrcode"> Generar QR </i></a>
+                          </div>
                           </div>
                         <input type="hidden" id="txt_titulofinal" name="txt_titulofinal" value="">
                         <div class="col-md-12">

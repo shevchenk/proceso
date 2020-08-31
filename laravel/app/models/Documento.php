@@ -51,7 +51,7 @@ class Documento extends Base
 
     public static function getDocumento(){
         $r=DB::table('documentos')
-                ->select('id', DB::raw('CONCAT_WS( " - " ,nombre,nemonico) as nombre'),'estado','area','posicion','posicion_fecha','tipo')
+                ->select('id', 'nombre', 'estado', 'area', 'posicion', 'posicion_fecha', 'tipo')
 
                 ->where( 
                     function($query){
