@@ -137,6 +137,34 @@ HTMLreported=function(datos){
             }
         }
 
+        var img = ''; var archivo='';
+
+        if( $.trim(data.archivo)!='' ){
+            $.each(data.archivo.split("|"),function(index, varchivo){
+                if( $.trim(varchivo)!='' && varchivo.substr(-3)=='pdf' ){
+                    img= 'img/archivo/pdf.jpg';
+                }
+                else if( $.trim(varchivo)!='' && (varchivo.substr(-4)=='docx' || varchivo.substr(-3)=='doc') ){
+                    img= 'img/archivo/word.png';
+                }
+                else if( $.trim(varchivo)!='' && (varchivo.substr(-4)=='xlsx' || varchivo.substr(-3)=='xls' || varchivo.substr(-3)=='csv') ){
+                    img= 'img/archivo/excel.jpg';
+                }
+                else if( $.trim(varchivo)!='' && (varchivo.substr(-4)=='pptx' || varchivo.substr(-3)=='ppt') ){
+                    img= 'img/archivo/ppt.png';
+                }
+                else if( $.trim(varchivo)!='' && varchivo.substr(-3)=='txt' ){
+                    img= 'img/archivo/txt.jpg';
+                }
+                else{
+                    img= varchivo;
+                }
+                archivo +=  "<a href='"+ varchivo +"' target='_blank'>"+
+                                "<img src='"+ img +"' alt='' class='img-responsive foto_desmonte' width='60' height='50' border='0'>"+
+                            "</a>";
+            });
+        }
+
         html+="<tr class='"+alerta+"'>"+
                 "<td>"+data.norden+"</td>"+
                 "<td>"+data.area+"</td>"+
@@ -145,6 +173,7 @@ HTMLreported=function(datos){
                 "<td>"+data.dtiempo_final+"</td>"+
                 "<td>"+estado_final+"</td>"+
                 "<td>"+data.verbo2.split("|").join("<br>")+"</td>"+
+                "<td>"+ archivo +"</td>"+
                 "<td>"+data.ordenv.split("|").join("<br>")+"</td>"+
                 "<td>"+data.retorno+"</td>"; // SE AÑADIO
         html+=  "</tr>";

@@ -107,7 +107,7 @@
                                 <!-- COLSPAN, es como combinar celdas en excel. pones la cantidad de filas que se agrupara como titulo -->
                                 <td colspan="6" style='background-color:#DEFAFA; width: 30% !important;text-align: center; border: 1px solid;'>Datos del paso</td>
                                 <td style='background-color:#F5DF9D; width: 35% !important;text-align: center; border: 1px solid;'>Acciones a realizar</td>
-                                <td colspan="2" style='background-color:#FCD790; width: 35% !important;text-align: center; border: 1px solid;'>Acciones realizadas</td>
+                                <td colspan="3" style='background-color:#FCD790; width: 35% !important;text-align: center; border: 1px solid;'>Acciones realizadas</td>
                             </tr>
                             <tr>
                                 <!-- DATOS DEL PASO -->
@@ -126,6 +126,7 @@
                                 </td>
                                 <!--**********************************************-->
                                 <!-- ACCIONES REALIZADAS -->
+                                <td style='background-color:#FCD790;text-align: center; border: 1px solid;'>Archivo</td>
                                 <td style='background-color:#FCD790;text-align: center; border: 1px solid;'>Estado
                                 (N° Doc.
                                 Descripcion)

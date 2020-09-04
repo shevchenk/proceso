@@ -63,15 +63,25 @@ class ReporteTramite extends Eloquent
                     ORDER BY v.orden ASC
                 SEPARATOR '|'),'') AS verbo2,
                 IFNULL(GROUP_CONCAT(
-                  CONCAT(
-                      '<b>',
-                      IFNULL(v.orden,' '),
-                      '</b>',
-                       '.- ',
-                      IF(v.finalizo=0,'<font color=#EC2121>Pendiente</font>',CONCAT('<font color=#22D72F>Finalizó</font>(',p.paterno,' ',p.materno,', ',p.nombre,' ',IFNULL(CONCAT('<b>',v.documento,'</b>'),''),'//',IFNULL(v.observacion,''),'//',IFNULL(CONCAT('<b>',v.updated_at,'</b>'),''),')' ) )
-                  )
+                    CONCAT(
+                        '<b>',
+                        IFNULL(v.orden,' '),
+                        '</b>',
+                        '.- ',
+                        IF(v.finalizo=0,
+                            '<font color=#EC2121>Pendiente</font>'
+                            ,CONCAT('<font color=#22D72F>Finalizó</font>(',p.paterno,' ',p.materno,', ',p.nombre,' '
+                                ,IFNULL(CONCAT('<b>',
+                                    IF( v.doc_digital_id > 0,CONCAT('<a href=\'http://proceso.jssoluciones.pe/doc_digital/', v.doc_digital_id ,'\' target=\'_blank\'>',v.documento,'</a>'), v.documento)
+                                    ,'</b>'),''),'//'
+                                ,IFNULL(v.observacion,''),'//'
+                                ,IFNULL(CONCAT('<b>',v.updated_at,'</b>'),''),')' 
+                            ) 
+                        )
+                    )
                     ORDER BY v.orden ASC
-                SEPARATOR '|'),'') AS ordenv
+                SEPARATOR '|'),'') AS ordenv,
+                rd.archivo
 
                 FROM rutas AS r 
                 INNER JOIN rutas_detalle AS rd ON r.id = rd.ruta_id AND rd.estado = 1
