@@ -121,6 +121,7 @@ var Asignar={
                         '</div>');
                         $("#msj").effect('shake');
  //                       $("#msj").fadeOut(4000);
+                    $("#txt_codigo, #txt_codigo2").val(obj.codigo);
                 }
                 else{
                     alert(obj.msj);
@@ -195,6 +196,7 @@ var Asignar={
                         '</div>');
                         $("#msj").effect('shake');
 //                        $("#msj").fadeOut(tiempo);
+                    $("#txt_codigo, #txt_codigo2").val(obj.codigo);
                 }
                 else{
                     alert(obj.msj);

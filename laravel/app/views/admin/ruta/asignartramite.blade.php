@@ -19,17 +19,10 @@
     @include( 'admin.js.slct_global' )
 
     @include( 'admin.ruta.js.ruta_ajax' )
-    @include( 'admin.ruta.js.nuevodocdigital_ajax' )
-    @include( 'admin.ruta.js.nuevodocdigital' )
     
     @include( 'admin.ruta.js.asignartramite_ajax' )
     @include( 'admin.ruta.js.asignartramite' )
 
-    @include( 'admin.ruta.js.plataforma' )
-    
-    @include( 'admin.ruta.js.indedocs' )
-    @include( 'admin.ruta.js.indedocs_ajax' )
-    
     @include( 'admin.ruta.js.proceso' )
     @include( 'admin.ruta.js.referente' )
 
@@ -89,7 +82,7 @@
                                                 <div class="col-sm-12">
                                                     <div class="col-sm-4">
                                                         <label class="control-label">Nro Trámite:</label>
-                                                        <input class="form-control" id="txt_codigo" name="txt_codigo" type="text"  readonly="">
+                                                        <input class="form-control" id="txt_codigo" name="txt_codigo" type="text" value="INT - <?php echo date("Ymd - His");?>"  readonly="">
                                                         <input id="txt_documento_id" name="txt_documento_id" type="hidden"  value="">
                                                         <input id="txt_doc_digital_id" name="txt_doc_digital_id" type="hidden"  value="">
                                                     </div>
@@ -108,9 +101,9 @@
                                                         <!--span class="btn btn-primary" data-toggle="modal" data-target="#indedocsModal" data-texto="txt_codigo" data-id="txt_documento_id" id="btn_buscar_indedocs">
                                                             <i class="fa fa-search fa-lg"></i>
                                                         </span-->
-                                                        <span class="btn btn-warning" data-toggle="modal" onclick="Liberar('txt_codigo','txt_documento_id')" id="btn_borrar">
+                                                        <!-- <span class="btn btn-warning" data-toggle="modal" onclick="Liberar('txt_codigo','txt_documento_id')" id="btn_borrar">
                                                             <i class="fa fa-pencil fa-lg"></i>
-                                                        </span>
+                                                        </span> -->
                                                     </div>
                                                   
                                                   
@@ -284,7 +277,7 @@
                                                 <div class="col-sm-12 form-group">
                                                     <div class="col-sm-4">
                                                         <label class="control-label">Nro Trámite:</label>
-                                                        <input class="form-control" id="txt_codigo2" name="txt_codigo2" type="text"  readonly="">
+                                                        <input class="form-control" id="txt_codigo2" name="txt_codigo2" type="text" value="INT - <?php echo date("Ymd - His");?>"  readonly="">
                                                         <input id="txt_documento_id2" name="txt_documento_id2" type="hidden"  value="">
                                                          <input id="txt_doc_digital_id2" name="txt_doc_digital_id2" type="hidden"  value="">
                                                     </div>
@@ -303,9 +296,9 @@
                                                         <!--span class="btn btn-primary" data-toggle="modal" data-target="#indedocsModal" data-texto="txt_codigo2" data-id="txt_documento_id2" id="btn_buscar_indedocs">
                                                             <i class="fa fa-search fa-lg"></i>
                                                         </span-->
-                                                        <span class="btn btn-warning" data-toggle="modal" onclick="Liberar('txt_codigo2','txt_documento_id2')" id="btn_borrar">
+                                                        <!-- <span class="btn btn-warning" data-toggle="modal" onclick="Liberar('txt_codigo2','txt_documento_id2')" id="btn_borrar">
                                                             <i class="fa fa-pencil fa-lg"></i>
-                                                        </span>
+                                                        </span> -->
                                                     </div>
                                                   
                                                   
@@ -495,12 +488,8 @@
 @stop
 
 @section('formulario')
-     @include( 'admin.mantenimiento.form.docdigital' )
-     @include( 'admin.ruta.form.asignar' )
-     @include( 'admin.ruta.form.ruta' )
-     @include( 'admin.ruta.form.plataforma' )
-     @include( 'admin.ruta.form.indedocs' )
-     @include( 'admin.ruta.form.ListdocDigital' )
      @include( 'admin.ruta.form.proceso' )
+     @include( 'admin.ruta.form.ruta' )     
      @include( 'admin.ruta.form.referente' )
+     @include( 'admin.ruta.form.asignar' )
 @stop

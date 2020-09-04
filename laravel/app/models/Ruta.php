@@ -455,7 +455,8 @@ class Ruta extends Eloquent
 
         return  array(
                     'rst'=>1,
-                    'msj'=>'Registro realizado con éxito'
+                    'msj'=>'Registro realizado con éxito',
+                    'codigo' => "INT - ".date("Ymd - His")
                 );
         }
     }
@@ -1168,7 +1169,8 @@ class Ruta extends Eloquent
             DB::commit();
             return  array(
                     'rst'=>1,
-                    'msj'=>'Registro realizado con éxito'
+                    'msj'=>'Registro realizado con éxito',
+                    'codigo'=> "INT - ".date("Ymd - His")
             );
         }
     }

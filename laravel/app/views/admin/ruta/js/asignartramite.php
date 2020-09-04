@@ -291,7 +291,7 @@ CerrarTablaRelacion=function(){
 
 SeleccionRelacion=function(id,codigo){
     CerrarTablaRelacion();
-    $("#txt_codigo").val(codigo);
+    //$("#txt_codigo").val(codigo);
     $("#txt_tabla_relacion_id").remove();
     $("#form_asignar").append('<input type="hidden" id="txt_tabla_relacion_id" name="txt_tabla_relacion_id" value="'+id+'">');
 }
@@ -312,9 +312,9 @@ guardarTodo=function(){
     if( $("#slct_flujo2_id").val()=='' ){
         alert("Seleccione un Tipo Flujo");
     }
-    else if( $.trim($("#txt_codigo").val())==''){
+    /*else if( $.trim($("#txt_codigo").val())==''){
         alert("Ingrese Nro Trámite");
-    }
+    }*/
 //    else if( $.trim($("#txt_referente").val())!='' && $("#txt_referente").val().length>50 ){
 //        alert("Referencia supera el maximo de 50 caracteres, Revisar e ingresar solo el documento a referirse.");
 //    }
@@ -794,9 +794,9 @@ guardarProcesoGestion = function(){
     if( $("#slct_flujo2_id").val()=='' ){
         alert("Seleccione un Tipo Flujo");
     }
-    else if( $.trim($("#txt_codigo2").val())==''){
+    /*else if( $.trim($("#txt_codigo2").val())==''){
         alert("Ingrese Nro Trámite");
-    }
+    }*/
 //    else if( $.trim($("#txt_referente2").val())!='' && $("#txt_referente2").val().length>50 ){
 //        alert("Referencia supera el maximo de 50 caracteres, Revisar e ingresar solo el documento a referirse.");
 //    }

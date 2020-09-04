@@ -43,7 +43,7 @@ $(document).ready(function() {
 //            singleDatePicker: true,
 //            showDropdowns: true
 //        });
-          MostrarAjax('proceso');  
+        MostrarAjax('proceso');  
     });
 
     $('#procesoModal').on('hide.bs.modal', function (event) {
