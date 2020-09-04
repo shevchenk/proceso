@@ -678,7 +678,7 @@ class DocumentoDigitalController extends \BaseController {
                     ->where('id',Input::get('tipo_documento_id'))
                     ->first();
 
-            $buscar = array('6@','5@','4@','3@','2@','1@','4#','2#');
+            $buscar = array('@@@@@@','@@@@@','@@@@','@@@','@@','@','####','##');
             $reemplazar = array( str_pad( Input::get('titulo'), 6, "0", STR_PAD_LEFT ), str_pad( Input::get('titulo'), 5, "0", STR_PAD_LEFT ),
                 str_pad( Input::get('titulo'), 4, "0", STR_PAD_LEFT ), str_pad( Input::get('titulo'), 3, "0", STR_PAD_LEFT ),
                 str_pad( Input::get('titulo'), 2, "0", STR_PAD_LEFT ), str_pad( Input::get('titulo'), 1, "0", STR_PAD_LEFT ),
