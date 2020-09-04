@@ -102,7 +102,8 @@ class RutaController extends \BaseController
             return Response::json(
                 array(
                     'rst'   => $res['rst'],
-                    'msj'   => $res['msj']
+                    'msj'   => $res['msj'],
+                    'codigo'=> $res['codigo']
                 )
             );
         }
@@ -120,7 +121,8 @@ class RutaController extends \BaseController
             return Response::json(
                 array(
                     'rst'   => $res['rst'],
-                    'msj'   => $res['msj']
+                    'msj'   => $res['msj'],
+                    'codigo'=> $res['codigo']
                 )
             );
         }
