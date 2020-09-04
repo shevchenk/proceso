@@ -64,7 +64,7 @@
                             <label class="control-label">Generar documento:</label>
                           </div>
                           <div class="col-md-12">
-                            <div class="col-md-3">
+                            <div class="col-md-5">
                               <label>Área:</label>
                               <select id="slct_area_id" name="slct_area_id" onChange="ListarDocumentos(this.value);"></select>
                             </div>
