@@ -72,7 +72,7 @@ class ReporteTramite extends Eloquent
                             '<font color=#EC2121>Pendiente</font>'
                             ,CONCAT('<font color=#22D72F>Finalizó</font>(',p.paterno,' ',p.materno,', ',p.nombre,' '
                                 ,IFNULL(CONCAT('<b>',
-                                    IF( v.doc_digital_id > 0,CONCAT('<a href=\'http://proceso.jssoluciones.pe/doc_digital/', v.doc_digital_id ,'\' target=\'_blank\'>',v.documento,'</a>'), v.documento)
+                                    IF( v.doc_digital_id > 0,CONCAT(v.documento,'<a class=\'btn btn-default btn-sm\' href=\'doc_digital/', v.doc_digital_id ,'\' target=\'_blank\'><i class=\'fa fa-eye\'></i></a>'), v.documento)
                                     ,'</b>'),''),'//'
                                 ,IFNULL(v.observacion,''),'//'
                                 ,IFNULL(CONCAT('<b>',v.updated_at,'</b>'),''),')' 
