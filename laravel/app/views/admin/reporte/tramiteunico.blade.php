@@ -126,10 +126,8 @@
                                 </td>
                                 <!--**********************************************-->
                                 <!-- ACCIONES REALIZADAS -->
-                                <td style='background-color:#FCD790;text-align: center; border: 1px solid;'>Archivo</td>
-                                <td style='background-color:#FCD790;text-align: center; border: 1px solid;'>Estado
-                                (N° Doc.
-                                Descripcion)
+                                <td style='background-color:#FCD790;text-align: center; border: 1px solid;'>Archivo de Apoyo</td>
+                                <td style='background-color:#FCD790;text-align: center; border: 1px solid;'>Estado (Documento generado)
                                 </td>
                                 <td style='background-color:#FCD790;text-align: center; border: 1px solid;'>Responsable
                                 de
