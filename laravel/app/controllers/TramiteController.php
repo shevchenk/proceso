@@ -154,33 +154,45 @@ class TramiteController extends BaseController {
 	 */
 	public function postCreate()
 	{
-		$img = $_FILES['txt_file'];
+		//$img = $_FILES['txt_file'];
 		$data = $_POST;
 
-		if($img && $data){ //img y data
-			$name = md5($img['name']).'_'.$data['txt_pretramiteid'].'.jpeg';
-			$root = public_path().'/img/tramite/'.$name;
-
+		if($data){ //img y data
+			/*$name = md5($img['name']).'_'.$data['txt_pretramiteid'].'.jpeg';
+			//$root = public_path().'/img/tramite/'.$name;
 			if(move_uploaded_file($img['tmp_name'], $root)){ //move
-				$tramite = new Tramite;
-		       	$tramite['pretramite_id'] = $data['txt_pretramiteid'];
-		        $tramite['persona_id'] = $data['txt_personaid'];
+			}*/
+			$name = '';
+				$tramite = Tramite::where('pretramite_id', $data['txt_pretramiteid'])->first();
 
-		        if($data['txt_empresaid']){
-		        	$tramite['empresa_id'] = $data['txt_empresaid'];      	
-		        }
-
-		        //$tramite['area_id'] = $data['txt_area'];
-		        $tramite['clasificador_tramite_id'] = $data['txt_ctramite'];
-		        $tramite['tipo_solicitante_id'] = $data['txt_tsolicitante'];
-		        $tramite['tipo_documento_id'] = $data['txt_tdocumento'];
-		        $tramite['documento'] =$data['txt_tdoc'];
-		        $tramite['nro_folios'] = $data['txt_folio'];
-		        $tramite['observacion'] = $data['txt_observaciones'];
-		        $tramite['imagen'] = $name;
-		        $tramite['fecha_tramite'] = date('Y-m-d H:i:s');
-		        $tramite['usuario_created_at'] = Auth::user()->id;
-		        $tramite->save();
+				if( !isset($tramite->id) ){
+					$tramite = new Tramite;
+					   $tramite['pretramite_id'] = $data['txt_pretramiteid'];
+					$tramite['persona_id'] = $data['txt_personaid'];
+	
+					if($data['txt_empresaid']){
+						$tramite['empresa_id'] = $data['txt_empresaid'];      	
+					}
+	
+					$tramite['area_id'] = $data['txt_area'];
+					$tramite['clasificador_tramite_id'] = $data['txt_ctramite'];
+					$tramite['tipo_solicitante_id'] = $data['txt_tsolicitante'];
+					$tramite['tipo_documento_id'] = $data['txt_tdocumento'];
+					$tramite['documento'] =$data['txt_tdoc'];
+					$tramite['nro_folios'] = $data['txt_folio'];
+					$tramite['observacion'] = $data['txt_observaciones'];
+					$tramite['imagen'] = $name;
+					$tramite['fecha_tramite'] = date('Y-m-d H:i:s');
+					$tramite['usuario_created_at'] = Auth::user()->id;
+					$tramite->save();
+				}
+				else{
+					DB::rollback();
+					return  array(
+							'rst'=>2,
+							'msj'=>'El trámite ya fue registrado anteriormente'
+						);
+				}
 
 
 		        /*start to create process*/
@@ -228,7 +240,8 @@ class TramiteController extends BaseController {
 				        $tablaRelacion['id_union']=$codigo;
 				        
 				        $tablaRelacion['fecha_tramite']= $tramite->fecha_tramite; //Input::get('fecha_tramite');
-				        $tablaRelacion['tipo_persona']=$tramite->tipo_solicitante_id;
+						$tablaRelacion['tipo_persona']=$tramite->tipo_solicitante_id;
+						$tablaRelacion['tramite_id'] = $tramite->id;
 
 				       /* if( Input::has('paterno') AND Input::has('materno') AND Input::has('nombre') ){*/
 				       	if($data['txt_personaid']){
@@ -238,7 +251,7 @@ class TramiteController extends BaseController {
 				            $persona = Persona::find($data['txt_personaid']);
 				        	$tablaRelacion['paterno']=$persona['paterno'];
 				            $tablaRelacion['materno']=$persona['materno'];
-				            $tablaRelacion['nombre']=$persona['nombre'];
+							$tablaRelacion['nombre']=$persona['nombre'];
 				        }
 				        elseif( Input::has('razon_social') AND Input::has('ruc') ){
 				            $tablaRelacion['razon_social']=Input::get('razon_social');
@@ -344,12 +357,12 @@ class TramiteController extends BaseController {
 			                 /*if($rd->norden==1 or $rd->norden==2 or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){*/
 			                if($rd->norden==1 or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){	
                                 if($rd->norden==1 && $rd->area_id == 52){
-                                    $rutaDetalle['dtiempo_final']=date("Y-m-d H:i:s");
+                                    /*$rutaDetalle['dtiempo_final']=date("Y-m-d H:i:s");
                                     $rutaDetalle['tipo_respuesta_id']=2;
                                                 $rutaDetalle['tipo_respuesta_detalle_id']=1;
                                     $rutaDetalle['observacion']="";
                                     $rutaDetalle['usuario_updated_at']=Auth::user()->id;
-                                    $rutaDetalle['updated_at']=date("Y-m-d H:i:s");
+                                    $rutaDetalle['updated_at']=date("Y-m-d H:i:s");*/
                                 }
                                 $rutaDetalle['fecha_inicio']=date("Y-m-d H:i:s");
                             }
@@ -498,7 +511,7 @@ class TramiteController extends BaseController {
 				
 					
 				} //end if registry was succesfully
-			}	//end move		
+			
 		} //end if img y data
 	}
 

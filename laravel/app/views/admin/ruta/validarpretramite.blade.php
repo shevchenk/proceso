@@ -128,32 +128,65 @@ td, th{
         <section class="content">
             <!-- Inicia contenido -->
          
-
+            <div class="box-body">
+                <div class="row form-group" id="reporte">
+                    <div class="row form-group" >
+                      <div class="col-sm-12">
+                        <div class="col-sm-2">
+                            <label class="control-label">CODIGO PRE TRAMITE: </label>
+                          </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" placeholder="Codigo Pre Tramite" id="txt_codpt" name="txt_codpt"/>
+                          
+                        </div>
+                        <!-- <div class="col-sm-3">
+                            <select id="slct_persona" name="slct_persona" class="form-control">
+                              
+                            </select>
+                        </div> -->
+                        <div class="col-sm-3">
+                            <span class="btn btn-primary btn-md" onclick="Detallepret()"><i class="glyphicon glyphicon-search"></i> Buscar</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="box-body table-responsive">
+                            <table id="t_reporte" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                      <th>Fecha:</th>
+                                      <td>
+                                          <div class="input-group">
+                                          <input type='text' id="filtro_fecha" class="form-control mant" value='<?php echo date("Y-m-d");?>' >
+                                          <a class='btn btn-primary btn-sm input-group-addon' onClick='ListarPreTramites();'><i class="fa fa-search"></i></a>
+                                          </div>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                        <th>COD</th>
+                                        <th>NOMBRE DEL USUARIO</th>
+                                        <th>NOMBRE DEL SOLICITANTE</th>
+                                        <th>TIPO SOLICITANTE</th>
+                                        <th>TIPO TRAMITE</th>
+                                        <th>TIPO DOCUMENTO</th>
+                                        <th>NOMBRE TRAMITE</th>
+                                        <th>FECHA REGISTRADA</th>
+                                        <th>SELECCIONAR</th>
+                                        <!-- <th>VER VOUCHER</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody id="tb_reporte">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="box-body">
                 <div class="row form-group" id="">
                     <div class="col-sm-10">
-                        <div class="row form-group" >
-                           <div class="col-sm-12">
-                            <div class="col-sm-2">
-                                <label class="control-label">CODIGO PRE TRAMITE: </label>
-                             </div>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" placeholder="Codigo Pre Tramite" id="txt_codpt" name="txt_codpt"/>
-                              
-                            </div>
-                            <div class="col-sm-3">
-                                <select id="slct_persona" name="slct_persona" class="form-control">
-                                  
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <span class="btn btn-primary btn-md" onclick="Detallepret()"><i class="glyphicon glyphicon-search"></i> Buscar</span>
-                            </div>
-                          </div>
-                        </div>
-
                         <div class="content-body hidden">
-                          <form id="FormTramite" name="FormTramite" method="post" action="" enctype="multipart/form-data">
+                          <form id="FormTramite" name="FormTramite" method="post" action="">
 
                             <input type="hidden" id="txt_pretramiteid" name="txt_pretramiteid">
                             <input type="hidden" id="txt_personaid" name="txt_personaid">
@@ -194,11 +227,11 @@ td, th{
                                       </div>
                                    </div>
                                 </div>
-                                <div class="col-sm-2">
+                                <!-- <div class="col-sm-2">
                                     <input type="file" name="txt_file" id="txt_file" style="display: none">
                                     <label class="btn btn-primary btn-sm" id="btnImage" name="btnImage" style="width: 100%">CARGAR IMAGEN</label>
                                     <img class="img-circle img-tramite" style="height: 142px;width: 100%;border-radius: 8px;border: 1px solid grey;margin-top: 5px;padding: 8px" :src="index.img">         
-                                </div>
+                                </div> -->
                               </div>
                             </div>
 
@@ -217,8 +250,6 @@ td, th{
                                   <label>TIPO DOCUMENTO IDENT: </label>
                                   <span id="spanTipoDIU"></span>
                                 </div>          --}}                   
-                              </div>
-                              <div class="row form-group">
                                 <div class="col-sm-4">
                                   <label>PATERNO: </label>
                                   <span id="spanPaternoU"></span>
@@ -227,10 +258,26 @@ td, th{
                                   <label>MATERNO: </label>
                                   <span id="spanMaternoU"></span>
                                 </div>
+                              </div>
+                              <div class="row form-group">
                                 <div class="col-sm-4">
                                   <label>#DOCUMENTO IDENT: </label>
                                   <span id="spanDNIU"></span>
-                                </div>                            
+                                </div>
+                                <div class="col-sm-4">
+                                  <label>#EMAIL: </label>
+                                  <span id="spanEMAIL"></span>
+                                </div>
+                                <div class="col-sm-4">
+                                  <label>#TELÉFONO / CELULAR: </label>
+                                  <span id="spanTELEFONOCELULAR"></span>
+                                </div>
+                              </div>
+                              <div class="row form-group">
+                                <div class="col-sm-4">
+                                  <label>#DIRECCIÓN: </label>
+                                  <span id="spanDIRECCION"></span>
+                                </div>
                               </div>
                             </div>
 

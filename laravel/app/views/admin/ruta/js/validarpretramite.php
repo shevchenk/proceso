@@ -1,6 +1,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
-     slctGlobal.listarSlct('persona','slct_persona','simple',null,{apellido_nombre:1});
+    ListarPreTramites();
+
+    slctGlobal.listarSlct('persona','slct_persona','simple',null,{apellido_nombre:1});
 
 
     $(document).on('click', '#btnImage', function(event) {
@@ -41,6 +43,11 @@ $(document).ready(function() {
             success: function (obj) {
                 if(obj.rst==1){
                     limpiar();
+                    ListarPreTramites();
+                    msjG.mensaje("success", obj.msj,3000);
+                }
+                else{
+                    msjG.mensaje("warning", obj.msj,3000);
                 }
             }
         });
@@ -63,7 +70,6 @@ $(document).ready(function() {
     DataUser = '<?php echo Auth::user(); ?>';
     /*Inicializar tramites*/
     var data={'persona':UsuarioId,'estado':1};
-/*    Bandeja.MostrarPreTramites(data,HTMLPreTramite);*/
     /*end Inicializar tramites*/
 
     /*inicializate selects*/
@@ -191,8 +197,50 @@ $(document).ready(function() {
                 /* end validanting info*/
 });
 
+ListarPreTramites = ()=>{
+    var data={'persona':0,'estado':1, 'filtro_fecha': $("#filtro_fecha").val(), 'validaFiltro':1};  
+    Bandeja.MostrarPreTramites(data,HTMLPreTramite);
+}
+
+HTMLPreTramite = function(data){
+    
+    if(data){
+        var html ='';
+        $.each(data,function(index, el) {
+            html+="<tr>";
+            html+=    "<td>"+el.pretramite +"</td>";
+            html+=    "<td>"+el.usuario+"</td>";
+            
+            if(el.empresa){
+                html+=    "<td>"+el.empresa+"</td>";                
+            }else{
+                html+=    "<td>"+el.usuario+"</td>";
+            }
+            
+            html+=    "<td>"+el.solicitante+"</td>";
+            html+=    "<td>"+el.tipotramite+"</td>";
+            html+=    "<td>"+el.tipodoc+"</td>";
+            html+=    "<td>"+el.tramite+"</td>";
+            html+=    "<td>"+el.fecha+"</td>";
+            html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="PreDetallepret('+el.pretramite+')"><i class="glyphicon glyphicon-th-list"></i></span></td>';
+
+            var url = "documentodig/ticket/"+el.pretramite;
+
+            //html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="imprimirTicket(\''+url+'\')"><i class="glyphicon glyphicon-search"></i></span></td>';
+            html+="</tr>";            
+        });
+        $("#tb_reporte").html(html);
+    }
+}
+
+PreDetallepret = (id)=>{
+    $('#txt_codpt').val(id);
+    Detallepret();
+}
+
 
 Detallepret = function(){
+    
     var codpretramite = $('#txt_codpt').val();
     var persona = $('#slct_persona').val();
     var data = {};
@@ -221,9 +269,12 @@ poblarDetalle = function(data){
             document.querySelector('#spanPaternoU').innerHTML=result.apepusuario;
             document.querySelector('#spanMaternoU').innerHTML=result.apemusuario;
             document.querySelector('#spanDNIU').innerHTML=result.dniU;
+            document.querySelector('#spanEMAIL').innerHTML= $.trim(result.email);
+            document.querySelector('#spanTELEFONOCELULAR').innerHTML= $.trim(result.telefono) +' / '+ $.trim(result.celular);
+            document.querySelector('#spanDIRECCION').innerHTML= $.trim(result.direccion);
 
             if(result.empresaid){
-                document.querySelector('#spanTE').innerHTML=result.data;
+                document.querySelector('#spanTE').innerHTML=result.tipoempresa;
                 document.querySelector('#spanRazonS').innerHTML=result.empresa;
                 document.querySelector('#spanDF').innerHTML=result.edireccion;
                 document.querySelector('#spanRUC').innerHTML=result.ruc;
@@ -252,7 +303,7 @@ poblarDetalle = function(data){
         }
     }else{
         document.querySelector('.content-body').classList.add('hidden');
-        alert('no se encontro el pre tramite');
+        msjG.mensaje("warning", 'No se encontró el pre tramite',3000);
     }
 }
 
@@ -269,19 +320,14 @@ HTMLClasificadores = function(data){
             html+='<tr>';
             html+='<td>'+el.id+'</td>';
             html+='<td>'+el.nombre_clasificador_tramite+'</td>';
-            html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onClick="getRequisitos(this)">Ver</span></td>';
+            html+='<td><span class="btn btn-info btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onClick="getRequisitos(this)">Ver</span></td>';
+            html+='<td><span class="btn btn-info btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onclick="cargarRutaId('+el.ruta_flujo_id+',2)">Ver Ruta</span></td>';
             html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onclick="selectClaTramite(this)">Seleccionar</span></td>';
-            html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onclick="cargarRutaId('+el.ruta_flujo_id+',2)">Ver Ruta</span></td>';
             html+='</tr>';        
         });
         $("#tb_clasificador").html(html);
-        $("#t_clasificador").dataTable(
-        {
-            "order": [[ 0, "asc" ]],
-        }
-    ); 
+        $("#t_clasificador").dataTable(); 
         $("#buscartramite").modal('show');
-        alert('sin data');
     }else{
     }
 }

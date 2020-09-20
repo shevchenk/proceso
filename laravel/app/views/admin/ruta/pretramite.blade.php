@@ -121,12 +121,21 @@ td, th{
             <!-- Inicia contenido -->
          
 
-            <div class="box-body table-responsive">
+            <div class="box-body">
                 <div class="row form-group" id="reporte">
                     <div class="col-sm-12">
                         <div class="box-body table-responsive">
                             <table id="t_reporte" class="table table-bordered">
                                 <thead>
+                                    <tr>
+                                      <th>Fecha:</th>
+                                      <td>
+                                          <div class="input-group">
+                                          <input type='text' id="filtro_fecha" class="form-control mant" value='<?php echo date("Y-m-d");?>' >
+                                          <a class='btn btn-primary btn-sm input-group-addon' onClick='CargarPreTramites();'><i class="fa fa-search"></i></a>
+                                          </div>
+                                      </td>
+                                    </tr>
                                     <tr>
                                         <th>COD</th>
                                         <th>NOMBRE DEL USUARIO</th>
@@ -137,7 +146,7 @@ td, th{
                                         <th>NOMBRE TRAMITE</th>
                                         <th>FECHA REGISTRADA</th>
                                         <th>VER DETALLE</th>
-                                        <th>VER VOUCHER</th>
+                                        <!-- <th>VER VOUCHER</th> -->
                                     </tr>
                                 </thead>
                                 <tbody id="tb_reporte">
@@ -154,16 +163,16 @@ td, th{
                 <div class="col-md-12 form-group">
                   <div class="col-md-5">
                      <div class="col-md-4" style="padding-top: 5px;">
-                      <span>TIPO TRAMITE: </span>
+                      <span>TIPO TRÁMITE: </span>
                     </div>
                     <div class="col-md-8">
-                      <select class="form-control" id="cbo_tipotramite" name="cbo_tipotramite">
+                      <select class="form-control select" id="cbo_tipotramite" name="cbo_tipotramite">
                           <option value="-1">Selecciona</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-md-2">
-                    <span class="btn btn-primary btn-sm" onclick="consultar()">BUSCAR TIPO DE TRÁMITE</span>
+                    <span class="btn btn-primary btn-sm" onclick="consultar()">BUSCAR TRÁMITE</span>
                   </div>
                 </div>
 
@@ -172,7 +181,7 @@ td, th{
                     <div class="col-md-12 form-group">
                       <div class="col-md-7">
                         <div class="col-md-4">
-                          <span>NOMBRE TRAMITE: </span>
+                          <span>NOMBRE TRÁMITE: </span>
                         </div>
                         <div class="col-md-8">
                           <input type="text" name="txt_nombretramite" id="txt_nombretramite" class="form-control" disabled>
@@ -182,7 +191,7 @@ td, th{
                       </div>
                       <div class="col-md-5  form-group">
                         <div class="col-md-5">
-                          <span>NUMERO DE FOLIO: </span>
+                          <span>NÚMERO DE FOLIO: </span>
                         </div>
                         <div class="col-md-7">
                           <input type="text" name="txt_numfolio" id="txt_numfolio" class="form-control">
@@ -195,7 +204,7 @@ td, th{
                           <span>TIPO DOCUMENTO: </span>
                         </div>
                         <div class="col-md-8">
-                          <select class="form-control" id="cbo_tipodoc" name="cbo_tipodoc">
+                          <select class="form-control select" id="cbo_tipodoc" name="cbo_tipodoc">
                               <option value="-1">Selecciona</option>
                           </select>
                         </div>
@@ -219,7 +228,7 @@ td, th{
                       <span>TIPO SOLICITANTE: </span>
                     </div>
                     <div class="col-md-8">
-                      <select class="form-control" id="cbo_tiposolicitante" name="cbo_tiposolicitante">
+                      <select class="form-control select" id="cbo_tiposolicitante" name="cbo_tiposolicitante">
                             <option value="-1">Selecciona</option>
                       </select>
                     </div>
@@ -276,7 +285,7 @@ td, th{
                       </div>
                       <div class="col-md-6">
                         <div class="col-md-4">
-                          <span>TELEFONO: </span>
+                          <span>TELÉFONO: </span>
                         </div>
                         <div class="col-md-8">
                           <input type="text" name="txt_emptelefono" id="txt_emptelefono" class="form-control" disabled>
@@ -351,20 +360,38 @@ td, th{
                       </div>
                     </div>
                     <div class="col-md-12 form-group">
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <div class="col-md-4">
-                          <span>TELEFONO: </span>
+                          <span>TELÉFONO: </span>
                         </div>
                         <div class="col-md-8">
-                          <input type="text" name="txt_usertelf" id="txt_usertelf" class="form-control" disabled>
+                          <input type="text" name="txt_usertelf" id="txt_usertelf" class="form-control">
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <div class="col-md-4">
-                          <span>DIRECCION: </span>
+                          <span>CELULAR: </span>
                         </div>
                         <div class="col-md-8">
-                          <input type="text" name="txt_userdirec" id="txt_userdirec" class="form-control" disabled>
+                          <input type="text" name="txt_usercel" id="txt_usercel" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="col-md-4">
+                          <span>EMAIL: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_useremail" id="txt_useremail" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                      <div class="col-md-8">
+                        <div class="col-md-4">
+                          <span>DIRECCIÓN: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <textarea type="text" name="txt_userdirec" id="txt_userdirec" class="form-control"></textarea>
                         </div>
                       </div>
                     </div>

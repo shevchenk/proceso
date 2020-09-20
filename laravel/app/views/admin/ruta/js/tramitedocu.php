@@ -553,22 +553,37 @@ HTMLRequisitos = function(data,tramite){
 generarPreTramite = function(){
 
     if($("#cbo_tipodocumento").val()==''){
-        alert('Selecciona Tipo');
+        msjG.mensaje("warning", 'Selecciona Tipo documento de ingreso',3000);
     }
     else if($("#cbo_tiposolicitante").val()==''){
-        alert('Selecciona Tipo de Solicitante');
-    }
-    else if($("#cbo_tipotramite").val()==''){
-        alert('Seleccione Tipo de Trámite');
-    }
-    else if($("#cbo_tipodoc").val()==''){
-        alert('Seleccione Tipo de Documento');
-    }
-    else if($("#txt_nombretramite").val()==''){
-        alert('Seleccione Nombre de trámite');
+        msjG.mensaje("warning", 'Selecciona Tipo de solicitante',3000);
     }
     else if($("#txt_ruc").val()=='' && $("#txt_userdni2").val()==''){
-        alert('Seleccione Empresa o Persona');
+        msjG.mensaje("warning", 'Busque y seleccione solicitante',3000);
+    }
+    else if( $("#txt_usertelf2").val()=='' && $("#txt_usercel2").val()==''){
+        msjG.mensaje("warning", 'Ingrese número de teléfono y/o número de celular',5000);
+    }
+    else if( $("#txt_useremail2").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese email',3000);
+    }
+    else if( $("#txt_userdirec2").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese dirección',3000);
+    }
+    else if($("#cbo_tipotramite").val()==''){
+        msjG.mensaje("warning", 'Seleccione Tipo de trámite',3000);
+    }
+    else if($("#txt_nombretramite").val()==''){
+        msjG.mensaje("warning", 'Busque y seleccione trámite',3000);
+    }    
+    else if($("#cbo_tipodoc").val()==''){
+        msjG.mensaje("warning", 'Seleccione Tipo de documento',3000);
+    }
+    else if( $("#txt_numfolio").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese número de folio',3000);
+    }
+    else if( $("#txt_tipodoc").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese número tipo de documento',3000);
     }
         else{
         datos=$("#FormCrearPreTramite").serialize().split("txt_").join("").split("slct_").join("").split("%5B%5D").join("[]").split("+").join(" ").split("%7C").join("|").split("&");

@@ -144,7 +144,8 @@ var Bandeja={
             success : function(obj) {
                 $(".overlay,.loading-img").remove();
                 if(obj.rst==1){
-                    msjG.mensaje("success","Registrado",3000);   
+                    msjG.mensaje("success","Registrado",3000);
+                    ListarPreTramites();
                 }
             },
             error: function(){

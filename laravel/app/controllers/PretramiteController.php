@@ -103,17 +103,25 @@ class PretramiteController extends BaseController {
 	        $pretramite['persona_id'] =  Auth::user()->id;
 	        $pretramite['tipo_solicitante_id'] = $array_data->cbo_tiposolicitante;
 	        $pretramite['tipo_documento_id'] = $array_data->cbo_tipodoc;
+	        $pretramite['tipo_tramite_id'] = $array_data->cbo_tipotramite;
 	        $pretramite['documento'] = $array_data->tipodoc;
 	        $pretramite['nro_folios'] = $array_data->numfolio;
-	        //$pretramite['area_id'] = $array_data->idarea;
-	        $pretramite['fecha_pretramite'] = date();
+	        $pretramite['area_id'] = $array_data->idarea;
+	        $pretramite['fecha_pretramite'] = date('Y-m-d H:i:s');
 	        $pretramite['usuario_created_at'] = Auth::user()->id;
-	        $pretramite->save();
+			$pretramite->save();
+			
+			$persona = Persona::find(Auth::user()->id);
+			$persona->telefono = $array_data->usertelf;
+			$persona->celular = $array_data->usercel;
+			$persona->email = urldecode($array_data->useremail);
+			$persona->direccion = urldecode($array_data->userdirec);
+			$persona->save();
 
 	        return Response::json(
 	            array(
 	            'rst'=>1,
-	            'msj'=>'Registro realizado correctamente',
+				'msj'=>'Registro realizado correctamente',
 	            )
 	        );
 	 	}
@@ -141,7 +149,14 @@ class PretramiteController extends BaseController {
         $pretramite['area_id'] = $array_data->idarea;
         $pretramite['fecha_pretramite'] = date('Y-m-d H:i:s');
         $pretramite['usuario_created_at'] = Auth::user()->id;
-        $pretramite->save();
+		$pretramite->save();
+		
+		$persona = Persona::find($array_data->persona_id);
+		$persona->telefono = $array_data->usertelf2;
+		$persona->celular = $array_data->usercel2;
+		$persona->email = urldecode($array_data->useremail2);
+		$persona->direccion = urldecode($array_data->userdirec2);
+		$persona->save();
 
 
         /*tramite*/
@@ -156,13 +171,13 @@ class PretramiteController extends BaseController {
 	        	$tramite['persona_id'] = $pretramite->persona_id;
 	        }
             
-            $tramite['area_id'] = $pretramite->area_id;
+            $tramite['area_id'] = $array_data->idarea;
 	        $tramite['clasificador_tramite_id'] = $pretramite->clasificador_tramite_id;
 	        $tramite['tipo_solicitante_id'] = $pretramite->tipo_solicitante_id;
 	        $tramite['tipo_documento_id'] = $pretramite->tipo_documento_id;
 	        $tramite['documento'] = $pretramite->documento;
 	        $tramite['nro_folios'] = $pretramite->nro_folios;
-	        $tramite['observacion'] = trim($array_data->observacion);
+	        $tramite['observacion'] = urldecode(trim($array_data->observacion));
 	        $tramite['imagen'] = '';
 	        $tramite['fecha_tramite'] = date('Y-m-d H:i:s');
 	        $tramite['usuario_created_at'] = Auth::user()->id;

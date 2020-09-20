@@ -17,11 +17,12 @@ $(document).ready(function() {
     UsuarioId='<?php echo Auth::user()->id; ?>';
     DataUser = '<?php echo Auth::user(); ?>';
     /*Inicializar tramites*/
-    var data={'persona':UsuarioId,'estado':1};  
+    var data={'persona':UsuarioId,'estado':1, 'filtro_fecha': $("#filtro_fecha").val()};  
     Bandeja.MostrarPreTramites(data,HTMLPreTramite);
     /*end Inicializar tramites*/
     
     /*inicializate selects*/
+    data = {estado:1, tipo:'Ingreso'};
     slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data); 
     slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);  
     slctGlobal.listarSlctFuncion('tiposolicitante','listar?pretramite=1','cbo_tiposolicitante','simple',null,data);
@@ -29,19 +30,22 @@ $(document).ready(function() {
     
     data = {estado:1};
     var ids = [];
-    slctGlobal.listarSlct('software','slct_software_id_modal','simple',ids,data);
+    //slctGlobal.listarSlct('software','slct_software_id_modal','simple',ids,data);
     slctGlobal.listarSlct2('rol','slct_rol_modal',data);
     slctGlobal.listarSlct2('verbo','slct_verbo_modal',data);
     slctGlobal.listarSlct2('documento','slct_documento_modal',data);
     
     $(document).on('change', '#cbo_tiposolicitante', function(event) {
         var data={'id':$(this).val(),'estado':1};
+        $("#txt_idempresa").val('');
         Bandeja.GetTipoSolicitante(data,Mostrar);
     });
 
     $(document).on('click', '#btnnuevo', function(event) {
         $(".crearPreTramite").removeClass('hidden');
-        
+        $("input[type='text'], .select").not('.mant').val('');
+        $(".select").multiselect('refresh');
+
         window.scrollTo(0,document.body.scrollHeight);
     });
     
@@ -166,12 +170,12 @@ $(document).ready(function() {
 });
 
 CargarPreTramites = function(){
-    var data={'persona':'<?php echo Auth::user()->id; ?>','estado':1};
+    var data={'persona':'<?php echo Auth::user()->id; ?>','estado':1, 'filtro_fecha': $("#filtro_fecha").val()};
     Bandeja.MostrarPreTramites(data,HTMLPreTramite);
 }
 
 HTMLPreTramite = function(data){
-    $('#t_reporte').dataTable().fnDestroy();
+    
     if(data){
         var html ='';
         $.each(data,function(index, el) {
@@ -194,13 +198,10 @@ HTMLPreTramite = function(data){
 
             var url = "documentodig/ticket/"+el.pretramite;
 
-            html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="imprimirTicket(\''+url+'\')"><i class="glyphicon glyphicon-search"></i></span></td>';
+            //html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="imprimirTicket(\''+url+'\')"><i class="glyphicon glyphicon-search"></i></span></td>';
             html+="</tr>";            
         });
         $("#tb_reporte").html(html);
-        $("#t_reporte").dataTable(); 
-    }else{
-        alert('no hay nada');
     }
 }
 
@@ -306,17 +307,21 @@ ValidacionEmpresa = function(data){
     if(data.length > 1){
         var html = '';
         $.each(data,function(index, el) {
+            estado = 'Inactivo';
+            if( el.estado == 1 ){
+                estado = 'Activo';
+            }
             html+='<tr id='+el.id+'>';
-            html+='<td name="ruc">'+el.ruc+'</td>';
-            html+='<td name="tipo_id">'+el.tipo_id+'</td>';
-            html+='<td name="razon_social">'+el.razon_social+'</td>';
-            html+='<td name="nombre_comercial">'+el.nombre_comercial+'</td>';
-            html+='<td name="direccion_fiscal">'+el.direccion_fiscal+'</td>';
-            html+='<td name="telefono">'+el.telefono+'</td>';
-            html+='<td name="fecha_vigencia">'+el.fecha_vigencia+'</td>';
-            html+='<td name="estado">'+el.estado+'</td>';
-            html+='<td name="representante">'+el.representante+'</td>';
-            html+='<td name="dnirepre">'+el.dnirepre+'</td>';
+            html+='<td name="ruc">'+$.trim(el.ruc)+'</td>';
+            html+='<td name="tipo">'+$.trim(el.tipo)+'</td>';
+            html+='<td name="razon_social">'+$.trim(el.razon_social)+'</td>';
+            html+='<td name="nombre_comercial">'+$.trim(el.nombre_comercial)+'</td>';
+            html+='<td name="direccion_fiscal">'+$.trim(el.direccion_fiscal)+'</td>';
+            html+='<td name="telefono">'+$.trim(el.telefono)+'</td>';
+            html+='<td name="fecha_vigencia">'+$.trim(el.fecha_vigencia)+'</td>';
+            html+='<td name="estado">'+estado+'</td>';
+            html+='<td name="representante">'+$.trim(el.representante)+'</td>';
+            html+='<td name="dnirepre">'+$.trim(el.dnirepre)+'</td>';
             html+='<td><span class="btn btn-primary btn-sm" id-empresa='+el.id+' onClick="selectEmpresa(this)">Seleccionar</span></td>';
             html+='</tr>';
         });
@@ -350,6 +355,11 @@ poblateData = function(tipo,data){
         document.querySelector('#txt_usernomb').value='<?php echo Auth::user()->nombre; ?>';
         document.querySelector('#txt_userapepat').value='<?php echo Auth::user()->paterno; ?>';
         document.querySelector('#txt_userapemat').value='<?php echo Auth::user()->materno; ?>';
+
+        document.querySelector('#txt_usertelf').value='<?php echo trim(Auth::user()->telefono); ?>';
+        document.querySelector('#txt_usercel').value='<?php echo trim(Auth::user()->celular); ?>';
+        document.querySelector('#txt_useremail').value='<?php echo trim(Auth::user()->email); ?>';
+        $('#txt_userdirec').val('<?php echo trim(Auth::user()->direccion); ?>');
     /*    user_telf.value=data.;
         user_direc.value=data.;*/
     /*  */
@@ -357,7 +367,7 @@ poblateData = function(tipo,data){
     if(tipo == 'empresa'){
         document.querySelector('#txt_idempresa').value=data.id;
         document.querySelector('#txt_ruc').value=data.ruc;
-        document.querySelector('#txt_tipoempresa').value=data.tipo_id;
+        document.querySelector('#txt_tipoempresa').value=data.tipo;
         document.querySelector('#txt_razonsocial').value=data.razon_social;
         document.querySelector('#txt_nombcomercial').value=data.nombre_comercial;
         document.querySelector('#txt_domiciliofiscal').value=data.direccion_fiscal;
@@ -370,7 +380,7 @@ poblateData = function(tipo,data){
     if(tipo== 'tramite'){
         document.querySelector('#txt_nombretramite').value=data.nombre;
         document.querySelector('#txt_idclasitramite').value=data.id;
-/*        document.querySelector('#txt_idarea').value=data.areaid;*/
+        document.querySelector('#txt_idarea').value=data.areaid;
     }
 
 }
@@ -400,9 +410,9 @@ HTMLClasificadores = function(data){
             html+='<tr>';
             html+='<td>'+el.id+'</td>';
             html+='<td style="text-align: left">'+el.nombre_clasificador_tramite+'</td>';
-            html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onClick="getRequisitos(this)">Ver</span></td>';
-            html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onclick="selectClaTramite(this)">Seleccionar</span></td>';
-            html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onclick="cargarRutaId('+el.ruta_flujo_id+',2)">Ver Ruta</span></td>';
+            html+='<td><span class="btn btn-info btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onClick="getRequisitos(this)">Ver</span></td>';
+            html+='<td><span class="btn btn-info btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onclick="cargarRutaId('+el.ruta_flujo_id+',2)">Ver Ruta</span></td>';
+            html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" areaid="'+el.area_id+'" onclick="selectClaTramite(this)">Seleccionar</span></td>';
             html+='</tr>';        
         });
         $("#tb_clasificador").html(html);
@@ -418,7 +428,7 @@ HTMLClasificadores = function(data){
 }
 
 selectClaTramite = function(obj){
-    data ={'id':obj.getAttribute('id'),'nombre':obj.getAttribute('nombre')};
+    data ={'id':obj.getAttribute('id'),'nombre':obj.getAttribute('nombre'), 'areaid': obj.getAttribute('areaid')};
     poblateData('tramite',data);
     $('#buscartramite').modal('hide');
     /*Bandeja.GetAreasbyCTramite({'idc':obj.getAttribute('id')},data);*/
@@ -473,8 +483,35 @@ HTMLRequisitos = function(data,tramite){
 }
 
 generarPreTramite = function(){
-    var tipodoc = document.querySelector('#cbo_tipodoc').value;
-    if(tipodoc){
+    
+    if( $("#cbo_tipotramite").val()=='' ){
+        msjG.mensaje("warning", 'Seleccione Tipo de trámite',3000);
+    }
+    else if($("#txt_nombretramite").val()==''){
+        msjG.mensaje("warning", 'Busque y seleccione trámite',3000);
+    }
+    else if( $("#cbo_tipodoc").val()=='' ){
+        msjG.mensaje("warning", 'Seleccione Tipo de documento',3000);
+    }
+    else if( $("#txt_numfolio").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese número de folio',3000);
+    }
+    else if( $("#txt_tipodoc").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese número tipo de documento',3000);
+    }
+    else if( $("#cbo_tiposolicitante").val()=='' ){
+        msjG.mensaje("warning", 'Seleccione tipo de solicitante',3000);
+    }
+    else if( $("#txt_usertelf").val()=='' && $("#txt_usercel").val()==''){
+        msjG.mensaje("warning", 'Ingrese número de teléfono y/o número de celular',5000);
+    }
+    else if( $("#txt_useremail").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese email',3000);
+    }
+    else if( $("#txt_userdirec").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese dirección',3000);
+    }
+    else{
         datos=$("#FormCrearPreTramite").serialize().split("txt_").join("").split("slct_").join("").split("%5B%5D").join("[]").split("+").join(" ").split("%7C").join("|").split("&");
         data = '{';
         for (var i = 0; i < datos.length ; i++) {
@@ -484,8 +521,6 @@ generarPreTramite = function(){
         data+='"}';
         Bandeja.GuardarPreTramite(data,CargarPreTramites);
         
-    }else{
-        alert('complete data');
     }
 }
 

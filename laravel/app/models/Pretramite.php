@@ -5,6 +5,20 @@ class Pretramite extends Eloquent {
 
 
 	public static function getPreTramites(){
+        $filtro = ''; $inner = '';
+        if( Input::has('filtro_fecha') ){
+            $filtro = ' AND DATE(pt.fecha_pretramite) = \''.Input::get('filtro_fecha').'\'';
+        }
+
+        if( Input::has('persona') AND Input::get('persona') != 0 ){
+            $filtro .= ' AND pt.persona_id = '.Input::get('persona');
+        }
+
+        if( Input::has('validaFiltro') ){
+            $inner = 'LEFT JOIN tramites t ON t.pretramite_id=pt.id';
+            $filtro .= ' AND t.id IS NULL';
+        }
+
         $sql = "select pt.id as pretramite,CONCAT_WS(' ',p.nombre,p.paterno,p.materno) as usuario,e.razon_social as empresa,
 				ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
 				pt.fecha_pretramite fecha  
@@ -12,10 +26,13 @@ class Pretramite extends Eloquent {
 				INNER JOIN personas p on p.id=pt.persona_id 
 				INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id
 				INNER JOIN tipo_tramite tt on tt.id=ct.tipo_tramite_id 
-				LEFT JOIN empresas e on e.id=pt.empresa_id 
 				INNER JOIN tipo_solicitante ts on ts.id=pt.tipo_solicitante_id 
 				INNER JOIN documentos d on d.id=pt.tipo_documento_id 
-				WHERE pt.estado = 1 and pt.persona_id=".Input::get('persona');
+                LEFT JOIN empresas e on e.id=pt.empresa_id 
+                ".$inner."
+                WHERE pt.estado = 1 ".
+                $filtro."
+                ORDER BY pt.fecha_pretramite DESC";
 		$r= DB::select($sql);
         return $r; 		
     }
@@ -41,11 +58,13 @@ class Pretramite extends Eloquent {
     public static function getPreTramiteById(){
         $sql = "";
     	$sql.= "select pt.id as pretramite,a.nombre as area,pt.persona_id personaid,pt.tipo_documento_id tdocid,pt.clasificador_tramite_id ctid,pt.tipo_solicitante_id tsid,pt.area_id areaid,pt.fecha_pretramite fregistro,p.dni dniU,p.nombre nombusuario,p.paterno apepusuario,p.materno apemusuario,
-				pt.empresa_id empresaid,e.ruc ruc,e.tipo_id tipoempresa,e.razon_social as empresa,e.nombre_comercial nomcomercial,e.direccion_fiscal edireccion,
+				pt.empresa_id empresaid,e.ruc ruc,e.tipo_id tipoempresa_id,e.razon_social as empresa,e.nombre_comercial nomcomercial,e.direccion_fiscal edireccion,
 				e.telefono etelf,e.fecha_vigencia efvigencia,CONCAT_WS(' ',p2.nombre,p2.paterno,p2.materno) as reprelegal,
 				p2.dni repredni,
 				ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
-				pt.fecha_pretramite fecha ,pt.nro_folios folio, pt.documento as nrotipodoc,ts.pide_empresa statusemp 
+                pt.fecha_pretramite fecha ,pt.nro_folios folio, pt.documento as nrotipodoc,ts.pide_empresa statusemp,
+                CASE e.tipo_id WHEN 1 THEN 'Natural' WHEN 2 THEN 'Juridico' WHEN 3 THEN 'Organizacion Social' END as tipoempresa,
+                p.email, p.direccion, p.celular, p.telefono
 				from pretramites pt 
 				INNER JOIN personas p on p.id=pt.persona_id 
 				INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id
@@ -86,9 +105,9 @@ class Pretramite extends Eloquent {
                 LEFT JOIN personas p on e.persona_id=p.id
                 where e.estado=1 GROUP BY e.id";
 
-//        if(Input::has('persona')){
-//            $sql.=" and ep.persona_id=".Input::get('persona');
-//        }
+        if(Input::has('persona')){
+            $sql.=" and ep.persona_id=".Auth::user()->id;
+        }
 
         $r= DB::select($sql);
         return $r; 

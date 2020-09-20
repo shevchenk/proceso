@@ -146,6 +146,7 @@ var Bandeja={
             success : function(obj) {
                 $(".overlay,.loading-img").remove();
                 if(obj.rst==1){
+                    msjG.mensaje("success", obj.msj,3000);
                     evento();
                     $(".crearPreTramite").addClass('hidden');
                     $('#FormCrearPreTramite').find('input[type="text"],input[type="email"],textarea,select').val('');        

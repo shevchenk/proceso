@@ -200,30 +200,38 @@ td, th{
                       </div>
                     </div>
                     <div class="col-md-12 form-group">
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <div class="col-md-4">
-                          <span>TELEFONO/CELULAR: </span>
+                          <span>TELÉFONO: </span>
                         </div>
                         <div class="col-md-8">
-                          <input type="text" name="txt_usertelf2" id="txt_usertelf2" class="form-control" disabled>
+                          <input type="text" name="txt_usertelf2" id="txt_usertelf2" class="form-control" >
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-4">
+                        <div class="col-md-4">
+                          <span>CELULAR: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" name="txt_usercel2" id="txt_usercel2" class="form-control" >
+                        </div>
+                      </div>
+                      <div class="col-md-4">
                         <div class="col-md-4">
                           <span>EMAIL: </span>
                         </div>
                         <div class="col-md-8">
-                          <input type="text" name="txt_useremail2" id="txt_useremail2" class="form-control" disabled>
+                          <input type="text" name="txt_useremail2" id="txt_useremail2" class="form-control" >
                         </div>
                       </div>
                     </div>
                     <div class="col-md-12 form-group">
-                      <div class="col-md-12">
+                      <div class="col-md-8">
                         <div class="col-md-2">
                           <span>DIRECCION: </span>
                         </div>
                         <div class="col-md-10">
-                          <input type="text" name="txt_userdirec2" id="txt_userdirec2" class="form-control" disabled>
+                          <textarea type="text" name="txt_userdirec2" id="txt_userdirec2" class="form-control" ></textarea>
                         </div>
                       </div>
                     </div>
