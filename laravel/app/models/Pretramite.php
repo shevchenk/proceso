@@ -24,7 +24,7 @@ class Pretramite extends Eloquent {
                 pt.fecha_pretramite fecha, pt.documento, pt.ruta_archivo, 
                 IF(pt.estado_atencion = 0, 'Pendiente',
                     IF(pt.estado_atencion = 1, 'Aprobado', 'Desaprobado')
-                ) atencion, pt.estado_atencion, pt.updated_at, t.observacion, tr.id_union, t.fecha_tramite
+                ) atencion, pt.estado_atencion, pt.updated_at, t.observacion, tr.id_union, DATE(t.fecha_tramite) AS fecha_tramite
 				from pretramites pt 
 				INNER JOIN personas p on p.id=pt.persona_id 
 				INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id
