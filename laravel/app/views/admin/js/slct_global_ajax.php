@@ -589,7 +589,70 @@ var masterG ={
         if( pos!= -1 && t.value!='' && t.value.substring(pos+1).length>=2 ){
           t.value = parseFloat(t.value).toFixed(n);
         }
-    }
+    },
+    SelectImagen: (archivo,src,carga)=> {
+      if( $.trim(archivo)!='' && archivo.substr(-3)=='pdf' ){
+        $(src).attr('src','Config/pdf.jpg');
+      }
+      else if( $.trim(archivo)!='' && (archivo.substr(-4)=='docx' || archivo.substr(-3)=='doc') ){
+        $(src).attr('src','Config/word.png');
+      }
+      else if( $.trim(archivo)!='' && (archivo.substr(-4)=='xlsx' || archivo.substr(-3)=='xls' || archivo.substr(-3)=='csv') ){
+        $(src).attr('src','Config/excel.jpg');
+      }
+      else if( $.trim(archivo)!='' && (archivo.substr(-4)=='pptx' || archivo.substr(-3)=='ppt') ){
+        $(src).attr('src','Config/ppt.png');
+      }
+      else if( $.trim(archivo)!='' && archivo.split('.txt').length > 1 ){
+        $(src).attr('src','Config/txt.jpg');
+      }
+      else{
+        if( $.trim(archivo)=='' ){
+            $(src).attr('src','Config/default.png');
+        }
+        else{
+            $(src).attr('src',archivo);
+        }
+      }
+        $(carga).removeAttr('href').removeAttr('target');
+        if( $.trim(archivo)!='' ){
+          $(carga).attr('href',archivo).attr('target','_blank');
+        }
+    },
+    onImagen: (ev,nombre,archivo,src)=> {
+        var files = ev.target.files || ev.dataTransfer.files;
+        if (!files.length)
+            return;
+        var image = new Image();
+        var reader = new FileReader();
+        reader.onload = (e) => {
+            $(archivo).val(e.target.result);
+            if(files[0].name.substr(-3)=='pdf'){
+              $(src).attr('src','Config/pdf.jpg');
+            }
+            else if(files[0].name.substr(-4)=='docx' || files[0].name.substr(-3)=='doc'){
+              $(src).attr('src','Config/word.png');
+            }
+            else if(files[0].name.substr(-4)=='xlsx' || files[0].name.substr(-3)=='xls' || files[0].name.substr(-3)=='csv'){
+              $(src).attr('src','Config/excel.jpg');
+            }
+            else if(files[0].name.substr(-4)=='pptx' || files[0].name.substr(-3)=='ppt'){
+              $(src).attr('src','Config/ppt.png');
+            }
+            else if(files[0].name.split('.txt').length > 1){
+              $(src).attr('src','Config/txt.jpg');
+            }
+            else{
+              $(src).attr('src',e.target.result);
+            }
+            $(src).fadeOut(1000,function(){
+                $(src).fadeIn(1800);
+            });
+        };
+        reader.readAsDataURL(files[0]);
+        $(nombre).val(files[0].name);
+        console.log(files[0].name);
+    },
 }
 
 var sweetalertG = {

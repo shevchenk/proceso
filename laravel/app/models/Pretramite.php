@@ -64,7 +64,7 @@ class Pretramite extends Eloquent {
 				ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
                 pt.fecha_pretramite fecha ,pt.nro_folios folio, pt.documento as nrotipodoc,ts.pide_empresa statusemp,
                 CASE e.tipo_id WHEN 1 THEN 'Natural' WHEN 2 THEN 'Juridico' WHEN 3 THEN 'Organizacion Social' END as tipoempresa,
-                p.email, p.direccion, p.celular, p.telefono
+                p.email, p.direccion, p.celular, p.telefono, pt.ruta_archivo
 				from pretramites pt 
 				INNER JOIN personas p on p.id=pt.persona_id 
 				INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id
@@ -181,5 +181,35 @@ class Pretramite extends Eloquent {
     	$r= DB::select($sql);
         return (isset($r[0])) ? $r[0] : $r2[0];
         
+    }
+
+    public static function FileToFile($file, $url)
+    {
+        $urld=explode("/",$url);
+        $urlt=array();
+        for ($i=0; $i < (count($urld)-1) ; $i++) { 
+            array_push($urlt, $urld[$i]);
+            $urltexto=implode("/",$urlt);
+            if ( !is_dir($urltexto) ) {
+                mkdir($urltexto,0777);
+            }
+        }
+        
+        list($type, $file) = explode(';', $file);
+        list(, $type) = explode('/', $type);
+        if ($type=='jpeg') $type='jpg';
+        if ($type=='x-icon') $type='ico';
+        if (strpos($type,'document')!==False) $type='docx';
+        if (strpos($type,'msword')!==False) $type='doc';
+        if (strpos($type,'presentation')!==False) $type='pptx';
+        if (strpos($type,'powerpoint')!==False) $type='ppt';
+        if (strpos($type, 'sheet') !== False) $type='xlsx';
+        if (strpos($type, 'excel') !== False) $type='xls';
+        if (strpos($type, 'pdf') !== False) $type='pdf';
+        if ($type=='plain') $type='txt';
+        list(, $file)      = explode(',', $file);
+        $file = base64_decode($file);
+        file_put_contents($url , $file);
+        return $url.$type;
     }
 }

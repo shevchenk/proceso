@@ -108,8 +108,18 @@ class PretramiteController extends BaseController {
 	        $pretramite['nro_folios'] = $array_data->numfolio;
 	        $pretramite['area_id'] = $array_data->idarea;
 	        $pretramite['fecha_pretramite'] = date('Y-m-d H:i:s');
-	        $pretramite['usuario_created_at'] = Auth::user()->id;
+			$pretramite['usuario_created_at'] = Auth::user()->id;
 			$pretramite->save();
+			
+			if( trim($array_data->pdf_archivo)!='' ){
+                $urld=explode(".", urldecode($array_data->pdf_nombre));
+                $url = "upload/pretramite/pt-".$pretramite->id.".".end($urld);
+				$pretramite->ruta_archivo = $url;
+				$pretramite->save();
+                
+                Pretramite::FileToFile(urldecode($array_data->pdf_archivo), $url);
+            }
+
 			
 			$persona = Persona::find(Auth::user()->id);
 			$persona->telefono = $array_data->usertelf;

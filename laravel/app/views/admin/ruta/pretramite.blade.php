@@ -398,6 +398,31 @@ td, th{
                   </fieldset>
                 </div>
 
+                <div class="col-md-12 usuario hidden" style="padding: 2% 4% 2% 4%;">
+                  <fieldset style="max-width: 100% !important;border: 3px solid #ddd;padding: 15px;">
+                    <div class="col-md-12 form-group">
+                      <div class="col-md-6">
+                        <div class="col-md-4">
+                          <span>SUBIR ARCHIVO PDF: </span>
+                        </div>
+                        <div class="col-md-8">
+                          <input type="text" readonly class="form-control" id="pdf_nombre"  name="pdf_nombre" value="" readonly="">
+                          <input type="text" style="display: none;" id="pdf_archivo" name="pdf_archivo">
+                          <label class="btn btn-warning btn-lg  btn-flat margin">
+                              <i class="fa fa-file-pdf-o fa-lg"></i>
+                              <input type="file" style="display: none;" onchange="masterG.onImagen(event,'#pdf_nombre','#pdf_archivo','#pdf_img');">
+                          </label>
+                          <div>
+                          <a id="">
+                          <img id="pdf_img" class="img-circle" style="height: 80px;width: 140px;border-radius: 8px;border: 1px solid grey;margin-top: 5px;padding: 8px">
+                          </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+
                 <div class="col-md-12 form-group" style="text-align: right;padding-right: 4%;">                  
                   <span class="btn btn-primary btn-sm" onclick="generarPreTramite()">GENERAR</span>
                 {{--   <input type="submit" class="btn btn-primary btn-sm btnAction" id="" value="Guardar" onclick="generarPreTramite()"> --}}

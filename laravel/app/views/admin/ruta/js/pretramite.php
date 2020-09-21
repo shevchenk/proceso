@@ -509,6 +509,12 @@ generarPreTramite = function(){
     else if( $("#txt_userdirec").val()=='' ){
         msjG.mensaje("warning", 'Ingrese dirección',3000);
     }
+    else if( $("#pdf_archivo").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese su archivo',3000);
+    }
+    else if( $("#pdf_archivo").val().split("/pdf;").length < 2 ){
+        msjG.mensaje("warning", 'Solo se permite archivo PDF',3000);
+    }
     else{
         datos=$("#FormCrearPreTramite").serialize().split("txt_").join("").split("slct_").join("").split("%5B%5D").join("[]").split("+").join(" ").split("%7C").join("|").split("&");
         data = '{';

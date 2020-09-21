@@ -296,7 +296,9 @@ poblarDetalle = function(data){
             document.querySelector('#txt_empresaid').value=result.empresaid;
             document.querySelector('#txt_tsolicitante').value=result.tsid;
             document.querySelector('#txt_tdocumento').value=result.tdocid;
-            document.querySelector('#txt_area').value=result.areaid;            
+            document.querySelector('#txt_area').value=result.areaid;
+
+            masterG.SelectImagen(result.ruta_archivo,"#pdf_img","#pdf_href");
         }else{
             document.querySelector('.content-body').classList.add('hidden');
             alert('Ya fue gestionado!');

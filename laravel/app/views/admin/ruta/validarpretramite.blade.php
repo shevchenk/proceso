@@ -227,11 +227,12 @@ td, th{
                                       </div>
                                    </div>
                                 </div>
-                                <!-- <div class="col-sm-2">
-                                    <input type="file" name="txt_file" id="txt_file" style="display: none">
-                                    <label class="btn btn-primary btn-sm" id="btnImage" name="btnImage" style="width: 100%">CARGAR IMAGEN</label>
-                                    <img class="img-circle img-tramite" style="height: 142px;width: 100%;border-radius: 8px;border: 1px solid grey;margin-top: 5px;padding: 8px" :src="index.img">         
-                                </div> -->
+                                <div class="col-sm-2">
+                                    <label>Archivo PDF: </label>
+                                    <a id="pdf_href">
+                                    <img id="pdf_img" class="img-circle" style="height: 80px;width: 140px;border-radius: 8px;border: 1px solid grey;margin-top: 5px;padding: 8px">
+                                    </a>
+                                </div>
                               </div>
                             </div>
 
