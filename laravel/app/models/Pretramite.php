@@ -5,8 +5,8 @@ class Pretramite extends Eloquent {
 
 
 	public static function getPreTramites(){
-        $filtro = ''; $inner = '';
-        if( Input::has('filtro_fecha') ){
+        $filtro = ''; $estados = '';
+        if( Input::has('filtro_fecha') AND Input::get('filtro_fecha')!='' ){
             $filtro = ' AND DATE(pt.fecha_pretramite) = \''.Input::get('filtro_fecha').'\'';
         }
 
@@ -14,14 +14,17 @@ class Pretramite extends Eloquent {
             $filtro .= ' AND pt.persona_id = '.Input::get('persona');
         }
 
-        if( Input::has('validaFiltro') ){
-            $inner = 'LEFT JOIN tramites t ON t.pretramite_id=pt.id';
-            $filtro .= ' AND t.id IS NULL';
+        if( Input::has('estado_tramite') AND is_array( Input::get('estado_tramite') ) ){
+            $estados = implode(",", Input::get('estado_tramite'));
+            $filtro .= ' AND pt.estado_atencion IN ('.$estados.')';
         }
 
         $sql = "select pt.id as pretramite,CONCAT_WS(' ',p.nombre,p.paterno,p.materno) as usuario,e.razon_social as empresa,
 				ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
-				pt.fecha_pretramite fecha  
+                pt.fecha_pretramite fecha, pt.documento, pt.ruta_archivo, 
+                IF(pt.estado_atencion = 0, 'Pendiente',
+                    IF(pt.estado_atencion = 1, 'Aprobado', 'Desaprobado')
+                ) atencion, pt.estado_atencion, pt.updated_at, t.observacion, tr.id_union, t.fecha_tramite
 				from pretramites pt 
 				INNER JOIN personas p on p.id=pt.persona_id 
 				INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id
@@ -29,7 +32,8 @@ class Pretramite extends Eloquent {
 				INNER JOIN tipo_solicitante ts on ts.id=pt.tipo_solicitante_id 
 				INNER JOIN documentos d on d.id=pt.tipo_documento_id 
                 LEFT JOIN empresas e on e.id=pt.empresa_id 
-                ".$inner."
+                LEFT JOIN tramites t ON t.pretramite_id=pt.id
+                LEFT JOIN tablas_relacion tr ON tr.tramite_id=t.id
                 WHERE pt.estado = 1 ".
                 $filtro."
                 ORDER BY pt.fecha_pretramite DESC";

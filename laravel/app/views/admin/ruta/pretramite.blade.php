@@ -129,7 +129,7 @@ td, th{
                                 <thead>
                                     <tr>
                                       <th>Fecha:</th>
-                                      <td>
+                                      <td colspan=2>
                                           <div class="input-group">
                                           <input type='text' id="filtro_fecha" class="form-control mant" value='<?php echo date("Y-m-d");?>' >
                                           <a class='btn btn-primary btn-sm input-group-addon' onClick='CargarPreTramites();'><i class="fa fa-search"></i></a>
@@ -137,16 +137,20 @@ td, th{
                                       </td>
                                     </tr>
                                     <tr>
-                                        <th>COD</th>
-                                        <th>NOMBRE DEL USUARIO</th>
+                                        <th>N° DEL PRE TRÁMITE</th>
                                         <th>NOMBRE DEL SOLICITANTE</th>
                                         <th>TIPO SOLICITANTE</th>
                                         <th>TIPO TRAMITE</th>
-                                        <th>TIPO DOCUMENTO</th>
-                                        <th>NOMBRE TRAMITE</th>
+                                        <th>DOCUMENTO PRESENTADO</th>
+                                        <th>NRO DEL DOCUMENTO</th>
+                                        <th>NOMBRE TRÁMITE</th>
                                         <th>FECHA REGISTRADA</th>
-                                        <th>VER DETALLE</th>
-                                        <!-- <th>VER VOUCHER</th> -->
+                                        <th>REQUISITOS EN UN SOLO ARCHIVO PDF</th>
+                                        <th>ESTADO PARA MESA DE PARTES</th>
+                                        <th>FECHA DEL ESTADO</th>
+                                        <th>OBSERVACIONES</th>
+                                        <th>NRO DE EXPEDIENTE</th>
+                                        <th>AVANCE DEL TRÁMITE</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tb_reporte">

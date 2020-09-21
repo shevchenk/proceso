@@ -159,9 +159,6 @@ $(document).ready(function() {
                 validators: {
                     notEmpty: {
                         message: 'campo requerido'
-                    },
-                    digits:{
-                        message: 'dato numerico'
                     }
                 }
             }
@@ -179,9 +176,15 @@ HTMLPreTramite = function(data){
     if(data){
         var html ='';
         $.each(data,function(index, el) {
-            html+="<tr>";
+            color = '';
+                if( el.estado_atencion == 1 ){
+                    color = 'alert-success';
+                }
+                else if( el.estado_atencion == 2 ){
+                    color = 'alert-danger';
+                }
+            html+="<tr class='"+color+"'>";
             html+=    "<td>"+el.pretramite +"</td>";
-            html+=    "<td>"+el.usuario+"</td>";
             
             if(el.empresa){
                 html+=    "<td>"+el.empresa+"</td>";                
@@ -192,9 +195,20 @@ HTMLPreTramite = function(data){
             html+=    "<td>"+el.solicitante+"</td>";
             html+=    "<td>"+el.tipotramite+"</td>";
             html+=    "<td>"+el.tipodoc+"</td>";
+            html+=    "<td>"+el.documento+"</td>";
             html+=    "<td>"+el.tramite+"</td>";
             html+=    "<td>"+el.fecha+"</td>";
-            html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="Detallepret(this)"><i class="glyphicon glyphicon-th-list"></i></span></td>';
+            html+=    "<td><a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file-pdf-o fa-lg'></i></td>";
+            html+=    "<td>"+el.atencion+"</td>";
+            html+=    "<td>"+el.updated_at+"</td>";
+            html+=    "<td>"+$.trim(el.observacion)+"</td>";
+            html+=    "<td>"+$.trim(el.id_union)+"</td>";
+            btn='';
+            if( $.trim(el.id_union)!='' ){
+                btn = '<a class="btn btn-default btn-lg" target="_blank" href=http://mitramite.jssoluciones.pe/?tramite="'+$.trim(el.id_union)+'"&fecha="'+$.trim(el.fecha_tramite)+'"><i class="fa fa-eye"></i></a>';
+            }
+            html+=    '<td>'+btn+'</td>';
+            //html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="Detallepret(this)"><i class="glyphicon glyphicon-th-list"></i></span></td>';
 
             var url = "documentodig/ticket/"+el.pretramite;
 

@@ -3,6 +3,7 @@ $(document).ready(function() {
     ListarPreTramites();
 
     slctGlobal.listarSlct('persona','slct_persona','simple',null,{apellido_nombre:1});
+    slctGlobalHtml('slct_estado_tramite','multiple');
 
 
     $(document).on('click', '#btnImage', function(event) {
@@ -33,24 +34,31 @@ $(document).ready(function() {
 
     $("form[name='FormTramite']").submit(function(e) {
         e.preventDefault();
-
-        $.ajax({
-            type: "POST",
-            url: 'tramitec/create',
-            data: new FormData($(this)[0]),
-            processData: false,
-            contentType: false,
-            success: function (obj) {
-                if(obj.rst==1){
-                    limpiar();
-                    ListarPreTramites();
-                    msjG.mensaje("success", obj.msj,3000);
+        if( $('input[name="rdb_estado"]:checked').val()*1 == 2 && $.trim($("#txt_observaciones").val()) == '' ){
+            msjG.mensaje("warning", 'Ingrese la observación del trámite a desaprobar',4000);
+        }
+        else if( $('input[name="rdb_estado"]:checked').val()*1 > 0 ){
+            $.ajax({
+                type: "POST",
+                url: 'tramitec/create',
+                data: new FormData($(this)[0]),
+                processData: false,
+                contentType: false,
+                success: function (obj) {
+                    if(obj.rst==1){
+                        limpiar();
+                        ListarPreTramites();
+                        msjG.mensaje("success", obj.msj,3000);
+                    }
+                    else{
+                        msjG.mensaje("warning", obj.msj,3000);
+                    }
                 }
-                else{
-                    msjG.mensaje("warning", obj.msj,3000);
-                }
-            }
-        });
+            });
+        }
+        else{
+            msjG.mensaje("warning", 'Seleccione estado final del pre trámite',4000);
+        }
      });
 
     function limpiar(){
@@ -198,7 +206,8 @@ $(document).ready(function() {
 });
 
 ListarPreTramites = ()=>{
-    var data={'persona':0,'estado':1, 'filtro_fecha': $("#filtro_fecha").val(), 'validaFiltro':1};  
+    var estados = $("#slct_estado_tramite").val();
+    var data={'persona':0,'estado':1, 'filtro_fecha': $("#filtro_fecha").val(), 'estado_tramite':estados};  
     Bandeja.MostrarPreTramites(data,HTMLPreTramite);
 }
 
@@ -207,9 +216,15 @@ HTMLPreTramite = function(data){
     if(data){
         var html ='';
         $.each(data,function(index, el) {
-            html+="<tr>";
+            color = '';
+                if( el.estado_atencion == 1 ){
+                    color = 'alert-success';
+                }
+                else if( el.estado_atencion == 2 ){
+                    color = 'alert-danger';
+                }
+            html+="<tr class='"+color+"'>";
             html+=    "<td>"+el.pretramite +"</td>";
-            html+=    "<td>"+el.usuario+"</td>";
             
             if(el.empresa){
                 html+=    "<td>"+el.empresa+"</td>";                
@@ -220,8 +235,14 @@ HTMLPreTramite = function(data){
             html+=    "<td>"+el.solicitante+"</td>";
             html+=    "<td>"+el.tipotramite+"</td>";
             html+=    "<td>"+el.tipodoc+"</td>";
+            html+=    "<td>"+el.documento+"</td>";
             html+=    "<td>"+el.tramite+"</td>";
             html+=    "<td>"+el.fecha+"</td>";
+            html+=    "<td><a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file-pdf-o fa-lg'></i></td>";
+            html+=    "<td>"+el.atencion+"</td>";
+            html+=    "<td>"+el.updated_at+"</td>";
+            html+=    "<td>"+$.trim(el.observacion)+"</td>";
+            html+=    "<td>"+$.trim(el.id_union)+"</td>";
             html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="PreDetallepret('+el.pretramite+')"><i class="glyphicon glyphicon-th-list"></i></span></td>';
 
             var url = "documentodig/ticket/"+el.pretramite;
@@ -240,7 +261,9 @@ PreDetallepret = (id)=>{
 
 
 Detallepret = function(){
-    
+    $('input[type="radio"]').removeAttr('checked');
+    $('input[type="radio"]').parent().removeClass('checked');
+    $('#txt_observaciones').val('');
     var codpretramite = $('#txt_codpt').val();
     var persona = $('#slct_persona').val();
     var data = {};

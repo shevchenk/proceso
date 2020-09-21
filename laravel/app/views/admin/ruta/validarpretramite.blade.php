@@ -11,7 +11,6 @@
     {{ HTML::script('lib/bootstrap-multiselect/dist/js/bootstrap-multiselect.js') }}
     {{ HTML::script('lib/jquery-bootstrap-validator/bootstrapValidator.min.js') }}
 
-
     @include( 'admin.js.slct_global_ajax' )
     @include( 'admin.js.slct_global' )
     @include( 'admin.ruta.js.ruta_ajax' )
@@ -132,20 +131,30 @@ td, th{
                 <div class="row form-group" id="reporte">
                     <div class="row form-group" >
                       <div class="col-sm-12">
-                        <div class="col-sm-2">
+                        <div class="col-sm-1" style='display:none;'>
                             <label class="control-label">CODIGO PRE TRAMITE: </label>
-                          </div>
-                        <div class="col-sm-3">
                             <input type="text" class="form-control" placeholder="Codigo Pre Tramite" id="txt_codpt" name="txt_codpt"/>
-                          
+                        </div>
+                        <div class="col-sm-1">
+                            <label class="control-label">FECHA PRE TRÁMITE: </label>
+                            <input type='text' id="filtro_fecha" class="form-control mant" value='<?php echo date("Y-m-d");?>' >
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="control-label">ESTADO DEL PRE TRÁMITE: </label>
+                            <select class="form-control" id="slct_estado_tramite" multiple>
+                              <option value=0>Pendiente</option>
+                              <option value=1>Aprobado</option>
+                              <option value=2>Desaprobado</option>
+                            </select>
                         </div>
                         <!-- <div class="col-sm-3">
                             <select id="slct_persona" name="slct_persona" class="form-control">
                               
                             </select>
                         </div> -->
-                        <div class="col-sm-3">
-                            <span class="btn btn-primary btn-md" onclick="Detallepret()"><i class="glyphicon glyphicon-search"></i> Buscar</span>
+                        <div class="col-sm-2">
+                            <br>
+                            <span class="btn btn-primary btn-md" onclick="ListarPreTramites()"><i class="glyphicon glyphicon-search"></i> Buscar</span>
                         </div>
                       </div>
                     </div>
@@ -154,23 +163,19 @@ td, th{
                             <table id="t_reporte" class="table table-bordered">
                                 <thead>
                                     <tr>
-                                      <th>Fecha:</th>
-                                      <td>
-                                          <div class="input-group">
-                                          <input type='text' id="filtro_fecha" class="form-control mant" value='<?php echo date("Y-m-d");?>' >
-                                          <a class='btn btn-primary btn-sm input-group-addon' onClick='ListarPreTramites();'><i class="fa fa-search"></i></a>
-                                          </div>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                        <th>COD</th>
-                                        <th>NOMBRE DEL USUARIO</th>
+                                        <th>N° DEL PRE TRÁMITE</th>
                                         <th>NOMBRE DEL SOLICITANTE</th>
                                         <th>TIPO SOLICITANTE</th>
                                         <th>TIPO TRAMITE</th>
-                                        <th>TIPO DOCUMENTO</th>
-                                        <th>NOMBRE TRAMITE</th>
+                                        <th>DOCUMENTO PRESENTADO</th>
+                                        <th>NRO DEL DOCUMENTO</th>
+                                        <th>NOMBRE TRÁMITE</th>
                                         <th>FECHA REGISTRADA</th>
+                                        <th>REQUISITOS EN UN SOLO ARCHIVO PDF</th>
+                                        <th>ESTADO PARA MESA DE PARTES</th>
+                                        <th>FECHA DEL ESTADO</th>
+                                        <th>OBSERVACIONES</th>
+                                        <th>NRO DE EXPEDIENTE</th>
                                         <th>SELECCIONAR</th>
                                         <!-- <th>VER VOUCHER</th> -->
                                     </tr>
@@ -333,22 +338,29 @@ td, th{
                                   <label>AREA: </label>
                                   <span id="spanArea"></span>
                                 </div> --}}
-                                <div class="col-sm-2">                              
+                                <!--div class="col-sm-2">                              
                                   <label class="btn btn-primary btn-sm" id="spanEditar" onclick="getCTramites()" style="width: 100%">Editar</label>
-                                </div>                          
+                                </-div> -->
                               </div>
                             </div>
 
                             <div class="col-sm-12 observacion format">
                               <div class="row form-group">
-                                <div class="col-sm-4">
+                                <div class="col-sm-8">
                                   <label style="color:red">OBSERVACIONES (*)</label>
-                                </div>
-                              </div>
-                              <div class="row form-group">
-                                <div class="col-md-12">
                                   <textarea class="form-control" id="txt_observaciones" name="txt_observaciones" rows="4"></textarea>
-                                </div>                     
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">ESTADO FINAL DEL PRE TRÁMITE: </label>
+                                    <div class="radio-custom radio-primary">
+                                      <input type="radio" id="rdb1" name="rdb_estado" value="1">
+                                      <label for="rdb1">Aprobado</label>
+                                    </div>
+                                    <div class="radio-custom radio-primary">
+                                      <input type="radio" id="rdb2" name="rdb_estado" value="2">
+                                      <label for="rdb2">Desaprobado</label>
+                                    </div>
+                                </div>     
                               </div>
                             </div>
 

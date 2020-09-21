@@ -163,6 +163,11 @@ class TramiteController extends BaseController {
 			if(move_uploaded_file($img['tmp_name'], $root)){ //move
 			}*/
 			$name = '';
+				DB::beginTransaction();
+				$pretramite = Pretramite::find($data['txt_pretramiteid']);
+				$pretramite->estado_atencion = $data['rdb_estado'];
+				$pretramite->save();
+
 				$tramite = Tramite::where('pretramite_id', $data['txt_pretramiteid'])->first();
 
 				if( !isset($tramite->id) ){

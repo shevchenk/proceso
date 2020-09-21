@@ -138,7 +138,7 @@
           			<span id="spanDirecU">LOS CANELOS #133 URB.LOS JARDINES </span>
           		</div>
           	</div>
-          	<legend style="margin: auto;border-bottom: 0px;font-size: 15px;padding-left: 5px;font-weight: bold">DATOS USUARIO</legend>
+          	<legend style="margin: auto;border-bottom: 0px;font-size: 15px;padding-left: 5px;font-weight: bold">DATOS SOLICITANTE</legend>
           </fieldset>
   
       </div>
