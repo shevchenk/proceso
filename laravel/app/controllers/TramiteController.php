@@ -163,10 +163,12 @@ class TramiteController extends BaseController {
 			if(move_uploaded_file($img['tmp_name'], $root)){ //move
 			}*/
 			$name = '';
-				DB::beginTransaction();
-				$pretramite = Pretramite::find($data['txt_pretramiteid']);
-				$pretramite->estado_atencion = $data['rdb_estado'];
-				$pretramite->save();
+			DB::beginTransaction();
+			$pretramite = Pretramite::find($data['txt_pretramiteid']);
+			$pretramite->estado_atencion = $data['rdb_estado'];
+			$pretramite->save();
+
+			if( $pretramite->estado_atencion == 1 ){
 
 				$tramite = Tramite::where('pretramite_id', $data['txt_pretramiteid'])->first();
 
@@ -507,15 +509,17 @@ class TramiteController extends BaseController {
 				            )
 			        	);
 					}
-		        /*end proceso*/
+		        	/*end proceso*/
 		        	
 
 
 		        
-		        /*end start to create process*/
+		        	/*end start to create process*/
 				
 					
 				} //end if registry was succesfully
+
+			}
 			
 		} //end if img y data
 	}
