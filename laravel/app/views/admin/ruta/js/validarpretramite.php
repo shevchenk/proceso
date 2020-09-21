@@ -313,9 +313,9 @@ getCTramites  = function(){
 }
 
 HTMLClasificadores = function(data){
+    $('#t_clasificador').dataTable().fnDestroy();
+    var html = '';
     if(data){
-        $('#t_clasificador').dataTable().fnDestroy();
-        var html = '';
         $.each(data,function(index, el) {
             html+='<tr>';
             html+='<td>'+el.id+'</td>';
@@ -325,11 +325,10 @@ HTMLClasificadores = function(data){
             html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onclick="selectClaTramite(this)">Seleccionar</span></td>';
             html+='</tr>';        
         });
+    }
         $("#tb_clasificador").html(html);
         $("#t_clasificador").dataTable(); 
         $("#buscartramite").modal('show');
-    }else{
-    }
 }
 
 getRequisitos = function(obj){

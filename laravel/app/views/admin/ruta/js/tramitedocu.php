@@ -470,9 +470,9 @@ consultar = function(){
 }
 
 HTMLClasificadores = function(data){
+    $("#t_clasificador").dataTable().fnDestroy();
+    var html = '';
     if(data.length > 0){
-        $("#t_clasificador").dataTable().fnDestroy();
-        var html = '';
         $.each(data,function(index, el) {
             html+='<tr>';
             html+='<td>'+el.id+'</td>';
@@ -482,6 +482,7 @@ HTMLClasificadores = function(data){
             html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" area_id="'+el.area_id+'" onclick="selectClaTramite(this)">Seleccionar</span></td>';
             html+='</tr>';        
         });
+    }
         $("#tb_clasificador").html(html);
         $("#t_clasificador").dataTable(
                 {
@@ -489,9 +490,6 @@ HTMLClasificadores = function(data){
                 }
         ); 
         $("#t_clasificador").show();        
-    }else{
-        alert('no hay data');
-    }
 }
 
 selectClaTramite = function(obj){

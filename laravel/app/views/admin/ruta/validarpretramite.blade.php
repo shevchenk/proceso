@@ -354,7 +354,7 @@ td, th{
                             <div class="col-sm-12">
                               <div class="row">
                                 <div class="col-md-6">
-                                  <input type="submit" class="btn btn-primary btn-sm" style="float: right;" value="GRABAR">
+                                  <input type="submit" class="btn btn-primary btn-sm" style="float: right;" value="GENERA NRO DE TRÁMITE">
                                 </div>
                                 <div class="col-md-6">
                                   <label id="btnCancelar" class="btn btn-primary btn-sm">CANCELAR</label>
