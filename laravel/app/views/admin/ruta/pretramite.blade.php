@@ -136,7 +136,7 @@ td, th{
                                           </div>
                                       </td>
                                     </tr>
-                                    <tr>
+                                    <tr class="bg-info">
                                         <th>N° DEL PRE TRÁMITE</th>
                                         <th>NOMBRE DEL SOLICITANTE</th>
                                         <th>TIPO SOLICITANTE</th>

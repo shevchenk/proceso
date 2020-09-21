@@ -162,7 +162,7 @@ td, th{
                         <div class="box-body table-responsive">
                             <table id="t_reporte" class="table table-bordered">
                                 <thead>
-                                    <tr>
+                                    <tr class="bg-info">
                                         <th>N° DEL PRE TRÁMITE</th>
                                         <th>NOMBRE DEL SOLICITANTE</th>
                                         <th>TIPO SOLICITANTE</th>
@@ -221,12 +221,12 @@ td, th{
                                    <div class="row form-group">
                                        <div class="col-sm-4">
                                           <label>#TIPO DOC: </label>
-                                          <input type="text" id="txt_tdoc" name="txt_tdoc" class="form-control">
+                                          <input type="text" id="txt_tdoc" name="txt_tdoc" class="form-control" readonly>
                                          {{--  <span id="spanNumTP"></span> --}}
                                       </div>
                                        <div class="col-sm-4">
                                           <label>#FOLIO: </label>
-                                          <input type="text" id="txt_folio" name="txt_folio" class="form-control">
+                                          <input type="text" id="txt_folio" name="txt_folio" class="form-control" readonly>
 {{-- 
                                           <span id="spanFolio"></span> --}}
                                       </div>
@@ -367,7 +367,7 @@ td, th{
                             <div class="col-sm-12">
                               <div class="row">
                                 <div class="col-md-6">
-                                  <input type="submit" class="btn btn-primary btn-sm" style="float: right;" value="GENERA NRO DE TRÁMITE">
+                                  <input type="submit" class="btn btn-primary btn-sm" style="float: right;" value="GRABAR">
                                 </div>
                                 <div class="col-md-6">
                                   <label id="btnCancelar" class="btn btn-primary btn-sm">CANCELAR</label>
