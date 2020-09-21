@@ -104,7 +104,7 @@ class PretramiteController extends BaseController {
 	        $pretramite['tipo_solicitante_id'] = $array_data->cbo_tiposolicitante;
 	        $pretramite['tipo_documento_id'] = $array_data->cbo_tipodoc;
 	        $pretramite['tipo_tramite_id'] = $array_data->cbo_tipotramite;
-	        $pretramite['documento'] = $array_data->tipodoc;
+	        $pretramite['documento'] = urldecode($array_data->tipodoc);
 	        $pretramite['nro_folios'] = $array_data->numfolio;
 	        $pretramite['area_id'] = $array_data->idarea;
 	        $pretramite['fecha_pretramite'] = date('Y-m-d H:i:s');
