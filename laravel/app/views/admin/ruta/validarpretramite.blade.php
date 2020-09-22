@@ -114,7 +114,7 @@ td, th{
             <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Recepcion de Pre Tramite           
+          Recepción del servicio solicitado
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
@@ -132,15 +132,15 @@ td, th{
                     <div class="row form-group" >
                       <div class="col-sm-12">
                         <div class="col-sm-1" style='display:none;'>
-                            <label class="control-label">CODIGO PRE TRAMITE: </label>
+                            <label class="control-label">N° DE SERVICIO: </label>
                             <input type="text" class="form-control" placeholder="Codigo Pre Tramite" id="txt_codpt" name="txt_codpt"/>
                         </div>
                         <div class="col-sm-1">
-                            <label class="control-label">FECHA PRE TRÁMITE: </label>
+                            <label class="control-label">FECHA DEL SERVICIO: </label>
                             <input type='text' id="filtro_fecha" class="form-control mant" value='<?php echo date("Y-m-d");?>' >
                         </div>
                         <div class="col-sm-2">
-                            <label class="control-label">ESTADO DEL PRE TRÁMITE: </label>
+                            <label class="control-label">ESTADO DEL SERVICIO : </label>
                             <select class="form-control" id="slct_estado_tramite" multiple>
                               <option value=0>Pendiente</option>
                               <option value=1>Aprobado</option>
@@ -163,16 +163,16 @@ td, th{
                             <table id="t_reporte" class="table table-bordered">
                                 <thead>
                                     <tr class="bg-info">
-                                        <th>N° DEL PRE TRÁMITE</th>
+                                        <th>N° DE SERVICIO SOLICITADO</th>
                                         <th>NOMBRE DEL SOLICITANTE</th>
                                         <th>TIPO SOLICITANTE</th>
-                                        <th>TIPO TRAMITE</th>
+                                        <th>TIPO DE SERVICIO SOLICITADO</th>
                                         <th>DOCUMENTO PRESENTADO</th>
                                         <th>NRO DEL DOCUMENTO</th>
-                                        <th>NOMBRE TRÁMITE</th>
+                                        <th>NOMBRE DELSERVICIO SOLICITADO</th>
                                         <th>FECHA REGISTRADA</th>
                                         <th>REQUISITOS EN UN SOLO ARCHIVO PDF</th>
-                                        <th>ESTADO PARA MESA DE PARTES</th>
+                                        <th>ESTADO DEL SERVICIO SOLICITADO</th>
                                         <th>FECHA DEL ESTADO</th>
                                         <th>OBSERVACIONES</th>
                                         <th>NRO DE EXPEDIENTE</th>
@@ -206,7 +206,7 @@ td, th{
                                 <div class="col-sm-10">
                                    <div class="row form-group">
                                       <div class="col-sm-4">
-                                          <label>TIPO TRAMITE: </label>
+                                          <label>TIPO DE SERVICIO SOLICITADO: </label>
                                           <span id="spanTipoT"></span>
                                       </div>
                                        <div class="col-sm-4">
@@ -221,14 +221,17 @@ td, th{
                                    <div class="row form-group">
                                        <div class="col-sm-4">
                                           <label>#TIPO DOC: </label>
-                                          <input type="text" id="txt_tdoc" name="txt_tdoc" class="form-control" readonly>
-                                         {{--  <span id="spanNumTP"></span> --}}
+                                          <span id="spanNumTP"></span> 
+                                          <input type="text" id="txt_tdoc" name="txt_tdoc" class="form-control" style="display:none;" readonly>
                                       </div>
                                        <div class="col-sm-4">
                                           <label>#FOLIO: </label>
-                                          <input type="text" id="txt_folio" name="txt_folio" class="form-control" readonly>
-{{-- 
-                                          <span id="spanFolio"></span> --}}
+                                          <span id="spanFolio"></span> 
+                                          <input type="text" id="txt_folio" name="txt_folio" class="form-control" style="display:none;" readonly>
+                                      </div>
+                                      <div class="col-sm-4">
+                                        <label>NOMBRE DEL SERVICIO SOLICITADO: </label><br>
+                                        <span id="spanNombreT"></span>
                                       </div>
                                    </div>
                                 </div>
@@ -323,7 +326,7 @@ td, th{
                               </div>
                             </div>
 
-                            <div class="col-sm-12 clasificacion format">
+                            <!-- <div class="col-sm-12 clasificacion format">
                               <div class="row form-group">
                                 <div class="col-sm-4">
                                   <label style="color:red">CLASIFICACION DEL TRAMITE (*)</label>
@@ -334,15 +337,15 @@ td, th{
                                   <label>NOMBRE DEL TRAMITE: </label>
                                   <span id="spanNombreT"></span>
                                 </div>
-                     {{--            <div class="col-sm-5">
+                                 <div class="col-sm-5">
                                   <label>AREA: </label>
                                   <span id="spanArea"></span>
-                                </div> --}}
-                                <!--div class="col-sm-2">                              
+                                </div> 
+                                <div class="col-sm-2">                              
                                   <label class="btn btn-primary btn-sm" id="spanEditar" onclick="getCTramites()" style="width: 100%">Editar</label>
-                                </-div> -->
+                                </-div> 
                               </div>
-                            </div>
+                            </div>  -->
 
                             <div class="col-sm-12 observacion format">
                               <div class="row form-group">
@@ -351,7 +354,7 @@ td, th{
                                   <textarea class="form-control" id="txt_observaciones" name="txt_observaciones" rows="4"></textarea>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="control-label">ESTADO FINAL DEL PRE TRÁMITE: </label>
+                                    <label class="control-label">ESTADO DEL SERVICIO: </label>
                                     <div class="radio-custom radio-primary">
                                       <input type="radio" id="rdb1" name="rdb_estado" value="1">
                                       <label for="rdb1">Aprobado</label>

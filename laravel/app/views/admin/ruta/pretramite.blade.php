@@ -106,14 +106,9 @@ td, th{
             <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Listado de Pre Tramites
+          Listado de Servicios solicitados
             <span class="btn btn-success" id="btnnuevo" style="margin-left: 10px">Nuevo <i class="glyphicon glyphicon-plus"></i></span>
         </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
-            <li><a href="#">Reporte</a></li>
-            <li class="active">Listado de Tramites</li>
-        </ol>
     </section>
 
         <!-- Main content -->
@@ -137,20 +132,20 @@ td, th{
                                       </td>
                                     </tr>
                                     <tr class="bg-info">
-                                        <th>N° DEL PRE TRÁMITE</th>
+                                        <th>N° DE SERVICIO SOLICITADO</th>
                                         <th>NOMBRE DEL SOLICITANTE</th>
                                         <th>TIPO SOLICITANTE</th>
-                                        <th>TIPO TRAMITE</th>
+                                        <th>TIPO DE SERVICIO SOLICITADO</th>
                                         <th>DOCUMENTO PRESENTADO</th>
                                         <th>NRO DEL DOCUMENTO</th>
-                                        <th>NOMBRE TRÁMITE</th>
+                                        <th>NOMBRE DELSERVICIO SOLICITADO</th>
                                         <th>FECHA REGISTRADA</th>
                                         <th>REQUISITOS EN UN SOLO ARCHIVO PDF</th>
-                                        <th>ESTADO PARA MESA DE PARTES</th>
+                                        <th>ESTADO DEL SERVICIO SOLICITADO</th>
                                         <th>FECHA DEL ESTADO</th>
                                         <th>OBSERVACIONES</th>
                                         <th>NRO DE EXPEDIENTE</th>
-                                        <th>AVANCE DEL TRÁMITE</th>
+                                        <th>INFOR. DEL AVANCE</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tb_reporte">
@@ -162,12 +157,12 @@ td, th{
             </div>
 
             <div class="crearPreTramite hidden">
-              <h1>Crear Pre Tramite</h1>
+              <h1>Crear una Solicitud de Servicio</h1>
               <form id="FormCrearPreTramite" method="post">
                 <div class="col-md-12 form-group">
                   <div class="col-md-5">
                      <div class="col-md-4" style="padding-top: 5px;">
-                      <span>TIPO TRÁMITE: </span>
+                      <span>TIPO DE SERVICIO: </span>
                     </div>
                     <div class="col-md-8">
                       <select class="form-control select" id="cbo_tipotramite" name="cbo_tipotramite">
@@ -185,7 +180,7 @@ td, th{
                     <div class="col-md-12 form-group">
                       <div class="col-md-7">
                         <div class="col-md-4">
-                          <span>NOMBRE TRÁMITE: </span>
+                          <span>NOMBRE DEL SERVICIO: </span>
                         </div>
                         <div class="col-md-8">
                           <input type="text" name="txt_nombretramite" id="txt_nombretramite" class="form-control" disabled>
@@ -195,7 +190,7 @@ td, th{
                       </div>
                       <div class="col-md-5  form-group">
                         <div class="col-md-5">
-                          <span>NÚMERO DE FOLIO: </span>
+                          <span>CANTIDAD DE FOLIOS: </span>
                         </div>
                         <div class="col-md-7">
                           <input type="text" name="txt_numfolio" id="txt_numfolio" class="form-control">

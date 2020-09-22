@@ -284,10 +284,12 @@ poblarDetalle = function(data){
             document.querySelector('#spanTipoT').innerHTML=result.tipotramite;
             document.querySelector('#spanTipoD').innerHTML=result.tipodoc;
             document.querySelector('#txt_tdoc').value=result.nrotipodoc;
+            document.querySelector('#spanNumTP').innerHTML=result.nrotipodoc;
+            
             document.querySelector('#spanTSoli').innerHTML=result.solicitante;
             document.querySelector('#txt_folio').value=result.folio;
+            document.querySelector('#spanFolio').innerHTML=result.folio;
             document.querySelector('#spanNombreU').innerHTML=result.nombusuario;
-            /*document.querySelector('#spanTipoDIU').innerHTML=result.data;*/
                                         
             document.querySelector('#spanPaternoU').innerHTML=result.apepusuario;
             document.querySelector('#spanMaternoU').innerHTML=result.apemusuario;
