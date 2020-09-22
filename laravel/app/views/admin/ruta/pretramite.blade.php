@@ -171,7 +171,7 @@ td, th{
                     </div>
                   </div>
                   <div class="col-md-2">
-                    <span class="btn btn-primary btn-sm" onclick="consultar()">BUSCAR TRÁMITE</span>
+                    <span class="btn btn-primary btn-sm" onclick="consultar()">BUSCAR SERVICIO</span>
                   </div>
                 </div>
 
