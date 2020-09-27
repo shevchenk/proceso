@@ -418,6 +418,15 @@ td, th{
                           </div>
                         </div>
                       </div>
+                      <div class="col-md-6">
+                          <p><b>Documentos de apoyo para preparar el archivo PDF</b></p>
+                          <ol>
+                            <li>Haga Click en el botón: <b>Buscar Servicio.</b></li>
+                            <li>Ubíquese en el servicio que requiera solicitar.</li>
+                            <li>Haga Click en el botón <b>Ver</b>: Allí verá los requisitos y sus documentos de apoyo para guiar el cumplimiento de dicho requisito.</li>
+                            <li>Haga Click en la <b>figura</b> y descargue el documento de apoyo</li>
+                          </ol>
+                      </div>
                     </div>
                   </fieldset>
                 </div>
