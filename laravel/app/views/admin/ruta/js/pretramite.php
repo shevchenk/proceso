@@ -487,10 +487,10 @@ HTMLRequisitos = function(data,tramite){
             html+='<td style="text-align: left;"><li>'+el.nombre+'</li></td>';
             html+='<td>'+el.cantidad+'</td>';
             if( $.trim(el.ruta_archivo)!='' ){
-                html+="<td data-url='"+data.ruta_archivo+"'><a class='btn btn-info btn-lg' href='"+data.ruta_archivo+"' target='_blank'><i class='fa fa-file fa-lg'></i></td>";
+                html+="<td data-url='"+el.ruta_archivo+"'><a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file fa-lg'></i></td>";
             }
             else{
-                html+='<td data-url="'+data.ruta_archivo+'"> - </td>';
+                html+='<td data-url="'+el.ruta_archivo+'"> - </td>';
             }
             html+='<ul></tr>';
         });
