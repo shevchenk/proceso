@@ -272,6 +272,15 @@ class ClasificadorTramiteController extends \BaseController
             $costopersonal->usuario_created_at = Auth::user()->id;
             $costopersonal->save();
 
+            if( trim(Input::get('pdf_archivo'))!='' ){
+                $urld=explode(".", urldecode(Input::get('pdf_nombre')));
+                $url = "upload/requisito/R-".$costopersonal->id.".".end($urld);
+				$costopersonal->ruta_archivo = $url;
+				$costopersonal->save();
+                
+                Pretramite::FileToFile(Input::get('pdf_archivo'), $url);
+            }
+
             return Response::json(array('rst'=>1, 'msj'=>'Registro realizado correctamente', 'costo_personal_id'=>$costopersonal->id));
         }
     }
@@ -309,6 +318,19 @@ class ClasificadorTramiteController extends \BaseController
             $costopersonal->estado = Input::get('estado');
             $costopersonal->usuario_updated_at = Auth::user()->id;
             $costopersonal->save();
+
+            if( trim(Input::get('pdf_archivo'))!='' ){
+                $urld=explode(".", urldecode(Input::get('pdf_nombre')));
+                $url = "upload/requisito/R-".$costopersonal->id.".".end($urld);
+				$costopersonal->ruta_archivo = $url;
+				$costopersonal->save();
+                
+                Pretramite::FileToFile(Input::get('pdf_archivo'), $url);
+            }
+            elseif( trim(Input::get('pdf_nombre'))=='' ){
+                $costopersonal->ruta_archivo = '';
+                $costopersonal->save();
+            }
 
             return Response::json(array('rst'=>1, 'msj'=>'Registro actualizado correctamente'));
         }

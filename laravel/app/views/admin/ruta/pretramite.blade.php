@@ -106,7 +106,7 @@ td, th{
             <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-          Listado de Servicios solicitados
+          Listado de servicios solicitados
             <span class="btn btn-success" id="btnnuevo" style="margin-left: 10px">Nuevo <i class="glyphicon glyphicon-plus"></i></span>
         </h1>
     </section>
@@ -157,7 +157,7 @@ td, th{
             </div>
 
             <div class="crearPreTramite hidden">
-              <h1>Crear una Solicitud de Servicio</h1>
+              <h1>Crear una solicitud de servicio</h1>
               <form id="FormCrearPreTramite" method="post">
                 <div class="col-md-12 form-group">
                   <div class="col-md-5">

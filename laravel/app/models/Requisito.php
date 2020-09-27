@@ -8,7 +8,7 @@ class Requisito extends Base
     
     public static function getCargar($array )
     {
-        $sSql=" SELECT r.id, r.clasificador_tramite_id,r.nombre,r.cantidad,r.estado
+        $sSql=" SELECT r.id, r.clasificador_tramite_id,r.nombre,r.cantidad,r.estado, r.ruta_archivo
                 FROM requisitos r
                 WHERE 1=1  ";
         $sSql.= $array['where'];

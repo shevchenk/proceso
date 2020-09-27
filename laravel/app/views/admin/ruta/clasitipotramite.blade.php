@@ -127,6 +127,7 @@
                                         <th>N°</th>
                                         <th>Nombre</th>
                                         <th>Cantidad</th>
+                                        <th>Archivo</th>
                                         <th>[]</th>
                                         <th>[]</th>
                                     </tr>

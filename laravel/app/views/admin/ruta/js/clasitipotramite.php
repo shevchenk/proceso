@@ -3,7 +3,7 @@ var cabeceraG=[]; // Cabecera del Datatable
 var columnDefsG=[]; // Columnas de la BD del datatable
 var targetsG=-1; // Posiciones de las columnas del datatable
 
-var CostoPersonalG={id:0,nombre:"",cantidad:"",estado:1}; // Datos Globales
+var CostoPersonalG={id:0,nombre:"",cantidad:"",estado:1, ruta_archivo:""}; // Datos Globales
 var EstratPeiG={id:0,descripcion:"",estado:1}; // Datos Globales
 
     // Datos Globales
@@ -113,25 +113,27 @@ $(document).ready(function() {
       modal.find('.modal-title').text(titulo+' Requisito');
       $('#form_requisitos_modal [data-toggle="tooltip"]').css("display","none");
 //      $("#form_requisitos_modal input[type='hidden']").remove();
- 
+        ruta_archivo = '';
+        $('#form_requisitos_modal #pdf_archivo').val('');
+        $('#form_requisitos_modal #id').remove();
         if(titulo=='Nuevo'){
             //$("#form_requisitos_modal").append("<input type='hidden' value='263' name='txt_contratacion_id'>");
             modal.find('.modal-footer .btn-primary').text('Guardar');
             modal.find('.modal-footer .btn-primary').attr('onClick','AgregarCostoPersonal();');
             $('#form_requisitos_modal #slct_estado').val(1);
             $('#form_requisitos_modal #txt_nombre').focus();
-           
         } else {
+            ruta_archivo = CostoPersonalG.ruta_archivo;
             modal.find('.modal-footer .btn-primary').text('Actualizar');
             modal.find('.modal-footer .btn-primary').attr('onClick','EditarCostoPersonal();');
 
             $('#form_requisitos_modal #txt_nombre').val( CostoPersonalG.nombre );
             $('#form_requisitos_modal #txt_cantidad').val( CostoPersonalG.cantidad );
             $('#form_requisitos_modal #slct_estado').val( CostoPersonalG.estado );
-            $("#form_requisitos_modal").append("<input type='hidden' value='"+CostoPersonalG.id+"' name='id'>");
-            
-          
+            $('#form_requisitos_modal #pdf_nombre').val( ruta_archivo );
+            $("#form_requisitos_modal").append("<input type='hidden' value='"+CostoPersonalG.id+"' name='id' id='id'>");
         }
+        masterG.SelectImagen(ruta_archivo,"#pdf_img","#pdf_href");
              $('#form_requisitos_modal select').multiselect('rebuild');
     });
     
@@ -183,7 +185,9 @@ $(document).ready(function() {
     
 });
 
-
+Limpiar = (v)=>{
+    $(v).val('');
+}
 
 desactivarCostoPersonal = function(id){
       Pois.CambiarEstadoCostoPersonal(id, 0); 
@@ -280,6 +284,12 @@ costopersonalHTML=function(datos){
              "<td>"+pos+"</td>"+
             "<td>"+data.nombre+"</td>"+
             "<td>"+data.cantidad+"</td>";
+        if( $.trim(data.ruta_archivo)!='' ){
+            html+="<td data-url='"+data.ruta_archivo+"'><a class='btn btn-info btn-lg' href='"+data.ruta_archivo+"' target='_blank'><i class='fa fa-file fa-lg'></i></td>";
+        }
+        else{
+            html+='<td data-url="'+data.ruta_archivo+'"> - </td>';
+        }
         html+="<td align='center'><a class='form-control btn btn-primary' data-toggle='modal' data-target='#requisitoModal' data-titulo='Editar' onclick='BtnEditarCostoPersonal(this,"+data.id+")'><i class='fa fa-lg fa-edit'></i></a></td>";
         if(data.estado==1){
             html+='<td align="center"><span id="'+data.id+'" onClick="desactivarCostoPersonal('+data.id+')" data-estado="'+data.estado+'" class="btn btn-success">Activo</span></td>';
@@ -335,7 +345,8 @@ BtnEditarCostoPersonal=function(btn,id){
     CostoPersonalG.id=id;
     CostoPersonalG.nombre=$(tr).find("td:eq(1)").text();
     CostoPersonalG.cantidad=$(tr).find("td:eq(2)").text();
-    CostoPersonalG.estado=$(tr).find("td:eq(4)>span").attr("data-estado");
+    CostoPersonalG.ruta_archivo=$(tr).find("td:eq(3)").attr('data-url');
+    CostoPersonalG.estado=$(tr).find("td:eq(5)>span").attr("data-estado");
 
 };
 
