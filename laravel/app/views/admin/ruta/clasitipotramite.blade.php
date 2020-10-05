@@ -25,7 +25,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Crear servicios  al usuario
+        Configurar Servicio
         <small> </small>
     </h1>
     <ol class="breadcrumb">
@@ -38,60 +38,7 @@
 <!-- Main content -->
 <!-- Main content -->
 <section class="content">
-    <!-- Custom Tabs -->
-    <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs logo modal-header">
-            <li class="logo tab_1 active">
-                <a href="#tab_1" data-toggle="tab">
-                    <button class="btn btn-primary btn-sm"><i class="fa fa-cloud fa-lg"></i> </button>
-                    Tipo Trámite
-                </a>
-            </li>
-            <li class="logo tab_2">
-                <a href="#tab_2" data-toggle="tab">
-                    <button class="btn btn-primary btn-sm"><i class="fa fa-cloud fa-lg"></i> </button>
-                    Servicios al usuario
-                </a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane active" id="tab_1" onclick="ActPest(1);">
-                <form id="form_estrat_pei" name="form_estrat_pei" method="POST" action="">
-                    <div class="form-group">
-                        <div class="box-header table-responsive">
-                            <div class="col-xs-12">
-                                <h3>
-                                    Mantenimiento de Tipo Trámite 
-                                </h3>                           
-                            </div>
-                        </div>
-                        <div class="box-body table-responsive">
-                            <table id="t_estrat_pei" class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>N°</th>
-                                        <th>Nombre</th>
-                                        <th>[]</th>
-                                        <th>[]</th>
-                                    </tr>
-<!--                                    <tr><th colspan="12" style="text-align:center;background-color:#A7C0DC;"><h2><spam id="txt_titulo">Contrataciones</spam></h2></th></tr>-->
-
-                                </thead>
-                                <tbody id="tb_estrat_pei">
-                                </tbody>
-
-                            </table>
-                            <a class="btn btn-primary"
-                               data-toggle="modal" data-target="#tipotramiteModal" data-titulo="Nueva"><i class="fa fa-plus fa-lg"></i>&nbsp;Nuevo</a>
-                            <a style="display:none" id="BtnEditar" data-toggle="modal" data-target="#tipotramiteModal" data-titulo="Editar"></a>
-
-                        </div><!-- /.box-body -->
-                    </div>
-                </form>
-
-            </div>
-            <div class="tab-pane" id="tab_2" onclick="ActPest(2);">
-                <form id="form_clasificadortramites" name="form_clasificadortramites" method="POST" action="">
+<form id="form_clasificadortramites" name="form_clasificadortramites" method="POST" action="">
                     <div class="box-body table-responsive">
                         <table id="t_clasificadortramites" class="table table-bordered table-hover">
                             <thead>
@@ -220,10 +167,6 @@
                         </div>
                     </div>
                 </form>
-
-            </div>
-        </div><!-- /.tab-content -->
-    </div><!-- nav-tabs-custom -->
 
 </section><!-- /.content -->
 
