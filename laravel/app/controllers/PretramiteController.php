@@ -157,6 +157,7 @@ class PretramiteController extends BaseController {
         $pretramite['documento'] = $array_data->tipodoc;
         $pretramite['nro_folios'] = $array_data->numfolio;
         $pretramite['area_id'] = $array_data->idarea;
+        $pretramite['estado_atencion'] = 1;
         $pretramite['fecha_pretramite'] = date('Y-m-d H:i:s');
         $pretramite['usuario_created_at'] = Auth::user()->id;
 		$pretramite->save();

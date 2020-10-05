@@ -46,6 +46,13 @@ $(document).ready(function() {
         $("input[type='text'], .select").not('.mant').val('');
         $(".select").multiselect('refresh');
 
+        ///////////////////////////////////////////////////
+        //$("#cbo_tiposolicitante").val(1);
+        var data={'id':1,'estado':1};
+        $("#txt_idempresa").val('');
+        Bandeja.GetTipoSolicitante(data,Mostrar);
+        ///////////////////////////////////////////////////
+
         window.scrollTo(0,document.body.scrollHeight);
     });
     
@@ -216,6 +223,13 @@ HTMLPreTramite = function(data){
             html+="</tr>";            
         });
         $("#tb_reporte").html(html);
+        //$("#tb_reporte").html(html);
+        $("#t_reporte").dataTable(
+            {
+                "order": [[ 0, "desc" ]],
+                "pageLength": 5,
+            }
+        ); 
     }
 }
 
@@ -402,18 +416,22 @@ poblateData = function(tipo,data){
 consultar = function(){
     var busqueda = document.querySelector("#txtbuscarclasificador");
     var tipotramite = document.querySelector('#cbo_tipotramite');
-
-    var data = {};
-    data.estado = 1;
-    if(busqueda){
-       data.buscar = busqueda.value;
+    if( $("#cbo_tipotramite").val()=='' ){
+        msjG.mensaje("warning", 'Seleccione tipo de servicio',3000);
     }
-    if(tipotramite){
-        data.tipotra = tipotramite.value;
+    else{
+        var data = {};
+        data.estado = 1;
+        if(busqueda){
+        data.buscar = busqueda.value;
+        }
+        if(tipotramite){
+            data.tipotra = tipotramite.value;
+        }
+        Bandeja.getClasificadoresTramite(data,HTMLClasificadores);
+        $(".rowArea").addClass('hidden');
+        $('#buscartramite').modal('show');
     }
-    Bandeja.getClasificadoresTramite(data,HTMLClasificadores);
-    $(".rowArea").addClass('hidden');
-    $('#buscartramite').modal('show');
 }
 
 HTMLClasificadores = function(data){
@@ -487,7 +505,7 @@ HTMLRequisitos = function(data,tramite){
             html+='<td style="text-align: left;"><li>'+el.nombre+'</li></td>';
             html+='<td>'+el.cantidad+'</td>';
             if( $.trim(el.ruta_archivo)!='' ){
-                html+="<td data-url='"+el.ruta_archivo+"'><a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file fa-lg'></i></td>";
+                html+="<td data-url='"+el.ruta_archivo+"'><a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-download fa-lg'></i></td>";
             }
             else{
                 html+='<td data-url="'+el.ruta_archivo+'"> - </td>';
@@ -501,9 +519,10 @@ HTMLRequisitos = function(data,tramite){
 }
 
 generarPreTramite = function(){
-    
+    $("#txt_tipodoc").val('S/N');
+    $("#cbo_tiposolicitante").val('1');
     if( $("#cbo_tipotramite").val()=='' ){
-        msjG.mensaje("warning", 'Seleccione Tipo de trámite',3000);
+        msjG.mensaje("warning", 'Seleccione Tipo de servicio',3000);
     }
     else if($("#txt_nombretramite").val()==''){
         msjG.mensaje("warning", 'Busque y seleccione trámite',3000);

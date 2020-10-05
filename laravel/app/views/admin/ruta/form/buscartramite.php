@@ -5,7 +5,7 @@
     <div class="modal-content">
       <div class="modal-header logo">
          <button type="button" class="close btn-xs" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Buscar Tipo de Trámite</h4>
+        <h4 class="modal-title">Seleccionar Servicio</h4>
       </div>
       <div class="modal-body">
             <div class="box">
@@ -34,7 +34,7 @@
                                 <thead>
                                     <tr>
                                         <th>COD</th>
-                                        <th>NOMBRE DEL TRAMITE</th>
+                                        <th>SERVICIO</th>
                                         <th>REQUISITOS</th>
                                         <th>RUTA</th>
                                         <th>SELECCIONAR</th>
@@ -103,7 +103,7 @@
                                     <tr>
                                         <th>REQUISITO</th>
                                         <th>CANTIDAD</th>
-                                        <th>ARCHIVO</th>
+                                        <th>DOCUMENTO A DESCARGAR</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tb_requisitos">

@@ -345,7 +345,7 @@ td, th{
                     <div class="col-md-12 form-group">
                       <div class="col-md-7">
                         <div class="col-md-4">
-                          <span>NOMBRE DEL SERVICIO: </span>
+                          <span>SERVICIO SELECCIONADO:: </span>
                         </div>
                         <div class="col-md-8">
                           <input type="text" name="txt_nombretramite" id="txt_nombretramite" class="form-control" disabled>
@@ -356,7 +356,7 @@ td, th{
                       </div>
                       <div class="col-md-5  form-group">
                         <div class="col-md-5">
-                          <span>CANTIDAD DE FOLIOS: </span>
+                          <span>CANTIDAD DE FOLIOS(Considere la suma de las páginas de los requisitos, más el documento presentado para solicitar el servicio): </span>
                         </div>
                         <div class="col-md-7">
                           <input type="text" name="txt_numfolio" id="txt_numfolio" class="form-control">
@@ -366,7 +366,7 @@ td, th{
                     <div class="col-md-12">
                         <div class="col-md-7">
                         <div class="col-md-4" style="padding-top: 5px;">
-                          <span>TIPO DOCUMENTO: </span>
+                          <span>DOCUMENTO PRESENTADO(Para solicitar el servicio): </span>
                         </div>
                         <div class="col-md-8">
                           <select class="form-control" id="cbo_tipodoc" name="cbo_tipodoc">
@@ -377,7 +377,7 @@ td, th{
 
                       <div class="col-md-5  form-group">
                         <div class="col-md-5">
-                          <span>NUMERO TIPO DOCUMENTO: </span>
+                          <span>N° DEL DOCUMENTO PRESENTADO: </span>
                         </div>
                         <div class="col-md-7">
                           <input type="text" name="txt_tipodoc" id="txt_tipodoc" class="form-control">

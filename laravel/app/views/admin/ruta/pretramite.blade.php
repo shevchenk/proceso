@@ -106,7 +106,7 @@ td, th{
             <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-          Listado de servicios solicitados
+            Solicitar nuevo servicio:
             <span class="btn btn-success" id="btnnuevo" style="margin-left: 10px">Nuevo <i class="glyphicon glyphicon-plus"></i></span>
         </h1>
     </section>
@@ -122,7 +122,7 @@ td, th{
                         <div class="box-body table-responsive">
                             <table id="t_reporte" class="table table-bordered">
                                 <thead>
-                                    <tr>
+                                    <!-- <tr>
                                       <th>Fecha:</th>
                                       <td colspan=2>
                                           <div class="input-group">
@@ -130,7 +130,7 @@ td, th{
                                           <a class='btn btn-primary btn-sm input-group-addon' onClick='CargarPreTramites();'><i class="fa fa-search"></i></a>
                                           </div>
                                       </td>
-                                    </tr>
+                                    </tr> -->
                                     <tr class="bg-info">
                                         <th>N° DE SERVICIO SOLICITADO</th>
                                         <th>NOMBRE DEL SOLICITANTE</th>
@@ -180,7 +180,7 @@ td, th{
                     <div class="col-md-12 form-group">
                       <div class="col-md-7">
                         <div class="col-md-4">
-                          <span>NOMBRE DEL SERVICIO: </span>
+                          <span>SERVICIO SELECCIONADO: </span>
                         </div>
                         <div class="col-md-8">
                           <input type="text" name="txt_nombretramite" id="txt_nombretramite" class="form-control" disabled>
@@ -190,7 +190,7 @@ td, th{
                       </div>
                       <div class="col-md-5  form-group">
                         <div class="col-md-5">
-                          <span>CANTIDAD DE FOLIOS: </span>
+                          <span>CANTIDAD DE FOLIOS(Considere la suma de las páginas de los requisitos, más el documento presentado para solicitar el servicio): </span>
                         </div>
                         <div class="col-md-7">
                           <input type="text" name="txt_numfolio" id="txt_numfolio" class="form-control">
@@ -200,7 +200,7 @@ td, th{
                     <div class="col-md-12">
                         <div class="col-md-7">
                         <div class="col-md-4" style="padding-top: 5px;">
-                          <span>TIPO DOCUMENTO: </span>
+                          <span>DOCUMENTO PRESENTADO(Para solicitar el servicio): </span>
                         </div>
                         <div class="col-md-8">
                           <select class="form-control select" id="cbo_tipodoc" name="cbo_tipodoc">
@@ -209,7 +209,7 @@ td, th{
                         </div>
                       </div>
 
-                      <div class="col-md-5  form-group">
+                      <div class="col-md-5  form-group" style="display:none;">
                         <div class="col-md-5">
                           <span>NUMERO TIPO DOCUMENTO: </span>
                         </div>
@@ -221,7 +221,7 @@ td, th{
                   </fieldset>
                 </div>
 
-                <div class="col-md-12 tipoSolicitante">
+                <div class="col-md-12 tipoSolicitante" style="display:none;">
                   <div class="col-md-6">
                     <div class="col-md-4" style="padding-top: 5px">
                       <span>TIPO SOLICITANTE: </span>
@@ -419,12 +419,19 @@ td, th{
                         </div>
                       </div>
                       <div class="col-md-6">
-                          <p><b>Documentos de apoyo para preparar el archivo PDF</b></p>
+                          <p><b>Paso para preparar el archivo PDF</b></p>
+                          <p><b>A.- Descargar los documentos de apoyo sobre los requisitos</b></p>
                           <ol>
                             <li>Haga Click en el botón: <b>Buscar Servicio.</b></li>
-                            <li>Ubíquese en el servicio que requiera solicitar.</li>
-                            <li>Haga Click en el botón <b>Ver</b>: Allí verá los requisitos y sus documentos de apoyo para guiar el cumplimiento de dicho requisito.</li>
-                            <li>Haga Click en la <b>figura</b> y descargue el documento de apoyo</li>
+                            <li>Ubíquese en la fila del servicio que requiera solicitar.</li>
+                            <li>Haga Click en el botón <b>Ver</b> para ver los requisitos con sus documentos de apoyo.</li>
+                            <li>Haga Click en la <b>figura de Descarga de documento <i class="fa fa-download"></i></b> para descargar el documento de apoyo.</li>
+                          </ol>
+                          <hr>
+                          <p><b>B.- Prepara el archivo PDF</b></p>
+                          <ol>
+                            <li>Abra un archivo MS WORD y copie cada requisito en cada hoja. Si el requisito es un documento de muchas hojas, copie todo en el archivo.</li>
+                            <li>Guarde como un archivo PDF.</li>
                           </ol>
                       </div>
                     </div>
