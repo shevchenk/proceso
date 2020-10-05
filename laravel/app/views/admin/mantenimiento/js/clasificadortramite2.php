@@ -115,19 +115,19 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         //estadohtml='<a class="form-control btn-success" onClick="CargarProceso('+row.nombre+')"<i class="fa fa-lg fa-check"></i></a>';
         return estadohtml;
     }
-    if(typeof(fn)!='undefined' && fn.col==3){
+    if(typeof(fn)!='undefined' && fn.col==3 && row.estado_final == 0){
         var grupo='';
         grupo+= '<span id="'+row.id+'" title="Requisitos" onClick="CargarCostoPersonal(\''+row.id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i></span>';
         return grupo;
     }      
-    if(typeof(fn)!='undefined' && fn.col==4){
+    if(typeof(fn)!='undefined' && fn.col==4 && row.estado_final == 0){
         var grupo='';
         //row.nombre.split('"').join("-");
         grupo+= '<span id="'+row.id+'" title="Asignar Proceso" onClick="CargarActividad(\''+row.id+'\',\''+row.nombre.split('"').join("-")+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-list-alt"></i></span>';
         return grupo;
    }
 
-    if(typeof(fn)!='undefined' && fn.col==5  && row.ruta_flujo_id!==null){
+    if(typeof(fn)!='undefined' && fn.col==5  && row.ruta_flujo_id!==null && row.estado_final == 0){
         var grupo='';
         grupo+= '<a onclick="cargarRutaId('+row.ruta_flujo_id+',2)" class="btn btn-warning btn-sm"><i class="fa fa-search-plus fa-lg"></i> </a>';
         return grupo;
@@ -150,7 +150,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         return estadohtml;
     }
 
-    if(typeof(fn)!='undefined' && fn.col==7){
+    if(typeof(fn)!='undefined' && fn.col==7 && row.estado_final == 0){
         var estadohtml='<a class="form-control btn btn-primary" onclick="BtnEditar(this,'+row.id+')"><i class="fa fa-lg fa-edit"></i></a>';
         return estadohtml;
     }
