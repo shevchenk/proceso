@@ -135,6 +135,7 @@ class Pretramite extends Eloquent {
                             $query->where('ct.tipo_tramite_id','=',Input::get('tipotra'));
                         }
                         $query->where('ct.estado','=','1');
+                        $query->where('ct.estado_final','=','1');
                     }
                 )
                 ->get();  

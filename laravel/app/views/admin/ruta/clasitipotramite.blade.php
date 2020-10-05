@@ -25,7 +25,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Mantenimiento
+        Crear servicios  al usuario
         <small> </small>
     </h1>
     <ol class="breadcrumb">
@@ -50,7 +50,7 @@
             <li class="logo tab_2">
                 <a href="#tab_2" data-toggle="tab">
                     <button class="btn btn-primary btn-sm"><i class="fa fa-cloud fa-lg"></i> </button>
-                    Clasificador Trámite
+                    Servicios al usuario
                 </a>
             </li>
         </ul>

@@ -199,6 +199,35 @@ class ClasificadorTramiteController extends \BaseController
 
         }
     }
+
+    public function postCambiarestadoef()
+    {
+
+        if ( Request::ajax() ) {
+
+            $clasificadortramite = ClasificadorTramite::find(Input::get('id'));
+            if( trim($clasificadortramite->ruta_flujo_id) != 0 ){
+                $clasificadortramite->usuario_created_at = Auth::user()->id;
+                $clasificadortramite->estado_final = Input::get('estado');
+                $clasificadortramite->save();
+
+                return Response::json(
+                    array(
+                    'rst'=>1,
+                    'msj'=>'Registro actualizado correctamente',
+                    )
+                );
+            }
+            else{
+                return Response::json(
+                    array(
+                    'rst'=>2,
+                    'msj'=>'Busque y seleccione el proceso',
+                    )
+                );
+            }
+        }
+    }
     
            public function postListarrequisito()
     {

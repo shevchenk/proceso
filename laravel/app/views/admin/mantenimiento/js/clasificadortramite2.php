@@ -112,7 +112,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
     if(typeof(fn)!='undefined' && fn.col==1){
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" onClick="CargarProceso(\''+row.id+'\',\''+row.nombre+'\',\''+row.area_id+'\',\''+row.area+'\')" class="btn btn-success"><i class="fa fa-lg fa-check"></i></span>';
-//        estadohtml='<a class="form-control btn-success" onClick="CargarProceso('+row.nombre+')"<i class="fa fa-lg fa-check"></i></a>';
+        //estadohtml='<a class="form-control btn-success" onClick="CargarProceso('+row.nombre+')"<i class="fa fa-lg fa-check"></i></a>';
         return estadohtml;
     }
     if(typeof(fn)!='undefined' && fn.col==3){
@@ -122,7 +122,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
     }      
     if(typeof(fn)!='undefined' && fn.col==4){
         var grupo='';
-//        row.nombre.split('"').join("-");
+        //row.nombre.split('"').join("-");
         grupo+= '<span id="'+row.id+'" title="Asignar Proceso" onClick="CargarActividad(\''+row.id+'\',\''+row.nombre.split('"').join("-")+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-list-alt"></i></span>';
         return grupo;
    }
@@ -145,7 +145,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" onClick="activarEF('+row.id+')" data-estado="'+row.estado_final+'" class="btn btn-danger">Pendiente</span>';
         if(row.estado_final==1){
-            estadohtml='<span id="'+row.id+'" onClick="desactivarEF('+row.id+')" data-estado="'+row.estado_final+'" class="btn btn-success">Producción</span>';
+            estadohtml='Producción';
         }
         return estadohtml;
     }
@@ -158,10 +158,6 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
 
 activarEF = function(id){
     ClasificadorTramites.CambiarEstadoEFClasificadorTramites(id, 1);
-};
-
-desactivarEF = function(id){
-    ClasificadorTramites.CambiarEstadoEFClasificadorTramites(id, 0);
 };
 
 activarTabla=function(){
