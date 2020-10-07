@@ -179,7 +179,7 @@ CargarPreTramites = function(){
 }
 
 HTMLPreTramite = function(data){
-    
+    $('#t_reporte').dataTable().fnDestroy();
     if(data){
         var html ='';
         $.each(data,function(index, el) {

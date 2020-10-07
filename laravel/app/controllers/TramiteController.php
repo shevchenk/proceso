@@ -171,6 +171,13 @@ class TramiteController extends BaseController {
 				$pretramite = Pretramite::find($data['txt_pretramiteid']);
 				$pretramite->estado_atencion = $data['rdb_estado'];
 				$pretramite->save();
+
+				$persona = Persona::find($data['txt_personaid']);
+				$persona->telefono = $data['txt_usertelf'];
+				$persona->celular = $data['txt_usercel'];
+				$persona->email = urldecode($data['txt_useremail']);
+				$persona->direccion = urldecode($data['txt_userdirec']);
+				$persona->save();
 			
 				if( $pretramite->estado_atencion == 1 ){
 					$tramite = new Tramite;

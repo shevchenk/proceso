@@ -34,7 +34,16 @@ $(document).ready(function() {
 
     $("form[name='FormTramite']").submit(function(e) {
         e.preventDefault();
-        if( $('input[name="rdb_estado"]:checked').val()*1 == 2 && $.trim($("#txt_observaciones").val()) == '' ){
+        if( $("#txt_usertelf").val()=='' && $("#txt_usercel").val()==''){
+            msjG.mensaje("warning", 'Ingrese número de teléfono y/o número de celular',5000);
+        }
+        else if( $("#txt_useremail").val()=='' ){
+            msjG.mensaje("warning", 'Ingrese email',3000);
+        }
+        else if( $("#txt_userdirec").val()=='' ){
+            msjG.mensaje("warning", 'Ingrese dirección',3000);
+        }
+        else if( $('input[name="rdb_estado"]:checked').val()*1 == 2 && $.trim($("#txt_observaciones").val()) == '' ){
             msjG.mensaje("warning", 'Ingrese la observación del trámite a desaprobar',4000);
         }
         else if( $('input[name="rdb_estado"]:checked').val()*1 > 0 ){
@@ -57,7 +66,7 @@ $(document).ready(function() {
             });
         }
         else{
-            msjG.mensaje("warning", 'Seleccione estado final del pre trámite',4000);
+            msjG.mensaje("warning", 'Seleccione estado del servicio',4000);
         }
      });
 
@@ -207,55 +216,67 @@ $(document).ready(function() {
 
 ListarPreTramites = ()=>{
     var estados = $("#slct_estado_tramite").val();
-    var data={'persona':0,'estado':1, 'filtro_fecha': $("#filtro_fecha").val(), 'estado_tramite':estados};  
+    var data={'persona':0,'estado':1, 'estado_tramite':estados};  //, 'filtro_fecha': $("#filtro_fecha").val()
     Bandeja.MostrarPreTramites(data,HTMLPreTramite);
 }
 
 HTMLPreTramite = function(data){
-    
-    if(data){
-        var html ='';
-        $.each(data,function(index, el) {
-            color = '';
-                if( el.estado_atencion == 1 ){
-                    color = 'alert-success';
-                }
-                else if( el.estado_atencion == 2 ){
-                    color = 'alert-danger';
-                }
-            html+="<tr class='"+color+"'>";
-            html+=    "<td>"+el.pretramite +"</td>";
-            
-            if(el.empresa){
-                html+=    "<td>"+el.empresa+"</td>";                
-            }else{
-                html+=    "<td>"+el.usuario+"</td>";
+    $('#t_reporte').dataTable().fnDestroy();
+    var html =''; var validador = 0;
+    $.each(data,function(index, el) {
+        color = '';
+            if( el.estado_atencion == 1 ){
+                color = 'alert-success';
+                validador = 1;
             }
-            
-            html+=    "<td>"+el.solicitante+"</td>";
-            html+=    "<td>"+el.tipotramite+"</td>";
-            html+=    "<td>"+el.tipodoc+"</td>";
-            html+=    "<td>"+el.documento+"</td>";
-            html+=    "<td>"+el.tramite+"</td>";
-            html+=    "<td>"+el.fecha+"</td>";
-            html+=    "<td><a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file-pdf-o fa-lg'></i></td>";
-            html+=    "<td>"+el.atencion+"</td>";
-            html+=    "<td>"+el.updated_at+"</td>";
-            html+=    "<td>"+$.trim(el.observacion)+"</td>";
-            html+=    "<td>"+$.trim(el.id_union)+"</td>";
-            html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="PreDetallepret('+el.pretramite+')"><i class="glyphicon glyphicon-th-list"></i></span></td>';
+            else if( el.estado_atencion == 2 ){
+                color = 'alert-danger';
+                validador = 1;
+            }
+        html+="<tr class='"+color+"'>";
+        html+=    "<td>"+el.pretramite +"</td>";
+        
+        if(el.empresa){
+            html+=    "<td>"+el.empresa+"</td>";                
+        }else{
+            html+=    "<td>"+el.usuario+"</td>";
+        }
+        
+        html+=    "<td>"+el.solicitante+"</td>";
+        html+=    "<td>"+el.tipotramite+"</td>";
+        html+=    "<td>"+el.tipodoc+"</td>";
+        html+=    "<td>"+el.documento+"</td>";
+        html+=    "<td>"+el.tramite+"</td>";
+        html+=    "<td>"+el.fecha+"</td>";
+        html+=    "<td><a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file-pdf-o fa-lg'></i></td>";
+        html+=    "<td>"+el.atencion+"</td>";
+        html+=    "<td>"+el.updated_at+"</td>";
+        html+=    "<td>"+$.trim(el.observacion)+"</td>";
+        html+=    "<td>"+$.trim(el.id_union)+"</td>";
+        html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="PreDetallepret('+el.pretramite+','+validador+')"><i class="glyphicon glyphicon-th-list"></i></span></td>';
 
-            var url = "documentodig/ticket/"+el.pretramite;
+        var url = "documentodig/ticket/"+el.pretramite;
 
-            //html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="imprimirTicket(\''+url+'\')"><i class="glyphicon glyphicon-search"></i></span></td>';
-            html+="</tr>";            
-        });
-        $("#tb_reporte").html(html);
-    }
+        //html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="imprimirTicket(\''+url+'\')"><i class="glyphicon glyphicon-search"></i></span></td>';
+        html+="</tr>";            
+    });
+    $("#tb_reporte").html(html);
+    $("#t_reporte").dataTable(
+        {
+            "order": [[ 0, "desc" ]],
+            "pageLength": 5,
+        }
+    ); 
 }
 
-PreDetallepret = (id)=>{
+PreDetallepret = (id, validador)=>{
     $('#txt_codpt').val(id);
+    $(".observacion").show();
+    $(".persona").removeAttr('disabled');
+    if( validador == 1 ){
+        $(".observacion").hide();
+        $(".persona").attr('disabled','true');
+    }
     Detallepret();
 }
 
@@ -289,14 +310,16 @@ poblarDetalle = function(data){
             document.querySelector('#spanTSoli').innerHTML=result.solicitante;
             document.querySelector('#txt_folio').value=result.folio;
             document.querySelector('#spanFolio').innerHTML=result.folio;
-            document.querySelector('#spanNombreU').innerHTML=result.nombusuario;
-                                        
-            document.querySelector('#spanPaternoU').innerHTML=result.apepusuario;
-            document.querySelector('#spanMaternoU').innerHTML=result.apemusuario;
-            document.querySelector('#spanDNIU').innerHTML=result.dniU;
-            document.querySelector('#spanEMAIL').innerHTML= $.trim(result.email);
-            document.querySelector('#spanTELEFONOCELULAR').innerHTML= $.trim(result.telefono) +' / '+ $.trim(result.celular);
-            document.querySelector('#spanDIRECCION').innerHTML= $.trim(result.direccion);
+
+            document.querySelector('#txt_usernomb').value= result.nombusuario;
+            document.querySelector('#txt_userapepat').value= result.apepusuario;
+            document.querySelector('#txt_userapemat').value= result.apemusuario;
+            document.querySelector('#txt_userdni').value= result.dniU;
+            document.querySelector('#txt_useremail').value=  $.trim(result.email);
+            document.querySelector('#txt_usertelf').value=  $.trim(result.telefono);
+            document.querySelector('#txt_usercel').value=  $.trim(result.celular);
+            $('#txt_userdirec').val($.trim(result.direccion));
+
 
             if(result.empresaid){
                 document.querySelector('#spanTE').innerHTML=result.tipoempresa;

@@ -135,14 +135,14 @@ td, th{
                             <label class="control-label">N° DE SERVICIO: </label>
                             <input type="text" class="form-control" placeholder="Codigo Pre Tramite" id="txt_codpt" name="txt_codpt"/>
                         </div>
-                        <div class="col-sm-1">
+                        <!-- <div class="col-sm-1">
                             <label class="control-label">FECHA DEL SERVICIO: </label>
                             <input type='text' id="filtro_fecha" class="form-control mant" value='<?php echo date("Y-m-d");?>' >
-                        </div>
-                        <div class="col-sm-2">
+                        </div> -->
+                        <div class="col-sm-4">
                             <label class="control-label">ESTADO DEL SERVICIO : </label>
                             <select class="form-control" id="slct_estado_tramite" multiple>
-                              <option value=0>Pendiente</option>
+                              <option value=0 selected>Pendiente</option>
                               <option value=1>Aprobado</option>
                               <option value=2>Desaprobado</option>
                             </select>
@@ -154,7 +154,7 @@ td, th{
                         </div> -->
                         <div class="col-sm-2">
                             <br>
-                            <span class="btn btn-primary btn-md" onclick="ListarPreTramites()"><i class="glyphicon glyphicon-search"></i> Buscar</span>
+                            <span class="btn btn-primary btn-md" onclick="ListarPreTramites()"><i class="glyphicon glyphicon-search"></i> Filtrar</span>
                         </div>
                       </div>
                     </div>
@@ -189,7 +189,7 @@ td, th{
             </div>
             <div class="box-body">
                 <div class="row form-group" id="">
-                    <div class="col-sm-10">
+                    <div class="col-sm-12">
                         <div class="content-body hidden">
                           <form id="FormTramite" name="FormTramite" method="post" action="">
 
@@ -244,50 +244,84 @@ td, th{
                               </div>
                             </div>
 
-                            <div class="col-sm-12 cliente format">
-                              <div class="row form-group">
-                                <div class="col-sm-4">
-                                  <label style="color:red">DATOS CLIENTE (*)</label>
+                            <div class="col-md-12 cliente format">
+                                <div class="row form-group">
+                                  <div class="col-sm-4">
+                                    <label style="color:red">DATOS CLIENTE (*)</label>
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="row form-group">
-                                <div class="col-sm-4">
-                                  <label>NOMBRE: </label>
-                                  <span id="spanNombreU"></span>
+                                <div class="col-md-12 form-group">
+                                  <div class="col-md-6">
+                                    <div class="col-md-4">
+                                      <label>DNI: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                      <input type="text" name="txt_userdni" id="txt_userdni" class="form-control" disabled>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="col-md-4">
+                                      <label>NOMBRE: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                      <input type="text" name="txt_usernomb" id="txt_usernomb" class="form-control" disabled>
+                                    </div>
+                                  </div>
                                 </div>
-                              {{--   <div class="col-sm-4">
-                                  <label>TIPO DOCUMENTO IDENT: </label>
-                                  <span id="spanTipoDIU"></span>
-                                </div>          --}}                   
-                                <div class="col-sm-4">
-                                  <label>PATERNO: </label>
-                                  <span id="spanPaternoU"></span>
+                                <div class="col-md-12 form-group">
+                                  <div class="col-md-6">
+                                    <div class="col-md-4">
+                                      <label>APELLIDO PATERNO: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                      <input type="text" name="txt_userapepat" id="txt_userapepat" class="form-control" disabled>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="col-md-4">
+                                      <label>APELLIDO MATERNO: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                      <input type="text" name="txt_userapemat" id="txt_userapemat" class="form-control" disabled>
+                                    </div>
+                                  </div>
                                 </div>
-                                <div class="col-sm-4">
-                                  <label>MATERNO: </label>
-                                  <span id="spanMaternoU"></span>
+                                <div class="col-md-12 form-group">
+                                  <div class="col-md-4">
+                                    <div class="col-md-4">
+                                      <label>TELÉFONO: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                      <input type="text" name="txt_usertelf" id="txt_usertelf" class="form-control persona">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="col-md-4">
+                                      <label>CELULAR: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                      <input type="text" name="txt_usercel" id="txt_usercel" class="form-control persona">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="col-md-4">
+                                      <label>EMAIL: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                      <input type="text" name="txt_useremail" id="txt_useremail" class="form-control persona">
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="row form-group">
-                                <div class="col-sm-4">
-                                  <label>#DOCUMENTO IDENT: </label>
-                                  <span id="spanDNIU"></span>
+                                <div class="col-md-12 form-group">
+                                  <div class="col-md-8">
+                                    <div class="col-md-4">
+                                      <label>DIRECCIÓN: </label>
+                                    </div>
+                                    <div class="col-md-8">
+                                      <textarea type="text" name="txt_userdirec" id="txt_userdirec" class="form-control persona"></textarea>
+                                    </div>
+                                  </div>
                                 </div>
-                                <div class="col-sm-4">
-                                  <label>#EMAIL: </label>
-                                  <span id="spanEMAIL"></span>
-                                </div>
-                                <div class="col-sm-4">
-                                  <label>#TELÉFONO / CELULAR: </label>
-                                  <span id="spanTELEFONOCELULAR"></span>
-                                </div>
-                              </div>
-                              <div class="row form-group">
-                                <div class="col-sm-4">
-                                  <label>#DIRECCIÓN: </label>
-                                  <span id="spanDIRECCION"></span>
-                                </div>
-                              </div>
                             </div>
 
                              <div class="col-sm-12 empresa format">
@@ -367,7 +401,7 @@ td, th{
                               </div>
                             </div>
 
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 observacion">
                               <div class="row">
                                 <div class="col-md-6">
                                   <input type="submit" class="btn btn-primary btn-sm" style="float: right;" value="GRABAR">
