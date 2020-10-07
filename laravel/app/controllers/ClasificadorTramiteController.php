@@ -52,6 +52,12 @@ class ClasificadorTramiteController extends \BaseController
                 }
             }
 
+            if( Input::has("unidoc") ){
+                $unidoc=Input::get("unidoc");
+                if( trim( $unidoc )!='' ){
+                    $array['where'].=" AND ct.unidad_documentaria='".$unidoc."' ";
+                }
+            }
 
             if( Input::has("estado") ){
                 $estado=Input::get("estado");
@@ -127,6 +133,7 @@ class ClasificadorTramiteController extends \BaseController
             $clasificadortramite = new ClasificadorTramite;
             $clasificadortramite->nombre_clasificador_tramite = Input::get('nombre');
             $clasificadortramite->tipo_tramite_id = Input::get('tipo_tramite');
+            $clasificadortramite->unidad_documentaria = Input::get('unidad_documentaria');
             //$clasificadortramite->area = Input::get('area');
             $clasificadortramite->estado = Input::get('estado_clasificador');
             $clasificadortramite->usuario_created_at = Auth::user()->id;
@@ -166,6 +173,7 @@ class ClasificadorTramiteController extends \BaseController
             $clasificadortramite = ClasificadorTramite::find($clasificadortramiteId);
             $clasificadortramite->nombre_clasificador_tramite = Input::get('nombre');
             $clasificadortramite->tipo_tramite_id = Input::get('tipo_tramite');
+            $clasificadortramite->unidad_documentaria = Input::get('unidad_documentaria');
             $clasificadortramite->estado = Input::get('estado_clasificador');
             $clasificadortramite->usuario_updated_at = Auth::user()->id;
             $clasificadortramite->save();

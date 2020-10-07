@@ -15,9 +15,10 @@ $(document).ready(function() {
     */
     var datos={estado:1};
     slctGlobal.listarSlct('tipotramite','slct_tipo_tramite','simple',null,datos);
-    slctGlobalHtml('slct_estado_clasificador','simple');
+    slctGlobalHtml('slct_estado_clasificador, #slct_unidad_documentaria','simple');
     var idG1={  tipo_tramite        :'3|TIpoTramite|#DCE6F1', //#DCE6F1
                 nombre        :'onBlur|Nombre|#DCE6F1', //#DCE6F1
+                unidoc :'4|Unidad documentaria|#DCE6F1||unidad_documentaria', //#DCE6F1
                 estado        :'2|Estado|#DCE6F1', //#DCE6F1
                 a          :'1|  |#DCE6F1',
                 b          :'1|  |#DCE6F1',
@@ -52,12 +53,14 @@ $(document).ready(function() {
             $('#form_clasificadortramites_modal #slct_estado_clasificador').val(1);
             $('#form_clasificadortramites_modal #txt_nombre').focus();
             $('#form_clasificadortramites_modal #slct_tipo_tramite').val('' );
+            $('#form_clasificadortramites_modal #slct_unidad_documentaria').val('' );
         } else {
             modal.find('.modal-footer .btn-primary').text('Actualizar');
             modal.find('.modal-footer .btn-primary').attr('onClick','Editar();');
 
             $('#form_clasificadortramites_modal #txt_nombre').val( ClasificadorTramitesG.nombre );
             $('#form_clasificadortramites_modal #slct_tipo_tramite').val( ClasificadorTramitesG.tipo_tramite );
+            $('#form_clasificadortramites_modal #slct_unidad_documentaria').val( ClasificadorTramitesG.unidad_documentaria );
 
             $('#form_clasificadortramites_modal #slct_estado_clasificador').val( ClasificadorTramitesG.estado );
             $("#form_clasificadortramites_modal").append("<input type='hidden' value='"+ClasificadorTramitesG.id+"' name='id'>");
@@ -82,7 +85,8 @@ BtnEditar=function(btn,id){
     ClasificadorTramitesG.id=id;
     ClasificadorTramitesG.nombre=$(tr).find("td:eq(1)").text();
     ClasificadorTramitesG.tipo_tramite=$(tr).find("td:eq(0) input[name='txt_tipo_tramite']").val();
-    ClasificadorTramitesG.estado=$(tr).find("td:eq(2)>span").attr("data-estado");
+    ClasificadorTramitesG.unidad_documentaria=$(tr).find("td:eq(2) input[name='txt_unidad_documentaria']").val();
+    ClasificadorTramitesG.estado=$(tr).find("td:eq(3)>span").attr("data-estado");
     $("#BtnEditar_clasificador").click();
 };
 
@@ -109,30 +113,18 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
     if(typeof(fn)!='undefined' && fn.col==0){
         return row.tipo_tramite+"<input type='hidden'name='txt_tipo_tramite' value='"+row.tipo_tramite_id+"'>";
     }
+
     if(typeof(fn)!='undefined' && fn.col==1){
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" onClick="CargarProceso(\''+row.id+'\',\''+row.nombre+'\',\''+row.area_id+'\',\''+row.area+'\')" class="btn btn-success"><i class="fa fa-lg fa-check"></i></span>';
-//        estadohtml='<a class="form-control btn-success" onClick="CargarProceso('+row.nombre+')"<i class="fa fa-lg fa-check"></i></a>';
         return estadohtml;
     }
-    if(typeof(fn)!='undefined' && fn.col==3){
-        var grupo='';
-        grupo+= '<span id="'+row.id+'" title="Requisitos" onClick="CargarCostoPersonal(\''+row.id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i></span>';
-        return grupo;
-    }      
-    if(typeof(fn)!='undefined' && fn.col==4){
-        var grupo='';
-//        row.nombre.split('"').join("-");
-        grupo+= '<span id="'+row.id+'" title="Asignar Proceso" onClick="CargarActividad(\''+row.id+'\',\''+row.nombre.split('"').join("-")+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-list-alt"></i></span>';
-        return grupo;
-   }
 
-    if(typeof(fn)!='undefined' && fn.col==5  && row.ruta_flujo_id!==null){
-        var grupo='';
-        grupo+= '<a onclick="cargarRutaId('+row.ruta_flujo_id+',2)" class="btn btn-warning btn-sm"><i class="fa fa-search-plus fa-lg"></i> </a>';
-        return grupo;
-   }
-    else if(typeof(fn)!='undefined' && fn.col==2){
+    if(typeof(fn)!='undefined' && fn.col==2){
+        return row.unidoc+"<input type='hidden'name='txt_unidad_documentaria' value='"+row.unidad_documentaria+"'>";
+    }
+
+    if(typeof(fn)!='undefined' && fn.col==3){
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" onClick="activar('+row.id+')" data-estado="'+row.estado+'" class="btn btn-danger">Inactivo</span>';
         if(row.estado==1){
@@ -141,7 +133,25 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         return estadohtml;
     }
 
-    if(typeof(fn)!='undefined' && fn.col==6){
+    if(typeof(fn)!='undefined' && fn.col==4){
+        var grupo='';
+        grupo+= '<span id="'+row.id+'" title="Requisitos" onClick="CargarCostoPersonal(\''+row.id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i></span>';
+        return grupo;
+    }      
+    if(typeof(fn)!='undefined' && fn.col==5){
+        var grupo='';
+//        row.nombre.split('"').join("-");
+        grupo+= '<span id="'+row.id+'" title="Asignar Proceso" onClick="CargarActividad(\''+row.id+'\',\''+row.nombre.split('"').join("-")+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-list-alt"></i></span>';
+        return grupo;
+    }
+
+    if(typeof(fn)!='undefined' && fn.col==6  && row.ruta_flujo_id!==null){
+        var grupo='';
+        grupo+= '<a onclick="cargarRutaId('+row.ruta_flujo_id+',2)" class="btn btn-warning btn-sm"><i class="fa fa-search-plus fa-lg"></i> </a>';
+        return grupo;
+   }
+
+    if(typeof(fn)!='undefined' && fn.col==7){
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" onClick="activarEF('+row.id+')" data-estado="'+row.estado_final+'" class="btn btn-danger">Pendiente</span>';
         if(row.estado_final==1){
@@ -150,7 +160,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         return estadohtml;
     }
 
-    if(typeof(fn)!='undefined' && fn.col==7){
+    if(typeof(fn)!='undefined' && fn.col==8){
         var estadohtml='<a class="form-control btn btn-primary" onclick="BtnEditar(this,'+row.id+')"><i class="fa fa-lg fa-edit"></i></a>';
         return estadohtml;
     }

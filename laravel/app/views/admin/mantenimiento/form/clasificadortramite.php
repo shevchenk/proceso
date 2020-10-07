@@ -22,6 +22,15 @@
             </select>
           </div>
           <div class="form-group">
+            <label class="control-label">Unidad Documentaria:
+            </label>
+            <select class="form-control" name="slct_unidad_documentaria" id="slct_unidad_documentaria">
+                <option value=''>Seleccione</option>
+                <option value='EX'>EXPEDIENTE</option>
+                <option value='DS'>DOCUMENTO SIMPLE</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label class="control-label">Estado:
             </label>
             <select class="form-control" name="slct_estado_clasificador" id="slct_estado_clasificador">

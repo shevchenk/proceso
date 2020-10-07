@@ -1,7 +1,5 @@
 <script type="text/javascript">var posicionDetalleVerboG=0;
 
-
-
 function imprimirTicket(url){
     parametrosPop="height=600,width=350,toolbar=No,location = No,scrollbars=yes,left=-15,top=800,status=No,resizable= No,fullscreen =No'";
     printTicket=window.open(url,'tTicket',parametrosPop);
@@ -51,6 +49,8 @@ $(document).ready(function() {
         var data={'id':1,'estado':1};
         $("#txt_idempresa").val('');
         Bandeja.GetTipoSolicitante(data,Mostrar);
+        Bandeja.GetMisDatos({},GetMisDatos);
+        
         ///////////////////////////////////////////////////
 
         window.scrollTo(0,document.body.scrollHeight);
@@ -173,6 +173,18 @@ $(document).ready(function() {
     });
 });
 
+GetMisDatos = (data)=>{
+    document.querySelector('#txt_userdni').value= data.dni;
+    document.querySelector('#txt_usernomb').value= data.nombre;
+    document.querySelector('#txt_userapepat').value= data.paterno;
+    document.querySelector('#txt_userapemat').value= data.materno;
+
+    document.querySelector('#txt_usertelf').value= data.telefono;
+    document.querySelector('#txt_usercel').value= data.celular;
+    document.querySelector('#txt_useremail').value= data.email;
+    $('#txt_userdirec').val(data.direccion);
+}
+
 CargarPreTramites = function(){
     var data={'persona':'<?php echo Auth::user()->id; ?>','estado':1, 'filtro_fecha': $("#filtro_fecha").val()};
     Bandeja.MostrarPreTramites(data,HTMLPreTramite);
@@ -180,10 +192,9 @@ CargarPreTramites = function(){
 
 HTMLPreTramite = function(data){
     $('#t_reporte').dataTable().fnDestroy();
-    if(data){
-        var html ='';
+        var html =''; var archivo = '';
         $.each(data,function(index, el) {
-            color = '';
+            color = ''; archivo = '';
                 if( el.estado_atencion == 1 ){
                     color = 'alert-success';
                 }
@@ -198,6 +209,11 @@ HTMLPreTramite = function(data){
             }else{
                 html+=    "<td>"+el.usuario+"</td>";
             }
+
+            if( $.trim(el.ruta_archivo) != '' ){
+                archivo = "<a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file-pdf-o fa-lg'></i>";
+            }
+
             
             html+=    "<td>"+el.solicitante+"</td>";
             html+=    "<td>"+el.tipotramite+"</td>";
@@ -205,7 +221,7 @@ HTMLPreTramite = function(data){
             html+=    "<td>"+el.documento+"</td>";
             html+=    "<td>"+el.tramite+"</td>";
             html+=    "<td>"+el.fecha+"</td>";
-            html+=    "<td><a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file-pdf-o fa-lg'></i></td>";
+            html+=    "<td>"+archivo+"</td>";
             html+=    "<td>"+el.atencion+"</td>";
             html+=    "<td>"+el.updated_at+"</td>";
             html+=    "<td>"+$.trim(el.observacion)+"</td>";
@@ -230,7 +246,6 @@ HTMLPreTramite = function(data){
                 "pageLength": 5,
             }
         ); 
-    }
 }
 
 Detallepret = function(obj){
@@ -379,15 +394,7 @@ selectEmpresa = function(obj){
    
 poblateData = function(tipo,data){
 /*    if(tipo == 'usuario'){*/
-        document.querySelector('#txt_userdni').value='<?php echo Auth::user()->dni; ?>';
-        document.querySelector('#txt_usernomb').value='<?php echo Auth::user()->nombre; ?>';
-        document.querySelector('#txt_userapepat').value='<?php echo Auth::user()->paterno; ?>';
-        document.querySelector('#txt_userapemat').value='<?php echo Auth::user()->materno; ?>';
 
-        document.querySelector('#txt_usertelf').value='<?php echo trim(Auth::user()->telefono); ?>';
-        document.querySelector('#txt_usercel').value='<?php echo trim(Auth::user()->celular); ?>';
-        document.querySelector('#txt_useremail').value='<?php echo trim(Auth::user()->email); ?>';
-        $('#txt_userdirec').val('<?php echo trim(Auth::user()->direccion); ?>');
     /*    user_telf.value=data.;
         user_direc.value=data.;*/
     /*  */
@@ -562,6 +569,7 @@ generarPreTramite = function(){
             data+=(i == 0) ? '"'+elemento[0]+'":"'+elemento[1] : '","' + elemento[0]+'":"'+elemento[1];   
         }
         data+='"}';
+        //console.log(data);
         Bandeja.GuardarPreTramite(data,CargarPreTramites);
         
     }

@@ -44,6 +44,26 @@ var Bandeja={
             }
         });
     },
+    GetMisDatos:function(data,evento){
+        $.ajax({
+            url         : 'pretramite/misdatos',
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : data,
+            beforeSend : function() {
+              /*  $("body").append('<div class="overlay"></div><div class="loading-img"></div>');*/
+            },
+            success : function(obj) {
+                /*$(".overlay,.loading-img").remove();*/
+                evento(obj);
+            },
+            error: function(){
+            /*    $(".overlay,.loading-img").remove();*/
+                msjG.mensaje("danger","Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.",3000);
+            }
+        });
+    },
     GetTipoSolicitante:function(data,evento){
         $.ajax({
             url         : 'tiposolicitante/listar',

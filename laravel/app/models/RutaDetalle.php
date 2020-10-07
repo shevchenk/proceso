@@ -75,6 +75,7 @@ class RutaDetalle extends Eloquent
                 ) 
             ) AS solicitante
             ,tr.fecha_tramite,tr.sumilla, rd.archivo,
+            ptra.id ptra_id, CONCAT_WS(" ", ptra.nombre, ptra.paterno, ptra.materno) ptra_nombre, ptra.telefono ptra_telefono, ptra.celular ptra_celular, ptra.direccion ptra_direccion,
             IFNULL(GROUP_CONCAT(
                 CONCAT(
                     rdv.id,
@@ -138,6 +139,8 @@ class RutaDetalle extends Eloquent
             INNER JOIN flujos f ON f.id=r.flujo_id
             INNER JOIN tablas_relacion tr ON tr.id=r.tabla_relacion_id
             INNER JOIN tiempos t ON t.id=rd.tiempo_id 
+            LEFT JOIN tramites tra ON tra.id = tr.tramite_id 
+            LEFT JOIN personas ptra on ptra.id = tra.persona_id
             LEFT JOIN tipo_solicitante ts ON ts.id=tr.tipo_persona and ts.estado=1
             LEFT JOIN personas p ON p.id=rdv.usuario_updated_at
             LEFT JOIN personas p2 ON p2.id=rd.persona_responsable_id

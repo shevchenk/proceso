@@ -180,6 +180,11 @@ class TramiteController extends BaseController {
 				$persona->save();
 			
 				if( $pretramite->estado_atencion == 1 ){
+					$clasificadorTramite = ClasificadorTramite::find($data['txt_ctramite']);
+					$codigo = Pretramite::Correlativo($clasificadorTramite->unidad_documentaria);
+					$pretramite->correlativo = $codigo->correlativo;
+					$pretramite->save();
+
 					$tramite = new Tramite;
 					   $tramite['pretramite_id'] = $data['txt_pretramiteid'];
 					$tramite['persona_id'] = $data['txt_personaid'];
@@ -202,8 +207,8 @@ class TramiteController extends BaseController {
 				
 					/*start to create process*/
 					if($tramite->id){ // if registry was succesfully
-						$codigo = str_pad($tramite->id, 7, "0", STR_PAD_LEFT).'-'.date('Y'); //cod
-
+						//$codigo = str_pad($tramite->id, 7, "0", STR_PAD_LEFT).'-'.date('Y'); //cod
+						$codigo= $clasificadorTramite->unidad_documentaria.'-'.$codigo->correlativo.'-'.date('Y');
 						/*get ruta flujo*/
 						/* $sql="SELECT flujo_id
 								FROM areas_internas

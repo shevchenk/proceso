@@ -124,6 +124,13 @@ table>thead>tr>td,table>tfoot>tr>td{
 table>tbody>tr>td{
     color: #00A65A;
 }
+
+.format{
+    border: 1px solid grey;
+    border-radius: 8px;
+    padding: 0% 1% 0% 1%;
+    margin-bottom: 1%;
+}
 </style>
             <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -277,7 +284,7 @@ table>tbody>tr>td{
                                                 <input type="text" class="form-control" id="txt_respuesta" name="txt_respuesta" readonly>
                                             </div>
 
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-2" style="display:none;">
                                                 <label class="control-label">Responsable de la Actividadd:</label>
                                                 <?php
                                                     if( Auth::user()->rol_id==8 OR Auth::user()->rol_id==9 ){
@@ -305,10 +312,16 @@ table>tbody>tr>td{
                                         </div>
                                         <div class="col-sm-12">
                                             <div class="sectionmicro">
-                                                <div class="col-sm-3 text-right">
+                                                <div class="col-sm-3 format">
+                                                    <label class="control-label"><u>DATOS DEL SOLICITANTE</u></label>
+                                                    <div><b>Nombre y Apellido: </b><span id="ptra_nombre"></span></div>
+                                                    <div><b>Celular: </b><span id="ptra_celular"></span></div>
+                                                    <div><b>Dirección: </b><span id="ptra_direccion"></span></div>
+                                                </div> 
+                                                <div class="col-sm-2 text-right">
                                                     <label class="control-label">Sub Procesos:</label>
                                                 </div>    
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-5">
                                                     
                                                     <select id="slct_micro" name="slct_micro">
                                                         <option>Seleccione</option>

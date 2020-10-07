@@ -132,7 +132,7 @@ td, th{
 
               <form id="FormCrearPreTramite" method="post">
                 <div class="col-md-12" style="margin-top:10px">
-                    <div class="col-md-2" style="padding-top: 5px;">
+                    <!-- <div class="col-md-2" style="padding-top: 5px;">
                       <span>TIPO DOC. INGRESO: </span>
                     </div>
                     <div class="col-md-3">
@@ -141,7 +141,7 @@ td, th{
                           <option value="1">Documento Simple</option>
                           <option value="2">Expediente</option>
                       </select>
-                    </div>
+                    </div> -->
                     <div class="col-md-4">
                       
                     </div>

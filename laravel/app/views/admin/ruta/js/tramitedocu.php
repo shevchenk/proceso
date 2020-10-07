@@ -423,7 +423,8 @@ poblateData = function(tipo,data){
         document.querySelector('#txt_usernomb2').value=$.trim(data.nombre);
         document.querySelector('#txt_userapepat2').value=$.trim(data.paterno);
         document.querySelector('#txt_userapemat2').value=$.trim(data.materno);
-        document.querySelector('#txt_usertelf2').value=$.trim(data.telefono)+' '+$.trim(data.celular);
+        document.querySelector('#txt_usertelf2').value=$.trim(data.telefono);
+        document.querySelector('#txt_usercel2').value=$.trim(data.celular);
         document.querySelector('#txt_useremail2').value=$.trim(data.email);
         document.querySelector('#txt_userdirec2').value=$.trim(data.direccion);
         $('.usuarioSeleccionado').removeClass('hidden');
@@ -556,10 +557,11 @@ HTMLRequisitos = function(data,tramite){
 
 generarPreTramite = function(){
 
-    if($("#cbo_tipodocumento").val()==''){
+    /*if($("#cbo_tipodocumento").val()==''){
         msjG.mensaje("warning", 'Selecciona Tipo documento de ingreso',3000);
     }
-    else if($("#cbo_tiposolicitante").val()==''){
+    else */
+    if($("#cbo_tiposolicitante").val()==''){
         msjG.mensaje("warning", 'Selecciona Tipo de solicitante',3000);
     }
     else if($("#txt_ruc").val()=='' && $("#txt_userdni2").val()==''){

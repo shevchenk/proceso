@@ -396,6 +396,10 @@ mostrarDetalleHTML=function(datos){
     $("#form_ruta_detalle #txt_fecha_inicio").val(datos.fecha_inicio);
     $("#form_ruta_detalle #txt_tiempo").val(datos.tiempo);
 
+    $("#ptra_nombre").text(datos.ptra_nombre);
+    $("#ptra_celular").text(datos.ptra_telefono+' / '+datos.ptra_celular);
+    $("#ptra_direccion").text(datos.ptra_direccion);
+
     $("#form_ruta_detalle>#txt_fecha_max").remove();
     $("#form_ruta_detalle").append("<input type='hidden' id='txt_fecha_max' name='txt_fecha_max' value='"+datos.fecha_max+"'>");
 

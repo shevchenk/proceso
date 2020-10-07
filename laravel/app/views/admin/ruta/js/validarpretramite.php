@@ -222,9 +222,9 @@ ListarPreTramites = ()=>{
 
 HTMLPreTramite = function(data){
     $('#t_reporte').dataTable().fnDestroy();
-    var html =''; var validador = 0;
+    var html =''; var validador = 0; var archivo = '';
     $.each(data,function(index, el) {
-        color = '';
+        color = ''; archivo = '';
             if( el.estado_atencion == 1 ){
                 color = 'alert-success';
                 validador = 1;
@@ -241,6 +241,10 @@ HTMLPreTramite = function(data){
         }else{
             html+=    "<td>"+el.usuario+"</td>";
         }
+
+        if( $.trim(el.ruta_archivo) != '' ){
+            archivo = "<a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file-pdf-o fa-lg'></i>";
+        }
         
         html+=    "<td>"+el.solicitante+"</td>";
         html+=    "<td>"+el.tipotramite+"</td>";
@@ -248,7 +252,7 @@ HTMLPreTramite = function(data){
         html+=    "<td>"+el.documento+"</td>";
         html+=    "<td>"+el.tramite+"</td>";
         html+=    "<td>"+el.fecha+"</td>";
-        html+=    "<td><a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file-pdf-o fa-lg'></i></td>";
+        html+=    "<td>"+archivo+"</td>";
         html+=    "<td>"+el.atencion+"</td>";
         html+=    "<td>"+el.updated_at+"</td>";
         html+=    "<td>"+$.trim(el.observacion)+"</td>";

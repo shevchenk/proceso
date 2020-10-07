@@ -13,6 +13,22 @@ class PretramiteController extends BaseController {
 		//
 	}
 
+	public function postMisdatos(){
+		$persona = Persona::find(Auth::user()->id);
+          return Response::json(
+              array(
+                  'paterno'=>$persona->paterno,
+                  'materno'=>$persona->materno,
+                  'nombre'=>$persona->nombre,
+                  'celular'=>$persona->celular,
+                  'telefono'=>$persona->telefono,
+                  'direccion'=>$persona->direccion,
+                  'dni'=>$persona->dni,
+                  'email'=>$persona->email,
+              )
+          );
+	}
+
 	public function postListartramites(){
 		$rst=Pretramite::getTramites();
           return Response::json(
@@ -140,8 +156,11 @@ class PretramiteController extends BaseController {
 	public function postCreate()
 	{
 		$array_data = json_decode(Input::get('info'));
+
+		$clasificadorTramite = ClasificadorTramite::find($array_data->idclasitramite);
+
 		$pretramite = new Pretramite;
-        $codigo = Pretramite::Correlativo($array_data->cbo_tipodocumento);        //var_dump($codigo);exit();      
+        $codigo = Pretramite::Correlativo($clasificadorTramite->unidad_documentaria);        //var_dump($codigo);exit();      
         $pretramite['clasificador_tramite_id'] = $array_data->idclasitramite;
 
         if($array_data->idempresa AND $array_data->cbo_tiposolicitante==2){
@@ -153,7 +172,7 @@ class PretramiteController extends BaseController {
         $pretramite['correlativo'] = $codigo->correlativo;
         $pretramite['tipo_solicitante_id'] = $array_data->cbo_tiposolicitante;
         $pretramite['tipo_documento_id'] = $array_data->cbo_tipodoc;
-        $pretramite['tipo_tramite_id'] = $array_data->cbo_tipodocumento;
+        //$pretramite['tipo_tramite_id'] = $array_data->cbo_tipodocumento;
         $pretramite['documento'] = $array_data->tipodoc;
         $pretramite['nro_folios'] = $array_data->numfolio;
         $pretramite['area_id'] = $array_data->idarea;
@@ -195,12 +214,15 @@ class PretramiteController extends BaseController {
 	        $tramite->save();
                            
 //		        	$codigo = str_pad($tramite->id, 7, "0", STR_PAD_LEFT).'-'.date('Y'); //cod
-            if($array_data->cbo_tipodocumento==1)   {
+            /*if($array_data->cbo_tipodocumento==1)   {
                 $codigo= 'DS-'.$codigo->correlativo.'-'.date('Y') ;
             } 
             if($array_data->cbo_tipodocumento==2)   {
                 $codigo= 'EX-'.$codigo->correlativo.'-'.date('Y');
-            }
+			}*/
+			$codigo= $clasificadorTramite->unidad_documentaria.'-'.$codigo->correlativo.'-'.date('Y');
+			
+			
 //                        var_dump($codigo);exit();
 	        	/*get ruta flujo*/
               /*  $sql="SELECT flujo_id
