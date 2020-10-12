@@ -9,7 +9,7 @@ $(document).ready(function() {
         3: Color Cabecera
     */
 
-    slctGlobalHtml('slct_area,#slct_posicion,#slct_posicion_fecha,#slct_estado,#slct_tipo','simple');
+    slctGlobalHtml('slct_area,#slct_posicion,#slct_posicion_fecha,#slct_estado,#slct_tipo,#slct_pide_nro, #slct_solicitante','simple');
     slctGlobal.listarSlctFuncion('area','listara','slct_area_id','simple',null,{estado:1,areapersona:1});
     var idG={   nombre           :'onBlur|Nombre del Documento|#DCE6F1', //#DCE6F1
                 nemonico         :'onBlur|Nemónico|#DCE6F1', //#DCE6F1
@@ -41,6 +41,7 @@ $(document).ready(function() {
             modal.find('.modal-footer .btn-primary').text('Guardar');
             modal.find('.modal-footer .btn-primary').attr('onClick','Agregar();');
             $('#form_documentos_modal #slct_estado').val(1);
+            $('#form_documentos_modal #slct_pide').val(0);
             $('#form_documentos_modal #txt_nombre').focus();
         } else {
             modal.find('.modal-footer .btn-primary').text('Actualizar');
@@ -51,9 +52,12 @@ $(document).ready(function() {
             $('#form_documentos_modal #slct_tipo').val( DocumentosG.tipo );
             $('#form_documentos_modal #slct_area_id').val( DocumentosG.area_id );
             $('#form_documentos_modal #slct_estado').val( DocumentosG.estado );
+            $('#form_documentos_modal #slct_solicitante').val( DocumentosG.solicitante );
+            $('#form_documentos_modal #slct_pide_nro').val( DocumentosG.pide_nro );
             $("#form_documentos_modal").append("<input type='hidden' value='"+DocumentosG.id+"' name='id'>");
         }
              $('#form_documentos_modal select').not(".mant").multiselect('rebuild');
+             validarSolicitante();
     });
 
     $('#documentoModal').on('hide.bs.modal', function (event) {
@@ -65,6 +69,13 @@ $(document).ready(function() {
     });
 });
 
+validarSolicitante = ()=>{
+    $(".solicitante").hide();
+    if( $("#slct_tipo").val() == 'Ingreso' ){
+        $(".solicitante").show();
+    }
+}
+
 BtnEditar=function(btn,id){
     var tr = btn.parentNode.parentNode; // Intocable
     DocumentosG.id=id;
@@ -72,6 +83,8 @@ BtnEditar=function(btn,id){
     DocumentosG.nemonico=$(tr).find("td:eq(1)").text();
     DocumentosG.tipo=$(tr).find("td:eq(2) input[name='slct_tipo']").val();
     DocumentosG.area_id=$(tr).find("td:eq(2) input[name='slct_area_id']").val();
+    DocumentosG.solicitante=$(tr).find("td:eq(2) input[name='slct_solicitante']").val();
+    DocumentosG.pide_nro=$(tr).find("td:eq(2) input[name='slct_pide_nro']").val();
     DocumentosG.estado=$(tr).find("td:eq(4)>span").attr("data-estado");
     $("#BtnEditar").click();
 };
@@ -92,7 +105,9 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         //console.log(row);
     if(typeof(fn)!='undefined' && fn.col==2){
         return row.tipos+"<input type='hidden' name='slct_tipo' value='"+row.tipo+"'>"+
-                "<input type='hidden' name='slct_area_id' value='"+$.trim(row.area_id)+"'>";
+                "<input type='hidden' name='slct_area_id' value='"+$.trim(row.area_id)+"'>"+
+                "<input type='hidden' name='slct_solicitante' value='"+$.trim(row.solicitante)+"'>"+
+                "<input type='hidden' name='slct_pide_nro' value='"+$.trim(row.pide_nro)+"'>";
     }
     if(typeof(fn)!='undefined' && fn.col==4){
         var estadohtml='';
@@ -140,6 +155,11 @@ validaDocumentos = function(){
         alert("Seleccione Tipo documento");
         r=false;
     }
+    else if( $("#form_documentos_modal #slct_tipo").val() == 'Ingreso' &&  $("#form_documentos_modal #slct_solicitante").val()=='' ){
+        alert("Seleccione solicitante");
+        r=false;
+    }
+
     /*else if( $("#form_documentos_modal #slct_area_id").val()=='' ){
         alert("Seleccione Area");
         r=false;

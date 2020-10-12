@@ -146,6 +146,19 @@ td, th{
                       
                     </div>
                 </div>
+                <div class="col-md-12" style="margin-top:10px">
+                    <div class="col-md-2" style="padding-top: 5px">
+                        <span>TIPO DE USUARIO:</span>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" onchange="validarTipoUsuario();" id="slct_tipo_usuario" name="slct_tipo_usuario">
+                              <option value="">Seleccione</option>
+                              <option value="Cliente">Cliente</option>
+                              <option value="Externo">Externo</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="col-md-12 tipoSolicitante" style="margin-top:10px">
                     <div class="col-md-2" style="padding-top: 5px">
                         <span>TIPO SOLICITANTE:</span>
@@ -369,13 +382,13 @@ td, th{
                           <span>DOCUMENTO PRESENTADO(Para solicitar el servicio): </span>
                         </div>
                         <div class="col-md-8">
-                          <select class="form-control" id="cbo_tipodoc" name="cbo_tipodoc">
+                          <select class="form-control" onChange="ValidarDoc();" id="cbo_tipodoc" name="cbo_tipodoc">
                               <option value="-1">Selecciona</option>
                           </select>
                         </div>
                       </div>
 
-                      <div class="col-md-5  form-group">
+                      <div class="col-md-5  form-group tipo_documento" style="display:none;">
                         <div class="col-md-5">
                           <span>N° DEL DOCUMENTO PRESENTADO: </span>
                         </div>

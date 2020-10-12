@@ -24,7 +24,7 @@
     <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Mantenimiento de Tipo Tramite
+                Mantenimiento de Tipo de Servicio
                 <small> </small>
             </h1>
             <ol class="breadcrumb">
@@ -47,7 +47,7 @@
                         <div class="box-body table-responsive">
                             <table id="t_tipotramites" class="table table-bordered table-hover">
                                 <thead>
-                                <tr><th colspan="2" style="text-align:center;background-color:#A7C0DC;"><h2>Tipo Tramite</h2></th></tr>
+                                <tr><th colspan="3" style="text-align:center;background-color:#A7C0DC;"><h2>Tipo de Servicio</h2></th></tr>
                                 <tr></tr>
                                 </thead>
                                 <tbody>

@@ -17,13 +17,11 @@ $(document).ready(function() {
     /*end Inicializar tramites*/
 
     /*inicializate selects*/
-    slctGlobalHtml('cbo_tipodocumento','simple');
-    slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);
+    slctGlobalHtml('cbo_tipodocumento, #slct_tipo_usuario, #cbo_tipotramite, #cbo_tipodoc','simple');
     slctGlobal.listarSlct('persona','cbo_persona','simple',null,{estado_persona:1});
     slctGlobal.listarSlct('empresa','cbo_empresa','simple',null,{estado:1});    
     slctGlobal.listarSlctFuncion('tiposolicitante','listar?pretramite=1','cbo_tiposolicitante','simple',null,{'estado':1,'validado':1});
-    data = {estado:1, tipo:'Ingreso'};
-    slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data); 
+    
     /*end inicializate selects*/
     
     data = {estado:1};
@@ -184,6 +182,27 @@ CargarPreTramites = function(){
     Bandeja.MostrarPreTramites(data,HTMLPreTramite);
 }
 */
+
+ValidarDoc = ()=> {
+    valor = $("#cbo_tipodoc option:selected").attr('data-val');
+    $(".tipo_documento").hide();
+    if( valor == 1 ){
+        $(".tipo_documento").show();
+    }
+    $("#txt_tipodoc").val('');
+}
+
+validarTipoUsuario = ()=>{
+    val = $("#slct_tipo_usuario").val();
+    if( val == '' ){
+        val = 'Indefinido';
+    }
+    $("#cbo_tipotramite, #cbo_tipodoc").multiselect('destroy');
+    data = {estado:1, tipo:'Ingreso', solicitante: val};
+    slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);
+    slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data); 
+}
+
 HTMLTramite = function(data){
     if(data){
         var html ='';
@@ -556,7 +575,9 @@ HTMLRequisitos = function(data,tramite){
 }
 
 generarPreTramite = function(){
-
+    if( $(".tipo_documento").css("display") == 'none' ){
+        $("#txt_tipodoc").val('S/N');
+    }
     /*if($("#cbo_tipodocumento").val()==''){
         msjG.mensaje("warning", 'Selecciona Tipo documento de ingreso',3000);
     }
@@ -589,7 +610,7 @@ generarPreTramite = function(){
         msjG.mensaje("warning", 'Ingrese número de folio',3000);
     }
     else if( $("#txt_tipodoc").val()=='' ){
-        msjG.mensaje("warning", 'Ingrese número tipo de documento',3000);
+        msjG.mensaje("warning", 'Ingrese número del documento presentado',3000);
     }
         else{
         datos=$("#FormCrearPreTramite").serialize().split("txt_").join("").split("slct_").join("").split("%5B%5D").join("[]").split("+").join(" ").split("%7C").join("|").split("&");

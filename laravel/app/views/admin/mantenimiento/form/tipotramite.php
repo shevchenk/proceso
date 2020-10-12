@@ -17,6 +17,15 @@
           </div>
 
           <div class="form-group">
+            <label class="control-label">Quien es el solicitante::</label>
+            <select class="form-control" name="slct_solicitante" id="slct_solicitante">
+                <option value="">.::Seleccione::.</option>
+                <option value='Cliente'>Cliente</option>
+                <option value='Externo'>Externo</option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label class="control-label">Estado:
             </label>
             <select class="form-control" name="slct_estado" id="slct_estado">

@@ -25,10 +25,27 @@
 
           <div class="form-group">
             <label class="control-label">Tipo:</label>
-            <select class="form-control" name="slct_tipo" id="slct_tipo">
+            <select class="form-control" name="slct_tipo" id="slct_tipo" onchange="validarSolicitante();">
                 <option value="">.::Seleccione::.</option>
                 <option value='Ingreso'>Ingreso</option>
                 <option value='Salida'>Salida</option>
+            </select>
+          </div>
+
+          <div class="form-group solicitante">
+            <label class="control-label">Quien es el solicitante::</label>
+            <select class="form-control" name="slct_solicitante" id="slct_solicitante">
+                <option value="">.::Seleccione::.</option>
+                <option value='Cliente'>Cliente</option>
+                <option value='Externo'>Externo</option>
+            </select>
+          </div>
+
+          <div class="form-group solicitante">
+            <label class="control-label">Pide nro de documento?:</label>
+            <select class="form-control" name="slct_pide_nro" id="slct_pide_nro">
+                <option value='1'>Si</option>
+                <option value='0'>No</option>
             </select>
           </div>
 

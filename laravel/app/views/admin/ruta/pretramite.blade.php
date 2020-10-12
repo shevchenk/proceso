@@ -203,15 +203,15 @@ td, th{
                           <span>DOCUMENTO PRESENTADO(Para solicitar el servicio): </span>
                         </div>
                         <div class="col-md-8">
-                          <select class="form-control select" id="cbo_tipodoc" name="cbo_tipodoc">
+                          <select class="form-control select" onChange="ValidarDoc();" id="cbo_tipodoc" name="cbo_tipodoc">
                               <option value="-1">Selecciona</option>
                           </select>
                         </div>
                       </div>
 
-                      <div class="col-md-5  form-group" style="display:none;">
+                      <div class="col-md-5  form-group tipo_documento" style="display:none;">
                         <div class="col-md-5">
-                          <span>NUMERO TIPO DOCUMENTO: </span>
+                          <span>N° DEL DOCUMENTO PRESENTADO: </span>
                         </div>
                         <div class="col-md-7">
                           <input type="text" name="txt_tipodoc" id="txt_tipodoc" class="form-control">

@@ -20,7 +20,7 @@ class Documento extends Base
     public static function getCargar( $array )
     {
         $sSql=" SELECT doc.id, doc.nombre, doc.tipo, doc.area, doc.posicion, doc.posicion_fecha, doc.estado, 
-               doc.tipo AS tipos, doc.area_id, a.nombre as areas, doc.nemonico,
+               doc.tipo AS tipos, doc.area_id, a.nombre as areas, doc.nemonico, doc.solicitante, doc.pide_nro,
                 (
                 CASE doc.posicion
                     WHEN '0' THEN 'Centro'
@@ -51,8 +51,7 @@ class Documento extends Base
 
     public static function getDocumento(){
         $r=DB::table('documentos')
-                ->select('id', 'nombre', 'estado', 'area', 'posicion', 'posicion_fecha', 'tipo')
-
+                ->select('id', 'nombre', 'estado', 'area', 'posicion', 'posicion_fecha', 'tipo', 'solicitante', 'pide_nro AS val')
                 ->where( 
                     function($query){
                         if ( Input::get('estado') ) {
@@ -64,6 +63,10 @@ class Documento extends Base
                         }
                         else{
                             $query->where('tipo','=','Salida');
+                        }
+
+                        if ( Input::has('solicitante') ) {
+                            $query->where('solicitante','=', Input::get('solicitante'));
                         }
 
                         if ( Input::has('area_id') ) {

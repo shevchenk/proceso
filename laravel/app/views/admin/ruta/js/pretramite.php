@@ -20,7 +20,7 @@ $(document).ready(function() {
     /*end Inicializar tramites*/
     
     /*inicializate selects*/
-    data = {estado:1, tipo:'Ingreso'};
+    data = {estado:1, tipo:'Ingreso', solicitante: 'Cliente'};
     slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data); 
     slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);  
     slctGlobal.listarSlctFuncion('tiposolicitante','listar?pretramite=1','cbo_tiposolicitante','simple',null,data);
@@ -172,6 +172,15 @@ $(document).ready(function() {
         }
     });
 });
+
+ValidarDoc = ()=> {
+    valor = $("#cbo_tipodoc option:selected").attr('data-val');
+    $(".tipo_documento").hide();
+    if( valor == 1 ){
+        $(".tipo_documento").show();
+    }
+    $("#txt_tipodoc").val('');
+}
 
 GetMisDatos = (data)=>{
     document.querySelector('#txt_userdni').value= data.dni;
@@ -526,7 +535,10 @@ HTMLRequisitos = function(data,tramite){
 }
 
 generarPreTramite = function(){
-    $("#txt_tipodoc").val('S/N');
+    if( $(".tipo_documento").css("display") == 'none' ){
+        $("#txt_tipodoc").val('S/N');
+    }
+
     $("#cbo_tiposolicitante").val('1');
     if( $("#cbo_tipotramite").val()=='' ){
         msjG.mensaje("warning", 'Seleccione Tipo de servicio',3000);
@@ -541,7 +553,7 @@ generarPreTramite = function(){
         msjG.mensaje("warning", 'Ingrese número de folio',3000);
     }
     else if( $("#txt_tipodoc").val()=='' ){
-        msjG.mensaje("warning", 'Ingrese número tipo de documento',3000);
+        msjG.mensaje("warning", 'Ingrese número del documento presentado',3000);
     }
     else if( $("#cbo_tiposolicitante").val()=='' ){
         msjG.mensaje("warning", 'Seleccione tipo de solicitante',3000);

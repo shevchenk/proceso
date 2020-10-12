@@ -12,7 +12,7 @@ htmlListarSlct=function(obj,slct,tipo,valarray,afectado,afectados,slct_id,slctan
     if(obj.rst==1){                    
         $.each(obj.datos,function(index,data){
         disabled=''; 
-        rel=''; rel2='';rel3='';x='';y='';direccion='';rel4='';
+        rel=''; rel2='';rel3='';x='';y='';direccion='';rel4=''; val ='';
             if(data.block=='disabled'){ // validacion pra visualizacion
                 disabled='disabled';
             }
@@ -41,6 +41,10 @@ htmlListarSlct=function(obj,slct,tipo,valarray,afectado,afectados,slct_id,slctan
                 direccion=' data-direccion="'+data.direccion+'" ';
             }
 
+            if( $.trim(data.val) != '' ){
+                val=' data-val="'+data.val+'" ';
+            }
+
             /*if send a concat data*/
             if(data.concat !=''&& data.concat !=null){
                 rel4 = "("+data.concat+")";
@@ -52,7 +56,7 @@ htmlListarSlct=function(obj,slct,tipo,valarray,afectado,afectados,slct_id,slctan
                 html += "<option selected"+rel+rel2+x+y+direccion+" value=\"" + data.id + "\" "+disabled+">" + data.nombre + "</option>";
             else*/
             
-                html += "<option "+rel+rel2+rel3+x+y+direccion+" value=\"" + data.id + "\" "+disabled+">" + data.nombre + rel4 + "</option>";
+                html += "<option "+rel+rel2+rel3+x+y+direccion+val+" value=\"" + data.id + "\" "+disabled+">" + data.nombre + rel4 + "</option>";
         }); 
     }      
     $("#"+slct).html(html);

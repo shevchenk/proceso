@@ -130,6 +130,8 @@ class DocumentoController extends \BaseController
             $documento['posicion'] = Input::get('posicion');
             $documento['posicion_fecha'] = Input::get('posicion_fecha');
             $documento['estado'] = Input::get('estado');
+            $documento['solicitante'] = Input::get('solicitante');
+            $documento['pide_nro'] = Input::get('pide_nro');
             $documento['usuario_created_at'] = Auth::user()->id;
             $documento->save();
 
@@ -172,6 +174,8 @@ class DocumentoController extends \BaseController
             $documento['posicion'] = Input::get('posicion');
             $documento['posicion_fecha'] = Input::get('posicion_fecha');
             $documento['estado'] = Input::get('estado');
+            $documento['solicitante'] = Input::get('solicitante');
+            $documento['pide_nro'] = Input::get('pide_nro');
             $documento['usuario_created_at'] = Auth::user()->id;
             $documento->save();
 
