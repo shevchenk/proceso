@@ -146,18 +146,6 @@ td, th{
                       
                     </div>
                 </div>
-                <div class="col-md-12" style="margin-top:10px">
-                    <div class="col-md-2" style="padding-top: 5px">
-                        <span>TIPO DE USUARIO:</span>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-control" onchange="validarTipoUsuario();" id="slct_tipo_usuario" name="slct_tipo_usuario">
-                              <option value="">Seleccione</option>
-                              <option value="Cliente">Cliente</option>
-                              <option value="Externo">Externo</option>
-                        </select>
-                    </div>
-                </div>
 
                 <div class="col-md-12 tipoSolicitante" style="margin-top:10px">
                     <div class="col-md-2" style="padding-top: 5px">

@@ -116,6 +116,8 @@ class TipoSolicitanteController extends \BaseController
             $tiposolicitante = new TipoSolicitante;
             $tiposolicitante->nombre = Input::get('nombre');
             $tiposolicitante->estado = Input::get('estado');
+            $tiposolicitante->pide_empresa = Input::get('pide_empresa');
+            $tiposolicitante->solicitante = Input::get('solicitante');
             $tiposolicitante->usuario_created_at = Auth::user()->id;
             $tiposolicitante->save();
 
@@ -152,6 +154,8 @@ class TipoSolicitanteController extends \BaseController
             $tiposolicitanteId = Input::get('id');
             $tiposolicitante = TipoSolicitante::find($tiposolicitanteId);
             $tiposolicitante->nombre = Input::get('nombre');
+            $tiposolicitante->pide_empresa = Input::get('pide_empresa');
+            $tiposolicitante->solicitante = Input::get('solicitante');
             $tiposolicitante->estado = Input::get('estado');
             $tiposolicitante->usuario_updated_at = Auth::user()->id;
             $tiposolicitante->save();

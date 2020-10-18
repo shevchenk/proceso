@@ -28,7 +28,7 @@ htmlListarSlct=function(obj,slct,tipo,valarray,afectado,afectados,slct_id,slctan
                 rel2=' data-evento="|1|"';
             }
 
-            if( data.select!='' && data.select!=null ){
+            if( $.trim(data.select)!='' ){
                 rel3=' data-select="|'+data.select+'|"';
             }
             if (data.coord_x!='' && data.coord_x!=null) {

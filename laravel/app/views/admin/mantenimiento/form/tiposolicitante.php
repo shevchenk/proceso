@@ -19,7 +19,24 @@
           </div>
 
          
+          <div class="form-group">
+            <label class="control-label">Pide empresa:
+            </label>
+            <select class="form-control" name="slct_pide_empresa" id="slct_pide_empresa">
+                <option value='0'>No</option>
+                <option value='1'>Si</option>
+            </select>
+          </div>
 
+          <div class="form-group">
+            <label class="control-label">Solicitante:
+            </label>
+            <select class="form-control" name="slct_solicitante" id="slct_solicitante">
+                <option value=''>Seleccione</option>
+                <option value='Cliente'>Cliente</option>
+                <option value='Externo'>Externo</option>
+            </select>
+          </div>
 
           <div class="form-group">
             <label class="control-label">Estado:

@@ -112,14 +112,23 @@ $(document).ready(function() {
 
     $(document).on('click', '#btnTipoSolicitante', function(event) {
         var tiposolicitante = $("#cbo_tiposolicitante").val();
-        if(tiposolicitante == 1){
+        var pide_empresa = $("#cbo_tiposolicitante option:selected").attr('data-select');
+        var solicitante = $("#cbo_tiposolicitante option:selected").attr('data-val');
+        if( $.trim(pide_empresa) == '|0|'){
             Bandeja.GetPersons({'apellido_nombre':1},HTMLPersonas);
-        }else if(tiposolicitante == 2){
+        }else if( $.trim(pide_empresa) == '|1|'){
             Bandeja.getEmpresasByPersona({'estado':1},ValidacionEmpresa);
         }
         else {
+            solicitante = 'Indefinido';
             alert("Seleccionar Tipo de Solicitante");
         }
+
+        $("#cbo_tipotramite, #cbo_tipodoc").multiselect('destroy');
+        data = {estado:1, tipo:'Ingreso', solicitante: solicitante};
+        slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);
+        slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data);
+
     });
 
     $(document).on('click', '#btnAgregarP', function(event) {
@@ -163,17 +172,16 @@ $(document).ready(function() {
     });
     
     $("#cbo_tiposolicitante").change(function(){
-          $('#txt_ruc').val(''); 
-          $('#txt_userdni2').val(''); 
-
-          if( $("#cbo_tiposolicitante").val()==1 ){
-              $('.empresa').addClass('hidden');
-              $('.usuarioSeleccionado').removeClass('hidden');
-          }
-          else{
-              $('.usuarioSeleccionado').addClass('hidden');
-              $('.empresa').removeClass('hidden');
-          }
+        $('#txt_ruc').val(''); 
+        $('#txt_userdni2').val('');
+        var pide_empresa = $("#cbo_tiposolicitante option:selected").attr('data-select');
+        if( $.trim(pide_empresa) == '|0|'){
+            $('.usuarioSeleccionado').addClass('hidden');
+            $('.empresa').removeClass('hidden');
+        }else if( $.trim(pide_empresa) == '|1|'){
+            $('.empresa').addClass('hidden');
+            $('.usuarioSeleccionado').removeClass('hidden');
+        }
 	});
 });
 /*
@@ -190,17 +198,6 @@ ValidarDoc = ()=> {
         $(".tipo_documento").show();
     }
     $("#txt_tipodoc").val('');
-}
-
-validarTipoUsuario = ()=>{
-    val = $("#slct_tipo_usuario").val();
-    if( val == '' ){
-        val = 'Indefinido';
-    }
-    $("#cbo_tipotramite, #cbo_tipodoc").multiselect('destroy');
-    data = {estado:1, tipo:'Ingreso', solicitante: val};
-    slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);
-    slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data); 
 }
 
 HTMLTramite = function(data){

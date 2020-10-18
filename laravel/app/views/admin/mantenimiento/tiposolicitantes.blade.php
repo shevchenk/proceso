@@ -47,7 +47,7 @@
                         <div class="box-body table-responsive">
                             <table id="t_tiposolicitantes" class="table table-bordered table-hover">
                                 <thead>
-                                <tr><th colspan="2" style="text-align:center;background-color:#A7C0DC;"><h2>Tipo Solicitantes</h2></th></tr>
+                                <tr><th colspan="4" style="text-align:center;background-color:#A7C0DC;"><h2>Tipo Solicitantes</h2></th></tr>
                                 <tr></tr>
                                 </thead>
                                 <tbody>

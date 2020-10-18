@@ -18,7 +18,7 @@ class TipoSolicitante extends Base
 
     public static function getCargar( $array )
     {
-        $sSql=" SELECT ts.id, ts.nombre, ts.estado
+        $sSql=" SELECT ts.id, ts.nombre, ts.estado, ts.solicitante, ts.pide_empresa, IF(ts.pide_empresa = 1, 'Si', 'No') empresa
                 FROM tipo_solicitante ts
                 WHERE 1=1 ";
         $sSql.= $array['where'].
@@ -30,7 +30,7 @@ class TipoSolicitante extends Base
     
     public static function getTipoSolicitante(){
         $r=DB::table('tipo_solicitante')
-        ->select('id','nombre','estado','pide_empresa')
+        ->select('id','nombre','estado','pide_empresa AS select', 'solicitante AS val')
         ->where( 
             function($query){
                 if ( Input::get('estado') ) {
@@ -40,10 +40,10 @@ class TipoSolicitante extends Base
                 if ( Input::get('id') ) {
                     $query->where('id','=', Input::get('id') );
                 }
-                if ( Input::get('pretramite') ) {
+                /*if ( Input::get('pretramite') ) {
                     $query->where('id','!=', '3');
                     $query->where('id','!=', '6' );
-                }
+                }*/
 
                 if ( Input::get('validado') ) {
                     $query->where('validado','=', '1');

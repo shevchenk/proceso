@@ -9,8 +9,10 @@ $(document).ready(function() {
         3: Color Cabecera
     */
 
-    slctGlobalHtml('slct_estado','simple');
+    slctGlobalHtml('slct_estado, #slct_pide_empresa, #slct_solicitante','simple');
     var idG={   nombre        :'onBlur|Nombre TipoSolicitante|#DCE6F1', //#DCE6F1
+                empresa       :'1|Pide empresa|#DCE6F1',
+                solicitante   :'1|Solicitante|#DCE6F1',
                 estado        :'2|Estado|#DCE6F1', //#DCE6F1
              };
 
@@ -45,6 +47,8 @@ $(document).ready(function() {
 
             $('#form_tiposolicitantes_modal #txt_nombre').val( TipoSolicitantesG.nombre );
             $('#form_tiposolicitantes_modal #slct_estado').val( TipoSolicitantesG.estado );
+            $('#form_tiposolicitantes_modal #slct_solicitante').val( TipoSolicitantesG.solicitante );
+            $('#form_tiposolicitantes_modal #slct_pide_empresa').val( TipoSolicitantesG.pide_empresa );
             $("#form_tiposolicitantes_modal").append("<input type='hidden' value='"+TipoSolicitantesG.id+"' name='id'>");
         }
              $('#form_tiposolicitantes_modal select').multiselect('rebuild');
@@ -61,7 +65,10 @@ BtnEditar=function(btn,id){
     var tr = btn.parentNode.parentNode; // Intocable
     TipoSolicitantesG.id=id;
     TipoSolicitantesG.nombre=$(tr).find("td:eq(0)").text();
-    TipoSolicitantesG.estado=$(tr).find("td:eq(1)>span").attr("data-estado");
+    TipoSolicitantesG.pide_empresa=$(tr).find(".pide_empresa").val();
+    TipoSolicitantesG.solicitante=$(tr).find("td:eq(2)").text();
+    TipoSolicitantesG.estado=$(tr).find("td:eq(3)>span").attr("data-estado");
+    console.log(TipoSolicitantesG);
     $("#BtnEditar").click();
 };
 
@@ -77,7 +84,14 @@ MostrarAjax=function(t){
 }
 
 GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion fn
+    
     if(typeof(fn)!='undefined' && fn.col==1){
+        return row.empresa+"<input type='hidden' value='"+row.pide_empresa+"' class='pide_empresa'>";
+    }
+    if(typeof(fn)!='undefined' && fn.col==2){
+        return row.solicitante;
+    }
+    if(typeof(fn)!='undefined' && fn.col==3){
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" onClick="activar('+row.id+')" data-estado="'+row.estado+'" class="btn btn-danger">Inactivo</span>';
         if(row.estado==1){
