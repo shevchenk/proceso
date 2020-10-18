@@ -284,7 +284,7 @@ class ClasificadorTramiteController extends \BaseController
             public function postCrearrequisito()
     {
         if ( Request::ajax() ) {
-            $regex = 'regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú]{2,60})$/i';
+            $regex = 'regex:/^([a-zA-Z1-9 .,ñÑÁÉÍÓÚáéíóú]{2,60})$/i';
             $required = 'required';
             $reglas = array(
                 'nombre' => $required.'|'.$regex,

@@ -117,6 +117,7 @@ class RolController extends \BaseController
 
             $rol = new Rol;
             $rol->nombre = Input::get('nombre');
+            $rol->nivel = Input::get('nivel');
             $rol->estado = Input::get('estado');
             $rol->usuario_created_at = Auth::user()->id;
             $rol->save();
@@ -154,6 +155,7 @@ class RolController extends \BaseController
             $rolId = Input::get('id');
             $rol = Rol::find($rolId);
             $rol->nombre = Input::get('nombre');
+            $rol->nivel = Input::get('nivel');
             $rol->estado = Input::get('estado');
             $rol->usuario_updated_at = Auth::user()->id;
             $rol->save();

@@ -18,7 +18,7 @@ class Rol extends Base
 
     public static function getCargar( $array )
     {
-        $sSql=" SELECT r.id, r.nombre, r.estado
+        $sSql=" SELECT r.id, r.nombre, r.estado, r.nivel
                 FROM roles r
                 WHERE 1=1 ";
         $sSql.= $array['where'].
