@@ -1,0 +1,6 @@
+.env
+/laravel/app/storage
+/public/img
+/public/upload
+/public/txt
+/public/Config
