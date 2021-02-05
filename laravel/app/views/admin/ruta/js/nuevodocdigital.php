@@ -191,7 +191,7 @@ HTMLCargar=function(datos,campos){
 };
 
 verDocumento= (id)=>{
-    url = 'http://proceso.jssoluciones.pe/doc_digital/'+id;
+    url = 'doc_digital/'+id;
     window.open(url, '_blank');
     return false;
 }

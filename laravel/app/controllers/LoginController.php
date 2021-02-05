@@ -113,6 +113,38 @@ class LoginController extends BaseController
     {
         if (Request::ajax()) {
             if ($this->signIn(Input::all())) {
+                //Valida si es alumno y si tiene trámites activos
+                $tramite =  DB::table('tramites')
+                            ->where('persona_id', Auth::user()->id)
+                            ->where('estado', 1)
+                            ->first();
+                
+                if( isset($tramite->id) ){
+                    $personaCargo = DB::table('cargo_persona')
+                                ->where('persona_id', Auth::user()->id)
+                                ->where('cargo_id', 2)
+                                ->first();
+                                
+                    if( !isset($personaCargo->id) ){
+                        DB::table('cargo_persona')
+                        ->insert([
+                            'estado' => 1,
+                            'usuario_updated_at' => Auth::user()->id,
+                            'persona_id' => Auth::user()->id,
+                            'cargo_id' => 2
+                        ]);
+                    }
+                    elseif( $personaCargo->estado == 0 ){
+                            DB::table('cargo_persona')
+                            ->where('persona_id', Auth::user()->id)
+                            ->where('cargo_id', 2)
+                            ->update([
+                                'estado' => 1,
+                                'usuario_updated_at' => Auth::user()->id
+                            ]);
+                    }
+                }
+
                 //buscar los permisos de este usuario y guardarlos en sesion
                 $query = "SELECT m.nombre as menu, o.nombre as opcion,
                         IF(LOCATE('.', o.ruta)>0,

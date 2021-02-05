@@ -11,8 +11,9 @@
                         AND cp.persona_id='$user'
                         GROUP BY cp.persona_id,cp.cargo_id";
                 $r= DB::select($sql);
-
-                echo $r[0]->cargo;
+                if( isset($r[0]->cargo) ){
+                    echo $r[0]->cargo;
+                }
                 ?>
             </a>
             <!-- Header Navbar: style can be found in header.less -->

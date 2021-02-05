@@ -49,8 +49,7 @@ class RutaDetalle extends Eloquent
 
         $t0 = (Input::get('ruta_detalle_id')?',IFNULL(concat(\'_\',rdv.doc_digital_id),"")':'');
 
-        $set=DB::select('SET group_concat_max_len := @@max_allowed_packet');
-        $set=DB::select('SET SESSION group_concat_max_len = 5000;');
+        $set=DB::statement('SET group_concat_max_len := @@max_allowed_packet');
         $query =
             'SELECT rd.archivado,rd.ruta_id,DATE_ADD(rd.fecha_inicio, INTERVAL 19 HOUR) as hora_fin_mayor,DATE_ADD(rd.fecha_inicio, INTERVAL 4 HOUR) as hora_fin_menor, NOW() as fecha_actual,rd.id, rd.dtiempo_final, r.flujo_id, 
              rd.ruta_flujo_id as rd_ruta_flujo_id,
@@ -278,7 +277,7 @@ class RutaDetalle extends Eloquent
             $adicional='WHERE rd.id="'.$ruta_detalle_id.'"';
         }
 
-        $set=DB::select('SET group_concat_max_len := @@max_allowed_packet');
+        $set=DB::statement('SET group_concat_max_len := @@max_allowed_packet');
         $query =
             'SELECT rd.id, rd.dtiempo_final, r.flujo_id,
             CONCAT(t.nombre," : ",rd.dtiempo) tiempo,

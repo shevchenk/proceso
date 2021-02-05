@@ -170,6 +170,7 @@ class TramiteController extends BaseController {
 			
 				$pretramite = Pretramite::find($data['txt_pretramiteid']);
 				$pretramite->estado_atencion = $data['rdb_estado'];
+				$pretramite->observacion = trim($data['txt_observaciones']);
 				$pretramite->save();
 
 				$persona = Persona::find($data['txt_personaid']);
@@ -199,7 +200,7 @@ class TramiteController extends BaseController {
 					$tramite['tipo_documento_id'] = $data['txt_tdocumento'];
 					$tramite['documento'] =$data['txt_tdoc'];
 					$tramite['nro_folios'] = $data['txt_folio'];
-					$tramite['observacion'] = $data['txt_observaciones'];
+					$tramite['observacion'] = trim($data['txt_observaciones']);
 					$tramite['imagen'] = $name;
 					$tramite['fecha_tramite'] = date('Y-m-d H:i:s');
 					$tramite['usuario_created_at'] = Auth::user()->id;

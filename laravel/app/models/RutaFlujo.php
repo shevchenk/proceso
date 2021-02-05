@@ -416,7 +416,7 @@ class RutaFlujo extends Eloquent
     }
 
     public function getRutaFlujoDetalle(){
-        $set=DB::select('SET group_concat_max_len := @@max_allowed_packet');
+        $set=DB::statement('SET group_concat_max_len := @@max_allowed_packet');
 
         if( Input::has('ruta_id') ){
             $rutaFlujoD =    DB::table('rutas AS rf')

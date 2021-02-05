@@ -54,14 +54,14 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			#'host'      => '127.0.0.1',
-			#'database'  => 'procesos',
-			#'username'  => 'root',
-			#'password'  => 'asdasdasd',
-			'host'      => 'localhost',
-            'database'  => 'prabtoea_muni_proceso',
-            'username'  => 'prabtoea_global',
-            'password'  => 'SHEVCHENKo1410',
+			'host'      => '127.0.0.1',
+			'database'  => 'telesup_proceso',
+			'username'  => 'root',
+			'password'  => '',
+			#'host'      => 'localhost',
+            #'database'  => 'prabtoea_muni_proceso',
+            #'username'  => 'prabtoea_global',
+            #'password'  => 'SHEVCHENKo1410',
 			
 			'charset'   => 'utf8',
 			'collation' => 'utf8_general_ci',

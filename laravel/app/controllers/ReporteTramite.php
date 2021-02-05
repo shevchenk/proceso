@@ -98,7 +98,7 @@ class ReporteTramite extends Eloquent
                 $array['where']."
                 GROUP BY rd.id";
 
-        $set=DB::select('SET group_concat_max_len := @@max_allowed_packet');
+        $set=DB::statement('SET group_concat_max_len := @@max_allowed_packet');
         $r= DB::select($sql);
         return $r;
     }

@@ -4,7 +4,7 @@
       <div class="modal-header logo">
              <button type="button" class="close btn-xs" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         </button>
-        <h4 class="modal-title">Crear Usuario</h4>
+        <h4 class="modal-title">Crear solicitante</h4>
       </div>
       <div class="modal-body">
 
@@ -50,7 +50,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group padding-10">
-                                    <label class="control-label">Sexo:</label>
+                                    <label class="control-label">Género:</label>
                                     <select name='sexo' id="sexo" class="form-control  pull-right" placeholder="Sexo" autocomplete="off">
                                         <option value="" selected="selected">.:: Seleccione genero ::.</option>
                                         <option value="M">Masculino</option>
@@ -72,7 +72,7 @@
                             </div>
                         </div>  
                         <div class="submitWrap" style="margin-top:10px">
-                             <span class="btn btn-primary btn-sm btnEnviar" id="btnRegistrar">Regístrate</span>
+                             <span class="btn btn-primary btn-sm btnEnviar" id="btnRegistrar">Registrar</span>
                         </div>
 
 

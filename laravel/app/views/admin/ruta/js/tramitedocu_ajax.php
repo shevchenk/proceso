@@ -240,7 +240,7 @@ var Bandeja={
     },
     guardarUsuario:function(){
         var datos=$("#FrmCrearUsuario").serialize().split("txt_").join("").split("slct_").join("").split("_modal").join("");
-        datos+="&estado=1&area=107&rol=94";
+        datos+="&estado=1&area=10&rol=24";
         $.ajax({
             url         : 'persona/crear',
             type        : 'POST',

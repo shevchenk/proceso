@@ -163,6 +163,7 @@ Route::controller('menu', 'MenuController');
 Route::controller('opcion', 'OpcionController');
 Route::controller('empresapersona', 'EmpresaPersonaController');
 Route::controller('persona', 'PersonaController');
+Route::controller('personafinal', 'PersonaFinalController');
 Route::controller('reporte', 'ReporteController');
 Route::controller('rol', 'RolController');
 Route::controller('ruta', 'RutaController');
