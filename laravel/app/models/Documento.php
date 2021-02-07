@@ -36,7 +36,7 @@ class Documento extends Base
                     WHEN '3' THEN 'Abajo Izquierda'
                     ELSE 'Abajo Derecha'
                 END
-                ) as posiciones_fecha
+                ) as posiciones_fecha, doc.publico
 
                 FROM documentos doc
                 LEFT JOIN areas a ON a.id = doc.area_id

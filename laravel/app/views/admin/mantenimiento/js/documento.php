@@ -9,11 +9,11 @@ $(document).ready(function() {
         3: Color Cabecera
     */
 
-    slctGlobalHtml('slct_area,#slct_posicion,#slct_posicion_fecha,#slct_estado,#slct_tipo,#slct_pide_nro, #slct_solicitante','simple');
+    slctGlobalHtml('slct_area,#slct_posicion,#slct_posicion_fecha,#slct_estado,#slct_tipo,#slct_pide_nro, #slct_solicitante, #slct_publico','simple');
     slctGlobal.listarSlctFuncion('area','listara','slct_area_id','simple',null,{estado:1,areapersona:1});
     var idG={   nombre           :'onBlur|Nombre del Documento|#DCE6F1', //#DCE6F1
                 nemonico         :'onBlur|Nemónico|#DCE6F1', //#DCE6F1
-                tipos            :'4|Tipo Doc|#DCE6F1||tipo', //#DCE6F1
+                tipos            :'4|Visible|#DCE6F1||tipo', //#DCE6F1
                 areas            :'onBlur|Área|#DCE6F1', //#DCE6F1
                 estado           :'2|Estado|#DCE6F1', //#DCE6F1
              };
@@ -50,6 +50,7 @@ $(document).ready(function() {
             $('#form_documentos_modal #txt_nombre').val( DocumentosG.nombre );
             $('#form_documentos_modal #txt_nemonico').val( DocumentosG.nemonico );
             $('#form_documentos_modal #slct_tipo').val( DocumentosG.tipo );
+            $('#form_documentos_modal #slct_publico').val( DocumentosG.publico );
             $('#form_documentos_modal #slct_area_id').val( DocumentosG.area_id );
             $('#form_documentos_modal #slct_estado').val( DocumentosG.estado );
             $('#form_documentos_modal #slct_solicitante').val( DocumentosG.solicitante );
@@ -70,9 +71,12 @@ $(document).ready(function() {
 });
 
 validarSolicitante = ()=>{
-    $(".solicitante").hide();
+    $(".solicitante, .publico").hide();
     if( $("#slct_tipo").val() == 'Ingreso' ){
         $(".solicitante").show();
+    }
+    else{
+        $(".publico").show();
     }
 }
 
@@ -82,6 +86,7 @@ BtnEditar=function(btn,id){
     DocumentosG.nombre=$(tr).find("td:eq(0)").text();
     DocumentosG.nemonico=$(tr).find("td:eq(1)").text();
     DocumentosG.tipo=$(tr).find("td:eq(2) input[name='slct_tipo']").val();
+    DocumentosG.publico=$(tr).find("td:eq(2) input[name='slct_publico']").val();
     DocumentosG.area_id=$(tr).find("td:eq(2) input[name='slct_area_id']").val();
     DocumentosG.solicitante=$(tr).find("td:eq(2) input[name='slct_solicitante']").val();
     DocumentosG.pide_nro=$(tr).find("td:eq(2) input[name='slct_pide_nro']").val();
@@ -105,6 +110,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         //console.log(row);
     if(typeof(fn)!='undefined' && fn.col==2){
         return row.tipos+"<input type='hidden' name='slct_tipo' value='"+row.tipo+"'>"+
+                "<input type='hidden' name='slct_publico' value='"+$.trim(row.publico)+"'>"+
                 "<input type='hidden' name='slct_area_id' value='"+$.trim(row.area_id)+"'>"+
                 "<input type='hidden' name='slct_solicitante' value='"+$.trim(row.solicitante)+"'>"+
                 "<input type='hidden' name='slct_pide_nro' value='"+$.trim(row.pide_nro)+"'>";
@@ -157,6 +163,11 @@ validaDocumentos = function(){
     }
     else if( $("#form_documentos_modal #slct_tipo").val() == 'Ingreso' &&  $("#form_documentos_modal #slct_solicitante").val()=='' ){
         alert("Seleccione solicitante");
+        r=false;
+    }
+
+    else if( $("#form_documentos_modal #slct_tipo").val() == 'Salida' &&  $("#form_documentos_modal #slct_publico").val()=='' ){
+        alert("Seleccione si es documento público");
         r=false;
     }
 

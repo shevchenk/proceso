@@ -32,6 +32,15 @@
             </select>
           </div>
 
+          <div class="form-group publico">
+            <label class="control-label">Este documento es público::</label>
+            <select class="form-control" name="slct_publico" id="slct_publico">
+                <option value="">.::Seleccione::.</option>
+                <option value='1'>Si</option>
+                <option value='0'>No</option>
+            </select>
+          </div>
+          
           <div class="form-group solicitante">
             <label class="control-label">Quien es el solicitante::</label>
             <select class="form-control" name="slct_solicitante" id="slct_solicitante">
