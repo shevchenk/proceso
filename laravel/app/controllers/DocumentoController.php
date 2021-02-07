@@ -132,7 +132,8 @@ class DocumentoController extends \BaseController
             $documento['estado'] = Input::get('estado');
             $documento['solicitante'] = Input::get('solicitante');
             $documento['pide_nro'] = Input::get('pide_nro');
-            $documento['visible'] = Input::get('visible');
+            $documento['publico'] = Input::get('publico');
+            $documento['nivel'] = Input::get('nivel');
             $documento['usuario_created_at'] = Auth::user()->id;
             $documento->save();
 
@@ -178,7 +179,8 @@ class DocumentoController extends \BaseController
             $documento['estado'] = Input::get('estado');
             $documento['solicitante'] = Input::get('solicitante');
             $documento['pide_nro'] = Input::get('pide_nro');
-            //dd($documento['visible'] = Input::get('visible'));
+            $documento['publico'] = Input::get('publico');
+            $documento['nivel'] = Input::get('nivel');
             $documento['usuario_created_at'] = Auth::user()->id;
             $documento->save();
 

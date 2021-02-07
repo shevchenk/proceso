@@ -9,7 +9,7 @@ $(document).ready(function() {
         3: Color Cabecera
     */
 
-    slctGlobalHtml('slct_area,#slct_posicion,#slct_posicion_fecha,#slct_estado,#slct_tipo,#slct_pide_nro, #slct_solicitante, #slct_publico','simple');
+    slctGlobalHtml('slct_area,#slct_posicion,#slct_posicion_fecha,#slct_estado,#slct_tipo,#slct_pide_nro, #slct_solicitante, #slct_publico, #slct_nivel','simple');
     slctGlobal.listarSlctFuncion('area','listara','slct_area_id','simple',null,{estado:1,areapersona:1});
     var idG={   nombre           :'onBlur|Nombre del Documento|#DCE6F1', //#DCE6F1
                 nemonico         :'onBlur|Nemónico|#DCE6F1', //#DCE6F1
@@ -51,6 +51,7 @@ $(document).ready(function() {
             $('#form_documentos_modal #txt_nemonico').val( DocumentosG.nemonico );
             $('#form_documentos_modal #slct_tipo').val( DocumentosG.tipo );
             $('#form_documentos_modal #slct_publico').val( DocumentosG.publico );
+            $('#form_documentos_modal #slct_nivel').val( DocumentosG.nivel );
             $('#form_documentos_modal #slct_area_id').val( DocumentosG.area_id );
             $('#form_documentos_modal #slct_estado').val( DocumentosG.estado );
             $('#form_documentos_modal #slct_solicitante').val( DocumentosG.solicitante );
@@ -87,6 +88,7 @@ BtnEditar=function(btn,id){
     DocumentosG.nemonico=$(tr).find("td:eq(1)").text();
     DocumentosG.tipo=$(tr).find("td:eq(2) input[name='slct_tipo']").val();
     DocumentosG.publico=$(tr).find("td:eq(2) input[name='slct_publico']").val();
+    DocumentosG.nivel=$(tr).find("td:eq(2) input[name='slct_nivel']").val();
     DocumentosG.area_id=$(tr).find("td:eq(2) input[name='slct_area_id']").val();
     DocumentosG.solicitante=$(tr).find("td:eq(2) input[name='slct_solicitante']").val();
     DocumentosG.pide_nro=$(tr).find("td:eq(2) input[name='slct_pide_nro']").val();
@@ -111,6 +113,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
     if(typeof(fn)!='undefined' && fn.col==2){
         return row.tipos+"<input type='hidden' name='slct_tipo' value='"+row.tipo+"'>"+
                 "<input type='hidden' name='slct_publico' value='"+$.trim(row.publico)+"'>"+
+                "<input type='hidden' name='slct_nivel' value='"+$.trim(row.nivel)+"'>"+
                 "<input type='hidden' name='slct_area_id' value='"+$.trim(row.area_id)+"'>"+
                 "<input type='hidden' name='slct_solicitante' value='"+$.trim(row.solicitante)+"'>"+
                 "<input type='hidden' name='slct_pide_nro' value='"+$.trim(row.pide_nro)+"'>";
@@ -168,6 +171,11 @@ validaDocumentos = function(){
 
     else if( $("#form_documentos_modal #slct_tipo").val() == 'Salida' &&  $("#form_documentos_modal #slct_publico").val()=='' ){
         alert("Seleccione si es documento público");
+        r=false;
+    }
+
+    else if( $("#form_documentos_modal #slct_tipo").val() == 'Salida' &&  $("#form_documentos_modal #slct_nivel").val()=='' ){
+        alert("Seleccione el nivel del documento");
         r=false;
     }
 

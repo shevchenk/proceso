@@ -40,6 +40,18 @@
                 <option value='0'>No</option>
             </select>
           </div>
+
+          <div class="form-group publico">
+            <label class="control-label">Indique el nivel del documento::</label>
+            <select class="form-control" name="slct_nivel" id="slct_nivel">
+                <option value="">.::Seleccione::.</option>
+                <option value='1'>1</option>
+                <option value='2'>2</option>
+                <option value='3'>3</option>
+                <option value='4'>4</option>
+                <option value='5'>5</option>
+            </select>
+          </div>
           
           <div class="form-group solicitante">
             <label class="control-label">Quien es el solicitante::</label>
