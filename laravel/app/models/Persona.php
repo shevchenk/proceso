@@ -202,6 +202,7 @@ class Persona extends Base implements UserInterface, RemindableInterface {
         $sSql .= $array['where'] .
                 $array['order'] .
                 $array['limit'];
+                
         $oData = DB::select($sSql);
         return $oData;
     }

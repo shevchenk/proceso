@@ -30,13 +30,13 @@ $(document).ready(function() {
                 dni           :'onBlur|DNI|#DCE6F1', //#DCE6F1
                 sexo          :'3|Género|#DCE6F1', //#DCE6F1
                 email         :'onBlur|Email|#DCE6F1', //#DCE6F1
-                email_mdi         :'onBlur|Email corporativo|#DCE6F1', //#DCE6F1
+                email_mdi         :'onBlur|Email corporativo|#DCE6F1|||1', //#DCE6F1
               //  password      :'onBlur|Password|#DCE6F1', //#DCE6F1
-                area          :'3|Área de la Persona|#DCE6F1', 
-                rol           :'3|Rol de la Persona|#DCE6F1', //#DCE6F1
-                modalidad     :'3|Modalidad|#DCE6F1', //#DCE6F1
-                vista_doc     :'3|Vista Documento|#DCE6F1', //#DCE6F1
-                estado        :'2|Estado|#DCE6F1', //#DCE6F1
+                area          :'3|Área de la Persona|#DCE6F1|||1', 
+                rol           :'3|Rol de la Persona|#DCE6F1|||1', //#DCE6F1
+                modalidad     :'3|Modalidad|#DCE6F1|||1', //#DCE6F1
+                vista_doc     :'3|Vista Documento|#DCE6F1|||1', //#DCE6F1
+                estado        :'2|Estado|#DCE6F1|||1', //#DCE6F1
              };
 
     var resG=dataTableG.CargarCab(idG);
@@ -77,11 +77,9 @@ $(document).ready(function() {
         $("#t_cargoPersona").html('');
         
         $("#personaModal #txt_paterno, #personaModal #txt_materno, #personaModal #txt_nombre, #personaModal #txt_dni").attr("disabled","true");
-        ActivarAlumno(0);
+        
         if(titulo=='Nuevo'){
             $("#personaModal #txt_paterno, #personaModal #txt_materno, #personaModal #txt_nombre, #personaModal #txt_dni").removeAttr("disabled");
-            $("#slct_alumno").val(1);
-            ActivarAlumno(1);
             modal.find('.modal-footer .btn-primary').text('Guardar');
             modal.find('.modal-footer .btn-primary').attr('onClick','Agregar();');
             $('#form_personas_modal #txt_nombre').focus();
@@ -125,6 +123,13 @@ $(document).ready(function() {
             
             //slctGlobal.listarSlctFijo('rol','slct_rol',PersonasG.rol);
         }
+
+        $("#cargo_2").parent().parent().remove();
+        $("#cargo_2").parent().parent().remove();
+        
+        $("#slct_alumno").val(1);
+        ActivarAlumno(1);
+        
         $( "#form_personas_modal #slct_estado" ).trigger('change');
         $( "#form_personas_modal #slct_estado" ).change(function() {
             if ($( "#form_personas_modal #slct_estado" ).val()==1) {
@@ -154,22 +159,22 @@ BtnEditar=function(btn,id){
     PersonasG.email=$(tr).find("td:eq(5)").text();
     PersonasG.email_mdi=$(tr).find("td:eq(6)").text();
     // se detecta el atributo que se esta enviando atravez del hiden del txt_sexo
-    PersonasG.fecha_nacimiento=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('fecha_nacimiento'); 
+    PersonasG.fecha_nacimiento=$.trim($(tr).find("td:eq(4) input[name='txt_sexo']").attr('fecha_nacimiento')); 
     PersonasG.responsable_area=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('responsable_area'); 
       //PersonasG.password=$(tr).find("td:eq(6) input[name='txt_password']").val();
-    PersonasG.telefono=$(tr).find("td:eq(7) input[name='txt_area']").attr('telefono');
-    PersonasG.celular=$(tr).find("td:eq(7) input[name='txt_area']").attr('celular');
-    PersonasG.direccion=$(tr).find("td:eq(7) input[name='txt_area']").attr('direccion');
-    PersonasG.area=$(tr).find("td:eq(7) input[name='txt_area']").val();
-    PersonasG.rol=$(tr).find("td:eq(8) input[name='txt_rol']").val();
-    PersonasG.modalidad=$(tr).find("td:eq(9) input[name='txt_modalidad']").val(); 
-    PersonasG.vista_doc=$(tr).find("td:eq(10) input[name='txt_vista_doc']").val(); 
-    
-    PersonasG.doc_privados=$("#ID_txt_doc_privados").val(); 
+    PersonasG.telefono=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('telefono');
+    PersonasG.celular=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('celular');
+    PersonasG.direccion=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('direccion');
+    PersonasG.area=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('area');
+    PersonasG.rol=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('rol');
+    PersonasG.modalidad=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('modalidad'); 
+    PersonasG.vista_doc=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('vista_doc');
+    PersonasG.doc_privados=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('doc_privados');
+
     console.log(PersonasG);
 
     
-    PersonasG.estado=$(tr).find("td:eq(11)>span").attr("data-estado");
+    PersonasG.estado=1;
     $("#BtnEditar").click();
 };
 
@@ -187,10 +192,13 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
     
     if(typeof(fn)!='undefined' && fn.col==4){
         //se envia de manera ocultada la fecha de nacimiento en el txt_sexo
-        return row.sexo+"<input type='hidden'name='txt_sexo' fecha_nacimiento='"+row.fecha_nacimiento+"' responsable_area='"+row.responsable_area+"' value='"+row.sexo_id+"'>";
+        return row.sexo+"<input type='hidden'name='txt_sexo' fecha_nacimiento='"+row.fecha_nacimiento+"' responsable_area='"+row.responsable_area+"' "+
+                "telefono='"+row.telefono+"' celular='"+row.celular+"' direccion='"+row.direccion+"' doc_privados='"+row.doc_privados+"' "+
+                "area='"+row.area_id+"' rol='"+row.rol_id+"' modalidad='"+row.modalidad_id+"' vista_doc='"+row.vista_doc_id+"' "+
+                "value='"+row.sexo_id+"'>";
     }
 
-
+    /*
     else if(typeof(fn)!='undefined' && fn.col==7){
         return row.area+"<input type='hidden'name='txt_area' telefono='"+row.telefono+"' celular='"+row.celular+"' direccion='"+row.direccion+"' value='"+row.area_id+"'>";
     }
@@ -209,12 +217,12 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
 
     else if(typeof(fn)!='undefined' && fn.col==11){
         var estadohtml='';
-        estadohtml='<span id="'+row.id+'" onClick="activar('+row.id+')" data-estado="'+row.estado+'" class="btn btn-danger">Inactivo</span>';
+        estadohtml='<span id="'+row.id+'" data-estado="'+row.estado+'" class="btn btn-danger">Inactivo</span>';
         if(row.estado==1){
-            estadohtml='<span id="'+row.id+'" onClick="desactivar('+row.id+')" data-estado="'+row.estado+'" class="btn btn-success">Activo</span>';
+            estadohtml='<span id="'+row.id+'" data-estado="'+row.estado+'" class="btn btn-success">Activo</span>';
         }
         return estadohtml;
-    }
+    }*/
 }
 
 eventoSlctGlobalSimple=function(){
@@ -304,52 +312,17 @@ validaPersonas=function(){
         alert("Ingrese Apellido Materno");
         r=false;
     }
-    else if( $("#form_personas_modal #txt_fecha_nacimiento").val()=='' ){
-       alert("Ingrese Fecha Nacimiento");
-        r=false;
-    }
-   
+    
     else if( $("#form_personas_modal #txt_dni").val()=='' ){
         alert("Ingrese Numero DNI");
         r=false;
     }
+
+    $("#slct_estado").val(1);
     //else if( $("#form_personas_modal #txt_password").val()=='' ){
     //    alert("Ingrese Password");
     //    r=false;
     //}
-    else if( $("#form_personas_modal #txt_email").val()=='' ){
-        alert("Ingrese Email");
-        r=false;
-    }
-
-    else if( $("#form_personas_modal #slct_sexo").val()=='' ){
-        alert("Seleccione Género");
-        r=false;
-    }
-
-    else if( $("#form_personas_modal #txt_telefono").val()=='' ){
-        alert("Ingrese Teléfono");
-        r=false;
-    }
-
-    else if( $("#form_personas_modal #txt_celular").val()=='' ){
-        alert("Ingrese Celular");
-        r=false;
-    }
-
-    else if( $("#form_personas_modal #txt_direccion").val()=='' ){
-        alert("Ingrese Dirección");
-        r=false;
-    }
-
-    else if( $("#form_personas_modal #slct_area").val()=='' ){
-        alert("Seleccione Área");
-        r=false;
-    }
-    else if( $("#form_personas_modal #slct_rol").val()=='' ){
-        alert("Seleccione Rol");
-        r=false;
-    }
     return r;
 };
 
@@ -367,7 +340,7 @@ ActivarAlumno = (v)=>{
             $("#t_cargoPersona").append(html);
     }
     else{
-        console.log($("#cargo_2").parent().parent().remove());
+        $("#cargo_2").parent().parent().remove();
     }
 }
 </script>

@@ -412,10 +412,13 @@ class PersonaFinalController extends BaseController
                 'nombre' => $required.'|'.$regex,
                 'paterno' => $required.'|'.$regex,
                 'materno' => $required.'|'.$regex,
-                'email' => 'required|email|unique:personas,email',
                 'password'      => 'required|min:6',
                 'dni'      => 'required|numeric|min:8|unique:personas,dni',
             );
+
+            if( Input::has('email') AND trim(Input::get('email'))!=''){
+                $reglas['email'] = 'required|email|unique:personas,email';
+            }
 
             $mensaje= array(
                 'required'    => ':attribute Es requerido',

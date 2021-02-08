@@ -96,6 +96,15 @@
                   <input type="text" class="form-control" placeholder="Ingrese Email corporativo" name="txt_email_mdi" id="txt_email_mdi">
                 </div>
                 <div class="col-sm-4">
+                  <label class="control-label">Género:
+                  </label>
+                  <select class="form-control" name="slct_sexo" id="slct_sexo">
+                      <option value='' style="display:none">Seleccione</option>
+                      <option value='F'>Femenino</option>
+                      <option value='M' selected>Masculino</option>
+                  </select>
+                </div>
+                <div class="col-sm-4" style="display:none">
                   <label class="control-label">Estado:
                   </label>
                   <select class="form-control" name="slct_estado" id="slct_estado">
@@ -144,16 +153,8 @@
                   <select class="form-control" name="slct_rol" id="slct_rol">
                   </select>
                 </div>
-                <div class="col-sm-2">
-                  <label class="control-label">Género:
-                  </label>
-                  <select class="form-control" name="slct_sexo" id="slct_sexo">
-                      <option value='' style="display:none">Seleccione</option>
-                      <option value='F'>Femenino</option>
-                      <option value='M' selected>Masculino</option>
-                  </select>
-                </div>
-                <div class="col-sm-2">
+
+                <div class="col-sm-2" style="display:none">
                   <label class="control-label">Modalidad:
                   </label>
                   <select class="form-control" name="slct_modalidad" id="slct_modalidad">
@@ -162,7 +163,7 @@
                       <option value='2'>Tercero</option>
                   </select>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-2" style="display:none;">
                   <label class="control-label">Activar acceso de alumno:
                   </label>
                   <select class="form-control" id="slct_alumno" onChange="ActivarAlumno(this.value);">
