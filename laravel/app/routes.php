@@ -12,14 +12,15 @@ Route::get(
         );
 
         //try{
-            Mail::send('emails', $parametros ,
+            /*Mail::send('emails', $parametros ,
                 function($message) use($email){
                 $message
                 ->to($email)
                 ->subject('.::Nuevo Proceso::.');
                 }
-            );
-
+            );*/
+            $clave = '123456';
+            echo Hash::make($clave)."<br>";
             echo 'Se realizó con éxito su registro, <strong>valide su email.</strong>';
         /*}
         catch(Exception $e){

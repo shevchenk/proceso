@@ -21,13 +21,13 @@
             <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Mantenimiento de Personas - Alumno
+                        Mantenimiento de Alumno
                         <small> </small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
                         <li><a href="#">Mantenimientos</a></li>
-                        <li class="active">Mantenimiento de Personas - Alumno</li>
+                        <li class="active">Mantenimiento de Alumno</li>
                     </ol>
                 </section>
 
@@ -45,7 +45,7 @@
                                     <table id="t_persona" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
-                                        <th colspan="12" style="text-align:center;background-color:#A7C0DC;"><h2>Persona - Alumno</h2></th>
+                                        <th colspan="12" style="text-align:center;background-color:#A7C0DC;"><h2>Alumno</h2></th>
                                         </tr>
                                         <tr></tr>
                                         </thead>
