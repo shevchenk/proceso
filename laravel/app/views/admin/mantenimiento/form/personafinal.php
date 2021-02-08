@@ -130,21 +130,7 @@
 
               </div>
               <div class="col-sm-12">
-                <div class="col-sm-4">
-                  <label class="control-label">Area:
-                  </label>
-                  <select class="form-control" name="slct_area" id="slct_area">
-                  </select>
-                  <select style="display:none" name="slct_area_aux" id="slct_area_aux">
-                  </select>
-                </div>
-                <div class="col-sm-3">
-                  <label class="control-label">Rol:
-                  </label>
-                  <select class="form-control" name="slct_rol" id="slct_rol">
-                  </select>
-                </div>
-                <div class="col-sm-1" style="padding:0px;">
+                <div class="col-sm-2">
                   <label class="control-label">Género:
                   </label>
                   <select class="form-control" name="slct_sexo" id="slct_sexo">
@@ -169,6 +155,34 @@
                       <!-- <option value='' style="display:none">.:Seleccione:.</option> -->
                       <option value='0' selected>No</option>
                       <option value='1'>Si</option>
+                  </select>
+                </div>
+                <div class="col-sm-2">
+                  <label class="control-label">Nivel de documento:
+                  </label>
+                  <select class="form-control" name="slct_nivel" id="slct_nivel">
+                      <option value='1' selected>1</option>
+                      <option value='2'>2</option>
+                      <option value='3'>3</option>
+                      <option value='4'>4</option>
+                      <option value='5'>5</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-sm-12">
+                <div class="col-sm-4">
+                  <label class="control-label">Area:
+                  </label>
+                  <select class="form-control" name="slct_area" id="slct_area">
+                  </select>
+                  <select style="display:none" name="slct_area_aux" id="slct_area_aux">
+                  </select>
+                </div>
+                <div class="col-sm-4">
+                  <label class="control-label">Rol:
+                  </label>
+                  <select class="form-control" name="slct_rol" id="slct_rol">
                   </select>
                 </div>
 

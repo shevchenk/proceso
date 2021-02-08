@@ -80,7 +80,9 @@ class PersonaFinalController extends BaseController
             $persona['password'] = Input::get('password');
             $persona['doc_privados'] = Input::get('doc_privados');
             if (Input::get('fecha_nacimiento')<>'') 
-            $persona['fecha_nacimiento'] = Input::get('fecha_nacimiento');        
+            $persona['fecha_nacimiento'] = Input::get('fecha_nacimiento');
+            if (Input::has('nivel'))
+                $persona['nivel'] = Input::get('nivel');
             /*if ($rol==9 or $rol==8){
             $persona['responsable_asigt']=1;
             $persona['responsable_dert']=1;}*/
@@ -277,6 +279,8 @@ class PersonaFinalController extends BaseController
                 $persona['password'] = Input::get('password');
             if (Input::has('fecha_nacimiento'))
                 $persona['fecha_nacimiento'] = Input::get('fecha_nacimiento');
+            if (Input::has('nivel'))
+                $persona['nivel'] = Input::get('nivel');
 
             $persona['responsable_area'] = Input::get('responsable_area');
             $persona['modalidad'] = Input::get('modalidad');
