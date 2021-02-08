@@ -21,11 +21,20 @@
                                         <th>DNI</th>
                                         <th>EMAIL</th>
                                         <th>SELECCIONAR</th>
-             <!--                            <th>TELEFONO</th> -->
                                     </tr>
                                 </thead>
                                 <tbody id="tb_persona">
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                      <th>NOMBRE</th>
+                                      <th>APELLIDO PATERNO</th>
+                                      <th>APELLIDO MATERNO</th>
+                                      <th>DNI</th>
+                                      <th>EMAIL</th>
+                                      <th>SELECCIONAR</th>
+                                    </tr>
+                                </tffot>
                             </table>
                         </div>
                     </div>
@@ -33,8 +42,14 @@
             </div>
       </div>
       <div class="modal-footer">
-           <span class="btn btn-success btn-sm" id="btnAgregarP">Agregar solicitante <i class="glyphicon glyphicon-plus"></i></span>
-        <!--  <span id="btnAgregarAnexo" class="btn btn-primary btn-sm" onclick="updateTiempo(this)"><i class="glyphicon glyphicon-plus"></i> AGREGAR ANEXO</span> -->
+        <?php 
+        if( 1==2){
+        ?>
+          <span class="btn btn-success btn-sm" id="btnAgregarP">Agregar solicitante <i class="glyphicon glyphicon-plus"></i></span>
+          <span id="btnAgregarAnexo" class="btn btn-primary btn-sm" onclick="updateTiempo(this)"><i class="glyphicon glyphicon-plus"></i> AGREGAR ANEXO</span>
+        <?php 
+        }
+        ?>
       </div>
     </div>
   </div>

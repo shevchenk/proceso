@@ -387,7 +387,29 @@ HTMLPersonas = function(data){
             html+='</tr>';
         });
         $('#tb_persona').html(html);
-        $("#t_persona").dataTable(); 
+        $('#t_persona thead th').each( function () {
+            var title = $('#t_persona tfoot th').eq( $(this).index() ).text();
+            if( title!= 'SELECCIONAR' ){
+                $(this).html( '<input type="text" class="col-sm-12" placeholder="Buscar '+title+'">' );
+            }
+        } );
+
+        // DataTable
+        var table = $('#t_persona').DataTable({
+            ordering: false,
+        });
+
+        $("#t_persona_filter").addClass("hidden");
+
+        // Apply the search
+        table.columns().eq( 0 ).each( function ( colIdx ) {
+            $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+                table
+                    .column( colIdx )
+                    .search( this.value )
+                    .draw();
+            } );
+        } );
         $('#selectPersona').modal('show'); 
     }else{
         $(".empresa").addClass('hidden');
