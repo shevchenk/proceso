@@ -1,4 +1,7 @@
 <?php
+ini_set('memory_limit','128M');
+ini_set('set_time_limit', '300');
+ini_set('display_errors', true);
 Route::get(
     'email/{email}', function($email){
         $i=4;
@@ -19,9 +22,19 @@ Route::get(
                 ->subject('.::Nuevo Proceso::.');
                 }
             );*/
-            $clave = '123456';
-            echo Hash::make($clave)."<br>";
-            echo 'Se realizó con éxito su registro, <strong>valide su email.</strong>';
+            $sql = "SELECT id, dni
+            FROM personas
+            WHERE created_at = '2021-02-08 00:00:00'
+            ORDER BY id
+            LIMIT 3000, 1000";
+            $persona = DB::select($sql);
+            foreach ($persona as $key => $value) {
+                echo ($key+1)."(".$value->id.") => ".$value->dni." => ".Hash::make($value->dni)."<br>";
+                $update = "UPDATE personas SET password='".Hash::make($value->dni)."' WHERE id = ".$value->id;
+                //DB::update($update);
+            }
+            
+            //echo 'Se realizó con éxito su registro, <strong>valide su email.</strong>';
         /*}
         catch(Exception $e){
             var_dump($e);

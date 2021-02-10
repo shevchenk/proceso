@@ -9,14 +9,15 @@
 		<meta name="author" content="Jorge Salcedo (Shevchenko)">
 		@show
 		
-		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="apple-touch-icon" href="img/logo_upt.ico">
+        <link rel="shortcut icon" href="img/logo_upt.ico">
 
 		@section('descripcion')
 		<meta name="description" content="">
 		@show
 		<title>
 			@section('titulo')
-				JSProcesos
+				InfoServiciosUPT
 			@show
 		</title>
 

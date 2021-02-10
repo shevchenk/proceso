@@ -6,10 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">       
         <meta name="author" content="Jorge Salcedo (Shevchenko)">
         
-        <link rel="shortcut icon" href="assets/ico/favicon.ico">
+        <link rel="apple-touch-icon" href="img/logo_upt.ico">
+        <link rel="shortcut icon" href="img/logo_upt.ico">
         <meta name="description" content="">
         <title> 
-                JSProcesos
+            InfoServiciosUPT
         </title>
         <meta name="token" id="token" value="{{ csrf_token() }}">
         {{ HTML::style('css/login/login.css?v05') }}
@@ -20,12 +21,13 @@
         {{ HTML::script('lib/bootstrap-3.3.1/js/bootstrap.min.js') }}
         {{ HTML::script('js/login/login_ajax.js') }}
         {{ HTML::script('js/login/login.js') }}
+
     </head>
 
     <body  bgcolor="#FFF" onkeyup="return validaEnter(event,'btnIniciar');">
         <div id="mainWrap">
             <div id="loggit">
-                <img src="img/logo_muni.png" class="logoPersonaje" style="border: 5px solid white;">
+                <img src="img/logo_upt.jpg" class="logoPersonaje" style="border: 5px solid white;">
                 {{-- {{ HTML::image('img/mindependencia.jpg', 'a picture', array('class' => 'logoPersonaje','class' => 'img-circle')) }} --}}
                 <h3 id="mensaje_msj"  class="label-success">
                 <?= Session::get('msj'); ?>         
@@ -70,15 +72,14 @@
             </form>
 
             <div class="animate">
-                            <!-- <div class="col-md-7 "><a class="olvidaste" href="#">Olvidaste tu contraseÃ±a</a></div> -->
-                <div class="col-md-6 col-sm-6 col-xs-6 text-left">{{-- <a class="olvidaste recuperar_pass" id="recuperar_pass" tipo="" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">Recuperar </a --}}>
+                <!-- <div class="col-md-7 "><a class="olvidaste" href="#">Olvidaste tu contraseÃ±a</a></div> -->
+                <!-- <div class="col-md-6 col-sm-6 col-xs-6 text-left">{{-- <a class="olvidaste recuperar_pass" id="recuperar_pass" tipo="" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">Recuperar </a --}}>
                      <a class="olvidaste recuperar_pass" style="cursor:pointer;" href="{{ url('password/remind') }}">Olvidé mi contraseña</a><br>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6 "> 
-<!--                    <div class="row btn-registrate">
+                </div> -->
+                <!-- <div class="col-md-6 col-sm-6 col-xs-6 "> 
+                    <div class="row btn-registrate">
                         <a class="registrarse" href="{{ url('login/register') }}" class="text-center">Registrar Nuevo</a>
-                    </div>-->
-                </div>
+                </div>-->
             </div>
             {{-- <a href="{{ url('password/remind') }}">Olvidé mi contraseña</a><br>
             <a href="{{ url('login/register') }}" class="text-center">Registrar un Nuevo usuario</a> --}}
