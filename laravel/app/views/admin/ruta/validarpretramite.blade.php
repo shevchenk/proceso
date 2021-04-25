@@ -172,6 +172,7 @@ td, th{
                                         <th>NOMBRE DELSERVICIO SOLICITADO</th>
                                         <th>FECHA REGISTRADA</th>
                                         <th>REQUISITOS EN UN SOLO ARCHIVO PDF</th>
+                                        <th>EXPEDIENTES GENERADOS</th>
                                         <th>ESTADO DEL SERVICIO SOLICITADO</th>
                                         <th>FECHA DEL ESTADO</th>
                                         <th>OBSERVACIONES</th>

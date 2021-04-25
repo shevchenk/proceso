@@ -157,6 +157,21 @@ class RutaDetalleController extends \BaseController
             $tr['usuario_updated_at']=Auth::user()->id;
             $tr->save();
 
+            if( isset($tr->tramite_id) AND trim($tr->tramite_id) != '' ){
+                $tra = Tramite::find($tr->tramite_id);
+                $tra->estado = 0;
+                $tra->usuario_updated_at = Auth::user()->id;
+                $tra->save();
+
+                if( isset($tra->pretramite_id) AND trim($tra->pretramite_id) != ''){
+                    $ptra = Pretramite::find($tra->pretramite_id);
+                    $ptra->estado_atencion = 2;
+                    $ptra->observacion = $ptra->observacion." <b>( Trámite anulado por incumplimiento de Requisito )</b>";
+                    $ptra->usuario_updated_at = Auth::user()->id;
+                    $ptra->save();
+                }
+            }
+
             DB::commit();
             return Response::json(
                 array(

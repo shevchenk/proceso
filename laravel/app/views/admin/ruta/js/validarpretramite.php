@@ -253,6 +253,7 @@ HTMLPreTramite = function(data){
         html+=    "<td>"+el.tramite+"</td>";
         html+=    "<td>"+el.fecha+"</td>";
         html+=    "<td>"+archivo+"</td>";
+        html+=    "<td><ul><li>"+$.trim(el.expediente).split(",").join("</li><li>")+"</li></ul></td>";
         html+=    "<td>"+el.atencion+"</td>";
         html+=    "<td>"+el.updated_at+"</td>";
         html+=    "<td>"+$.trim(el.observacion)+"</td>";
