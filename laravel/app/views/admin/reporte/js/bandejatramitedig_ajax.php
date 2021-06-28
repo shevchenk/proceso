@@ -152,41 +152,51 @@ var Bandeja={
                     },
                     {
                         "targets": 1,
+                        "data": "res_id_union_ant",
+                        "name": "res_id_union_ant"
+                    },
+                    {
+                        "targets": 2,
                         "data": "id_union_ant",
                         "name": "id_union_ant"
                     },
                     {
-                        "targets": 2,
+                        "targets": 3,
+                        "data": "res_id_union",
+                        "name": "res_id_union"
+                    },
+                    {
+                        "targets": 4,
                         "data": "id_union",
                         "name": "id_union"
                     },
                     {
-                        "targets": 3,
+                        "targets": 5,
                         "data": "tiempo",
                         "name": "tiempo"
                     },
                     {
-                        "targets": 4,
+                        "targets": 6,
                         "data": "fecha_inicio",
                         "name": "fecha_inicio"
                     },
                     {
-                        "targets": 5,
+                        "targets": 7,
                         "data": "tiempo_final",
                         "name": "tiempo_final"
                     },
                     {
-                        "targets": 6,
+                        "targets": 8,
                         "data": "norden",
                         "name": "norden"
                     },
                     {
-                        "targets": 7,
+                        "targets": 9,
                         "data": "proceso",
                         "name": "proceso"
                     },
                     {
-                        "targets": 8,
+                        "targets": 10,
                         "data": "persona",
                         "name": "persona"
                     }

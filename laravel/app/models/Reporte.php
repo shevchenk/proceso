@@ -220,6 +220,7 @@ class Reporte extends Eloquent
     public static function BandejaTramite( $array ){
         $sql="  SELECT
                 tr.id_union,
+                CONCAT(ptr.paterno, ' ', ptr.materno, ',', ptr.nombre) res_id_union,
                 rd.id ruta_detalle_id,
                 rd.ruta_id ruta_id,
                 CONCAT(t.apocope,': ',rd.dtiempo) tiempo,
@@ -234,6 +235,7 @@ class Reporte extends Eloquent
                 ) id,
                 f.nombre proceso,
                 re.referido id_union_ant,
+                CONCAT(pre.paterno, ' ', pre.materno, ',', pre.nombre) res_id_union_ant,
                 CASE tr.tipo_persona
                 WHEN 1 or 6 THEN CONCAT(tr.paterno,' ',tr.materno,', ',tr.nombre)
                 WHEN 2 THEN CONCAT(tr.razon_social,' | RUC:',tr.ruc)
@@ -253,10 +255,12 @@ class Reporte extends Eloquent
                 FROM rutas r
                 INNER JOIN rutas_detalle rd ON rd.ruta_id=r.id AND rd.estado=1 AND rd.condicion=0
                 INNER JOIN tablas_relacion tr ON r.tabla_relacion_id=tr.id AND tr.estado=1
+                INNER JOIN personas ptr ON ptr.id = tr.usuario_created_at
                 INNER JOIN tiempos t ON t.id=rd.tiempo_id
                 INNER JOIN flujos f ON f.id=r.flujo_id
                     INNER JOIN rutas_flujo rf ON rf.flujo_id=f.id
                 ".$array['referido']." JOIN referidos re ON re.ruta_detalle_id=rd.ruta_detalle_id_ant and re.estado=1
+                ".$array['referido']." JOIN personas pre ON pre.id = re.usuario_referido 
                 WHERE r.estado=1 
                 AND rd.fecha_inicio<=CURRENT_TIMESTAMP()
                 AND rd.fecha_inicio IS NOT NULL ".

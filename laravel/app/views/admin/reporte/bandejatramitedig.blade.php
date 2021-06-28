@@ -166,10 +166,12 @@ table>tbody>tr>td{
                                     <thead class="bg-info">
                                         <tr>
                                             <th>#</th>
-                                            <th id="th_dg" style='width:250px !important;' class="unread">Documento generado por el paso anterior<br>
+                                            <th>Responsable DGPA</th>
+                                            <th id="th_dg" style='width:250px !important;' class="unread">Documento generado por el paso anterior(DGPA)<br>
                                             <input style='width:250px' name="txt_id_ant" id="txt_id_ant" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_dg',1)" onkeyup="Limpiar('txt_id_union,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
                                             </th>
-                                            <th id="th_pd" style='width:250px !important;' class="unread">Primer documento ingresado<br>
+                                            <th>Responsable PDI</th>
+                                            <th id="th_pd" style='width:250px !important;' class="unread">Primer documento ingresado(PDI)<br>
                                             <input style='width:250px' name="txt_id_union" id="txt_id_union" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pd',1)" onkeyup="Limpiar('txt_id_ant,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
                                             </th>
                                             <th>Tiempo</th>
@@ -197,7 +199,9 @@ table>tbody>tr>td{
                                     <tfoot class="bg-info">
                                         <tr>
                                             <th>#</th>
+                                            <th>Responsable DGPA</th>
                                             <th>Doc. Generado por el paso anterior</th>
+                                            <th>Responsable PDI</th>
                                             <th>Primer documento ingreso</th>
                                             <th>Tiempo</th>
                                             <th>Fecha de Inicio</th>
