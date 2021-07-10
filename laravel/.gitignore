@@ -1,6 +1,8 @@
 .env
 /laravel/app/storage
+/laravel/app/config/database.php
 /public/img
 /public/upload
 /public/txt
 /public/Config
+/laravel/vendor
