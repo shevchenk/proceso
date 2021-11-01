@@ -10,7 +10,7 @@ class RutaDetalleMicro extends Base
         $ruta_id = Input::get('ruta_id');
         $norden = Input::get('norden');
         $sql = "INSERT INTO rutas_detalle_micro (ruta_flujo_id, ruta_id, norden, estado, created_at, usuario_created_at)
-                SELECT rfdm.ruta_flujo_id2, $ruta_id, $norden, 1, NOW(), 1
+                SELECT rfdm.ruta_flujo_id2, $ruta_id, '$norden', 1, NOW(), 1
                 FROM rutas r
                 INNER JOIN rutas_flujo rf ON rf.id = r.ruta_flujo_id 
                 INNER JOIN rutas_flujo_detalle_micro rfdm ON rfdm.ruta_flujo_id = rf.id 
@@ -21,7 +21,7 @@ class RutaDetalleMicro extends Base
                     WHERE rdm.estado = 1
                 ) v ON v.ruta_id = r.id AND v.norden = rfdm.norden
                 WHERE r.id = $ruta_id
-                AND rfdm.norden = $norden
+                AND rfdm.norden = '$norden'
                 AND rfdm.estado = 1
                 AND v.ruta_id IS NULL";
         DB::insert($sql);

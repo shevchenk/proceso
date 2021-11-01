@@ -354,6 +354,7 @@ class TramiteController extends BaseController {
 								$validaactivar=0;
 				
 							$conteo=0;$array['fecha']=''; // inicializando valores para desglose
+							$activarsegundo = 0;
 							foreach($qrutaDetalle as $rd){
 								$rutaDetalle = new RutaDetalle;
 								$rutaDetalle['ruta_id']=$ruta->id;
@@ -366,14 +367,15 @@ class TramiteController extends BaseController {
 									$rutaDetalle['fecha_inicio']=Input::get('fecha_inicio');
 								}*/
 								/*if($rd->norden==1 or $rd->norden==2 or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){*/
-								if($rd->norden==1 or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){	
-									if($rd->norden==1 && $rd->area_id == 52){
-										/*$rutaDetalle['dtiempo_final']=date("Y-m-d H:i:s");
-										$rutaDetalle['tipo_respuesta_id']=2;
-													$rutaDetalle['tipo_respuesta_detalle_id']=1;
+								if($rd->norden==1 or ($rd->norden==2 AND $activarsegundo==1) or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){	
+									if($rd->norden==1 && $rd->area_id == 3){ //If solo para mesa de partes la condicional de ($rd->norden==2 AND $activarsegundo==1) fue agregado tb
+										$rutaDetalle['dtiempo_final']=date("Y-m-d H:i:s");
+										$rutaDetalle['tipo_respuesta_id']=1;
+										$rutaDetalle['tipo_respuesta_detalle_id']=1;
 										$rutaDetalle['observacion']="";
 										$rutaDetalle['usuario_updated_at']=Auth::user()->id;
-										$rutaDetalle['updated_at']=date("Y-m-d H:i:s");*/
+										$rutaDetalle['updated_at']=date("Y-m-d H:i:s");
+										$activarsegundo=1;
 									}
 									$rutaDetalle['fecha_inicio']=date("Y-m-d H:i:s");
 								}
@@ -494,8 +496,30 @@ class TramiteController extends BaseController {
 													$rutaDetalleVerbo['documento_id']= $rdv->documento_id;
 													$rutaDetalleVerbo['orden']= $rdv->orden;
 													$rutaDetalleVerbo['usuario_created_at']= Auth::user()->id;
+													$rutaDetalleVerbo->save();
 
-													if($rd->norden==1 && $rd->area_id == 52){
+													if($rd->norden==1 && $rd->area_id == 3){ // If solo por el tema de mesa de partes
+														if( $rdv->verbo_id == 1 ){
+															$DocDigitalAuto = $this->DocDigitalAuto( $pretramite->ruta_archivo );
+															$rutaDetalleVerbo['documento']= $DocDigitalAuto->titulo;
+															$rutaDetalleVerbo['doc_digital_id']= $DocDigitalAuto->id;
+
+															$referido=new Referido;
+															$referido['ruta_id']= $ruta->id;
+															$referido['ruta_detalle_id']= $rutaDetalle->id;
+															$referido['norden']= $rdv->orden;
+															$referido['tabla_relacion_id']= $tablaRelacion->id;
+															$referido['doc_digital_id']= $DocDigitalAuto->id;
+															$referido['documento_id']= $rdv->documento_id;
+															$referido['estado_ruta']= 1;
+															$referido['tipo']= 1;
+															$referido['ruta_detalle_verbo_id']= $rutaDetalleVerbo->id;
+															$referido['referido']= $DocDigitalAuto->titulo;
+															$referido['fecha_hora_referido']= $rutaDetalleVerbo->created_at;
+															$referido['usuario_referido']= $rutaDetalleVerbo->usuario_created_at;
+															$referido['usuario_created_at']= $rutaDetalleVerbo->usuario_created_at;
+															$referido->save();
+														}
 														$rutaDetalleVerbo['usuario_updated_at']= Auth::user()->id;
 														$rutaDetalleVerbo['updated_at']= date("Y-m-d H:i:s");
 														$rutaDetalleVerbo['finalizo']=1;
@@ -543,6 +567,137 @@ class TramiteController extends BaseController {
 			}
 			
 		} //end if img y data
+	}
+
+	protected function DocDigitalAuto($url){
+		
+			$tipo_documento_id = 86;
+			$area_id = 3;
+			$año= date("Y");
+			$r2=array(array('correlativo'=>'1'));
+			/*$sql = "SELECT LPAD(id+1,6,'0') as correlativo,'$año' ano FROM doc_digital ORDER BY id DESC LIMIT 1";*/
+			$sql = "SELECT IFNULL(MAX(dd.correlativo)+1,1) as correlativo
+					FROM doc_digital_temporal dd 
+					INNER JOIN plantilla_doc pd on dd.plantilla_doc_id=pd.id 
+					AND pd.tipo_documento_id=".$tipo_documento_id." 
+					AND pd.area_id= ".$area_id.
+					" WHERE dd.estado=1 
+					AND YEAR(dd.created_at)=YEAR(CURDATE())";
+			$r= DB::select($sql);
+			$titulo = (isset($r[0])) ? $r[0]->correlativo : $r2[0]->correlativo; 
+
+            //DB::beginTransaction();
+            $plantilla = DB::table('plantilla_doc')
+                        ->where('tipo_documento_id', $tipo_documento_id)
+                        ->where('area_id', $area_id)
+                        ->first();
+
+            $area = DB::table('areas')
+                    ->select('nemonico')
+                    ->where('id',$area_id)
+                    ->first();
+
+            $documento = DB::table('documentos')
+                    ->select('nombre', 'nemonico')
+                    ->where('id',$tipo_documento_id)
+                    ->first();
+
+            $buscar = array('@@@@@@','@@@@@','@@@@','@@@','@@','@','####','##');
+            $reemplazar = array( str_pad( $titulo, 6, "0", STR_PAD_LEFT ), str_pad( $titulo, 5, "0", STR_PAD_LEFT ),
+                str_pad( $titulo, 4, "0", STR_PAD_LEFT ), str_pad( $titulo, 3, "0", STR_PAD_LEFT ),
+                str_pad( $titulo, 2, "0", STR_PAD_LEFT ), str_pad( $titulo, 1, "0", STR_PAD_LEFT ),
+                date("Y"), date("y")
+            );
+            $titulofinal = str_replace( $buscar, $reemplazar, $documento->nemonico );
+            //$titulofinal = $documento->nemonico.' N° '.$titulo.' - '.$area->nemonico." - ".date("Y");
+
+            $DocDigital = new DocumentoDigital;
+            $DocDigital->titulo = $titulofinal;
+            $DocDigital->asunto = '';
+            $DocDigital->correlativo = $titulo*1;
+            $DocDigital->doc_privado = 0;
+            $DocDigital->cuerpo = '.';
+            $DocDigital->plantilla_doc_id = $plantilla->id;
+            $DocDigital->area_id = $area_id;
+            $DocDigital->envio_total = 0;
+            $DocDigital->tipo_envio = 1;
+			$DocDigital->doc_archivo= $url;
+            $DocDigital->persona_id = Auth::user()->id; 
+            $DocDigital->usuario_created_at = Auth::user()->id;
+            
+            $cantidad=true;
+            $conteo=0;
+            $conteoMax=10;
+            $correlativoinicial=$titulo;
+            $correlativoaux=$correlativoinicial;
+            while ( $cantidad==true ) {
+                $cantidad=false;
+                try {
+                    $DocDigital->save();
+                } catch (Exception $e) {
+                    $d=explode("duplicate",strtolower($e));
+                    if(count($d)>1){
+                        $cantidad=true;
+                        $DocDigital->correlativo++;
+                        $correlativoaux=$DocDigital->correlativo;
+                        $reemplazar = array( str_pad( $correlativoaux, 6, "0", STR_PAD_LEFT ), str_pad( $correlativoaux, 5, "0", STR_PAD_LEFT ),
+                            str_pad( $correlativoaux, 4, "0", STR_PAD_LEFT ), str_pad( $correlativoaux, 3, "0", STR_PAD_LEFT ),
+                            str_pad( $correlativoaux, 2, "0", STR_PAD_LEFT ), str_pad( $correlativoaux, 1, "0", STR_PAD_LEFT ),
+                            date("Y"), date("y")
+                        );
+                        $DocDigital->titulo = str_replace( $buscar, $reemplazar, $documento->nemonico );
+                        //$DocDigital->titulo=str_replace($correlativoinicial,$correlativoaux,$DocDigital->titulo);
+                        $DocDigital->correlativo = $correlativoaux*1;
+                        $correlativoinicial = $correlativoaux;
+                    }
+                    else{
+                        $conteo=$conteoMax+1;
+                    }
+                }
+                $conteo++;
+                if($conteo==$conteoMax){
+                    $cantidad=false;
+                }
+            }
+
+            if($conteo==$conteoMax){
+                DB::rollback();
+                return Response::json(array('rst'=>3, 'msj'=>'Registro Inválido revise sus datos seleccionados','correlativo'=>$correlativoaux."|".$correlativoinicial));
+            }
+            elseif($conteo==$conteoMax+1){
+                DB::rollback();
+                return Response::json(array('rst'=>3, 'msj'=>'Registro Inválido o Existe un problema con el servidor, revise sus datos seleccionados','correlativo'=>$correlativoaux."|".$correlativoinicial));
+            }
+
+            if($DocDigital->id){
+                $created=Input::get('fecha').' '.date ("h:i:s");     
+                $DocHistorial = new DocumentoFechaH;
+                $DocHistorial->documento_id = $DocDigital->id;
+                $DocHistorial->fecha_documento = $DocDigital->created_at;
+                $DocHistorial->comentario ='Inicio';
+                $DocHistorial->usuario_created_at = Auth::user()->id;
+                $DocHistorial->save();
+
+                $sql= DB::table("doc_digital_temporal")
+                        ->insert([
+                            'id' => $DocDigital->id,
+                            'plantilla_doc_id' => $plantilla->id,
+                            'titulo' => $DocDigital->titulo,
+                            'asunto' => '',
+                            'correlativo' => $DocDigital->correlativo,
+                            'doc_privado' => 0,
+                            'area_id' => $area_id,
+                            'envio_total' => 0,
+                            'tipo_envio' => 1,
+							'doc_archivo' => $url,
+                            'usuario_created_at' => Auth::user()->id,
+                            'persona_id' => Auth::user()->id,
+                            'created_at' => date('Y-m-d H:i:s')
+                        ]);
+            }
+            
+            //DB::commit();
+			return $DocDigital;
 	}
 
 	/**

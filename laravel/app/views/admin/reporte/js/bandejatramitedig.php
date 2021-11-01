@@ -684,6 +684,12 @@ guardarTodo=function(){
     var alerta=false;
     var codauxd="";
     var validacheck=0;
+
+    if( $("#btn_siguiente_rd").is(':visible') && $('#form_ruta_detalle #slct_micro option').length > 1 ){
+        msjG.mensaje("warning","Eliga 1 sub proceso y click en Activar Sub Proceso",5000);
+        alerta = true;
+    }
+
     $("#t_detalle_verbo input[type='checkbox']").each(
         function( index ) { 
             if ( $(this).is(':checked') && alerta==false ) {
