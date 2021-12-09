@@ -10,39 +10,53 @@ class Pretramite extends Eloquent {
             $filtro = ' AND DATE(pt.fecha_pretramite) = \''.Input::get('filtro_fecha').'\'';
         }
 
-        if( Input::has('persona') AND Input::get('persona') != 0 ){
-            $filtro .= ' AND pt.persona_id = '.Input::get('persona');
-        }
-
         if( Input::has('estado_tramite') AND is_array( Input::get('estado_tramite') ) ){
             $estados = implode(",", Input::get('estado_tramite'));
             $filtro .= ' AND pt.estado_atencion IN ('.$estados.')';
         }
 
+        if( Input::has('persona') AND Input::get('persona') != 0 ){
+            $filtro .= ' AND pt.persona_id = '.Input::get('persona');
+        }
+        else{
+            $filtro .= '    AND FIND_IN_SET( rfd.area_id, (
+                            SELECT GROUP_CONCAT(a.id)
+                            FROM area_cargo_persona acp
+                            INNER JOIN areas a ON a.id=acp.area_id AND a.estado=1
+                            INNER JOIN cargo_persona cp ON cp.id=acp.cargo_persona_id AND cp.estado=1
+                            WHERE acp.estado=1
+                            AND cp.persona_id='.Auth::user()->id.'
+                            ) )>0';
+        }
+
+
         $sql = "SELECT pt.id as pretramite,CONCAT_WS(' ',p.nombre,p.paterno,p.materno) as usuario,e.razon_social as empresa,
-				ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
-                pt.fecha_pretramite fecha, pt.documento, pt.ruta_archivo, 
-                IF(pt.estado_atencion = 0, 'Pendiente',
-                    IF(pt.estado_atencion = 1, 'Aprobado', 'Desaprobado')
-                ) atencion, pt.estado_atencion, pt.updated_at, t.observacion, tr.id_union, DATE(t.fecha_tramite) AS fecha_tramite,
-                pt.observacion AS observacion2,
-                (SELECT GROUP_CONCAT('<b>', tr_aux.id_union, ' </b><br>' ,tr_aux.fecha_tramite) 
-                FROM tablas_relacion tr_aux
-                INNER JOIN tramites t_aux ON t_aux.id = tr_aux.tramite_id AND t_aux.estado = 1 
-                WHERE t_aux.persona_id = pt.persona_id 
-                AND tr_aux.estado = 1) expediente
-				FROM pretramites pt 
-				INNER JOIN personas p on p.id=pt.persona_id 
-				INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id
-				INNER JOIN tipo_tramite tt on tt.id=ct.tipo_tramite_id 
-				INNER JOIN tipo_solicitante ts on ts.id=pt.tipo_solicitante_id 
-				INNER JOIN documentos d on d.id=pt.tipo_documento_id 
-                LEFT JOIN empresas e on e.id=pt.empresa_id 
-                LEFT JOIN tramites t ON t.pretramite_id=pt.id AND t.estado = 1
-                LEFT JOIN tablas_relacion tr ON tr.tramite_id=t.id AND tr.estado = 1 
-                WHERE pt.estado = 1 ".
-                $filtro."
-                ORDER BY pt.fecha_pretramite DESC";
+            ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
+            pt.fecha_pretramite fecha, pt.documento, pt.ruta_archivo, 
+            IF(pt.estado_atencion = 0, 'Pendiente',
+                IF(pt.estado_atencion = 1, 'Aprobado', 'Desaprobado')
+            ) atencion, pt.estado_atencion, pt.updated_at, t.observacion, tr.id_union, DATE(t.fecha_tramite) AS fecha_tramite,
+            pt.observacion AS observacion2,
+            (SELECT GROUP_CONCAT('<b>', tr_aux.id_union, ' </b><br>' ,tr_aux.fecha_tramite) 
+            FROM tablas_relacion tr_aux
+            INNER JOIN tramites t_aux ON t_aux.id = tr_aux.tramite_id AND t_aux.estado = 1 
+            WHERE t_aux.persona_id = pt.persona_id 
+            AND tr_aux.estado = 1) expediente
+            FROM pretramites pt 
+            INNER JOIN personas p on p.id=pt.persona_id 
+            INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id
+            INNER JOIN tipo_tramite tt on tt.id=ct.tipo_tramite_id 
+            INNER JOIN tipo_solicitante ts on ts.id=pt.tipo_solicitante_id 
+            INNER JOIN documentos d on d.id=pt.tipo_documento_id 
+            INNER JOIN rutas_flujo rf ON rf.id = ct.ruta_flujo_id 
+            INNER JOIN rutas_flujo_detalle rfd ON rfd.ruta_flujo_id = rf.id AND rfd.norden = 1 AND rfd.estado = 1
+            LEFT JOIN empresas e on e.id=pt.empresa_id 
+            LEFT JOIN tramites t ON t.pretramite_id=pt.id AND t.estado = 1
+            LEFT JOIN tablas_relacion tr ON tr.tramite_id=t.id AND tr.estado = 1 
+            WHERE pt.estado = 1 ".
+            $filtro."
+            ORDER BY pt.fecha_pretramite DESC";
+
 		$r= DB::select($sql);
         return $r; 		
     }

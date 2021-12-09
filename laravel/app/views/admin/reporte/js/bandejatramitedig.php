@@ -602,7 +602,7 @@ mostrarDetalleHTML=function(datos){
                                         '<input type="hidden" id="txt_documento_id_'+detalle[i].split("=>")[0]+'" name="txt_documento_id_'+detalle[i].split("=>")[0]+'" value="">'+
                                         '<input type="hidden" id="txt_doc_digital_id_'+detalle[i].split("=>")[0]+'" name="txt_doc_digital_id_'+detalle[i].split("=>")[0]+'" value="">'+
 
-                                            '<span class="btn btn-success" data-toggle="modal" data-target="#listDocDigital" id="btn_list_digital" data-texto="documento_'+detalle[i].split("=>")[0]+'" data-id="txt_doc_digital_id_'+detalle[i].split("=>")[0]+'"><i class="glyphicon glyphicon-file"></i></span>'+
+                                            '<span class="btn btn-success" onclick="RegistraridsDelBoton('+detalle[i].split("=>")[0]+')" data-toggle="modal" data-target="#listDocDigital" id="btn_list_digital" data-texto="documento_'+detalle[i].split("=>")[0]+'" data-id="txt_doc_digital_id_'+detalle[i].split("=>")[0]+'"><i class="glyphicon glyphicon-file"></i></span>'+
                                             //'<span class="btn btn-success" data-toggle="modal" data-target="#NuevoDocDigital" id="btn_nuevo_docdigital" data-texto="documento_'+detalle[i].split("=>")[0]+'" data-id="txt_doc_digital_id_'+detalle[i].split("=>")[0]+'"><i class="glyphicon glyphicon-paperclip"></i></span>'+
 
 

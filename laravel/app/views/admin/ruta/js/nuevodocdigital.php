@@ -1,5 +1,8 @@
 <script type="text/javascript">
-var camposP = {};
+var camposG = {
+    text: '',
+    id: ''
+};
 $(document).ready(function() {
     slctGlobal.listarSlctFuncion('area','listara','slct_area_id','simple',null,{estado:1,areapersona:1});
 /*    slctGlobal.listarSlctFuncion('plantilladoc','cargar','slct_plantilla','simple',null,{'area':1});
@@ -74,7 +77,7 @@ $(document).ready(function() {
         $("#formNuevoDocDigital").append("<input type='hidden' c_text='"+text+"' c_id='"+id+"' id='txt_campos' name='txt_campos'>");
     });*/
 
-     $('#listDocDigital').on('show.bs.modal', function (event) {
+     $('#listDocDigital').on('shown.bs.modal', function (event) {
         $("#listDocDigital #fechaDoc, #listDocDigital #txt_fecha_documento").datetimepicker({
             format: "yyyy-mm-dd",
             language: 'es',
@@ -85,11 +88,7 @@ $(document).ready(function() {
             autoclose: true,
             todayBtn: false
         });
-     	var button = $(event.relatedTarget); // captura al boton
-	    var text = $.trim( button.data('texto') );
-	    var id= $.trim( button.data('id') );
-	    camposP = {'nombre':text,'id':id};
-        
+     	
     });
 
     data = {estado:1, area_id : 0};
@@ -112,6 +111,11 @@ $(document).ready(function() {
     });*/
 });
 
+RegistraridsDelBoton = (id)=>{
+    camposG.text = 'documento_' + id;
+    camposG.id = 'txt_doc_digital_id_' + id;
+}
+
 ListarDocumentos = (val)=>{
     $("#slct_tipo_documento_id").multiselect('destroy');
     var data = {estado:1, area_id: val};
@@ -133,7 +137,7 @@ CalcularCorrelativo = ()=>{
 
 CargarDocumentosFecha = ()=>{
     var data={activo:1, tipo:'asignar', fecha: $("#listDocDigital #fechaDoc").val()};
-    docdigital.Cargar(HTMLCargar,camposP,data);
+    docdigital.Cargar(HTMLCargar,camposG,data);
 }
 
 
@@ -155,10 +159,10 @@ HTMLPlantilla = function(data){
 }*/
 
 HTMLCargar=function(datos,campos){
-	var c_text = campos.nombre;
-	var c_id = campos.id;
+    console.log(camposG);
+	var c_text = camposG.text;
+	var c_id = camposG.id;
 
-        console.log(datos);
     var html="";
     $('#t_doc_digital').dataTable().fnDestroy();
     $.each(datos,function(index,data){

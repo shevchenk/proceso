@@ -352,10 +352,13 @@ class TramiteController extends BaseController {
 								->orderBy('norden','ASC')
 								->get();
 								$validaactivar=0;
-				
-							$conteo=0;$array['fecha']=''; // inicializando valores para desglose
-							$activarsegundo = 0;
+
+								
+								$conteo=0;$array['fecha']=''; // inicializando valores para desglose
+								$activarsegundo = 0;
 							foreach($qrutaDetalle as $rd){
+								$areaG = Area::find($rd->area_id);
+
 								$rutaDetalle = new RutaDetalle;
 								$rutaDetalle['ruta_id']=$ruta->id;
 								$rutaDetalle['area_id']=$rd->area_id;
@@ -368,7 +371,8 @@ class TramiteController extends BaseController {
 								}*/
 								/*if($rd->norden==1 or $rd->norden==2 or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){*/
 								if($rd->norden==1 or ($rd->norden==2 AND $activarsegundo==1) or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){	
-									if($rd->norden==1 && $rd->area_id == 3){ //If solo para mesa de partes la condicional de ($rd->norden==2 AND $activarsegundo==1) fue agregado tb
+									//if($rd->norden==1 && $rd->area_id == 3){ //If solo para mesa de partes la condicional de ($rd->norden==2 AND $activarsegundo==1) fue agregado tb
+									if($rd->norden==1 && $areaG->mesa_parte == 1){ //If solo para mesa de partes la condicional de ($rd->norden==2 AND $activarsegundo==1) fue agregado tb
 										$rutaDetalle['dtiempo_final']=date("Y-m-d H:i:s");
 										$rutaDetalle['tipo_respuesta_id']=1;
 										$rutaDetalle['tipo_respuesta_detalle_id']=1;
@@ -498,9 +502,11 @@ class TramiteController extends BaseController {
 													$rutaDetalleVerbo['usuario_created_at']= Auth::user()->id;
 													$rutaDetalleVerbo->save();
 
-													if($rd->norden==1 && $rd->area_id == 3){ // If solo por el tema de mesa de partes
+													//if($rd->norden==1 && $rd->area_id == 3){ // If solo por el tema de mesa de partes
+													if($rd->norden==1 && $areaG->mesa_parte == 1){ // If solo por el tema de mesa de partes
 														if( $rdv->verbo_id == 1 ){
-															$DocDigitalAuto = $this->DocDigitalAuto( $pretramite->ruta_archivo );
+															$documentoG = Documento::where('area_id', $areaG->id)->first();
+															$DocDigitalAuto = $this->DocDigitalAuto( $pretramite->ruta_archivo, $areaG->id, $documentoG->id );
 															$rutaDetalleVerbo['documento']= $DocDigitalAuto->titulo;
 															$rutaDetalleVerbo['doc_digital_id']= $DocDigitalAuto->id;
 
@@ -569,10 +575,10 @@ class TramiteController extends BaseController {
 		} //end if img y data
 	}
 
-	protected function DocDigitalAuto($url){
+	protected function DocDigitalAuto($url, $area_id, $tipo_documento_id){
 		
-			$tipo_documento_id = 86;
-			$area_id = 3;
+			//$tipo_documento_id = 86;
+			//$area_id = 3;
 			$año= date("Y");
 			$r2=array(array('correlativo'=>'1'));
 			/*$sql = "SELECT LPAD(id+1,6,'0') as correlativo,'$año' ano FROM doc_digital ORDER BY id DESC LIMIT 1";*/
@@ -591,6 +597,17 @@ class TramiteController extends BaseController {
                         ->where('tipo_documento_id', $tipo_documento_id)
                         ->where('area_id', $area_id)
                         ->first();
+			
+			if( !isset($plantilla->id) ){
+				$plantilla = new PlantillaDocumento;
+				$plantilla->descripcion = '';
+				$plantilla->tipo_documento_id = $tipo_documento_id;
+				$plantilla->area_id = $area_id;
+				$plantilla->cuerpo = '.';
+				$plantilla->estado = 1;
+				$plantilla->usuario_created_at = Auth::user()->id;
+				$plantilla->save();
+			}
 
             $area = DB::table('areas')
                     ->select('nemonico')

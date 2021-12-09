@@ -183,7 +183,7 @@ class FlujoController extends \BaseController
             }
             
             if( Input::has("nomicro")  AND Input::get('nomicro')==1 ){
-                    $array['where'].=" AND f.categoria_id !=16 "; 
+                    //$array['where'].=" AND f.categoria_id !=16 "; 
             }
             
             if( Input::has("nombre")  AND Input::get('nombre')!='' ){

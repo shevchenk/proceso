@@ -24,14 +24,14 @@
                   <div class="col-sm-12"><br></div>
                   <div class="col-sm-4">
                     <div class="col-sm-3">
-                       <label class="control-label">Fecha:</label>
-                       <input type="text" class="form-control" placeholder="AAAA-MM-DD" id="fechaDoc" name="fechaDoc" value="<?php echo date('Y-m-d')?>"/>
+                      <label class="control-label">Fecha:</label>
+                      <input type="text" class="form-control" placeholder="AAAA-MM-DD" id="fechaDoc" name="fechaDoc" value="<?php echo date('Y-m-d')?>"/>
                     </div>
                     <div class="col-sm-4">
-                        <br>
-                        <a class="btn btn-primary" onclick="CargarDocumentosFecha();">
-                          <i class="fa fa-search">Listar Documentos</i>
-                        </a>
+                      <br>
+                      <a class="btn btn-primary" onclick="CargarDocumentosFecha();">
+                        <i class="fa fa-search">Listar Documentos</i>
+                      </a>
                     </div>
                     <div class="col-sm-12">
                       <hr>

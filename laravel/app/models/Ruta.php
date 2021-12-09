@@ -20,11 +20,11 @@ class Ruta extends Eloquent
     
     public static function getCargarMicro()
     {
+        //->join('rutas_flujo_detalle as rfd','rfd.id','=','rfdm.norden')
         $result=DB::table('rutas_flujo_detalle_micro as rfdm')
                 ->join('rutas_flujo as rf','rf.id','=','rfdm.ruta_flujo_id2')
                 ->join('flujos as f','f.id','=','rf.flujo_id')
-                ->join('rutas_flujo_detalle as rfd','rfd.id','=','rfdm.norden')
-                ->select('rfdm.id','rfdm.ruta_flujo_id2','f.nombre','rfd.norden')
+                ->select('rfdm.id','rfdm.ruta_flujo_id2','f.nombre','rfdm.norden')
                 ->where('rfdm.ruta_flujo_id','=',Input::get('ruta_flujo_id'))
                 ->where('rfdm.estado','=',1)
                 ->get();
@@ -764,7 +764,7 @@ class Ruta extends Eloquent
                             'tr.id','=','r.tabla_relacion_id'
                         )
                         ->where('tr.id_union', '=', $codigounico)
-                        ->where('r.ruta_flujo_id', '=', 3620)
+                        ->where('r.ruta_flujo_id', '=', 0)
                         ->where('tr.estado', '=', '1')
                         ->where('r.estado', '=', '1')
                         ->get();
@@ -829,7 +829,7 @@ class Ruta extends Eloquent
         $tablaRelacion['usuario_created_at']=Auth::user()->id;
         $tablaRelacion->save();
 
-        $rutaFlujo=RutaFlujo::find(72);//3620
+        $rutaFlujo=RutaFlujo::find(0);//3620
 
         $ruta= new Ruta;
         $ruta['tabla_relacion_id']=$tablaRelacion->id;

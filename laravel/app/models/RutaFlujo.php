@@ -399,12 +399,12 @@ class RutaFlujo extends Eloquent
                                             'rf.flujo_id', 
                                             '=', 
                                             Input::get('flujo_id') 
-                                        )
-                                        ->where(
+                                        );
+                                        /*->where(
                                             'rf.area_id', 
                                             '=', 
                                             Input::get('area_id') 
-                                        );
+                                        );*/
                                     }
                                     
                                 }
