@@ -53,7 +53,11 @@ $(document).ready(function() {
                 data: new FormData($(this)[0]),
                 processData: false,
                 contentType: false,
+                beforeSend : function() {
+                    $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+                },
                 success: function (obj) {
+                    $(".overlay,.loading-img").remove();
                     if(obj.rst==1){
                         limpiar();
                         ListarPreTramites();
@@ -62,6 +66,10 @@ $(document).ready(function() {
                     else{
                         msjG.mensaje("warning", obj.msj,3000);
                     }
+                },
+                error: function(){
+                    $(".overlay,.loading-img").remove();
+                    msjG.mensaje("danger","Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.",3000);
                 }
             });
         }

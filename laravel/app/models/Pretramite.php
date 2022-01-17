@@ -193,7 +193,7 @@ class Pretramite extends Eloquent {
         return $areas;
     }
     
-        public static function Correlativo($unidad_documentaria){
+    public static function Correlativo($unidad_documentaria){
         
     	$año= date("Y");
         $r2=array(array('correlativo'=>'000001','ano'=>$año));
@@ -202,8 +202,7 @@ class Pretramite extends Eloquent {
                 FROM pretramites p 
                 inner join clasificador_tramite ct on ct.id = p.clasificador_tramite_id AND ct.unidad_documentaria = '$unidad_documentaria'
                 WHERE p.estado=1 
-                AND YEAR(p.created_at)=YEAR(CURDATE())
-                ORDER BY p.correlativo DESC LIMIT 1";
+                AND p.año=YEAR(CURDATE())";
     	$r= DB::select($sql);
         return (isset($r[0])) ? $r[0] : $r2[0];
         

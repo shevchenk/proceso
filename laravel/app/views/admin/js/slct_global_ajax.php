@@ -545,6 +545,12 @@ var masterG ={
             }
         }
     },
+    NoEnter:function(e){
+        tecla = (document.all) ? e.keyCode : e.which; // 2
+        if (tecla==13){
+            return false;
+        }
+    },
     validaNumerosMax:function(e,t,max){ 
         tecla = (document.all) ? e.keyCode : e.which;//captura evento teclado
         if (tecla==8 || tecla==0) return true;//8 barra, 0 flechas desplaz

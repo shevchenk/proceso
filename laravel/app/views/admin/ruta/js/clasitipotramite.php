@@ -18,8 +18,16 @@ $(document).ready(function() {
     slctGlobal.listarSlct2('rol','slct_rol_modal',data);
     slctGlobal.listarSlct2('verbo','slct_verbo_modal',data);
     slctGlobal.listarSlct2('documento','slct_documento_modal',data);
- 
-   $("#btn_close").click(Close);
+    //////////////////////////////////////////////////////////////////
+    $("#btn_close, .btn_close").click(Close);
+    $(".btn_add_campo").click(AddCampo);
+    $(".btn_asig_campo").click(AsigCampo);
+    $("#slct_campo").change(CambioCampo); $(".sub_titulo").hide();
+    $("#btn_RegistrarCampos").click(RegistrarCampos);
+    $("#btn_AsignarCampos").click(AsignarFCampos);
+    slctGlobalHtml('form_campo_asignacion #slct_campos, #form_campo_asignacion #slct_areas','multiple');
+
+    //////////////////////////////////////////////////////////////////
     slctGlobalHtml('form_tipotramites_modal #slct_estado','simple');
     slctGlobalHtml('form_requisitos_modal #slct_estado','simple');
     CargarEstratPei();
@@ -230,7 +238,6 @@ validaContrataciones = function(){
             r=false;
         }
 
-
     return r;
 };
 
@@ -245,7 +252,8 @@ CargarCostoPersonal=function(id,titulo,boton){
     $("#form_requisitos_modal #txt_poi_id").val(id);
     $("#form_costo_personal #txt_titulo").text(titulo);
     $("#form_costo_personal .form-group").css("display","");
-    $("#form_actividad").css("display","none");
+
+    $("#form_actividad .form-group, #form_campo .form-group, #form_campo_asignacion .form-group").css("display","none");
     
     data={id:id};
     Pois.CargarCostoPersonal(data);
@@ -261,12 +269,365 @@ CargarActividad=function(id,titulo,boton){
     
     $("#form_actividad #id").val(id);
     $("#form_actividad #txt_titulo").text(titulo);
-    $("#form_actividad").css("display","");
+    $("#form_actividad .form-group").css("display","");
     
-    $("#form_costo_personal .form-group").css("display","none");
+    $("#form_costo_personal .form-group, #form_campo .form-group, #form_campo_asignacion .form-group").css("display","none");
 
 };
 
+CargarCampos=function(id,titulo,boton){
+    
+    var tr = boton.parentNode.parentNode;
+    var trs = tr.parentNode.children;
+    for(var i =0;i<trs.length;i++)
+        trs[i].style.backgroundColor="#f9f9f9";
+    tr.style.backgroundColor = "#9CD9DE";
+    
+    $("#form_campo #id").val(id);
+    $("#form_campo #txt_titulo").text(titulo);
+    $("#form_campo .form-group").css("display","");
+    $("#add_campo, #add_campo2").html(''); // Limpia los registros para cargar los nuevos 
+    Pois.ListarCampos(ListarCamposHTML);
+    $("#form_costo_personal .form-group, #form_actividad .form-group, #form_campo_asignacion .form-group").css("display","none");
+
+};
+
+AsignarCampos=function(id,titulo,boton){
+    
+    var tr = boton.parentNode.parentNode;
+    var trs = tr.parentNode.children;
+    for(var i =0;i<trs.length;i++)
+        trs[i].style.backgroundColor="#f9f9f9";
+    tr.style.backgroundColor = "#9CD9DE";
+    
+    $("#form_campo_asignacion #id").val(id);
+    $("#form_campo_asignacion #txt_titulo").text(titulo);
+    $("#form_campo_asignacion .form-group").css("display","");
+    $("#add_campo3").html(''); // Limpia los registros para cargar los nuevos 
+    Pois.ListarAreas(ListarAreasHTML);
+    Pois.ListarCampos(ListarCampos2HTML, 1);
+    Pois.ListarCamposAreas(ListarCamposAreasHTML);
+    $("#form_costo_personal .form-group, #form_actividad .form-group, #form_campo .form-group").css("display","none");
+
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+ListarCampos2HTML = (result) => {
+    $("#slct_campos").html('');
+    html = '';
+    $.each(result, function(index, r){
+        html += '<option value="'+ r.id +'">'+ r.campo +'</option>';
+    })
+    $("#slct_campos").html(html);
+    $("#slct_campos").multiselect('rebuild');
+}
+
+ListarAreasHTML = (obj) => {
+    $("#slct_areas").html('');
+    html = '';
+    $.each(obj.data, function(index, r){
+        html += '<option value="'+ r.id +'">'+ r.nombre +'</option>';
+    })
+    $("#slct_areas").html(html);
+    $("#slct_areas").multiselect('rebuild');
+}
+
+ListarCamposHTML = (result) => {
+    $.each(result,function(index,r){
+        check = false;
+        if( r.obligar == 1 ){ check = true }
+        AddCampo(r.id, r);
+    });
+}
+
+ListarCamposAreasHTML = (result) => {
+    $.each(result,function(index,r){
+        AsigCampo(r);
+    });
+}
+
+AsigCampo = (result) => {
+    areas = $("#slct_areas").val();
+    campos = $("#slct_campos").val();
+
+    checked = '';
+    funcion = 'ActivarCheck';
+    color = 'info';
+    modificar = 0;
+
+    if( typeof(result.area_id) != 'undefined' && typeof(result.ruta_flujo_campo_id) != 'undefined' ){
+        if( result.modificar == 1 ){
+            checked = 'checked';
+            funcion = 'InactivarCheck';
+            color = 'danger';
+            modificar = 1;
+        }
+        areas = [result.area_id];
+        campos = [result.ruta_flujo_campo_id];
+    }
+    
+    for( i = 0; i < areas.length; i++ ){
+        for( j = 0; j < campos.length; j++ ){
+        id = areas[i]+'0'+campos[j];
+
+            if( $.trim( $(".campo"+ id).html() ) == '' ){
+                html = 
+                    "<tr class='campo"+id+"'>"+
+                        "<td class='text-bold'>"+ $("#slct_areas option[value='"+areas[i]+"']").text() + "</td>"+
+                        "<td class='text-bold'>"+ $("#slct_campos option[value='"+campos[j]+"']").text() + "</td>"+
+                        "<td>"+
+                            "<div class='form-group'>"+
+                                "<label class='input-group-addon'>"+
+                                    "<label class='lbl_campo btn alert-"+ color +"'>"+
+                                        '<input type="hidden" class="modificar" name="modificar[]" value="'+ modificar +'">'+
+                                        '<input type="hidden" name="area_id[]" value="'+ areas[i] +'">'+
+                                        '<input type="hidden" name="ruta_flujo_campo_id[]" value="'+ campos[j] +'">'+
+                                        "<input type='checkbox' onChange='"+ funcion +"(this, "+ id +")' autocomplete='off' "+ checked +"> &nbsp;&nbsp; "+ "Modificar" +
+                                    "</label>"+
+                                "</label>"+
+                                "<label class='btn btn-danger input-group-addon btn-sm' onClick='QuitarCampo("+ id +")'>"+
+                                    "<i class='fa fa-trash fa-lg'></i>"+
+                                "</label>"+
+                            "</div>"+
+                        "</td>"+
+                    "</tr>";
+                $("#add_campo3").append(html);
+            }
+        }
+    }
+
+}
+
+AddCampo = ( id, r ) => {
+    campo = $.trim($("#txt_campo").val());
+    sub_titulo = $.trim($("#txt_sub_titulo").val());
+    tipo_campo = $.trim($("#slct_campo").val());
+    $("#txt_campo, #txt_sub_titulo").val('');
+
+    checked = ''; 
+    funcion = 'ActivarCheck'; 
+    color = 'info';
+    html = ''; html2 = '';
+    id2 = id;
+    obligar = 0;
+    col = 6; tipo = 8; capacidad = 20; lista = '';
+
+    if( typeof(id) == 'undefined' || typeof(id) == 'object' ){
+        id = $.now();
+        id2 = 0;
+    }
+
+    if( typeof(r) != 'undefined' ){
+        if( r.obligar == 1 ){
+            checked = 'checked';
+            funcion = 'InactivarCheck';
+            color = 'danger';
+            obligar = 1;
+        }
+
+        if( typeof(r.campo.split("/")[1]) != 'undefined' ){
+            campo = r.campo.split("/")[0];
+            sub_titulo = r.campo.split("/")[1];
+            tipo_campo = 2;
+            col = 12;
+        }
+        else{
+            campo = r.campo;
+            tipo_campo = 1;
+            col = r.col;
+            tipo = r.tipo;
+            capacidad = r.capacidad;
+            lista = r.lista;
+        }
+
+    }
+ 
+    if( tipo_campo == 2 ){
+        html = '<div class="col-sm-12 campos campo'+ id +'">'+
+                    '<br>'+
+                    '<input type="hidden" name="campo[]" value="'+ campo +'/'+ sub_titulo +'">'+
+                    '<input type="hidden" name="col[]" value="'+ col +'">'+
+                    '<input type="hidden" class="campo_id" name="campo_id[]" value="'+ id2 +'">'+
+                    '<input type="hidden" name="obligar[]" value="0">'+
+
+                    '<h5><b>'+ campo +'</b> '+
+                        '<small style="color:red"> '+ sub_titulo +'</small>'+
+                        '<span class="btn btn-danger" onClick="QuitarCampo('+ id +')"><i class="fa fa-trash"></i></span>'+
+                    '</h5>'+
+                    '<hr style="border:dotted;">'+
+                '</div>';
+
+        html2 = 
+            "<tr>"+
+                "<td colspan='4' class='text-center text-bold lbl_campo alert-warning'>"+ 
+                    campo + " / " + sub_titulo +
+                    "<input type='hidden' name='tipo[]' value='5'>"+
+                    "<input type='hidden' name='capacidad[]' value='20'>"+
+                    "<input type='hidden' name='lista[]' value=''>"+
+                "</td>"+
+            "</tr>";
+    }
+    else{
+        html=
+            "<div class='col-sm-6 campos campo"+ id +"'>"+
+                "<input class='form-control hidden campo' onBlur='BloquearNombre("+ id +")' name='campo[]' type='text' value='"+ campo +"'>"+
+                "<label class='campo_nombre' onClick='CambiarNombre("+ id +")'>"+ campo +":</label>"+
+                "<div class='form-group'>"+
+                    "<div class='input-group'>"+
+                        "<select name='col[]' class='form-control' onChange='CambiaCol(this.value,"+ id +");'>"+
+                            "<option value=2> 2 </option>"+
+                            "<option value=3> 3 </option>"+
+                            "<option value=4> 4 </option>"+
+                            "<option value=5> 5 </option>"+
+                            "<option value=6 selected> 6 </option>"+
+                            "<option value=7> 7 </option>"+
+                            "<option value=8> 8 </option>"+
+                            "<option value=9> 9 </option>"+
+                            "<option value=10> 10 </option>"+
+                            "<option value=12> 12 </option>"+
+                        "</select>"+
+                        "<label class='input-group-addon'>"+
+                            "<label class='lbl_campo btn alert-"+ color +"'>"+
+                                "<input type='hidden' class='campo_id' name='campo_id[]' value="+ id2 +">"+
+                                '<input type="hidden" class="txt_obligar" name="obligar[]" value="'+ obligar +'">'+
+                                "<input type='checkbox' onChange='"+ funcion +"(this, "+ id +")' autocomplete='off' "+ checked +"> &nbsp;&nbsp; "+ "Obligatorio" +
+                            "</label>"+
+                        "</label>"+
+
+                        "<label class='btn btn-danger input-group-addon btn-sm' onClick='QuitarCampo("+ id +")'>"+
+                            "<i class='fa fa-trash fa-lg'></i>"+
+                        "</label>"+
+                    "</div>"
+                "</div>"+
+            "</div>";
+
+        html2 = 
+            "<tr class='campo"+ id +"'>"+
+                "<td class='lbl_campo alert-"+ color +"'>"+ 
+                    campo + 
+                "</td>"+
+                "<td>"+ 
+                    "<select name='tipo[]' class='form-control' onChange='CambiaCampo(this.value,"+ id +");'>"+
+                        "<option value=1> Email </option>"+
+                        "<option value=2> Decimal 0.00 </option>"+
+                        "<option value=3> Fecha (YYYY-MM-DD)</option>"+
+                        "<option value=4> Fecha (YYYY-MM)</option>"+
+                        "<option value=5> Fecha (YYYY)</option>"+
+                        "<option value=6> Lista </option>"+
+                        "<option value=7> Número </option>"+
+                        "<option value=8 selected> Texto </option>"+
+                    "</select>"+
+                "</td>"+
+                "<td><input class='form-control capacidad' name='capacidad[]' type='number' onKeyPress='return masterG.validaNumeros(event);' placeholder='Capacidad #' value="+ capacidad +"></td>"+
+                "<td><textarea class='form-control campo_lista hidden' name='lista[]' onKeyPress='return masterG.NoEnter(event);' placeholder='Ejemplo: A*B*C'>"+lista+"</textarea></td>"+
+            "</tr>";
+    }
+
+
+    $("#add_campo").append(html);
+    $("#add_campo2").append(html2);
+    if( tipo_campo != 2 ){
+        if( col != 6 ){
+            CambiaCol(col, id);
+            $("#add_campo .campo"+id+"  select").val(col);
+        }
+        
+        if( tipo != 8 ){
+            CambiaCampo(tipo, id);
+            $("#add_campo2 .campo"+id+"  select").val(tipo);
+            $("#add_campo2 .campo"+id+"  .capacidad").val(capacidad);
+            $("#add_campo2 .campo"+id+"  .campo_lista").val(lista);
+        }
+    }
+    $("#txt_campo").focus()
+}
+
+CambiarNombre = (id) => {
+    $("#add_campo .campo"+id +" .campo").removeClass('hidden');
+    $("#add_campo .campo"+id +" .campo_nombre").hide();
+    $("#add_campo .campo"+id +" .campo").focus();
+}
+
+BloquearNombre = (id) => {
+    $("#add_campo .campo"+id +" .campo").addClass('hidden');
+    $("#add_campo .campo"+id +" .campo_nombre").show().text( $("#add_campo .campo"+id +" .campo").val()+":" );
+}
+
+QuitarCampo = (id) => {
+    $("#add_campo .campo"+id +", #add_campo2 .campo"+id+", #add_campo3 .campo"+id).remove();
+}
+
+CambiaCol = (val,id) => {
+    $("#add_campo .campo"+id).not(".disabled").removeClass().addClass("campos campo"+id+" col-sm-"+val);
+}
+
+CambiaCampo = (val, id) => {
+    $(".campo"+ id +" .capacidad").val('20');
+    $(".campo"+ id +" .capacidad").removeClass('hidden');
+    $(".campo"+ id +" .campo_lista").removeClass('hidden');
+    
+    if( val == 1 ){
+        $(".campo"+ id +" .campo_lista").addClass('hidden');
+        $(".campo"+ id +" .capacidad").val('80');
+        $(".campo"+ id +" .capacidad").focus();
+    }
+    else if( val >= 3 && val <=5 ){
+        $(".campo"+ id +" .capacidad").addClass('hidden');
+        $(".campo"+ id +" .campo_lista").addClass('hidden');
+    }
+    else if( val == 6 ){
+        $(".campo"+ id +" .capacidad").addClass('hidden');
+        $(".campo"+ id +" .campo_lista").val('');
+        $(".campo"+ id +" .campo_lista").focus();
+    }
+    else{
+        $(".campo"+ id +" .campo_lista").addClass('hidden');
+        $(".campo"+ id +" .campo_lista").val('');
+        $(".campo"+ id +" .capacidad").focus();
+    }
+}
+
+ActivarCheck = (t, id) => {
+    //var label = $(t).parent('label');
+    $(".campo" + id+" .lbl_campo").removeClass("alert-info").addClass("alert-danger");
+    $(".campo" + id+" .txt_obligar, .campo"+ id +" .modificar").val(1);
+    $(t).attr("onChange", "InactivarCheck(this,"+ id +")");
+}
+
+InactivarCheck = (t, id) => {
+    //var label = $(t).parent('label');
+    $(".campo" + id+" .lbl_campo").removeClass("alert-danger").addClass("alert-info");
+    $(".campo" + id+" .txt_obligar, .campo"+ id +" .modificar").val(0);
+    $(t).attr("onChange", "ActivarCheck(this, "+ id +")");
+}
+
+CambioCampo = () => {
+    $(".sub_titulo").hide();
+
+    if( $("#slct_campo").val() == 2 ){
+        $(".sub_titulo").show();
+    }
+    $("#txt_campo").focus()
+}
+
+ValidarCampos = () => {
+    r = true;
+
+    return r;
+}
+
+RegistrarCampos = () => {
+    if( ValidarCampos() ){
+        Pois.RegistrarCampos();
+    }
+}
+
+AsignarFCampos = () => {
+    if( ValidarCampos() ){
+        Pois.AsignarCampos();
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////
 CargarEstratPei=function(){
 
     Pois.CargarEstratPei();
@@ -401,7 +762,7 @@ validaEstratPei = function(){
 
 
 Close=function(){
-    $("#form_costo_personal .form-group").css("display","none");
+    $("#form_costo_personal .form-group, #form_campo .form-group").css("display","none");
 }
 
 

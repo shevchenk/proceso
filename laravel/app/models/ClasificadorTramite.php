@@ -28,6 +28,7 @@ class ClasificadorTramite extends Base
         $oData = DB::select($sSql);
         return $oData;
     }
+
     public static function getCargarCount( $array )
     {
         $sSql=" SELECT  COUNT(ct.id) cant
@@ -39,8 +40,6 @@ class ClasificadorTramite extends Base
         $oData = DB::select($sSql);
         return $oData[0]->cant;
     }
-
-
 
     public function getClasificadorTramite(){
         $clasificadortramite=DB::table('clasificador_tramite')

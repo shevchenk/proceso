@@ -25,6 +25,8 @@ $(document).ready(function() {
                 c          :'1|  |#DCE6F1',
                 d          :'1|  |#DCE6F1',
                 e          :'1|  |#DCE6F1',
+                f          :'1|  |#DCE6F1',
+                g          :'1|  |#DCE6F1',
              };
 
     var resG1=dataTableG.CargarCab(idG1);
@@ -135,23 +137,35 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
 
     if(typeof(fn)!='undefined' && fn.col==4){
         var grupo='';
-        grupo+= '<span id="'+row.id+'" title="Requisitos" onClick="CargarCostoPersonal(\''+row.id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i></span>';
-        return grupo;
-    }      
-    if(typeof(fn)!='undefined' && fn.col==5){
-        var grupo='';
-//        row.nombre.split('"').join("-");
         grupo+= '<span id="'+row.id+'" title="Asignar Proceso" onClick="CargarActividad(\''+row.id+'\',\''+row.nombre.split('"').join("-")+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-list-alt"></i></span>';
         return grupo;
     }
 
-    if(typeof(fn)!='undefined' && fn.col==6  && row.ruta_flujo_id!==null){
+    if(typeof(fn)!='undefined' && fn.col==5  && row.ruta_flujo_id!==null){
         var grupo='';
         grupo+= '<a onclick="cargarRutaId('+row.ruta_flujo_id+',2)" class="btn btn-warning btn-sm"><i class="fa fa-search-plus fa-lg"></i> </a>';
         return grupo;
-   }
+    }
+
+    if(typeof(fn)!='undefined' && fn.col==6){
+        var grupo='';
+        grupo+= '<span id="'+row.id+'" title="Datos del Servicio" onClick="CargarCampos(\''+row.id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn bg-teal"><i class="glyphicon glyphicon-folder-open"></i></span>';
+        return grupo;
+    }
 
     if(typeof(fn)!='undefined' && fn.col==7){
+        var grupo='';
+        grupo+= '<span id="'+row.id+'" title="Asignación de Datos del Servicio" onClick="AsignarCampos(\''+row.id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn"><i class="glyphicon glyphicon-wrench"></i></span>';
+        return grupo;
+    }
+
+    if(typeof(fn)!='undefined' && fn.col==8){
+        var grupo='';
+        grupo+= '<span id="'+row.id+'" title="Requisitos" onClick="CargarCostoPersonal(\''+row.id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i></span>';
+        return grupo;
+    }
+
+    if(typeof(fn)!='undefined' && fn.col==9){
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" onClick="activarEF('+row.id+')" data-estado="'+row.estado_final+'" class="btn btn-danger">Pendiente</span>';
         if(row.estado_final==1){
@@ -160,7 +174,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         return estadohtml;
     }
 
-    if(typeof(fn)!='undefined' && fn.col==8){
+    if(typeof(fn)!='undefined' && fn.col==10){
         var estadohtml='<a class="form-control btn btn-primary" onclick="BtnEditar(this,'+row.id+')"><i class="fa fa-lg fa-edit"></i></a>';
         return estadohtml;
     }

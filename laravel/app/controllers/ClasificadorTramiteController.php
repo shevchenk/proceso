@@ -11,6 +11,84 @@ class ClasificadorTramiteController extends \BaseController
         $this->beforeFilter('auth');
         $this->_errorController = $ErrorController;
     }
+
+    public function postListarareas()
+    {
+        if ( Request::ajax() ) {
+            $a      = new RutaFlujoCampo;
+            $lista = $a->Listarareas();
+
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'data' => $lista
+                )
+            );
+        }
+    }
+
+    public function postListarcampos()
+    {
+        if ( Request::ajax() ) {
+            $a      = new RutaFlujoCampo;
+            $lista = $a->Listarcampos();
+
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'msj'   => 'Campos listados',
+                    'data' => $lista
+                )
+            );
+        }
+    }
+
+    public function postListarcamposareas()
+    {
+        if ( Request::ajax() ) {
+            $a      = new RutaFlujoCampoArea;
+            $lista = $a->Listarcamposareas();
+
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'msj'   => 'Campos y Áreas listados',
+                    'data' => $lista
+                )
+            );
+        }
+    }
+
+    public function postRegistrarcampos()
+    {
+        if ( Request::ajax() ) {
+            $a      = new RutaFlujoCampo;
+            $lista = $a->Registrarcampos();
+
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'msj'   => 'Campos registrados y/o actualizados',
+                    'lista' => $lista
+                )
+            );
+        }
+    }
+
+    public function postAsignarcampos()
+    {
+        if ( Request::ajax() ) {
+            $a      = new RutaFlujoCampoArea;
+            $a->Asignarcampos();
+
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'msj'   => 'Campos asignados y/o actualizados',
+                )
+            );
+        }
+    }
     /**
      * cargar clasificadortramites, mantenimiento
      * POST /rol/cargar

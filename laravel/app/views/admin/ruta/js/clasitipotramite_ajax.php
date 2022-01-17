@@ -1,5 +1,187 @@
 <script type="text/javascript">
 var Pois={
+    ListarAreas:function(evento){
+        var datos = $("#form_campo_asignacion").serialize().split("txt_").join("").split("slct_").join("");
+        var accion = "clasificadortramite/listarareas";
+        
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            async       : false,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay, .loading-img").remove();
+                if(obj.rst==1){
+                    evento(obj);
+                } else {
+                    var cont = 0;
+                    $.each(obj.msj, function(index, datos){
+                        cont++;
+                         if(cont==1){
+                            msjG.mensaje('warning',obj.msj,4000);
+                       }
+                    });
+                }
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                msjG.mensaje('danger','<b>Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.',4000);
+            }
+        });
+
+    },
+    ListarCampos:function(evento, asignacion){
+        var datos = $("#form_campo").serialize().split("txt_").join("").split("slct_").join("");
+        
+        if( typeof(asignacion) != 'undefined' ){
+            var datos = $("#form_campo_asignacion").serialize().split("txt_").join("").split("slct_").join("");
+        }
+        var accion = "clasificadortramite/listarcampos";
+        
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay, .loading-img").remove();
+                if(obj.rst==1){
+                    evento(obj.data);
+                    msjG.mensaje('success',obj.msj,4000);
+                } else {
+                    var cont = 0;
+                    $.each(obj.msj, function(index, datos){
+                        cont++;
+                         if(cont==1){
+                            msjG.mensaje('warning',obj.msj,4000);
+                       }
+                    });
+                }
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                msjG.mensaje('danger','<b>Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.',4000);
+            }
+        });
+
+    },
+    ListarCamposAreas:function(evento){
+        var datos = $("#form_campo_asignacion").serialize().split("txt_").join("").split("slct_").join("");
+        var accion = "clasificadortramite/listarcamposareas";
+        
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay, .loading-img").remove();
+                if(obj.rst==1){
+                    evento(obj.data);
+                    msjG.mensaje('success',obj.msj,4000);
+                } else {
+                    var cont = 0;
+                    $.each(obj.msj, function(index, datos){
+                        cont++;
+                         if(cont==1){
+                            msjG.mensaje('warning',obj.msj,4000);
+                       }
+                    });
+                }
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                msjG.mensaje('danger','<b>Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.',4000);
+            }
+        });
+
+    },
+    RegistrarCampos:function(){
+        var datos = $("#form_campo").serialize().split("txt_").join("").split("slct_").join("");
+        var accion = "clasificadortramite/registrarcampos";
+        
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay, .loading-img").remove();
+                if(obj.rst==1){
+                    /** foreach ****/
+                    $("#add_campo .campos").each(function(index, el) {
+                        $(this).find('.campo_id').val( obj.lista[index] );
+                    });
+                    /****/
+                    msjG.mensaje('success',obj.msj,4000);
+                } else {
+                    var cont = 0;
+                    $.each(obj.msj, function(index, datos){
+                        cont++;
+                         if(cont==1){
+                            msjG.mensaje('warning',obj.msj,4000);
+                       }
+                    });
+                }
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                msjG.mensaje('danger','<b>Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.',4000);
+            }
+        });
+
+    },
+    AsignarCampos:function(){
+        var datos = $("#form_campo_asignacion").serialize().split("txt_").join("").split("slct_").join("");
+        var accion = "clasificadortramite/asignarcampos";
+        
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay, .loading-img").remove();
+                if(obj.rst==1){
+                    msjG.mensaje('success',obj.msj,4000);
+                } else {
+                    var cont = 0;
+                    $.each(obj.msj, function(index, datos){
+                        cont++;
+                         if(cont==1){
+                            msjG.mensaje('warning',obj.msj,4000);
+                       }
+                    });
+                }
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                msjG.mensaje('danger','<b>Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.',4000);
+            }
+        });
+
+    },
     AgregarEditarCostoPersonal:function(AE){
         var datos = $("#form_requisitos_modal").serialize().split("txt_").join("").split("slct_").join("");
         var id=$("#form_requisitos_modal #txt_poi_id").val();
@@ -103,7 +285,7 @@ var Pois={
                                 '</div>');
             }
         });
-    },    
+    }, 
     
     AgregarEditarEstratPei:function(AE){
         var datos = $("#form_tipotramites_modal").serialize().split("txt_").join("").split("slct_").join("");

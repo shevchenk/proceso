@@ -183,8 +183,43 @@ class TramiteController extends BaseController {
 				if( $pretramite->estado_atencion == 1 ){
 					$clasificadorTramite = ClasificadorTramite::find($data['txt_ctramite']);
 					$codigo = Pretramite::Correlativo($clasificadorTramite->unidad_documentaria);
+					//$codigo->correlativo = '000075'; //para probar correlativo
 					$pretramite->correlativo = $codigo->correlativo;
-					$pretramite->save();
+					$pretramite->año = date("Y");
+					
+
+					$cantidad=true;
+					$conteo=0;
+					$conteoMax=10;
+					
+					while ( $cantidad==true ) {
+						$cantidad=false;
+						try {
+							$pretramite->save();
+						} catch (Exception $e) {
+							$d=explode("duplicate",strtolower($e));
+							if(count($d)>1){
+								$cantidad=true;
+								$pretramite->correlativo++;
+								$codigo->correlativo=str_pad($pretramite->correlativo,6,"0",STR_PAD_LEFT);
+							}
+							else{
+								$conteo=$conteoMax+1;
+							}
+						}
+						$conteo++;
+						if($conteo==$conteoMax){
+							$cantidad=false;
+						}
+					}
+
+					if( $conteo >= 10 ){
+						DB::rollback();
+						return  array(
+								'rst'=>2,
+								'msj'=>'Problemas al generar el correlativo, comuniquese con el área de TI'
+							);
+					}
 
 					$tramite = new Tramite;
 					   $tramite['pretramite_id'] = $data['txt_pretramiteid'];

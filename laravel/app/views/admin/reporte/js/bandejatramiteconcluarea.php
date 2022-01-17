@@ -22,7 +22,7 @@ $(document).ready(function() {
         singleDatePicker: false,
         showDropdowns: true
     });
-    
+    var data = {estado:1};
     slctGlobal.listarSlct('area','slct_areas','simple',null,data);
     slctGlobal.listarSlct('lista/tipovizualizacion','slct_tipo_visualizacion','multiple',null,null);
     $('#slct_tipo_visualizacion').change(function() {

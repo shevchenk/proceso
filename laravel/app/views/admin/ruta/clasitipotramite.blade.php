@@ -42,7 +42,7 @@
                     <div class="box-body table-responsive">
                         <table id="t_clasificadortramites" class="table table-bordered table-hover">
                             <thead>
-                                <tr><th colspan="7" style="text-align:center;background-color:#A7C0DC;"><h2>Servicios al usuario</h2></th></tr>
+                                <tr><th colspan="12" style="text-align:center;background-color:#A7C0DC;"><h2>Servicios al usuario</h2></th></tr>
                                 <tr></tr>
                             </thead>
                             <tbody>
@@ -95,9 +95,9 @@
                         </div><!-- /.box-body -->
                     </div>
                 </form>
-                <form name="form_actividad" id="form_actividad" method="POST" action="" style="display: none">
+                <form name="form_actividad" id="form_actividad" method="POST" action="">
                     <input class="form-control mant" type="hidden" name="id" id="id">
-                    <div class="row form-group" >
+                    <div class="row form-group" style="display: none" >
                         <div class="box-header table-responsive">
                             <div class="col-xs-12">
                                 <h3>
@@ -165,6 +165,131 @@
                                 <i class="fa fa-save fa-lg"></i>&nbsp;Guardar
                             </a>
                         </div>
+                    </div>
+                </form>
+
+                <form id="form_campo" name="form_campo" method="POST" action="">
+                    <input class="form-control mant" type="hidden" name="id" id="id">
+                    <div class="form-group" style="display: none">
+                        <div class="box-header table-responsive">
+                            <div class="col-xs-12">
+                                <h3>
+                                    Campos adicionales |
+                                    <small>Nombre de Trámite:  <label type="text" id="txt_titulo"></label></small>
+                                </h3>                           
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <label class="form-label">Campo / Título:</label>
+                                    <input class="form-control" id="txt_campo" type="text"  value="">
+                                </div>
+                                <div class="col-sm-2 sub_titulo">
+                                    <label class="form-label">Sub Título:</label>
+                                    <input class="form-control" id="txt_sub_titulo" type="text"  value="">
+                                </div>
+                                <div class="col-sm-2">
+                                    <label class="form-label">Tipo de dato:</label>
+                                    <select class="form-control" id="slct_campo">
+                                        <option value=1 selected>Campo</option>
+                                        <option value=2>Título</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <br>
+                                    <a class="btn btn-primary btn_add_campo">
+                                       <i class="fa fa-plus fa-lg"></i>&nbsp;Agregar Campo
+                                    </a>
+                                    <a class="btn btn-warning btn-sm btn_close">
+                                        <i class="fa fa-remove fa-lg"></i>&nbsp;Cerrar
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row" id="add_campo"></div>
+                            <br><hr>
+                            <div class="row table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Campo</th>
+                                            <th class="text-center">Tipo</th>
+                                            <th class="text-center">Capacidad</th>
+                                            <th class="text-center">Lista separar por *</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="add_campo2"></tbody>
+                                </table>
+                            </div>
+                            <br><hr>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <a class="btn btn-success" id="btn_RegistrarCampos">
+                                       <i class="fa fa-save fa-lg"></i>&nbsp;Registrar Campos
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div><!-- /.box-body -->
+                    </div>
+                </form>
+
+                <form id="form_campo_asignacion" name="form_campo_asignacion" method="POST" action="">
+                    <input class="form-control mant" type="hidden" name="id" id="id">
+                    <div class="form-group" style="display: none">
+                        <div class="box-header table-responsive">
+                            <div class="col-xs-12">
+                                <h3>
+                                    Asignación de Campos adicionales |
+                                    <small>Nombre de Trámite:  <label type="text" id="txt_titulo"></label></small>
+                                </h3>                           
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label class="form-label">Áreas:</label>
+                                    <select id='slct_areas' class='form-control' multiple></select>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <label class="form-label">Campos:</label>
+                                    <select id='slct_campos' class='form-control' multiple></select>
+                                </div>
+                                
+                                <div class="col-sm-4">
+                                    <br>
+                                    <a class="btn btn-primary btn_asig_campo">
+                                       <i class="fa fa-plus fa-lg"></i>&nbsp;Asignar
+                                    </a>
+                                    <a class="btn btn-warning btn-sm btn_close">
+                                        <i class="fa fa-remove fa-lg"></i>&nbsp;Cerrar
+                                    </a>
+                                </div>
+                            </div>
+                            <br><hr>
+                            <div class="row table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Área</th>
+                                            <th class="text-center">Campo</th>
+                                            <th class="text-center">Modificar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="add_campo3"></tbody>
+                                </table>
+                            </div>
+                            <br><hr>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <a class="btn btn-success" id="btn_AsignarCampos">
+                                       <i class="fa fa-save fa-lg"></i>&nbsp;Asignar Campos
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div><!-- /.box-body -->
                     </div>
                 </form>
 

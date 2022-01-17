@@ -170,6 +170,7 @@ class PretramiteController extends BaseController {
         	$pretramite['persona_id'] =  $array_data->persona_id;
         }
         $pretramite['correlativo'] = $codigo->correlativo;
+		$pretramite->año = date("Y");
         $pretramite['tipo_solicitante_id'] = $array_data->cbo_tiposolicitante;
         $pretramite['tipo_documento_id'] = $array_data->cbo_tipodoc;
         //$pretramite['tipo_tramite_id'] = $array_data->cbo_tipodocumento;
@@ -179,7 +180,40 @@ class PretramiteController extends BaseController {
         $pretramite['estado_atencion'] = 1;
         $pretramite['fecha_pretramite'] = date('Y-m-d H:i:s');
         $pretramite['usuario_created_at'] = Auth::user()->id;
-		$pretramite->save();
+
+
+		$cantidad=true;
+		$conteo=0;
+		$conteoMax=10;
+		
+		while ( $cantidad==true ) {
+			$cantidad=false;
+			try {
+				$pretramite->save();
+			} catch (Exception $e) {
+				$d=explode("duplicate",strtolower($e));
+				if(count($d)>1){
+					$cantidad=true;
+					$pretramite->correlativo++;
+					$codigo->correlativo=str_pad($pretramite->correlativo,6,"0",STR_PAD_LEFT);
+				}
+				else{
+					$conteo=$conteoMax+1;
+				}
+			}
+			$conteo++;
+			if($conteo==$conteoMax){
+				$cantidad=false;
+			}
+		}
+
+		if( $conteo >= 10 ){
+			DB::rollback();
+			return  array(
+					'rst'=>2,
+					'msj'=>'Problemas al generar el correlativo, comuniquese con el área de TI'
+				);
+		}
 		
 		$persona = Persona::find($array_data->persona_id);
 		$persona->telefono = $array_data->usertelf2;
