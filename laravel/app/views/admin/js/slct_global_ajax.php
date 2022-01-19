@@ -416,6 +416,7 @@ var msjG = {
 };
 
 var masterG ={
+    nroG: 0,
     change_skin:function(cls) {
         $.each(my_skinsG, function (i) {
           $("body").removeClass(my_skinsG[i]);
@@ -559,9 +560,23 @@ var masterG ={
         te = String.fromCharCode(tecla); 
         return patron.test(te);
     },
-    validaLetras:function(e) { // 1
+    validaDatosEvento:function(t,evento){ 
+        r = false;
+        ( $.trim( t.value ) != '') ? r = true : r = false;
+        evento(t,r);
+    },
+    validaEmailEvento: (t, max, evento)=> {
+        if( t.value.length >= max ) return evento(t,false);;
+        
+        patron = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        if( !t.value.match(patron) ) return evento(t,false);
+
+        return evento(t,true);
+    },
+    validaLetras:function(e, t, max) { // 1
         tecla = (document.all) ? e.keyCode : e.which; // 2
         if (tecla==8 || tecla==0) return true;//8 barra, 0 flechas desplaz
+        if( typeof(max) != 'undefined' && typeof(t) != 'undefined' && t.value.length >= max )return false;
         patron =/[A-Za-zñÑáéíóúÁÉÍÓÚ\s]/; // 4 ,\s espacio en blanco, patron = /\d/; // Solo acepta números, patron = /\w/; // Acepta números y letras, patron = /\D/; // No acepta números, patron =/[A-Za-z\s]/; //sin ñÑ
         te = String.fromCharCode(tecla); // 5
         return patron.test(te); // 6
@@ -580,6 +595,25 @@ var masterG ={
         te = String.fromCharCode(tecla); // 5
         return patron.test(te); // 6
     },
+    validaDecimalMaxEvento:function(t, max, evento) { // 1
+        pos=t.value.indexOf('.');
+        if( pos!= -1 && t.value!='' && t.value.substring(pos+1).length>=2 ){
+          t.value = parseFloat(t.value).toFixed(2);
+        }
+        val1 = t.value.split(".")[0];
+        val2 = '';
+        if( pos != -1 ){
+            val2 = '.'+t.value.split(".")[1];
+        }
+
+        patron = "^[0-9]{1,"+ max +"}(\.[0-9]{0,2})?$"; // Solo acepta números
+        if( !t.value.match(patron) ) return evento(t,false);
+
+        patron2 = "^[0-9]{1,"+ max +"}$";
+        if( !val1.match(patron2) ) return evento(t,false);
+
+        return evento(t,true);
+    },
     validaDecimal:function(e,t) { // 1
         tecla = (document.all) ? e.keyCode : e.which; // 2
         pos=t.value.indexOf('.');
@@ -588,6 +622,7 @@ var masterG ={
         if (tecla <= 47 || tecla >= 58) return false;
         patron = /\d/; // Solo acepta números
         te = String.fromCharCode(tecla); // 5
+        masterG.nroG = t.value;
         return patron.test(te);
     },
     DecimalMax:function(t,n){

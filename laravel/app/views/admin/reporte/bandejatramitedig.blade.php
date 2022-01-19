@@ -239,89 +239,118 @@ table>tbody>tr>td{
                                             </a> */ ?>
                                             </h1>
                                         </div>
-                                        <div class="col-sm-12">
-                                            <div class="col-sm-4">
-                                                <label class="control-label">Nro Trámite:</label>
-                                                <input type="text" class="form-control" id="txt_id_doc" readonly>
-                                            </div>
-                                            <!-- 
-                                            <div class="col-sm-4">
-                                                <label class="control-label">Solicitante:</label>
-                                                <input type="text" class="form-control" id="txt_solicitante" readonly>
-                                            </div>
-                                            -->
-                                            <div class="col-sm-4">
-                                                <label class="control-label">Area:</label>
-                                                <input type="text" class="form-control" id="txt_area" readonly>
-                                            </div>
-                                            
-                                            <div class="col-sm-4">
-                                                <label class="control-label">Proceso:</label>
-                                                <input type="text" class="form-control" id="txt_flujo" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            </br>
-                                        </div>
-                                        <div class="col-sm-12">                                            
-                                            <!-- 
-                                            <div class="col-sm-4">
-                                                <label class="control-label">Area:</label>
-                                                <input type="text" class="form-control" id="txt_area" readonly>
-                                            </div>
-                                            -->
-                                            <div class="col-sm-1">
-                                                <label class="control-label">Paso:</label>
-                                                <input type="text" class="form-control" id="txt_orden" readonly>
-                                            </div>
-                                            <div class="col-sm-1">
-                                                <label class="control-label">Tiempo:</label>
-                                                <input type="text" class="form-control" id="txt_tiempo" readonly>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label class="control-label">Fecha Inicio:</label>
-                                                <input type="text" class="form-control" id="txt_fecha_inicio" readonly>
-                                            </div>
-                                            
-                                            <div class="col-sm-2">
-                                                <label class="control-label">Tiempo Final:</label>
-                                                <input type="text" class="form-control" id="txt_respuesta" name="txt_respuesta" readonly>
-                                            </div>
 
-                                            <div class="col-sm-2" style="display:none;">
-                                                <label class="control-label">Responsable de la Actividadd:</label>
-                                                <?php
-                                                    if( Auth::user()->rol_id==8 OR Auth::user()->rol_id==9 ){
-                                                ?>
-                                                        <select id="slct_persona" data-id="0" onChange="ActualizarResponsable(this.value)"></select>
-                                                <?php
-                                                    }
-                                                    else{
-                                                ?>
-                                                        <div id="slct_persona"></div>
-                                                <?php
-                                                    }
-                                                ?>
-                                                
+                                        <div class="col-md-12 col-lg-10 DatosPersonalizadosG">
+                                            <div class="box box-warning">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">DATOS PERSONALIZADOS</h3>
+                                                    <a class="btn btn-sm btn-info" id="CamposG">
+                                                        <i class="fa fa-refresh fa-lg"></i>
+                                                        .::Actualizar::.
+                                                    </a>
+                                                    <div class="box-tools pull-right">
+                                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="box-body row">
+                                                </div>
                                             </div>
-
-                                            <div class="col-sm-4">
-                                                <label class="control-label">Sumilla:</label>
-                                                <textarea type="text" class="form-control" id="txt_sumilla" readonly></textarea>
-                                            </div>
-
                                         </div>
+                                        
                                         <div class="col-sm-12">
-                                            </br>
+                                            <div class="box box-warning">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">INFORMACIÓN DE LA ACTIVIDAD</h3>
+
+                                                    <div class="box-tools pull-right">
+                                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="box-body row" style="">
+                                                    <div class="col-sm-12">
+                                                        <div class="col-sm-4">
+                                                            <label class="control-label">Nro Trámite:</label>
+                                                            <input type="text" class="form-control" id="txt_id_doc" readonly>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label class="control-label">Area:</label>
+                                                            <input type="text" class="form-control" id="txt_area" readonly>
+                                                        </div>
+                                                        
+                                                        <div class="col-sm-4">
+                                                            <label class="control-label">Proceso:</label>
+                                                            <input type="text" class="form-control" id="txt_flujo" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="col-sm-1">
+                                                            <label class="control-label">Actividad:</label>
+                                                            <input type="text" class="form-control" id="txt_orden" readonly>
+                                                        </div>
+                                                        <div class="col-sm-1">
+                                                            <label class="control-label">Tiempo:</label>
+                                                            <input type="text" class="form-control" id="txt_tiempo" readonly>
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label">Fecha Inicio:</label>
+                                                            <input type="text" class="form-control" id="txt_fecha_inicio" readonly>
+                                                        </div>
+                                                        
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label">Tiempo Final:</label>
+                                                            <input type="text" class="form-control" id="txt_respuesta" name="txt_respuesta" readonly>
+                                                        </div>
+
+                                                        <div class="col-sm-2" style="display:none;">
+                                                            <label class="control-label">Responsable de la Actividadd:</label>
+                                                            <?php
+                                                                if( Auth::user()->rol_id==8 OR Auth::user()->rol_id==9 ){
+                                                            ?>
+                                                                    <select id="slct_persona" data-id="0" onChange="ActualizarResponsable(this.value)"></select>
+                                                            <?php
+                                                                }
+                                                                else{
+                                                            ?>
+                                                                    <div id="slct_persona"></div>
+                                                            <?php
+                                                                }
+                                                            ?>
+                                                            
+                                                        </div>
+
+                                                        <div class="col-sm-4">
+                                                            <label class="control-label">Sumilla:</label>
+                                                            <textarea type="text" class="form-control" id="txt_sumilla" readonly></textarea>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+
                                         <div class="col-sm-12">
                                             <div class="sectionmicro">
-                                                <div class="col-sm-3 format">
-                                                    <label class="control-label"><u>DATOS DEL SOLICITANTE</u></label>
-                                                    <div><b>Nombre y Apellido: </b><span id="ptra_nombre"></span></div>
-                                                    <div><b>Celular: </b><span id="ptra_celular"></span></div>
-                                                    <div><b>Dirección: </b><span id="ptra_direccion"></span></div>
+
+                                                <div class="col-sm-3">
+                                                    <div class="box box-warning">
+                                                        <div class="box-header with-border">
+                                                            <h3 class="box-title">DATOS DEL SOLICITANTE</h3>
+
+                                                            <div class="box-tools pull-right">
+                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body" style="">
+                                                            <div><b>Nombre y Apellido: </b><span id="ptra_nombre"></span></div>
+                                                            <div><b>Celular: </b><span id="ptra_celular"></span></div>
+                                                            <div><b>Dirección: </b><span id="ptra_direccion"></span></div>
+                                                        </div>
+                                                    </div>
                                                 </div> 
+
                                                 <div class="col-sm-2 text-right">
                                                     <label class="control-label">Sub Procesos:</label>
                                                 </div>    
@@ -387,23 +416,23 @@ table>tbody>tr>td{
                                                 </div>
 
                                                 <table class="table table-bordered" id="tbldetalleverbo">
-                                                <thead class="bg-info">
+                                                <thead class="">
                                                     <tr>
-                                                        <th style="text-align:center" rowspan="2">Nro</th>
-                                                        <th style="text-align:center;width:60px !important;" rowspan="2">¿cond- icional?</th>
-                                                        <th style="text-align:center" rowspan="2">Rol que Realiza</th>
-                                                        <th style="text-align:center" colspan="3">Acciones a Realizar</th>
-                                                        <th style="text-align:center" colspan="2">Acciones Realizadas</th>
-                                                        <th style="text-align:center;width:150px !important;" rowspan="2">Persona</th>
-                                                        <th style="text-align:center" rowspan="2">Fecha</th>
-                                                        <th style="text-align:center" rowspan="2">[-]</th>
+                                                        <th class="bg-info" style="text-align:center" rowspan="2">Nro</th>
+                                                        <th class="bg-info" style="text-align:center;width:60px !important;" rowspan="2">¿cond- icional?</th>
+                                                        <th class="bg-info" style="text-align:center" rowspan="2">Rol que Realiza</th>
+                                                        <th class="bg-info" style="text-align:center" colspan="3">Acciones a Realizar</th>
+                                                        <th class="bg-danger" style="text-align:center" colspan="2">Acciones Realizadas</th>
+                                                        <th class="bg-danger" style="text-align:center;width:150px !important;" rowspan="2">Persona</th>
+                                                        <th class="bg-danger" style="text-align:center" rowspan="2">Fecha</th>
+                                                        <th class="bg-danger" style="text-align:center" rowspan="2">[-]</th>
                                                     </tr>
                                                     <tr>
-                                                        <th style="text-align:center">Verbo</th>
-                                                        <th style="text-align:center">Tipo Documento</th>
-                                                        <th style="text-align:center;width:250px !important;">Descripcion</th>
-                                                        <th style="text-align:center; width: 300px;">Documento Generado</th>
-                                                        <th style="text-align:center">Observaciones</th>
+                                                        <th class="bg-info" style="text-align:center">Verbo</th>
+                                                        <th class="bg-info" style="text-align:center">Tipo Documento</th>
+                                                        <th class="bg-info" style="text-align:center;width:250px !important;">Descripcion</th>
+                                                        <th class="bg-danger" style="text-align:center; width: 300px;">Documento Generado</th>
+                                                        <th class="bg-danger" style="text-align:center">Observaciones</th>
                                                         <!--th style="text-align:center">Adjuntar Doc. Generado</th-->
                                                     </tr>
                                                 </thead>

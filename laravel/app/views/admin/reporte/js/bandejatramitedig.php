@@ -329,6 +329,8 @@ mostrarDetalleHTML=function(datos){
     var filtro={estado:1};
     slctGlobal.listarSlct2('documento','cbotipoDoc',filtro);
     slctGlobal.listarSlct2('rol','cboRoles',filtro);
+    var data = {area_id: datos.area_id, ruta_flujo_id: datos.ruta_flujo_id}
+    Validar.mostrarCampos(data,mostrarCamposHTML);
     /*Bandeja.poblarCombo('documento','cbotipoDoc',filtro,HTMLCombo);
     Bandeja.poblarCombo('rol','cboRoles',filtro,HTMLCombo);*/
     /*add new ruta detalle verbo*/
@@ -664,6 +666,178 @@ mostrarDetalleHTML=function(datos){
     hora();
     $("#txt_observacion").attr('disabled','true');
 
+}
+
+mostrarCamposHTML = (result) => {
+    $(".DatosPersonalizadosG").addClass('hidden');
+    $(".DatosPersonalizadosG .box-body").html('');
+
+    $.each(result,function(index,r){
+        campo = '';
+        subtitulo = '';
+        color = 'error';
+        icono = 'remove';
+        html = '';
+        lista = $.trim( r.lista ).split("*");
+
+        if( index == 0 ){
+            $(".DatosPersonalizadosG").removeClass('hidden');
+        }
+
+        if( r.tipo == 0 ){
+            campo = r.campo.split("/")[0];
+            sub_titulo = r.campo.split("/")[1];
+            col = 12;
+        }
+        
+        if( r.tipo == 0 ){
+            html = 
+                '<div class="col-sm-12 bg-info" style="margin: 10px 0px 10px 0px">'+
+                    '<input type="hidden" name="ruta_flujo_campo_id[]" value="'+ r.id +'">'+
+                    '<h5 class="text-center"><b>'+ campo +'</b> '+
+                        '<small style="color:red">'+ sub_titulo +'</small>'+
+                    '</h5>'+
+                    '<hr style="border:dotted;">'+
+                '</div>';
+        }
+        else{
+            campogenerado = '<input type="text" class="form-control" value="'+ r.valor +'" disabled>';
+
+            if( r.modificar == 1 ){
+                if( r.tipo != 6 ){
+                    if( r.obligar == 0 ){
+                        color = 'warning';
+                        icono = 'warning-sign';
+                    }
+
+                    if( r.valor != '' ){
+                        color = 'success';
+                        icono = 'ok';
+                    }
+
+                    onKey = ''; readOnly = ''; fecha  = ''; formatoFecha = ''; minView= 3; maxView= 4; startView= 3;
+                    
+                    if( r.tipo == 1 ){
+                        onKey = ' onKeyUp="masterG.validaEmailEvento(this, '+ r.capacidad +', cambiarColor)" ';
+                    }
+                    else if( r.tipo == 2 ){
+                        onKey = ' onKeyPress="return masterG.validaDecimal(event, this)" ';
+                        onKey += ' onKeyUp="masterG.validaDecimalMaxEvento(this, '+ r.capacidad +', cambiarColor)" ';
+                    }
+                    else if( r.tipo >= 3 && r.tipo <= 5 ){
+                        fecha = 'fecha'; 
+                        readOnly = 'readonly';
+                        if( r.tipo == 3 ){
+                            formatoFecha = 'yyyy-mm-dd';
+                            minView= 2;
+                            maxView= 4;
+                            startView= 2;
+                        }
+                        else if( r.tipo == 4 ){
+                            formatoFecha = 'yyyy-mm';
+                            minView= 3;
+                            maxView= 4;
+                            startView= 3;
+                        }
+                        else if( r.tipo == 5 ){
+                            formatoFecha = 'yyyy';
+                            minView= 4;
+                            maxView= 4;
+                            startView= 4;
+                        }
+                        onKey = ' onChange="masterG.validaDatosEvento(this, cambiarColor)" ';
+                    }
+                    else if( r.tipo == 7 ){
+                        onKey = ' onKeyPress="return masterG.validaNumerosMax(event, this, '+ r.capacidad +')" ';
+                        onKey += ' onKeyUp="masterG.validaDatosEvento(this, cambiarColor)" ';
+                    }
+                    else if( r.tipo == 8 ){
+                        onKey = ' onKeyPress="return masterG.validaLetras(event, this, '+ r.capacidad +')" ';
+                        onKey += ' onKeyUp="masterG.validaDatosEvento(this, cambiarColor)" ';
+                    }
+                    campogenerado = 
+                            '<div id="campo'+ r.id +'" class="has-'+ color +' has-feedback">'+
+                                '<input type="text" class="form-control '+ fecha +'" value="'+ r.valor +'"'+ onKey + readOnly +
+                                    ' data-id="'+ r.id +'"'+
+                                    ' data-capacidad="'+ r.capacidad +'"' +
+                                    ' data-obligar="'+ r.obligar +'"' +
+                                '>'+
+                                '<span class="glyphicon glyphicon-'+ icono +' form-control-feedback"></span>'+
+                            '</div>';
+                }
+                else{
+                    options = '';
+                    for (let i = 0; i < lista.length; i++) {
+                        selected = '';
+                        if( r.valor != '' && r.valor == lista[i] ){
+                            selected = 'selected';
+                        }
+                        options+='<option value="'+ lista[i] +'" '+ selected +'>'+ lista[i] +'</option>';
+                    }
+
+                    onKey = ' onChange="masterG.validaDatosEvento(this, cambiarColor)" ';
+
+                    campogenerado = 
+                        '<div id="campo'+ r.id +'" class="form-group has-'+ color +' has-feedback">'+
+                            '<select class="form-control" '+ onKey +
+                            ' data-id="'+ r.id +'"'+
+                            ' data-capacidad="'+ r.capacidad +'"' +
+                            ' data-obligar="'+ r.obligar +'"' +
+                        '>'+
+                                '<option value=""> .::Seleccione::. </option>'+
+                                options +
+                            '</select>'+
+                            '<span class="glyphicon glyphicon-'+ icono +' form-control-feedback"></span>'+
+                        '</div>';
+                }
+            }
+
+            html =
+                '<div class="col-sm-'+ r.col +'">'+
+                    '<input type="hidden" name="ruta_flujo_campo_id[]" value="'+ r.id +'">'+
+                    '<label>'+ r.campo +':</label>'+
+                    campogenerado
+                '</div>';
+        }
+        
+        $(".DatosPersonalizadosG .box-body").append(html);
+
+        if( fecha != '' ){
+            $("#campo"+ r.id +" .fecha").datetimepicker({
+                format: formatoFecha,
+                language: 'es',
+                showMeridian: false,
+                time: false,
+                minView: minView,
+                maxView: maxView,
+                startView: startView, // 1->hora, 2->dia , 3->mes
+                autoclose: true,
+                todayBtn: false
+            });
+        }
+        
+    });
+}
+
+cambiarColor = (t, estado)=>{
+    id = t.dataset.id;
+    obligar = t.dataset.obligar;
+    $("#campo"+id).removeClass('has-error').removeClass('has-success').removeClass('has-warning');
+    $("#campo"+id+" span").removeClass('glyphicon-remove').removeClass('glyphicon-ok').removeClass('glyphicon-warning-sign');
+    if ( estado ) {
+        $("#campo"+id).addClass('has-success');
+        $("#campo"+id+" span").addClass('glyphicon-ok');
+    }
+    else{
+        if( t.value == '' && obligar == 0 ){
+            $("#campo"+id).addClass('has-warning');
+            $("#campo"+id+" span").addClass('glyphicon-warning-sign');
+        }
+        else{
+            $("#campo"+id).addClass('has-error');
+            $("#campo"+id+" span").addClass('glyphicon-remove');
+        }
+    }
 }
 
 Liberar=function(txt){

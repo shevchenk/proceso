@@ -27,6 +27,22 @@ class ClasificadorTramiteController extends \BaseController
         }
     }
 
+    public function postMostrarcampos()
+    {
+        if ( Request::ajax() ) {
+            $a      = new RutaFlujoCampo;
+            $lista = $a->Mostrarcampos();
+
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'msj'   => 'Campos listados',
+                    'data' => $lista
+                )
+            );
+        }
+    }
+
     public function postListarcampos()
     {
         if ( Request::ajax() ) {

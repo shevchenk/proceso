@@ -43,6 +43,37 @@ class RutaFlujoCampo extends \Eloquent {
         return $lista;
     }
 
+    public function Mostrarcampos(){
+        $r = Request::all();
+        $r['estado'] = 1;
+        
+        $campos=
+            DB::table('rutas_flujo_campos AS rfc')
+            ->join('rutas_flujo_campos_areas AS rfca', function($join) use($r) {
+                $join->on('rfca.ruta_flujo_campo_id', '=', 'rfc.id');
+                if( isset( $r['area_id'] ) ){
+                    $join->where('rfca.area_id', '=', $r['area_id']);
+                }
+                $join->where('rfca.estado', '=', '1');
+            })
+            ->select('rfc.id', 'rfc.campo', 'rfc.col', 'rfc.obligar', 'rfc.capacidad', 'rfc.tipo', 'rfc.lista', 'rfca.modificar', 'rfc.lista AS valor')
+            ->where( 
+                function($query) use( $r ){
+                    if ( isset( $r['estado'] ) ) {
+                        $query->where('rfc.estado','=','1');
+                    }
+
+                    if ( isset( $r['ruta_flujo_id'] ) ) {
+                        $query->where('rfc.ruta_flujo_id','=', $r['ruta_flujo_id']);
+                    }
+                }
+            )
+            ->orderBy('rfc.id')
+            ->get();
+                
+        return $campos;
+    }
+
     public function Listarcampos(){
         $r = Request::all();
         $r['estado'] = 1;

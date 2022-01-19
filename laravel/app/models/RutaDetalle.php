@@ -56,7 +56,7 @@ class RutaDetalle extends Eloquent
             CONCAT(t.nombre," : ",rd.dtiempo) tiempo, rd.tiempo_id idtiempo,rd.motivo_edit motivo,
             rd.observacion,r.ruta_flujo_id, IFNULL(rd.persona_responsable_id,"") persona_responsable_id,
             IFNULL(CONCAT(p2.paterno," ",p2.materno,", ",p2.nombre),"") persona_responsable,
-            a.nombre AS area,f.nombre AS flujo,
+            a.id area_id, a.nombre AS area,f.nombre AS flujo,
             tr.id_union AS id_doc,tr.id id_tr,
             rd.norden, IFNULL(rd.fecha_inicio,"") AS fecha_inicio,
             CONCAT( ts.nombre,": ",

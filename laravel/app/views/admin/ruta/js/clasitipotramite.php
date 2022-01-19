@@ -461,7 +461,7 @@ AddCampo = ( id, r ) => {
             "<tr>"+
                 "<td colspan='4' class='text-center text-bold lbl_campo alert-warning'>"+ 
                     campo + " / " + sub_titulo +
-                    "<input type='hidden' name='tipo[]' value='5'>"+
+                    "<input type='hidden' name='tipo[]' value='0'>"+
                     "<input type='hidden' name='capacidad[]' value='20'>"+
                     "<input type='hidden' name='lista[]' value=''>"+
                 "</td>"+
