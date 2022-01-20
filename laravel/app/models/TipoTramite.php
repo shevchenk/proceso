@@ -17,7 +17,7 @@ class TipoTramite extends Base
     }
     public static function getCargar( $array )
     {
-        $sSql=" SELECT tt.id, tt.nombre_tipo_tramite nombre, tt.estado, tt.solicitante
+        $sSql=" SELECT tt.id, tt.nombre_tipo_tramite nombre, tt.estado, tt.solicitante, tt.inicia
                 FROM tipo_tramite tt
                 WHERE 1=1 ";
         $sSql.= $array['where'].

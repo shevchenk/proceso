@@ -26,6 +26,16 @@
           </div>
 
           <div class="form-group">
+            <label class="control-label">Quien inicia el trámite::</label>
+            <select class="form-control" name="slct_inicia" id="slct_inicia">
+                <option value="">.::Seleccione::.</option>
+                <option value="Ambos">Ambos</option>
+                <option value='Cliente'>Cliente</option>
+                <option value='Institución'>Institución</option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label class="control-label">Estado:
             </label>
             <select class="form-control" name="slct_estado" id="slct_estado">

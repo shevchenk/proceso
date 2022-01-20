@@ -9,9 +9,10 @@ $(document).ready(function() {
         3: Color Cabecera
     */
    
-    slctGlobalHtml('slct_estado, #slct_solicitante','simple');
+    slctGlobalHtml('slct_estado, #slct_solicitante, #slct_inicia','simple');
     var idG={   nombre        :'onBlur|Nombre Tipo de Servicio|#DCE6F1', //#DCE6F1
                 solicitante   :'1|Quien es el solicitante|#DCE6F1',
+                inicia        :'1|Quien inicia el trámite|#DCE6F1',
                 estado        :'2|Estado|#DCE6F1', //#DCE6F1
              };
 
@@ -47,6 +48,7 @@ $(document).ready(function() {
             $('#form_tipotramites_modal #txt_nombre').val( TipoTramitesG.nombre );
             $('#form_tipotramites_modal #slct_estado').val( TipoTramitesG.estado );
             $('#form_tipotramites_modal #slct_solicitante').val( TipoTramitesG.solicitante );
+            $('#form_tipotramites_modal #slct_inicia').val( TipoTramitesG.inicia );
             $("#form_tipotramites_modal").append("<input type='hidden' value='"+TipoTramitesG.id+"' name='id'>");
         }
              $('#form_tipotramites_modal select').multiselect('rebuild');
@@ -64,7 +66,8 @@ BtnEditar=function(btn,id){
     TipoTramitesG.id=id;
     TipoTramitesG.nombre=$(tr).find("td:eq(0)").text();
     TipoTramitesG.solicitante=$(tr).find("td:eq(1)").text();
-    TipoTramitesG.estado=$(tr).find("td:eq(2)>span").attr("data-estado");
+    TipoTramitesG.inicia=$(tr).find("td:eq(2)").text();
+    TipoTramitesG.estado=$(tr).find("td:eq(3)>span").attr("data-estado");
     $("#BtnEditar").click();
 };
 
@@ -84,6 +87,9 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         return row.solicitante;
     }
     if(typeof(fn)!='undefined' && fn.col==2){
+        return row.inicia;
+    }
+    if(typeof(fn)!='undefined' && fn.col==3){
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" onClick="activar('+row.id+')" data-estado="'+row.estado+'" class="btn btn-danger">Inactivo</span>';
         if(row.estado==1){
