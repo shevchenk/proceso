@@ -10,7 +10,7 @@ class TipoTramiteController extends \BaseController
         $this->_errorController = $ErrorController;
     }
     
-           public function postListartipotramite()
+    public function postListartipotramite()
     {
         if ( Request::ajax() ) {
             

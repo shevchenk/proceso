@@ -37,6 +37,12 @@ class TipoTramite extends Base
 
                         if ( Input::has('solicitante') ) {
                             $query->where('solicitante','=', Input::get('solicitante'));
+                            if ( Input::has('tipo') AND  Input::get('tipo') == 'Ingreso') {
+                                $query->where('inicia','!=', 'Institución');
+                            }
+                            elseif ( Input::has('tipo') AND  Input::get('tipo') == 'Salida') {
+                                $query->where('inicia','!=', 'Cliente');
+                            }
                         }
                     }
                 )

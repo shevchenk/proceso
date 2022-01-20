@@ -125,8 +125,9 @@ $(document).ready(function() {
         }
 
         $("#cbo_tipotramite, #cbo_tipodoc").multiselect('destroy');
-        data = {estado:1, tipo:'Ingreso', solicitante: solicitante};
+        data = {estado:1, tipo:'Salida', solicitante: solicitante};
         slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);
+        data = {estado:1, tipo:'Ingreso', solicitante: solicitante};
         slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data);
 
     });
