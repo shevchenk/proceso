@@ -125,6 +125,14 @@ validaTipoTramites = function(){
         alert("Ingrese Nombre de TipoTramite");
         r=false;
     }
+    else if( $("#form_tipotramites_modal #slct_solicitante").val()=='' ){
+        alert("Seleccione Quien es el solicitante");
+        r=false;
+    }
+    else if( $("#form_tipotramites_modal #slct_inicia").val()=='' ){
+        alert("Seleccione Quien inicia el trámite");
+        r=false;
+    }
     return r;
 };
 </script>

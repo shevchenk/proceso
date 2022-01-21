@@ -17,7 +17,7 @@
           </div>
 
           <div class="form-group">
-            <label class="control-label">Quien es el solicitante::</label>
+            <label class="control-label">Quien es el solicitante:</label>
             <select class="form-control" name="slct_solicitante" id="slct_solicitante">
                 <option value="">.::Seleccione::.</option>
                 <option value='Cliente'>Cliente</option>
@@ -26,7 +26,7 @@
           </div>
 
           <div class="form-group">
-            <label class="control-label">Quien inicia el trámite::</label>
+            <label class="control-label">Quien inicia el trámite:</label>
             <select class="form-control" name="slct_inicia" id="slct_inicia">
                 <option value="">.::Seleccione::.</option>
                 <option value="Ambos">Ambos</option>
