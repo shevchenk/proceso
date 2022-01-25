@@ -12,6 +12,18 @@ $(document).ready(function() {
         2: Descripción de cabecera
         3: Color Cabecera
     */
+    //$( "#add_campo" ).sortable();
+    $('#add_campo').sortable({
+        dragClass: 'highlight',
+        animation: 150
+    });
+    $('#add_campo2').sortable({
+        dragClass: 'highlight',
+        animation: 150
+    })
+
+
+    //$( "#add_campo" ).disableSelection();
        data = {estado:1};
     var ids = [];
     slctGlobal.listarSlct('software','slct_software_id_modal','simple',ids,data);
@@ -450,7 +462,7 @@ AddCampo = ( id, r ) => {
                     '<input type="hidden" class="campo_id" name="campo_id[]" value="'+ id2 +'">'+
                     '<input type="hidden" name="obligar[]" value="0">'+
 
-                    '<h5><b>'+ campo +'</b> '+
+                    '<h5 class="text-center"><b>'+ campo +'</b> '+
                         '<small style="color:red"> '+ sub_titulo +'</small>'+
                         '<span class="btn btn-danger" onClick="QuitarCampo('+ id +')"><i class="fa fa-trash"></i></span>'+
                     '</h5>'+
@@ -458,7 +470,7 @@ AddCampo = ( id, r ) => {
                 '</div>';
 
         html2 = 
-            "<tr>"+
+            "<tr class='campo"+ id +"'>"+
                 "<td colspan='4' class='text-center text-bold lbl_campo alert-warning'>"+ 
                     campo + " / " + sub_titulo +
                     "<input type='hidden' name='tipo[]' value='0'>"+

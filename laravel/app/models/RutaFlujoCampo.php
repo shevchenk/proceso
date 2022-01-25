@@ -6,9 +6,14 @@ class RutaFlujoCampo extends \Eloquent {
     public function Registrarcampos(){
         $r = Request::all();
         $id = $r['id'];
-        $recorrido = count($r['campo_id']);
         $clasificadorTramite = ClasificadorTramite::find( $id );
         $lista = array();
+        $orden = 0.0;
+        $orden_aux = 0;
+        $recorrido = 0;
+        if( isset($r['campo_id']) ){
+            $recorrido = count($r['campo_id']);
+        }
 
         DB::beginTransaction();
             $sql = "UPDATE rutas_flujo_campos SET estado = 0, updated_at = now(), usuario_updated_at = ".Auth::user()->id." WHERE clasificador_tramite_id = ".$id;
@@ -32,6 +37,14 @@ class RutaFlujoCampo extends \Eloquent {
             $RutaFlujoCampo->tipo = $r['tipo'][$i];
             $RutaFlujoCampo->lista = $r['lista'][$i];
             
+            if( $r['tipo'][$i] == 0 ){
+                $orden_aux ++ ;
+                $orden = $orden_aux;
+            }
+            else{
+                $orden += 0.01;
+            }
+            $RutaFlujoCampo->orden = $orden;
             
             $RutaFlujoCampo->estado = 1;
             $RutaFlujoCampo->save();
@@ -76,7 +89,7 @@ class RutaFlujoCampo extends \Eloquent {
                 }
             )
             ->groupBy('rfc.id')
-            ->orderBy('rfc.id')
+            ->orderBy('rfc.orden')
             ->get();
                 
         return $campos;
@@ -99,7 +112,7 @@ class RutaFlujoCampo extends \Eloquent {
                     $query->where('clasificador_tramite_id', '=', $id);
                 }
             )
-            ->orderBy('id')
+            ->orderBy('orden')
             ->get();
                 
         return $campos;

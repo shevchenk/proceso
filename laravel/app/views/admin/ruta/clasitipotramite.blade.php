@@ -8,6 +8,7 @@
 {{ HTML::script('lib/daterangepicker/js/daterangepicker.js') }}
 {{ HTML::script('lib/bootstrap-multiselect/dist/js/bootstrap-multiselect.js') }}
 
+
 @include( 'admin.js.slct_global_ajax' )
 @include( 'admin.js.slct_global' )
 <!--    @include( 'admin.ruta.js.ruta_ajax' )-->
@@ -206,16 +207,20 @@
                                     </a>
                                 </div>
                             </div>
+                            <div class="col-sm-12 text-center bg-navy"><h4>Diseño de Campos</h4></div>
                             <div class="row" id="add_campo"></div>
                             <br><hr>
                             <div class="row table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">Campo</th>
-                                            <th class="text-center">Tipo</th>
-                                            <th class="text-center">Capacidad</th>
-                                            <th class="text-center">Lista separar por *</th>
+                                            <th colspan='4' class="text-center bg-navy">Configuración de Campos</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center bg-navy">Campo</th>
+                                            <th class="text-center bg-navy">Tipo</th>
+                                            <th class="text-center bg-navy">Capacidad</th>
+                                            <th class="text-center bg-navy">Lista separar por *</th>
                                         </tr>
                                     </thead>
                                     <tbody id="add_campo2"></tbody>

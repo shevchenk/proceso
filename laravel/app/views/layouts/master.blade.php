@@ -40,7 +40,10 @@
             {{ HTML::script('js/utils.js') }}
             {{ HTML::script('lib/perfect-scrollbar/perfect-scrollbar.js') }}
             {{ Html::script('lib/sweetalert-master/dist/sweetalert.min.js') }}
-
+            
+            {{ Html::script('lib/sortable/sortable.min.js') }}
+            {{ Html::script('lib/sortable/jquery-sortable.js') }}
+            
             {{-- Html::script('lib/gmaps/apigoogle.js') --}}
             {{-- Html::script('lib/gmaps/gmaps.js') --}}
             
