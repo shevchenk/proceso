@@ -449,7 +449,9 @@ mostrarDetalleHTML=function(datos){
     //$('#slct_tipo_respuesta,#slct_tipo_respuesta_detalle').attr('disabled',"true");
     slctGlobal.listarSlct('tiporespuesta','slct_tipo_respuesta','simple',ids,data,0,'#slct_tipo_respuesta_detalle','TR');
     slctGlobal.listarSlct('tiporespuestadetalle','slct_tipo_respuesta_detalle','simple',ids,data,1);
-    
+    var data = {ruta_flujo_id: datos.ruta_flujo_id, ruta_id: datos.ruta_id}
+    Validar.mostrarCampos(data,mostrarCamposHTML);
+
     $("#form_ruta_detalle #txt_fecha_tramite").val(datos.fecha_tramite);
     $("#form_ruta_detalle #txt_sumilla").val(datos.sumilla);
     $("#form_ruta_detalle #txt_solicitante").val(datos.solicitante);
@@ -552,6 +554,61 @@ mostrarDetalleHTML=function(datos){
             
         }
 
+}
+
+mostrarCamposHTML = (result) => {
+    $(".DatosPersonalizadosG").addClass('hidden');
+    $(".DatosPersonalizadosG .box-body").html('');
+
+    $.each(result,function(index,r){
+        campo = '';
+        subtitulo = '';
+        color = 'error';
+        icono = 'remove';
+        html = '';
+        lista = $.trim( r.lista ).split("*");
+        campo_valor = $.trim(r.campo_valor);
+        ruta_campo_id = $.trim(r.ruta_campo_id);
+        if( ruta_campo_id == '' ){
+            ruta_campo_id = 0;
+        }
+
+        if( index == 0 ){
+            $(".DatosPersonalizadosG").removeClass('hidden');
+        }
+
+        if( r.tipo == 0 ){
+            campo = r.campo.split("/")[0];
+            sub_titulo = r.campo.split("/")[1];
+            col = 12;
+        }
+        
+        if( r.tipo == 0 ){
+            html = 
+                '<div class="col-sm-12 bg-info" style="margin: 10px 0px 10px 0px">'+
+                    '<h5 class="text-center"><b>'+ campo +'</b> '+
+                        '<small style="color:red">'+ sub_titulo +'</small>'+
+                    '</h5>'+
+                    '<hr style="border:dotted;">'+
+                '</div>';
+        }
+        else{
+            campogenerado = '<input type="text" class="form-control" value="'+ campo_valor +'" disabled>';
+            ruta_flujo_campo_id = '';
+            ruta_campo = '';
+
+            html =
+                '<div class="col-sm-'+ r.col +'">'+
+                    ruta_flujo_campo_id +
+                    ruta_campo +
+                    '<label>'+ r.campo +':</label>'+
+                    campogenerado
+                '</div>';
+        }
+        
+        $(".DatosPersonalizadosG .box-body").append(html);
+        
+    });
 }
 
 adicionaDetalleVerbo=function(val){

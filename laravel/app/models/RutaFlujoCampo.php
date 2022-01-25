@@ -75,6 +75,7 @@ class RutaFlujoCampo extends \Eloquent {
                     }
                 }
             )
+            ->groupBy('rfc.id')
             ->orderBy('rfc.id')
             ->get();
                 
