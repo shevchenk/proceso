@@ -250,5 +250,29 @@ var Validar={
             }
         });
     },
+    guardarRutaCampos:function(evento){
+        var datos=$("#form_ruta_detalle").serialize().split("txt_").join("").split("slct_").join("").split("_modal").join("");
+        $.ajax({
+            url         : 'clasificadortramite/guardarrutacampos',
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                if(obj.rst==1){
+                    msjG.mensaje("success",obj.msj,3000);
+                    evento(obj.data);
+                }  
+                $(".overlay,.loading-img").remove();
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                msjG.mensaje("danger","Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.",3000);
+            }
+        });
+    },
 }
 </script>

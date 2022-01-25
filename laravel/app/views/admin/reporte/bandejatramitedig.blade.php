@@ -243,8 +243,8 @@ table>tbody>tr>td{
                                         <div class="col-md-12 col-lg-10 DatosPersonalizadosG">
                                             <div class="box box-warning">
                                                 <div class="box-header with-border">
-                                                    <h3 class="box-title">DATOS PERSONALIZADOS</h3>
-                                                    <a class="btn btn-sm btn-info" id="CamposG">
+                                                    <h3 class="box-title" tabindex="0" id="datos_personalizados">DATOS PERSONALIZADOS</h3>
+                                                    <a class="btn btn-sm btn-info" id="btn_actualizar_campos">
                                                         <i class="fa fa-refresh fa-lg"></i>
                                                         .::Actualizar::.
                                                     </a>

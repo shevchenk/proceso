@@ -24,6 +24,7 @@ $(document).ready(function() {
     slctGlobal.listarSlct2('verbo','slct_verbo_modal',data);
     slctGlobal.listarSlct2('documento','slct_documento_modal',data);
     $("#btn_close").click(Close_ruta);
+    $("#btn_actualizar_campos").click(ActualizarCampos);
 
     $('#rutaModal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget); // captura al boton
@@ -329,7 +330,7 @@ mostrarDetalleHTML=function(datos){
     var filtro={estado:1};
     slctGlobal.listarSlct2('documento','cbotipoDoc',filtro);
     slctGlobal.listarSlct2('rol','cboRoles',filtro);
-    var data = {area_id: datos.area_id, ruta_flujo_id: datos.ruta_flujo_id}
+    var data = {area_id: datos.area_id, ruta_flujo_id: datos.ruta_flujo_id, ruta_id: datos.ruta_id}
     Validar.mostrarCampos(data,mostrarCamposHTML);
     /*Bandeja.poblarCombo('documento','cbotipoDoc',filtro,HTMLCombo);
     Bandeja.poblarCombo('rol','cboRoles',filtro,HTMLCombo);*/
@@ -679,6 +680,11 @@ mostrarCamposHTML = (result) => {
         icono = 'remove';
         html = '';
         lista = $.trim( r.lista ).split("*");
+        campo_valor = $.trim(r.campo_valor);
+        ruta_campo_id = $.trim(r.ruta_campo_id);
+        if( ruta_campo_id == '' ){
+            ruta_campo_id = 0;
+        }
 
         if( index == 0 ){
             $(".DatosPersonalizadosG").removeClass('hidden');
@@ -693,7 +699,6 @@ mostrarCamposHTML = (result) => {
         if( r.tipo == 0 ){
             html = 
                 '<div class="col-sm-12 bg-info" style="margin: 10px 0px 10px 0px">'+
-                    '<input type="hidden" name="ruta_flujo_campo_id[]" value="'+ r.id +'">'+
                     '<h5 class="text-center"><b>'+ campo +'</b> '+
                         '<small style="color:red">'+ sub_titulo +'</small>'+
                     '</h5>'+
@@ -701,21 +706,26 @@ mostrarCamposHTML = (result) => {
                 '</div>';
         }
         else{
-            campogenerado = '<input type="text" class="form-control" value="'+ r.valor +'" disabled>';
+            campogenerado = '<input type="text" class="form-control" value="'+ campo_valor +'" disabled>';
+            ruta_flujo_campo_id = '';
+            ruta_campo = '';
 
             if( r.modificar == 1 ){
-                if( r.tipo != 6 ){
-                    if( r.obligar == 0 ){
-                        color = 'warning';
-                        icono = 'warning-sign';
-                    }
+                ruta_flujo_campo_id = '<input type="hidden" name="ruta_flujo_campo_id[]" value="'+ r.id +'">';
+                ruta_campo = '<input type="hidden" id="ruta_campo_id'+ r.id +'" name="ruta_campo_id[]" value="'+ ruta_campo_id +'">';
+                if( r.obligar == 0 ){
+                    color = 'warning';
+                    icono = 'warning-sign';
+                }
 
-                    if( r.valor != '' ){
+                if( r.tipo != 6 ){
+                    
+                    onKey = ''; readOnly = ''; fecha  = ''; formatoFecha = ''; minView= 3; maxView= 4; startView= 3;
+
+                    if( campo_valor != '' ){
                         color = 'success';
                         icono = 'ok';
                     }
-
-                    onKey = ''; readOnly = ''; fecha  = ''; formatoFecha = ''; minView= 3; maxView= 4; startView= 3;
                     
                     if( r.tipo == 1 ){
                         onKey = ' onKeyUp="masterG.validaEmailEvento(this, '+ r.capacidad +', cambiarColor)" ';
@@ -757,20 +767,23 @@ mostrarCamposHTML = (result) => {
                     }
                     campogenerado = 
                             '<div id="campo'+ r.id +'" class="has-'+ color +' has-feedback">'+
-                                '<input type="text" class="form-control '+ fecha +'" value="'+ r.valor +'"'+ onKey + readOnly +
+                                '<input type="text" class="form-control '+ fecha +'" name="campo_valor[]" value="'+ campo_valor +'"'+ onKey + readOnly +
                                     ' data-id="'+ r.id +'"'+
                                     ' data-capacidad="'+ r.capacidad +'"' +
                                     ' data-obligar="'+ r.obligar +'"' +
+                                    ' data-campo="'+ r.campo +'"' +
                                 '>'+
-                                '<span class="glyphicon glyphicon-'+ icono +' form-control-feedback"></span>'+
+                                '<span data-id="'+ r.id +'" class="glyphicon glyphicon-'+ icono +' form-control-feedback"></span>'+
                             '</div>';
                 }
                 else{
                     options = '';
                     for (let i = 0; i < lista.length; i++) {
                         selected = '';
-                        if( r.valor != '' && r.valor == lista[i] ){
+                        if( campo_valor != '' && campo_valor == lista[i] ){
                             selected = 'selected';
+                            color = 'success';
+                            icono = 'ok';
                         }
                         options+='<option value="'+ lista[i] +'" '+ selected +'>'+ lista[i] +'</option>';
                     }
@@ -779,22 +792,24 @@ mostrarCamposHTML = (result) => {
 
                     campogenerado = 
                         '<div id="campo'+ r.id +'" class="form-group has-'+ color +' has-feedback">'+
-                            '<select class="form-control" '+ onKey +
+                            '<select class="form-control" name="campo_valor[]" '+ onKey +
                             ' data-id="'+ r.id +'"'+
                             ' data-capacidad="'+ r.capacidad +'"' +
                             ' data-obligar="'+ r.obligar +'"' +
+                            ' data-campo="'+ r.campo +'"' +
                         '>'+
                                 '<option value=""> .::Seleccione::. </option>'+
                                 options +
                             '</select>'+
-                            '<span class="glyphicon glyphicon-'+ icono +' form-control-feedback"></span>'+
+                            '<span data-id="'+ r.id +'" class="glyphicon glyphicon-'+ icono +' form-control-feedback"></span>'+
                         '</div>';
                 }
             }
 
             html =
                 '<div class="col-sm-'+ r.col +'">'+
-                    '<input type="hidden" name="ruta_flujo_campo_id[]" value="'+ r.id +'">'+
+                    ruta_flujo_campo_id +
+                    ruta_campo +
                     '<label>'+ r.campo +':</label>'+
                     campogenerado
                 '</div>';
@@ -816,6 +831,30 @@ mostrarCamposHTML = (result) => {
             });
         }
         
+    });
+}
+
+ActualizarCampos = () => {
+        r = true;
+    $(".DatosPersonalizadosG .glyphicon-remove").each( function(index){
+        id = this.dataset.id;
+        campo = $("#campo"+ id +" .form-control").attr("data-campo");
+        if( r == true ){
+            msjG.mensaje("warning","Se requiere dato del campo: "+ campo,5000);
+            $("#campo"+ id +" .form-control").focus();
+        }
+        r = false;
+    });
+
+    if( r == true ){
+        Validar.guardarRutaCampos(guardarRutaCamposHTML);
+    }
+
+}
+
+guardarRutaCamposHTML = (result) => {
+    $.each( result.ruta_flujo_campo_id ,function(index, el) {
+        $("#ruta_campo_id" + el).val( result.ruta_campo_id[index] );
     });
 }
 
@@ -859,7 +898,14 @@ guardarTodo=function(){
     var codauxd="";
     var validacheck=0;
 
-    if( $("#btn_siguiente_rd").is(':visible') && $('#form_ruta_detalle #slct_micro option').length > 1 ){
+    
+    if( $(".DatosPersonalizadosG .glyphicon-remove").length > 0 && alerta == false ){
+        msjG.mensaje("warning","Registre los datos que contienen una 'X' en DATOS PERSONALIZADOS y/o presione el botón actualizar para validar su registro",8000);
+        $(".DatosPersonalizadosG #datos_personalizados").focus();
+        alerta = true;
+    }
+
+    if( $("#btn_siguiente_rd").is(':visible') && $('#form_ruta_detalle #slct_micro option').length > 1 && alerta == false ){
         msjG.mensaje("warning","Eliga 1 sub proceso y click en Activar Sub Proceso",5000);
         alerta = true;
     }

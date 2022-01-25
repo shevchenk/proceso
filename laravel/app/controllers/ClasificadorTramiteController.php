@@ -59,6 +59,22 @@ class ClasificadorTramiteController extends \BaseController
         }
     }
 
+    public function postGuardarrutacampos()
+    {
+        if ( Request::ajax() ) {
+            $a      = new RutaCampo;
+            $lista = $a->Guardarrutacampos();
+
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'msj'   => 'Campos guardados',
+                    'data' => $lista
+                )
+            );
+        }
+    }
+
     public function postListarcamposareas()
     {
         if ( Request::ajax() ) {

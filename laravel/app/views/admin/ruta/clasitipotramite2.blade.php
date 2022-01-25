@@ -96,9 +96,9 @@
                 </div><!-- /.box-body -->
             </div>
         </form>
-        <form name="form_actividad" id="form_actividad" method="POST" action="" style="display: none">
+        <form name="form_actividad" id="form_actividad" method="POST" action="">
             <input class="form-control mant" type="hidden" name="id" id="id">
-            <div class="row form-group" >
+            <div class="row form-group " style="display: none" >
                 <div class="box-header table-responsive">
                     <div class="col-xs-12">
                         <h3>

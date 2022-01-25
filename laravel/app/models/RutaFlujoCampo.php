@@ -56,7 +56,14 @@ class RutaFlujoCampo extends \Eloquent {
                 }
                 $join->where('rfca.estado', '=', '1');
             })
-            ->select('rfc.id', 'rfc.campo', 'rfc.col', 'rfc.obligar', 'rfc.capacidad', 'rfc.tipo', 'rfc.lista', 'rfca.modificar', 'rfc.lista AS valor')
+            ->leftJoin('rutas_campos AS rc', function($join) use($r) {
+                $join->on('rc.ruta_flujo_campo_id', '=', 'rfc.id');
+                if( isset( $r['ruta_id'] ) ){
+                    $join->where('rc.ruta_id', '=', $r['ruta_id']);
+                }
+                $join->where('rc.estado', '=', '1');
+            })
+            ->select('rfc.id', 'rfc.campo', 'rfc.col', 'rfc.obligar', 'rfc.capacidad', 'rfc.tipo', 'rfc.lista', 'rfca.modificar', 'rc.campo_valor', 'rc.id AS ruta_campo_id')
             ->where( 
                 function($query) use( $r ){
                     if ( isset( $r['estado'] ) ) {
