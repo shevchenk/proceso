@@ -13,7 +13,7 @@
     @include( 'admin.ruta.js.ruta_ajax' )
     @include( 'admin.ruta.js.validar_ajax' )
     @include( 'admin.reporte.js.bandejatramiteconcluarea_ajax' )
-    @include( 'admin.reporte.js.bandejatramiteconcluarea' )
+    @include( 'admin.reporte.js.bandejatramiteconcluflujo' )
 @stop
 <!-- Right side column. Contains the navbar and content of the page -->
 @section('contenido')
@@ -100,8 +100,8 @@
                         </div>
 
                         <div class="col-md-4 col-sm-4 text-center" style="">
-                            <label class="control-label">Área</label>
-                            <select name="slct_areas" id="slct_areas" ><!-- onChange="Bandeja.MostrarAjax();" -->
+                            <label class="control-label">Proceso</label>
+                            <select name="slct_procesos" id="slct_procesos" ><!-- onChange="Bandeja.MostrarAjax();" -->
                             </select>
                         </div>
                         <div class="col-sm-1" style="padding:24px; padding-left: 0px;">

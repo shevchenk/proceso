@@ -161,22 +161,27 @@ class VisualizacionTramite extends Eloquent
     // Reporte de Concluidos por Area
     public static function BandejaTramitesConConclu( $input)
     {
-        if (trim($input['fecha']) != '') {
+        $wher_1=''; $wher_2 = ''; $area_id = ''; $flujo_id = '';
+        if ( isset($input['fecha']) AND trim($input['fecha']) != '') {
             $fecha=explode(" - ",$input['fecha']);
             $wher_1=" AND DATE(rd.dtiempo_final) BETWEEN '".$fecha[0]."' AND '".$fecha[1]."' ";
-        } else {
-            $wher_1='';
         }
 
-        if (trim($input['fecha_ini']) != '') {
+        if ( isset($input['fecha_ini']) AND trim($input['fecha_ini']) != '') {
             $fecha_ini=explode(" - ",$input['fecha_ini']);
             $wher_2 = " AND DATE(rd.fecha_inicio) BETWEEN '".$fecha_ini[0]."' AND '".$fecha_ini[1]."' ";
-        } else {
-            $wher_2 = '';
         }
-        $where = $wher_1.$wher_2;
 
-        $area_id = $input['areas'];
+        
+        if ( isset($input['areas']) AND trim($input['areas']) != '') {
+            $area_id = " AND rd.area_id ='". $input['areas']."' ";
+        }
+
+        if ( isset($input['procesos']) AND trim($input['procesos']) != '') {
+            $flujo_id = " AND r.flujo_id ='". $input['procesos']."' ";
+        }
+        
+        $where = $wher_1.$wher_2.$area_id.$flujo_id;
 
         //$personaId=Auth::user()->id;
         $query="SELECT
@@ -203,7 +208,6 @@ class VisualizacionTramite extends Eloquent
                 '1' AS id,
                 IFNULL(tr.ruc,'') AS ruc,
                 IFNULL(tr.sumilla,'') AS sumilla
-
                 FROM rutas_detalle rd
                 JOIN rutas r ON rd.ruta_id=r.id and r.estado=1
                 JOIN tablas_relacion tr ON r.tabla_relacion_id=tr.id 
@@ -216,7 +220,6 @@ class VisualizacionTramite extends Eloquent
                 WHERE  rd.fecha_inicio IS NOT NULL AND rd.dtiempo_final IS NOT NULL
                 AND rd.estado=1
                 AND rd.condicion=0
-                AND rd.area_id = $area_id   
                 $where 
                 GROUP BY rd.id
                 ORDER BY rd.fecha_inicio DESC, rd.norden DESC";

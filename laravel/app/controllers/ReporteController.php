@@ -905,25 +905,33 @@ class ReporteController extends BaseController
 
    public function getExporttramiteconclu()
     {
-          $fecha = Input::get('fecha');
-          $fecha_ini = Input::get('fecha_ini');
-          $area_id = Input::get('area');
-
-          if (trim($fecha) != '') {
-              $fecha=explode(" - ",$fecha);
+          $fecha = '';
+          $fecha_ini = '';
+          $area_id = '';
+          $proceso = '';
+          $wher_1 = ''; $wher_2 = ''; $wher_3 = ''; $left = ''; $datos = " '' ";
+          if ( Input::has('fecha')) {
+              $fecha=explode(" - ",Input::get('fecha'));
               $wher_1=" AND DATE(rd.dtiempo_final) BETWEEN '".$fecha[0]."' AND '".$fecha[1]."' ";
-          } else {
-              $wher_1='';
           }
 
-          if (trim($fecha_ini) != '') {
-              $fecha_ini=explode(" - ",$fecha_ini);
+          if ( Input::has('fecha_ini') ) {
+              $fecha_ini=explode(" - ",Input::get('fecha_ini'));
               $wher_2 = " AND DATE(rd.fecha_inicio) BETWEEN '".$fecha_ini[0]."' AND '".$fecha_ini[1]."' ";
-          } else {
-              $wher_2 = '';
           }
 
-          $where = $wher_1.$wher_2;
+        if ( Input::has('area') ) {
+            $wher_3=" AND rd.area_id = '".Input::get('area')."' ";
+        }
+
+        if ( Input::has('proceso') ) {
+            $datos = " GROUP_CONCAT(rfc.campo, '|', IFNULL(rc.campo_valor,'') ORDER BY rfc.orden SEPARATOR '**') ";
+            $left = "   LEFT JOIN rutas_flujo_campos rfc ON rfc.ruta_flujo_id = r.ruta_flujo_id AND rfc.estado = 1 AND rfc.tipo != 0
+                        LEFT JOIN rutas_campos rc ON rc.ruta_id = r.id AND rfc.id = rc.ruta_flujo_campo_id AND rc.estado = 1";
+            $wher_3=" AND r.flujo_id = '".Input::get('proceso')."' ";
+        }
+
+          $where = $wher_1.$wher_2.$wher_3;
 
           $sql = "SELECT
                 IFNULL(tr.id_union,'') AS id_union,
@@ -949,8 +957,7 @@ class ReporteController extends BaseController
                 '1' AS id,
                 IFNULL(tr.ruc,'') AS ruc,
                 IFNULL(tr.sumilla,'') AS sumilla,
-                GROUP_CONCAT(rfc.campo, '|', IFNULL(rc.campo_valor,'') ORDER BY rfc.orden SEPARATOR '**') datos
-
+                $datos AS datos
                 FROM rutas_detalle rd
                 JOIN rutas r ON rd.ruta_id=r.id and r.estado=1
                 JOIN tablas_relacion tr ON r.tabla_relacion_id=tr.id 
@@ -959,12 +966,10 @@ class ReporteController extends BaseController
                 LEFT JOIN tipo_solicitante ts ON tr.tipo_persona=ts.id
                 LEFT JOIN tipos_respuesta rsp ON rd.tipo_respuesta_id=rsp.id
                 LEFT JOIN tipos_respuesta_detalle rspd ON rd.tipo_respuesta_detalle_id=rspd.id
-                LEFT JOIN rutas_campos rc ON rc.ruta_id = r.id 
-                LEFT JOIN rutas_flujo_campos rfc ON rfc.id = rc.ruta_flujo_campo_id 
+                $left
                 WHERE  rd.fecha_inicio IS NOT NULL AND rd.dtiempo_final IS NOT NULL
                 AND rd.estado=1
                 AND rd.condicion=0
-                AND rd.area_id = $area_id   
                 $where 
                 GROUP BY rd.id
                 ORDER BY rd.fecha_inicio DESC, rd.norden DESC; ";
@@ -1058,8 +1063,8 @@ class ReporteController extends BaseController
               $head=array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ');
               $cabecera=array();
               $max = 10;
+              $ini = 4;
               if($result){
-                $ini = 4;
                 foreach ($result as $key => $value) {
 
                     $objPHPExcel->setActiveSheetIndex(0)
