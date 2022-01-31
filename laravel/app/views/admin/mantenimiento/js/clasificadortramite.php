@@ -215,7 +215,15 @@ validaClasificadorTramites = function(){
     var r=true;
     
     if( $("#form_clasificadortramites_modal #txt_nombre").val()=='' ){
-        alert("Ingrese Nombre de ClasificadorTramite");
+        alert("Ingrese Nombre de Clasificador Tramite");
+        r=false;
+    }
+    else if( $("#form_clasificadortramites_modal #slct_tipo_tramite").val()=='' ){
+        alert("Seleccione Tipo de Trámite");
+        r=false;
+    }
+    else if( $("#form_clasificadortramites_modal #slct_unidad_documentaria").val()=='' ){
+        alert("Seleccione Unidad Documentaria");
         r=false;
     }
 

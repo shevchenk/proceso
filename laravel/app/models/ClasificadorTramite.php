@@ -17,9 +17,8 @@ class ClasificadorTramite extends Base
      
         $sSql=" SELECT ct.ruta_flujo_id,ct.id,tt.id tipo_tramite_id, ct.nombre_clasificador_tramite as nombre, ct.estado,tt.nombre_tipo_tramite tipo_tramite,
                     ct.estado_final, 
-                    IF( ct.unidad_documentaria = 'EX', 'EXPEDIENTE', 'DOCUMENTO SIMPLE' ) unidoc, ct.unidad_documentaria
+                    IF( ct.unidad_documentaria = 'EX', 'EXPEDIENTE', IF( ct.unidad_documentaria = 'DS', 'DOCUMENTO SIMPLE', '' ) ) unidoc, ct.unidad_documentaria
                     FROM clasificador_tramite ct
-                    
                     LEFT JOIN tipo_tramite tt ON tt.id=ct.tipo_tramite_id
                     WHERE ct.estado<2";
         $sSql.= $array['where'].

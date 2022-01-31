@@ -182,6 +182,13 @@ class TramiteController extends BaseController {
 			
 				if( $pretramite->estado_atencion == 1 ){
 					$clasificadorTramite = ClasificadorTramite::find($data['txt_ctramite']);
+					if( $clasificadorTramite->unidad_documentaria == '' ){
+						DB::rollback();
+						return  array(
+							'rst'=>2,
+							'msj'=>'El servicio configurado no cuenta con unidad documentaria asignada',
+						);
+					}
 					$codigo = Pretramite::Correlativo($clasificadorTramite->unidad_documentaria);
 					//$codigo->correlativo = '000075'; //para probar correlativo
 					$pretramite->correlativo = $codigo->correlativo;
@@ -217,7 +224,9 @@ class TramiteController extends BaseController {
 						DB::rollback();
 						return  array(
 								'rst'=>2,
-								'msj'=>'Problemas al generar el correlativo, comuniquese con el área de TI'
+								'msj'=>'Problemas al generar el correlativo, comuniquese con el área de TI',
+								'clasi' => $clasificadorTramite,
+								'codigo' => $codigo
 							);
 					}
 
