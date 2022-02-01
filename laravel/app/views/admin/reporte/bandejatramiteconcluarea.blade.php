@@ -71,7 +71,7 @@
             <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Bandeja de Concluidos por Area
+            Bandeja de Concluidos por Area y Procesos
             <small> </small>
         </h1>
         <ol class="breadcrumb">
@@ -88,22 +88,17 @@
             <div class="mailbox row">
                 <div class="col-md-12">
                     <form name="form_concluido" id="form_concluido" method="POST" action="">
-                    <div class="row pad">
+                    <div class="row">
                         <div class="col-sm-3 text-center">
                             <label class="control-label">Fecha final del paso</label>
                             <input type="text" class="form-control" placeholder="AAAA-MM-DD - AAAA-MM-DD" id="txt_fecha" name="txt_fecha" value=""/> <!-- {{ date('Y-m-d - Y-m-d')}} -->
                         </div>
 
                         <div class="col-sm-3 text-center">
-                            <label class="control-label">Fecha inicio</label>
+                            <label class="control-label">Fecha inicio del paso</label>
                             <input type="text" class="form-control" placeholder="AAAA-MM-DD - AAAA-MM-DD" id="txt_fecha_ini" name="txt_fecha_ini" value=""/> <!--  onfocus="blur()" -->
                         </div>
 
-                        <div class="col-md-4 col-sm-4 text-center" style="">
-                            <label class="control-label">Área</label>
-                            <select name="slct_areas" id="slct_areas" ><!-- onChange="Bandeja.MostrarAjax();" -->
-                            </select>
-                        </div>
                         <div class="col-sm-1" style="padding:24px; padding-left: 0px;">
                             <!-- <input type="button" class="form-control btn btn-primary" onclick="ActualizarBandeja();" value="Mostrar"> -->
                             <span class="btn btn-primary btn-md" id="generar" name="generar" onclick="ActualizarBandeja();"><i class="glyphicon glyphicon-search"></i> Mostrar</span>
@@ -114,7 +109,20 @@
                         </div>
 
                     </div><!-- /.row -->
-                    <div class="row form-group" id="reporte" >
+                    <div class='row'>
+                        <div class="col-md-4 col-sm-4 text-center" style="">
+                            <label class="control-label">Área</label>
+                            <select name="slct_areas" id="slct_areas" onChange="ListarProcesosArea();" >
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 text-center slct_procesos hidden">
+                            <label class="control-label">Procesos</label>
+                            <select name="slct_procesos" id="slct_procesos" ><!-- onChange="Bandeja.MostrarAjax();" -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row pad form-group" id="reporte" >
                         <div class="col-sm-12">
                             <div class="box-body table-responsive">
                             <!-- THE MESSAGES -->

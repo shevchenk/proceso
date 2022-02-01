@@ -762,8 +762,8 @@ mostrarCamposHTML = (result) => {
                         onKey += ' onKeyUp="masterG.validaDatosEvento(this, cambiarColor)" ';
                     }
                     else if( r.tipo == 8 ){
-                        onKey = ' onKeyPress="return masterG.validaLetras(event, this, '+ r.capacidad +')" ';
-                        onKey += ' onKeyUp="masterG.validaDatosEvento(this, cambiarColor)" ';
+                        //onKey = ' onKeyPress="return masterG.validaLetras(event, this, '+ r.capacidad +')" ';
+                        onKey = ' onKeyUp="masterG.validaDatosEvento(this, cambiarColor)" ';
                     }
                     campogenerado = 
                             '<div id="campo'+ r.id +'" class="has-'+ color +' has-feedback">'+

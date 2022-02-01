@@ -158,6 +158,7 @@ $(document).ready(function() {
             var fecha = $("#txt_fecha").val();
             var fecha_ini = $("#txt_fecha_ini").val();
             var area = $("#slct_areas").val();
+            var proceso = '';
 
             swal({   
                     title: "Reporte de Concluidos",   
@@ -166,13 +167,30 @@ $(document).ready(function() {
                     showConfirmButton: false 
             });
             //$(this).attr('href','reportepersonal/exportreportepersonal'+'?fecha_ini='+fecha_ini+'&fecha_fin='+fecha_fin+area);
-            window.location = 'reporte/exporttramiteconclu'+'?fecha='+fecha+'&fecha_ini='+fecha_ini+'&area='+area;
+            if( $("#slct_procesos").val() != '' ){
+                proceso = '&proceso='+$("#slct_procesos").val();
+            }
+            window.location = 'reporte/exporttramiteconclu'+'?fecha='+fecha+'&fecha_ini='+fecha_ini+'&area='+area+proceso;
 
         }
     });
     // --
 
 });
+
+ListarProcesosArea  = ( )=>{
+    $(".slct_procesos").removeClass('hidden');
+    $("#slct_procesos").html('');
+
+    if( $.trim($(".slct_procesos .multiselect").html()) != '' ){
+        $("#slct_procesos").multiselect('destroy');
+    }
+
+    var area_id = $("#slct_areas").val();
+    var data = {estado:1, area_id: area_id};
+    slctGlobal.listarSlct('flujo','slct_procesos','simple',null,data);
+    
+}
 
 ActualizarBandeja=function(){
     if($('#txt_fecha').val() == '' && $('#txt_fecha_ini').val() == '')

@@ -113,6 +113,10 @@ class Flujo extends Base
                         if( Input::has('flujo_id') ){
                             $query->where('f.id','=',Input::get('flujo_id'));
                         }
+
+                        if( Input::has('area_id') ){
+                            $query->where('a.id','=',Input::get('area_id'));
+                        }
                     }
                 )
                 ->groupBy('f.id')
