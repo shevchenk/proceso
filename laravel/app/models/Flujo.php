@@ -117,6 +117,10 @@ class Flujo extends Base
                         if( Input::has('area_id') ){
                             $query->where('a.id','=',Input::get('area_id'));
                         }
+
+                        if( Input::has('nosubproceso') ){
+                            $query->where('c.id','!=',3);
+                        }
                     }
                 )
                 ->groupBy('f.id')

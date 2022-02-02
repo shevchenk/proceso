@@ -6,14 +6,21 @@ class RutaFlujoCampoArea extends \Eloquent {
     public function Asignarcampos(){
         $r = Request::all();
         $id = $r['id'];
-        $ruta_flujo_campo_id = $r['ruta_flujo_campo_id'];
-        $area_id = $r['area_id'];
-        $modificar = $r['modificar'];
+        $ruta_flujo_campo_id = ''; $area_id = ''; $modificar = '';
+        $cantidad = 0;
+        if( isset($r['ruta_flujo_campo_id']) ){
+            $ruta_flujo_campo_id = $r['ruta_flujo_campo_id'];
+            $cantidad = count($ruta_flujo_campo_id);
+            
+            $area_id = $r['area_id'];
+            $modificar = $r['modificar'];
+        }
+
 
         DB::beginTransaction();
             $sql = "UPDATE rutas_flujo_campos_areas SET estado = 0, updated_at = now(), usuario_updated_at = ".Auth::user()->id." WHERE clasificador_tramite_id = ".$id;
             DB::update($sql);
-        for ($i=0; $i < count($ruta_flujo_campo_id); $i++) { 
+        for ($i=0; $i < $cantidad; $i++) { 
             $RutaFlujoCampoArea =   RutaFlujoCampoArea::where( 'ruta_flujo_campo_id', $ruta_flujo_campo_id[$i] )
                                     ->where( 'area_id', $area_id[$i] )
                                     ->first();
