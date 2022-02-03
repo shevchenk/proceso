@@ -22,6 +22,7 @@
                 <option value="">.::Seleccione::.</option>
                 <option value='Cliente'>Cliente</option>
                 <option value='Externo'>Externo</option>
+                <option value='Varios'>Varios</option>
             </select>
           </div>
 
