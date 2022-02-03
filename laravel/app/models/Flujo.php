@@ -51,14 +51,19 @@ class Flujo extends Base
                     'categorias AS c',
                     'c.id', '=', 'f.categoria_id'
                 )
-                ->leftJoin(
-                    'rutas_flujo AS rf',
-                    'rf.flujo_id', '=', 'f.id'
-                )
+                ->leftJoin('rutas_flujo AS rf', function($join)
+                {
+                    $join->on('rf.flujo_id', '=', 'f.id')
+                    ->where('rf.estado', '=', '1');
+                    
+                })
                 ->leftJoin('rutas_flujo_detalle AS rfd', function($join)
                 {
                     $join->on('rfd.ruta_flujo_id', '=', 'rf.id')
-                         ->where('rfd.norden', '=', 1);
+                    ->where('rfd.estado', '=', 1);
+                    if( !Input::has('involucrado') ){
+                        $join->where('rfd.norden', '=', 1);
+                    }
                 })
                 ->select('f.id','f.nombre','f.estado','a.nombre AS area','f.area_id','f.area_id AS evento',
                     DB::raw('IFNULL(c.nombre,"sin categoria") AS categoria'), DB::raw('IFNULL(f.categoria_id,"") AS categoria_id'),

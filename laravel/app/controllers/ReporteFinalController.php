@@ -408,6 +408,11 @@ class ReporteFinalController extends BaseController
           $array['w'].=" AND f.nombre LIKE '%".$proceso."%' ";
         }
 
+        if( Input::has('procesos') AND Input::get('procesos')!='' ){
+          $proceso=trim(Input::get('procesos'));
+          $array['w'].=" AND f.id = '".$proceso."' ";
+        }
+
         if( Input::has('tiempo_final') AND Input::get('tiempo_final')!='' ){
           $estadofinal=">=CURRENT_TIMESTAMP()";
            if( Input::get('tiempo_final')=='0' ){
@@ -550,6 +555,15 @@ class ReporteFinalController extends BaseController
           $fecha_inicio=explode(" - ",Input::get('fechaRange'));
           $array['w'].=" AND DATE(rd.fecha_inicio) BETWEEN '".$fecha_inicio[0]."' AND '".$fecha_inicio[1]."' ";
         }
+
+        $array['datos']="''";
+        $array['left'] = "";
+        if ( Input::has('flujo_id') AND Input::get('flujo_id') != '' ) {
+            $array['datos'] = " GROUP_CONCAT(rfc.campo, '|', IFNULL(rc.campo_valor,'') ORDER BY rfc.orden SEPARATOR '**') ";
+            $array['left'] = "   LEFT JOIN rutas_flujo_campos rfc ON rfc.ruta_flujo_id = r.ruta_flujo_id AND rfc.estado = 1 AND rfc.tipo != 0
+                        LEFT JOIN rutas_campos rc ON rc.ruta_id = r.id AND rfc.id = rc.ruta_flujo_campo_id AND rc.estado = 1";
+            $array['w'].=" AND r.flujo_id = '".Input::get('flujo_id')."' ";
+        }
   
       $result = Reporte::BandejaTramiteArea( $array );
 
@@ -640,8 +654,11 @@ class ReporteFinalController extends BaseController
             $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('K')->setAutoSize(true);
          
             /*end head*/
+            $head=array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ');
+            $cabecera=array();
+            $max = 10;
             /*body*/
-            if($result){
+            if( count($result)>0 AND isset($result[0]->fecha_inicio) AND $result[0]->fecha_inicio != '' ){
               foreach ($result as $key => $value) {
                 list($fecha_inicio,$hora_inicio) = explode(' ',$value->fecha_inicio);  
                 $objPHPExcel->setActiveSheetIndex(0)
@@ -656,12 +673,32 @@ class ReporteFinalController extends BaseController
                               ->setCellValue('I' . ($key + 4), $value->norden)
                               ->setCellValue('J' . ($key + 4), $value->proceso)
                               ->setCellValue('K' . ($key + 4), $value->persona)
-                    
                               ;
+
+                $cabecera = explode("**", $value->datos);
+                
+                if( trim( $cabecera[0] ) != '' ){
+                  for( $i = 0; $i < count($cabecera); $i++ ){
+                      $cabeceradet = explode("|", $cabecera[$i]);
+                      if( trim($cabeceradet[0]) != '' ){
+                          $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(11+$i)])->setAutoSize(true);
+                          $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(11+$i)].'3', $cabeceradet[0]);
+                          if( isset($cabeceradet[1]) ){
+                              $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(11+$i)] . ($key + 4), $cabeceradet[1]);
+                          }
+                      }
+
+                  }
+
+                  $max_aux = 10 + count($cabecera);
+                  if( $max < $max_aux ){
+                      $max = $max_aux;
+                  }
+                }
               }
             }
             /*end body*/
-            $objPHPExcel->getActiveSheet()->getStyle('A3:K3')->applyFromArray($styleThinBlackBorderAllborders);
+            $objPHPExcel->getActiveSheet()->getStyle('A3:'.$head[$max].'3')->applyFromArray($styleThinBlackBorderAllborders);
             $objPHPExcel->getActiveSheet()->getStyle('A1:L1')->applyFromArray($styleAlignment);
             // Rename worksheet
             $objPHPExcel->getActiveSheet()->setTitle('Tràmites Inconclusos');

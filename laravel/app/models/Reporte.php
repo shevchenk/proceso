@@ -281,6 +281,7 @@ class Reporte extends Eloquent
     }
     
         public static function BandejaTramiteAreaCount( $array ){
+        
         $sql="  SELECT count(DISTINCT(rd.id)) cant
                 FROM rutas r
                 INNER JOIN rutas_detalle rd ON rd.ruta_id=r.id AND rd.estado=1 AND rd.condicion=0
@@ -291,7 +292,8 @@ class Reporte extends Eloquent
         LEFT JOIN personas p1 ON p1.id=cd.persona_id
                 ".$array['referido']." JOIN referidos re ON re.ruta_detalle_id=rd.ruta_detalle_id_ant and re.estado=1
                 WHERE r.estado=1 
-                AND rd.fecha_inicio!='' ".
+                AND rd.fecha_inicio!='' 
+                AND rd.ruta_detalle_id_ant IS NULL ".
                 $array['w'].
                 $array['areas'].
                 $array['id_union'].
@@ -304,6 +306,9 @@ class Reporte extends Eloquent
     }
 
     public static function BandejaTramiteArea( $array ){
+        if( !isset($array['datos']) ) { $array['datos'] = "''"; }
+        if( !isset($array['left']) ) { $array['left'] = ""; }
+        
         $sql="  SELECT
                 CONCAT_WS(' ',p1.paterno,p1.materno,p1.nombre)as responsable,
                 tr.id_union,
@@ -350,18 +355,20 @@ class Reporte extends Eloquent
                             rd.area_id
                         )
                     )>=CURRENT_TIMESTAMP(),'Dentro del Tiempo','Fuera del Tiempo'
-                ) tiempo_final_n
+                ) tiempo_final_n,
+                ".$array['datos']." AS datos
                 FROM rutas r
                 INNER JOIN rutas_detalle rd ON rd.ruta_id=r.id AND rd.estado=1 AND rd.condicion=0
                 INNER JOIN tablas_relacion tr ON r.tabla_relacion_id=tr.id AND tr.estado=1
                 INNER JOIN tiempos t ON t.id=rd.tiempo_id
                 INNER JOIN flujos f ON f.id=r.flujo_id
+                ".$array['referido']." JOIN referidos re ON re.ruta_detalle_id=rd.ruta_detalle_id_ant and re.estado=1
                 LEFT JOIN personas p1 ON p1.id=rd.persona_responsable_id
-                ".$array['referido']." JOIN 
-                referidos re ON re.ruta_detalle_id=rd.ruta_detalle_id_ant and re.estado=1
+                ".$array['left']."
                 WHERE r.estado=1 
                 AND rd.fecha_inicio<=CURRENT_TIMESTAMP()
-                AND rd.fecha_inicio!='' ".
+                AND rd.fecha_inicio!='' 
+                AND rd.ruta_detalle_id_ant IS NULL ".
                 $array['w'].
                 $array['areas'].
                 $array['id_union'].
@@ -369,9 +376,10 @@ class Reporte extends Eloquent
                 $array['solicitante'].
                 $array['proceso'].
                 $array['tiempo_final'].
+                " GROUP BY rd.id ".
                 $array['limit'];
                 //ORDER BY rd.fecha_inicio DESC
-                //echo $sql;
+                
        $r= DB::select($sql);
         return $r;
     }

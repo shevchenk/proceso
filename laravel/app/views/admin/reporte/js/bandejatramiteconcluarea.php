@@ -189,7 +189,6 @@ ListarProcesosArea  = ( )=>{
     var area_id = $("#slct_areas").val();
     var data = {estado:1, involucrado: area_id, nosubproceso:1};
     slctGlobal.listarSlct('flujo','slct_procesos','simple',null,data);
-    
 }
 
 ActualizarBandeja=function(){

@@ -71,7 +71,7 @@
             <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Bandeja de Inconclusos y Gestión
+            Bandeja de Inconclusos por Área y Proceso
             <small> </small>
         </h1>
         <ol class="breadcrumb">
@@ -93,10 +93,16 @@
                             <!-- THE MESSAGES -->
                             <form name="form_filtros" id="form_filtros" method="POST" action="">
                              <div class="col-md-12">
-                                <div class="col-md-4 col-sm-4" style="padding:24px">
-                                    <select name="slct_areas" id="slct_areas" onChange="Bandeja.MostrarAjax();">
+                                <div class="col-md-4 col-sm-4 text-center" style="">
+                                    <label class="control-label">Área</label>
+                                    <select name="slct_areas" id="slct_areas" onChange="ListarProcesosArea();" >
                                     </select>
+                                </div>
 
+                                <div class="col-md-4 col-sm-4 text-center slct_procesos hidden">
+                                    <label class="control-label">Procesos</label>
+                                    <select name="slct_procesos" id="slct_procesos" onChange='Bandeja.MostrarAjax();' ><!-- onChange="Bandeja.MostrarAjax();" -->
+                                    </select>
                                 </div>
                                 <div class="col-md-1 col-sm-2" style="padding:24px">
                                 {{-- <span class="btn btn-success btn-md" id="btnexport" name="btnexport"><i class="glyphicon glyphicon-download-alt"></i> Export</span> --}}
@@ -175,67 +181,95 @@
                                             </a-->
                                             </h1>
                                         </div>
-                                        <div class="col-sm-12">
-                                            <div class="col-sm-2">
-                                                <label class="control-label">Nro Trámite:</label>
-                                                <input type="text" class="form-control" id="txt_id_doc" readonly>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <label class="control-label">Solicitante:</label>
-                                                <input type="text" class="form-control" id="txt_solicitante" readonly>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <label class="control-label">Sumilla:</label>
-                                                <textarea type="text" class="form-control" id="txt_sumilla" readonly></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <div class="col-sm-2">
-                                                <label class="control-label">Proceso:</label>
-                                                <input type="text" class="form-control" id="txt_flujo" readonly>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label class="control-label">Area:</label>
-                                                <input type="text" class="form-control" id="txt_area" readonly>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label class="control-label">Paso:</label>
-                                                <input type="text" class="form-control" id="txt_orden" readonly>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label class="control-label">Fecha Inicio:</label>
-                                                <input type="text" class="form-control" id="txt_fecha_inicio" readonly>
+                                        <div class="col-md-12 col-lg-12 DatosPersonalizadosG">
+                                            <div class="box box-warning">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title" tabindex="0" id="datos_personalizados">DATOS PERSONALIZADOS</h3>
+                                                    <div class="box-tools pull-right">
+                                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="box-body row">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-12">
-                                            <div class="col-sm-3">
-                                                <label class="control-label">Tiempo asignado al paso:</label>
-                                                <input type="text" class="form-control" id="txt_tiempo" readonly>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label class="control-label">Tiempo Final:</label>
-                                                <input type="text" class="form-control" id="txt_respuesta" name="txt_respuesta" readonly>
+                                            <div class="box box-warning">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">INFORMACIÓN DE LA ACTIVIDAD</h3>
+
+                                                    <div class="box-tools pull-right">
+                                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="box-body row" style="">
+                                                    <div class="col-sm-12">
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label">Nro Trámite:</label>
+                                                            <input type="text" class="form-control" id="txt_id_doc" readonly>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label class="control-label">Solicitante:</label>
+                                                            <input type="text" class="form-control" id="txt_solicitante" readonly>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label class="control-label">Sumilla:</label>
+                                                            <textarea type="text" class="form-control" id="txt_sumilla" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label">Proceso:</label>
+                                                            <input type="text" class="form-control" id="txt_flujo" readonly>
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label">Area:</label>
+                                                            <input type="text" class="form-control" id="txt_area" readonly>
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label">Paso:</label>
+                                                            <input type="text" class="form-control" id="txt_orden" readonly>
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label">Fecha Inicio:</label>
+                                                            <input type="text" class="form-control" id="txt_fecha_inicio" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <div class="col-sm-3">
+                                                            <label class="control-label">Tiempo asignado al paso:</label>
+                                                            <input type="text" class="form-control" id="txt_tiempo" readonly>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <label class="control-label">Tiempo Final:</label>
+                                                            <input type="text" class="form-control" id="txt_respuesta" name="txt_respuesta" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+
                                         <div class="col-sm-12">
                                             <table class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th style="text-align:center" rowspan="2">Nro</th>
-                                                        <th style="text-align:center;width:60px !important;" rowspan="2">¿cond- icional?</th>
-                                                        <th style="text-align:center" rowspan="2">Rol que Realiza</th>
-                                                        <th style="text-align:center" colspan="3">Acciones a Realizar</th>
-                                                        <th style="text-align:center" colspan="2">Acciones Realizadas</th>
-                                                        <th style="text-align:center;width:150px !important;" rowspan="2">Persona</th>
-                                                        <th style="text-align:center" rowspan="2">Fecha</th>
-                                                        <th style="text-align:center" rowspan="2">[-]</th>
+                                                        <th class="bg-info" style="text-align:center" rowspan="2">Nro</th>
+                                                        <th class="bg-info" style="text-align:center;width:60px !important;" rowspan="2">¿cond- icional?</th>
+                                                        <th class="bg-info" style="text-align:center" rowspan="2">Rol que Realiza</th>
+                                                        <th class="bg-info" style="text-align:center" colspan="3">Acciones a Realizar</th>
+                                                        <th class="bg-danger" style="text-align:center" colspan="2">Acciones Realizadas</th>
+                                                        <th class="bg-danger" style="text-align:center;width:150px !important;" rowspan="2">Persona</th>
+                                                        <th class="bg-danger" style="text-align:center" rowspan="2">Fecha</th>
+                                                        <th class="bg-danger" style="text-align:center" rowspan="2">[-]</th>
                                                     </tr>
                                                     <tr>
-                                                        <th style="text-align:center">Verbo</th>
-                                                        <th style="text-align:center">Tipo Documento</th>
-                                                        <th style="text-align:center;width:250px !important;">Descripcion</th>
-                                                        <th style="text-align:center">Documento Generado</th>
-                                                        <th style="text-align:center">Observaciones</th>
+                                                        <th class="bg-info" style="text-align:center">Verbo</th>
+                                                        <th class="bg-info" style="text-align:center">Tipo Documento</th>
+                                                        <th class="bg-info" style="text-align:center;width:250px !important;">Descripcion</th>
+                                                        <th class="bg-danger" style="text-align:center; width: 300px;">Documento Generado</th>
+                                                        <th class="bg-danger" style="text-align:center">Observaciones</th>
                                                         <!--th style="text-align:center">Adjuntar Doc. Generado</th-->
                                                     </tr>
                                                 </thead>

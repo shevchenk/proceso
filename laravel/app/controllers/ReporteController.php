@@ -1081,22 +1081,23 @@ class ReporteController extends BaseController
                                 ->setCellValue('K' . $ini, $value->solicitante)
                                 ;
                     $cabecera = explode("**", $value->datos);
-                    
-                    for( $i = 0; $i < count($cabecera); $i++ ){
-                        $cabeceradet = explode("|", $cabecera[$i]);
-                        if( trim($cabeceradet[0]) != '' ){
-                            $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(11+$i)])->setAutoSize(true);
-                            $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(11+$i)].'3', $cabeceradet[0]);
-                            if( isset($cabeceradet[1]) ){
-                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(11+$i)] . $ini, $cabeceradet[1]);
+                    if( trim( $cabecera[0] ) != '' ){
+                        for( $i = 0; $i < count($cabecera); $i++ ){
+                            $cabeceradet = explode("|", $cabecera[$i]);
+                            if( trim($cabeceradet[0]) != '' ){
+                                $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(11+$i)])->setAutoSize(true);
+                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(11+$i)].'3', $cabeceradet[0]);
+                                if( isset($cabeceradet[1]) ){
+                                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(11+$i)] . $ini, $cabeceradet[1]);
+                                }
                             }
+    
                         }
-
-                    }
-
-                    $max_aux = 10 + count($cabecera);
-                    if( $max < $max_aux ){
-                        $max = $max_aux;
+    
+                        $max_aux = 10 + count($cabecera);
+                        if( $max < $max_aux ){
+                            $max = $max_aux;
+                        }
                     }
                     $ini++;
                 }
