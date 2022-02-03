@@ -1,4 +1,5 @@
 <script type="text/javascript">
+var area_id_GVP = 0;
 $(document).ready(function() {
     ListarPreTramites();
 
@@ -34,19 +35,41 @@ $(document).ready(function() {
 
     $("form[name='FormTramite']").submit(function(e) {
         e.preventDefault();
+        var r = true;
         if( $("#txt_usertelf").val()=='' && $("#txt_usercel").val()==''){
             msjG.mensaje("warning", 'Ingrese número de teléfono y/o número de celular',5000);
+            r = false;
         }
         else if( $("#txt_useremail").val()=='' ){
             msjG.mensaje("warning", 'Ingrese email',3000);
+            r = false;
         }
         else if( $("#txt_userdirec").val()=='' ){
             msjG.mensaje("warning", 'Ingrese dirección',3000);
+            r = false;
         }
         else if( $('input[name="rdb_estado"]:checked').val()*1 == 2 && $.trim($("#txt_observaciones").val()) == '' ){
             msjG.mensaje("warning", 'Ingrese la observación del trámite a desaprobar',4000);
+            r = false;
         }
-        else if( $('input[name="rdb_estado"]:checked').val()*1 > 0 ){
+        
+        
+        $(".DatosPersonalizadosG .glyphicon-remove").each( function(index){
+            id = this.dataset.id;
+            campo = $("#campo"+ id +" .form-control").attr("data-campo");
+            if( r == true ){
+                msjG.mensaje("warning","Se requiere dato del campo: "+ campo,5000);
+                $("#campo"+ id +" .form-control").focus();
+            }
+            r = false;
+        });
+
+        if( $.trim( $('input[name="rdb_estado"]:checked').val() ) == '' && r == true ){
+            msjG.mensaje("warning", 'Seleccione estado del servicio',4000);
+            r = false;
+        }
+
+        if( r == true ){
             $.ajax({
                 type: "POST",
                 url: 'tramitec/create',
@@ -72,9 +95,6 @@ $(document).ready(function() {
                     msjG.mensaje("danger","Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.",3000);
                 }
             });
-        }
-        else{
-            msjG.mensaje("warning", 'Seleccione estado del servicio',4000);
         }
      });
 
@@ -266,7 +286,7 @@ HTMLPreTramite = function(data){
         html+=    "<td>"+el.updated_at+"</td>";
         html+=    "<td>"+$.trim(el.observacion)+"</td>";
         html+=    "<td>"+$.trim(el.id_union)+"</td>";
-        html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="PreDetallepret('+el.pretramite+','+validador+')"><i class="glyphicon glyphicon-th-list"></i></span></td>';
+        html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="PreDetallepret('+el.pretramite+','+validador+','+el.area_id+')"><i class="glyphicon glyphicon-th-list"></i></span></td>';
 
         var url = "documentodig/ticket/"+el.pretramite;
 
@@ -282,7 +302,7 @@ HTMLPreTramite = function(data){
     ); 
 }
 
-PreDetallepret = (id, validador)=>{
+PreDetallepret = (id, validador, area_id)=>{
     $('#txt_codpt').val(id);
     $(".observacion").show();
     $(".persona").removeAttr('disabled');
@@ -291,6 +311,7 @@ PreDetallepret = (id, validador)=>{
         $(".persona").attr('disabled','true');
     }
     Detallepret();
+    area_id_GVP = area_id;
 }
 
 
@@ -360,6 +381,9 @@ poblarDetalle = function(data){
             document.querySelector('#txt_area').value=result.areaid;
 
             masterG.SelectImagen(result.ruta_archivo,"#pdf_img","#pdf_href");
+
+            var data = {area_id: area_id_GVP, ruta_flujo_id: result.ruta_flujo_id, ruta_id: 0}
+            Bandeja.mostrarCampos(data,mostrarCamposHTML);
         }else{
             document.querySelector('.content-body').classList.add('hidden');
             alert('Ya fue gestionado!');
@@ -367,6 +391,193 @@ poblarDetalle = function(data){
     }else{
         document.querySelector('.content-body').classList.add('hidden');
         msjG.mensaje("warning", 'No se encontró el pre tramite',3000);
+    }
+}
+
+mostrarCamposHTML = (result) => {
+    $(".DatosPersonalizadosG").addClass('hidden');
+    $(".DatosPersonalizadosG .box-body").html('');
+
+    $.each(result,function(index,r){
+        campo = '';
+        subtitulo = '';
+        color = 'error';
+        icono = 'remove';
+        html = '';
+        lista = $.trim( r.lista ).split("*");
+        campo_valor = $.trim(r.campo_valor);
+        ruta_campo_id = $.trim(r.ruta_campo_id);
+        fecha = '';
+        if( ruta_campo_id == '' ){
+            ruta_campo_id = 0;
+        }
+
+        if( index == 0 ){
+            $(".DatosPersonalizadosG").removeClass('hidden');
+        }
+
+        if( r.tipo == 0 ){
+            campo = r.campo.split("/")[0];
+            sub_titulo = r.campo.split("/")[1];
+            col = 12;
+        }
+        
+        if( r.tipo == 0 ){
+            html = 
+                '<div class="col-sm-12 bg-info" style="margin: 10px 0px 10px 0px">'+
+                    '<h5 class="text-center"><b>'+ campo +'</b> '+
+                        '<small style="color:red">'+ sub_titulo +'</small>'+
+                    '</h5>'+
+                    '<hr style="border:dotted;">'+
+                '</div>';
+        }
+        else{
+            campogenerado = '<input type="text" class="form-control" value="'+ campo_valor +'" disabled>';
+            ruta_flujo_campo_id = '';
+            ruta_campo = '';
+
+            if( r.modificar == 1 ){
+                ruta_flujo_campo_id = '<input type="hidden" name="ruta_flujo_campo_id[]" value="'+ r.id +'">';
+                ruta_campo = '<input type="hidden" id="ruta_campo_id'+ r.id +'" name="ruta_campo_id[]" value="'+ ruta_campo_id +'">';
+                if( r.obligar == 0 ){
+                    color = 'warning';
+                    icono = 'warning-sign';
+                }
+
+                if( r.tipo != 6 ){
+                    
+                    onKey = ''; readOnly = ''; fecha  = ''; formatoFecha = ''; minView= 3; maxView= 4; startView= 3;
+
+                    if( campo_valor != '' ){
+                        color = 'success';
+                        icono = 'ok';
+                    }
+                    
+                    if( r.tipo == 1 ){
+                        onKey = ' onKeyUp="masterG.validaEmailEvento(this, '+ r.capacidad +', cambiarColor)" ';
+                    }
+                    else if( r.tipo == 2 ){
+                        onKey = ' onKeyPress="return masterG.validaDecimal(event, this)" ';
+                        onKey += ' onKeyUp="masterG.validaDecimalMaxEvento(this, '+ r.capacidad +', cambiarColor)" ';
+                    }
+                    else if( r.tipo >= 3 && r.tipo <= 5 ){
+                        fecha = 'fecha'; 
+                        readOnly = 'readonly';
+                        if( r.tipo == 3 ){
+                            formatoFecha = 'yyyy-mm-dd';
+                            minView= 2;
+                            maxView= 4;
+                            startView= 2;
+                        }
+                        else if( r.tipo == 4 ){
+                            formatoFecha = 'yyyy-mm';
+                            minView= 3;
+                            maxView= 4;
+                            startView= 3;
+                        }
+                        else if( r.tipo == 5 ){
+                            formatoFecha = 'yyyy';
+                            minView= 4;
+                            maxView= 4;
+                            startView= 4;
+                        }
+                        onKey = ' onChange="masterG.validaDatosEvento(this, cambiarColor)" ';
+                    }
+                    else if( r.tipo == 7 ){
+                        onKey = ' onKeyPress="return masterG.validaNumerosMax(event, this, '+ r.capacidad +')" ';
+                        onKey += ' onKeyUp="masterG.validaDatosEvento(this, cambiarColor)" ';
+                    }
+                    else if( r.tipo == 8 ){
+                        //onKey = ' onKeyPress="return masterG.validaLetras(event, this, '+ r.capacidad +')" ';
+                        onKey = ' onKeyUp="masterG.validaDatosEvento(this, cambiarColor)" ';
+                    }
+                    campogenerado = 
+                            '<div id="campo'+ r.id +'" class="has-'+ color +' has-feedback">'+
+                                '<input type="text" class="form-control '+ fecha +'" name="campo_valor[]" value="'+ campo_valor +'"'+ onKey + readOnly +
+                                    ' data-id="'+ r.id +'"'+
+                                    ' data-capacidad="'+ r.capacidad +'"' +
+                                    ' data-obligar="'+ r.obligar +'"' +
+                                    ' data-campo="'+ r.campo +'"' +
+                                '>'+
+                                '<span data-id="'+ r.id +'" class="glyphicon glyphicon-'+ icono +' form-control-feedback"></span>'+
+                            '</div>';
+                }
+                else{
+                    options = '';
+                    for (let i = 0; i < lista.length; i++) {
+                        selected = '';
+                        if( campo_valor != '' && campo_valor == lista[i] ){
+                            selected = 'selected';
+                            color = 'success';
+                            icono = 'ok';
+                        }
+                        options+='<option value="'+ lista[i] +'" '+ selected +'>'+ lista[i] +'</option>';
+                    }
+
+                    onKey = ' onChange="masterG.validaDatosEvento(this, cambiarColor)" ';
+
+                    campogenerado = 
+                        '<div id="campo'+ r.id +'" class="form-group has-'+ color +' has-feedback">'+
+                            '<select class="form-control" name="campo_valor[]" '+ onKey +
+                            ' data-id="'+ r.id +'"'+
+                            ' data-capacidad="'+ r.capacidad +'"' +
+                            ' data-obligar="'+ r.obligar +'"' +
+                            ' data-campo="'+ r.campo +'"' +
+                        '>'+
+                                '<option value=""> .::Seleccione::. </option>'+
+                                options +
+                            '</select>'+
+                            '<span data-id="'+ r.id +'" class="glyphicon glyphicon-'+ icono +' form-control-feedback"></span>'+
+                        '</div>';
+                }
+            }
+
+            html =
+                '<div class="col-sm-'+ r.col +'">'+
+                    ruta_flujo_campo_id +
+                    ruta_campo +
+                    '<label>'+ r.campo +':</label>'+
+                    campogenerado
+                '</div>';
+        }
+        
+        $(".DatosPersonalizadosG .box-body").append(html);
+
+        if( fecha != '' ){
+            $("#campo"+ r.id +" .fecha").datetimepicker({
+                format: formatoFecha,
+                language: 'es',
+                showMeridian: false,
+                time: false,
+                minView: minView,
+                maxView: maxView,
+                startView: startView, // 1->hora, 2->dia , 3->mes
+                autoclose: true,
+                todayBtn: false
+            });
+        }
+        
+    });
+}
+
+cambiarColor = (t, estado)=>{
+    id = t.dataset.id;
+    obligar = t.dataset.obligar;
+    $("#campo"+id).removeClass('has-error').removeClass('has-success').removeClass('has-warning');
+    $("#campo"+id+" span").removeClass('glyphicon-remove').removeClass('glyphicon-ok').removeClass('glyphicon-warning-sign');
+    if ( estado ) {
+        $("#campo"+id).addClass('has-success');
+        $("#campo"+id+" span").addClass('glyphicon-ok');
+    }
+    else{
+        if( t.value == '' && obligar == 0 ){
+            $("#campo"+id).addClass('has-warning');
+            $("#campo"+id+" span").addClass('glyphicon-warning-sign');
+        }
+        else{
+            $("#campo"+id).addClass('has-error');
+            $("#campo"+id+" span").addClass('glyphicon-remove');
+        }
     }
 }
 

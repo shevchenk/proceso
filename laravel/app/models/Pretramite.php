@@ -36,7 +36,7 @@ class Pretramite extends Eloquent {
             IF(pt.estado_atencion = 0, 'Pendiente',
                 IF(pt.estado_atencion = 1, 'Aprobado', 'Desaprobado')
             ) atencion, pt.estado_atencion, pt.updated_at, t.observacion, tr.id_union, DATE(t.fecha_tramite) AS fecha_tramite,
-            pt.observacion AS observacion2,
+            pt.observacion AS observacion2, rfd.area_id,
             (SELECT GROUP_CONCAT('<b>', tr_aux.id_union, ' </b><br>' ,tr_aux.fecha_tramite) 
             FROM tablas_relacion tr_aux
             INNER JOIN tramites t_aux ON t_aux.id = tr_aux.tramite_id AND t_aux.estado = 1 
@@ -88,7 +88,7 @@ class Pretramite extends Eloquent {
 				ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
                 pt.fecha_pretramite fecha ,pt.nro_folios folio, pt.documento as nrotipodoc,ts.pide_empresa statusemp,
                 CASE e.tipo_id WHEN 1 THEN 'Natural' WHEN 2 THEN 'Juridico' WHEN 3 THEN 'Organizacion Social' END as tipoempresa,
-                p.email, p.direccion, p.celular, p.telefono, pt.ruta_archivo
+                p.email, p.direccion, p.celular, p.telefono, pt.ruta_archivo, ct.ruta_flujo_id
 				from pretramites pt 
 				INNER JOIN personas p on p.id=pt.persona_id 
 				INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id

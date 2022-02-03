@@ -682,6 +682,7 @@ mostrarCamposHTML = (result) => {
         lista = $.trim( r.lista ).split("*");
         campo_valor = $.trim(r.campo_valor);
         ruta_campo_id = $.trim(r.ruta_campo_id);
+        fecha = '';
         if( ruta_campo_id == '' ){
             ruta_campo_id = 0;
         }

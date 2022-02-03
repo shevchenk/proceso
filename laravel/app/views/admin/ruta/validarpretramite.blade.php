@@ -382,6 +382,20 @@ td, th{
                               </div>
                             </div>  -->
 
+                            <div class="col-md-12 col-lg-12 DatosPersonalizadosG format">
+                                <div class="box box-warning">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title" tabindex="0" id="datos_personalizados">DATOS PERSONALIZADOS</h3>
+                                        <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body row">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-sm-12 observacion format">
                               <div class="row form-group">
                                 <div class="col-sm-8">

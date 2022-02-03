@@ -349,6 +349,31 @@ class TramiteController extends BaseController {
 							$ruta['area_id']=$rutaFlujo->area_id;
 							$ruta['usuario_created_at']= Auth::user()->id;
 							$ruta->save();
+
+							/*TODO:**************Registro de Campos de Rutas**********************/
+							if( isset( $data['ruta_campo_id'] ) ){
+								$recorrido = count($data['ruta_campo_id']);
+									
+								for ($i=0; $i < $recorrido; $i++) { 
+									$RutaCampo = array();
+									if( $data['ruta_campo_id'][$i] == 0 ){
+										$RutaCampo = new RutaCampo;
+										$RutaCampo->usuario_created_at = Auth::user()->id;
+										$RutaCampo->ruta_id = $ruta->id;
+									}
+									else{
+										$RutaCampo = RutaCampo::find( $data['ruta_campo_id'][$i] );
+										$RutaCampo->usuario_created_at = Auth::user()->id;
+									}
+									
+									$RutaCampo->ruta_flujo_campo_id = $data['ruta_flujo_campo_id'][$i];
+									$RutaCampo->campo_valor = $data['campo_valor'][$i];
+									$RutaCampo->estado = 1;
+									$RutaCampo->save();
+								}
+							}
+							
+							/*********************************************************************/
 							/**************CARTA *************************************************/
 							$carta=array();
 							if( Input::has('carta_id') ){
