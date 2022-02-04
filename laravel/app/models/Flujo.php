@@ -43,10 +43,12 @@ class Flujo extends Base
         }
         else{
         $flujo=DB::table('flujos AS f')
-                ->join(
-                    'areas AS a',
-                    'a.id', '=', 'f.area_id'
-                )
+                ->join('areas AS a', function($join)
+                {
+                    $join->on('a.id', '=', 'f.area_id')
+                    ->where('a.estado', '=', '1');
+                    
+                })
                 ->leftJoin(
                     'categorias AS c',
                     'c.id', '=', 'f.categoria_id'
@@ -124,7 +126,7 @@ class Flujo extends Base
                         }
 
                         if( Input::has('nosubproceso') ){
-                            $query->where('c.id','!=',3);
+                            //$query->where('c.id','!=',3); //No va debe pintar todo
                         }
 
                         if( Input::has('involucrado') ){

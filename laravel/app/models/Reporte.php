@@ -292,8 +292,7 @@ class Reporte extends Eloquent
         LEFT JOIN personas p1 ON p1.id=cd.persona_id
                 ".$array['referido']." JOIN referidos re ON re.ruta_detalle_id=rd.ruta_detalle_id_ant and re.estado=1
                 WHERE r.estado=1 
-                AND rd.fecha_inicio!='' 
-                AND rd.ruta_detalle_id_ant IS NULL ".
+                AND rd.fecha_inicio!='' ".
                 $array['w'].
                 $array['areas'].
                 $array['id_union'].
@@ -367,8 +366,7 @@ class Reporte extends Eloquent
                 ".$array['left']."
                 WHERE r.estado=1 
                 AND rd.fecha_inicio<=CURRENT_TIMESTAMP()
-                AND rd.fecha_inicio!='' 
-                AND rd.ruta_detalle_id_ant IS NULL ".
+                AND rd.fecha_inicio!='' ".
                 $array['w'].
                 $array['areas'].
                 $array['id_union'].
@@ -379,7 +377,7 @@ class Reporte extends Eloquent
                 " GROUP BY rd.id ".
                 $array['limit'];
                 //ORDER BY rd.fecha_inicio DESC
-                
+                //dd($sql);
        $r= DB::select($sql);
         return $r;
     }
