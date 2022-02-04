@@ -355,10 +355,14 @@ class Reporte extends Eloquent
                         )
                     )>=CURRENT_TIMESTAMP(),'Dentro del Tiempo','Fuera del Tiempo'
                 ) tiempo_final_n,
+                a.nombre AS area,
+                CONCAT(ptr.paterno, ' ', ptr.materno, ',', ptr.nombre) res_id_union,
                 ".$array['datos']." AS datos
                 FROM rutas r
                 INNER JOIN rutas_detalle rd ON rd.ruta_id=r.id AND rd.estado=1 AND rd.condicion=0
+                INNER JOIN areas a ON a.id = rd.area_id
                 INNER JOIN tablas_relacion tr ON r.tabla_relacion_id=tr.id AND tr.estado=1
+                INNER JOIN personas ptr ON ptr.id = tr.usuario_created_at
                 INNER JOIN tiempos t ON t.id=rd.tiempo_id
                 INNER JOIN flujos f ON f.id=r.flujo_id
                 ".$array['referido']." JOIN referidos re ON re.ruta_detalle_id=rd.ruta_detalle_id_ant and re.estado=1

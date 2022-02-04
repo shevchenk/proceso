@@ -622,23 +622,26 @@ class ReporteFinalController extends BaseController
             $objPHPExcel->getDefaultStyle()->getFont()->setName('Bookman Old Style');
             $objPHPExcel->getDefaultStyle()->getFont()->setSize(8);
             /*end configure*/
-
+            $head=array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ');
             /*head*/
             $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('A3', 'N°')
-                        ->setCellValue('B3', 'RESPONSABLE')
-                        ->setCellValue('C3', 'DOCUMENTO GENERADO POR EL PASO ANTERIOR')
-                        ->setCellValue('D3', 'PRIMER DOCUMENTO INGRESADO')
-                        ->setCellValue('E3', 'TIEMPO')
-                        ->setCellValue('F3', 'FECHA DE INICIO')
-                        ->setCellValue('G3', 'HORA DE INICIO')
-                        ->setCellValue('H3', 'ESTADO DEL PASO')
-                        ->setCellValue('I3', 'PASO')
-                        ->setCellValue('J3', 'PROCESO')
-                        ->setCellValue('K3', 'SOLICITANTE')
+                        ->setCellValue($head[0].'3', 'N°')
+                        ->setCellValue($head[1].'3', 'RESPONSABLE')
+                        ->setCellValue($head[2].'3', 'DOCUMENTO GENERADO POR EL PASO ANTERIOR')
+                        ->setCellValue($head[3].'3', 'PRIMER DOCUMENTO INGRESADO')
+                        ->setCellValue($head[4].'3', 'TIEMPO')
+                        ->setCellValue($head[5].'3', 'FECHA DE INICIO')
+                        ->setCellValue($head[6].'3', 'HORA DE INICIO')
+                        ->setCellValue($head[7].'3', 'ESTADO DEL PASO')
+                        ->setCellValue($head[8].'3', 'PASO')
+                        ->setCellValue($head[9].'3', 'AREA DEL PASO')
+                        ->setCellValue($head[10].'3', 'FEC INI TRAMITE')
+                        ->setCellValue($head[11].'3', 'RESPONSABLE PDI')
+                        ->setCellValue($head[12].'3', 'NOMBRE DEL PROCESO')
+                        ->setCellValue($head[13].'3', 'SOLICITANTE')
                    
                   ->mergeCells('A1:K1')
-                  ->setCellValue('A1', 'Trámites Inconclusos')
+                  ->setCellValue('A1', 'TRÁMITES INCONCLUSOS POR ÁREA Y PROCESO')
                   ->getStyle('A1:K1')->getFont()->setSize(18);
 
             $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('A')->setAutoSize(true);
@@ -652,27 +655,32 @@ class ReporteFinalController extends BaseController
             $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('I')->setAutoSize(true);
             $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('J')->setAutoSize(true);
             $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('K')->setAutoSize(true);
+            $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('L')->setAutoSize(true);
+            $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('M')->setAutoSize(true);
+            $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('N')->setAutoSize(true);
          
             /*end head*/
-            $head=array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ');
             $cabecera=array();
-            $max = 10;
+            $max = 13;
             /*body*/
             if( count($result)>0 AND isset($result[0]->fecha_inicio) AND $result[0]->fecha_inicio != '' ){
               foreach ($result as $key => $value) {
                 list($fecha_inicio,$hora_inicio) = explode(' ',$value->fecha_inicio);  
                 $objPHPExcel->setActiveSheetIndex(0)
-                              ->setCellValueExplicit('A' . ($key + 4), $key + 1)
-                              ->setCellValueExplicit('B' . ($key + 4), $value->responsable)
-                              ->setCellValueExplicit('C' . ($key + 4), $value->id_union_ant)
-                              ->setCellValueExplicit('D' . ($key + 4), $value->id_union)
-                              ->setCellValueExplicit('E' . ($key + 4), $value->tiempo)
-                              ->setCellValueExplicit('F' . ($key + 4), $fecha_inicio)
-                              ->setCellValueExplicit('G' . ($key + 4), $hora_inicio)
-                              ->setCellValueExplicit('H' . ($key + 4), $value->tiempo_final_n)
-                              ->setCellValue('I' . ($key + 4), $value->norden)
-                              ->setCellValue('J' . ($key + 4), $value->proceso)
-                              ->setCellValue('K' . ($key + 4), $value->persona)
+                              ->setCellValueExplicit($head[0] . ($key + 4), $key + 1)
+                              ->setCellValueExplicit($head[1] . ($key + 4), $value->responsable)
+                              ->setCellValueExplicit($head[2] . ($key + 4), $value->id_union_ant)
+                              ->setCellValueExplicit($head[3] . ($key + 4), $value->id_union)
+                              ->setCellValueExplicit($head[4] . ($key + 4), $value->tiempo)
+                              ->setCellValueExplicit($head[5] . ($key + 4), $fecha_inicio)
+                              ->setCellValueExplicit($head[6] . ($key + 4), $hora_inicio)
+                              ->setCellValueExplicit($head[7] . ($key + 4), $value->tiempo_final_n)
+                              ->setCellValue($head[8] . ($key + 4), $value->norden)
+                              ->setCellValue($head[9] . ($key + 4), $value->area)
+                              ->setCellValue($head[10] . ($key + 4), $value->fecha_inicio)
+                              ->setCellValue($head[11] . ($key + 4), $value->res_id_union)
+                              ->setCellValue($head[12] . ($key + 4), $value->proceso)
+                              ->setCellValue($head[13] . ($key + 4), $value->persona)
                               ;
 
                 $cabecera = explode("**", $value->datos);
@@ -681,16 +689,16 @@ class ReporteFinalController extends BaseController
                   for( $i = 0; $i < count($cabecera); $i++ ){
                       $cabeceradet = explode("|", $cabecera[$i]);
                       if( trim($cabeceradet[0]) != '' ){
-                          $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(11+$i)])->setAutoSize(true);
-                          $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(11+$i)].'3', $cabeceradet[0]);
+                          $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(13+$i)])->setAutoSize(true);
+                          $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(13+$i)].'3', $cabeceradet[0]);
                           if( isset($cabeceradet[1]) ){
-                              $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(11+$i)] . ($key + 4), $cabeceradet[1]);
+                              $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(13+$i)] . ($key + 4), $cabeceradet[1]);
                           }
                       }
 
                   }
 
-                  $max_aux = 10 + count($cabecera);
+                  $max_aux = 13 + count($cabecera);
                   if( $max < $max_aux ){
                       $max = $max_aux;
                   }
@@ -699,7 +707,7 @@ class ReporteFinalController extends BaseController
             }
             /*end body*/
             $objPHPExcel->getActiveSheet()->getStyle('A3:'.$head[$max].'3')->applyFromArray($styleThinBlackBorderAllborders);
-            $objPHPExcel->getActiveSheet()->getStyle('A1:L1')->applyFromArray($styleAlignment);
+            $objPHPExcel->getActiveSheet()->getStyle('A1:N1')->applyFromArray($styleAlignment);
             // Rename worksheet
             $objPHPExcel->getActiveSheet()->setTitle('Tràmites Inconclusos');
             // Set active sheet index to the first sheet, so Excel opens this as the first sheet

@@ -938,6 +938,7 @@ class ReporteController extends BaseController
                 IFNULL(rd.id,'') AS ruta_detalle_id,
                 IFNULL( CONCAT(t.apocope,': ',rd.dtiempo),'') AS tiempo,
                 IFNULL(rd.fecha_inicio,'') AS fecha_inicio,
+                IFNULL(rd.dtiempo_final,'') AS dtiempo_final,
                 IFNULL(rd.norden,'') AS norden,
                 IFNULL(tr.fecha_tramite,'') AS fecha_tramite,
                 IFNULL(f.nombre,'') AS nombre,
@@ -957,10 +958,14 @@ class ReporteController extends BaseController
                 '1' AS id,
                 IFNULL(tr.ruc,'') AS ruc,
                 IFNULL(tr.sumilla,'') AS sumilla,
+                a.nombre AS area,
+                CONCAT(ptr.paterno, ' ', ptr.materno, ',', ptr.nombre) res_id_union,
                 $datos AS datos
                 FROM rutas_detalle rd
                 JOIN rutas r ON rd.ruta_id=r.id and r.estado=1
+                JOIN areas a ON a.id = rd.area_id
                 JOIN tablas_relacion tr ON r.tabla_relacion_id=tr.id 
+                JOIN personas ptr ON ptr.id = tr.usuario_created_at
                 JOIN flujos f ON r.flujo_id=f.id
                 JOIN tiempos t ON rd.tiempo_id=t.id
                 LEFT JOIN tipo_solicitante ts ON tr.tipo_persona=ts.id
@@ -1031,21 +1036,24 @@ class ReporteController extends BaseController
               /*end configure*/
 
               /*head*/
+              $head=array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ');
               $objPHPExcel->setActiveSheetIndex(0)
-                          ->setCellValue('A3', 'N°')
-                          ->setCellValue('B3', 'TRAMITE')
-                          ->setCellValue('C3', 'TIEMPO')
-                          ->setCellValue('D3', 'FECHA INICIO')
-                          ->setCellValue('E3', 'PASO')
-                          ->setCellValue('F3', 'FECHA TRAMITE')
-                          ->setCellValue('G3', 'NOMBRE')
-                          ->setCellValue('H3', 'RESPUESTA')
-                          ->setCellValue('I3', 'OBSERVACION')
-                          ->setCellValue('J3', 'TIPO SOLICITA')
-                          ->setCellValue('K3', 'SOLICITANTE')                        
-                    ->mergeCells('A1:K1')
-                    ->setCellValue('A1', 'LISTADO CONCLUIDOS POR AREA')
-                    ->getStyle('A1:K1')->getFont()->setSize(18);
+                          ->setCellValue($head[0].'3', 'N°')
+                          ->setCellValue($head[1].'3', 'TRAMITE')
+                          ->setCellValue($head[2].'3', 'FEC INI TRAMITE')
+                          ->setCellValue($head[3].'3', 'FEC INI PASO')
+                          ->setCellValue($head[4].'3', 'FEC FIN PASO')
+                          ->setCellValue($head[5].'3', 'PASO')
+                          ->setCellValue($head[6].'3', 'AREA DEL PASO')
+                          ->setCellValue($head[7].'3', 'TIEMPO')
+                          ->setCellValue($head[8].'3', 'RESPONSABLE PDI')
+                          ->setCellValue($head[9].'3', 'NOMBRE DEL PROCESO')
+                          ->setCellValue($head[10].'3', 'OBSERVACION')
+                          ->setCellValue($head[11].'3', 'TIPO SOLICITA')
+                          ->setCellValue($head[12].'3', 'SOLICITANTE')                        
+                    ->mergeCells('A1:M1')
+                    ->setCellValue('A1', 'LISTADO CONCLUIDOS POR AREA Y PROCESO')
+                    ->getStyle('A1:M1')->getFont()->setSize(18);
 
               $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('A')->setAutoSize(true);
               $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('B')->setAutoSize(true);
@@ -1058,43 +1066,47 @@ class ReporteController extends BaseController
               $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('I')->setAutoSize(true);
               $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('J')->setAutoSize(true);
               $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('K')->setAutoSize(true);
+              $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('L')->setAutoSize(true);
+              $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('M')->setAutoSize(true);
               /*end head*/
               /*body*/
-              $head=array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ');
+              
               $cabecera=array();
-              $max = 10;
+              $max = 12;
               $ini = 4;
               if($result){
                 foreach ($result as $key => $value) {
 
                     $objPHPExcel->setActiveSheetIndex(0)
-                                ->setCellValue('A' . $ini, $key + 1)
-                                ->setCellValue('B' . $ini, $value->id_union)
-                                ->setCellValue('C' . $ini, $value->tiempo)
-                                ->setCellValue('D' . $ini, $value->fecha_inicio)
-                                ->setCellValue('E' . $ini, $value->norden)
-                                ->setCellValue('F' . $ini, $value->fecha_tramite)
-                                ->setCellValue('G' . $ini, $value->nombre)
-                                ->setCellValue('H' . $ini, $value->respuesta)
-                                ->setCellValue('I' . $ini, $value->observacion)
-                                ->setCellValue('J' . $ini, $value->tipo_solicitante)
-                                ->setCellValue('K' . $ini, $value->solicitante)
+                                ->setCellValue( $head[0] . $ini, $key + 1)
+                                ->setCellValue( $head[1] . $ini, $value->id_union)
+                                ->setCellValue( $head[2] . $ini, $value->fecha_tramite)
+                                ->setCellValue( $head[3] . $ini, $value->fecha_inicio)
+                                ->setCellValue( $head[4] . $ini, $value->dtiempo_final)
+                                ->setCellValue( $head[5] . $ini, $value->norden)
+                                ->setCellValue( $head[6] . $ini, $value->area)
+                                ->setCellValue( $head[7] . $ini, $value->tiempo)
+                                ->setCellValue( $head[8] . $ini, $value->res_id_union)
+                                ->setCellValue( $head[9] . $ini, $value->nombre)
+                                ->setCellValue( $head[10] . $ini, $value->observacion)
+                                ->setCellValue( $head[11] . $ini, $value->tipo_solicitante)
+                                ->setCellValue( $head[12] . $ini, $value->solicitante)
                                 ;
                     $cabecera = explode("**", $value->datos);
                     if( trim( $cabecera[0] ) != '' ){
                         for( $i = 0; $i < count($cabecera); $i++ ){
                             $cabeceradet = explode("|", $cabecera[$i]);
                             if( trim($cabeceradet[0]) != '' ){
-                                $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(11+$i)])->setAutoSize(true);
-                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(11+$i)].'3', $cabeceradet[0]);
+                                $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(13+$i)])->setAutoSize(true);
+                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(13+$i)].'3', $cabeceradet[0]);
                                 if( isset($cabeceradet[1]) ){
-                                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(11+$i)] . $ini, $cabeceradet[1]);
+                                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(13+$i)] . $ini, $cabeceradet[1]);
                                 }
                             }
     
                         }
     
-                        $max_aux = 10 + count($cabecera);
+                        $max_aux = 12 + count($cabecera);
                         if( $max < $max_aux ){
                             $max = $max_aux;
                         }
@@ -1107,7 +1119,7 @@ class ReporteController extends BaseController
               $objPHPExcel->getActiveSheet()->getStyle('A3:'.$head[$max].'3')->applyFromArray($styleThinBlackBorderAllborders);
               $objPHPExcel->getActiveSheet()->getStyle('A4:'.$head[$max].($ini-1))->applyFromArray($styleThinAllborders);
               
-              $objPHPExcel->getActiveSheet()->getStyle('A1:K1')->applyFromArray($styleAlignment);
+              $objPHPExcel->getActiveSheet()->getStyle('A1:M1')->applyFromArray($styleAlignment);
               // Rename worksheet
               $objPHPExcel->getActiveSheet()->setTitle('Concluidos');
               // Set active sheet index to the first sheet, so Excel opens this as the first sheet
