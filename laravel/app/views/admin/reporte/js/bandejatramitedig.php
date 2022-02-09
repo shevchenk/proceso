@@ -1,6 +1,7 @@
 <script type="text/javascript">
 temporalBandeja=0;
 valposg=0;
+var ClickActCamp = false;
 var fechaTG='';
 var horaTG='';
 var TiempoFinalTG='';
@@ -672,7 +673,8 @@ mostrarDetalleHTML=function(datos){
 mostrarCamposHTML = (result) => {
     $(".DatosPersonalizadosG").addClass('hidden');
     $(".DatosPersonalizadosG .box-body").html('');
-
+    
+    ClickActCamp = true; //Inicializa en positivo
     $.each(result,function(index,r){
         campo = '';
         subtitulo = '';
@@ -805,6 +807,10 @@ mostrarCamposHTML = (result) => {
                             '<span data-id="'+ r.id +'" class="glyphicon glyphicon-'+ icono +' form-control-feedback"></span>'+
                         '</div>';
                 }
+
+                if( color == 'error' ){
+                    ClickActCamp = false;
+                }
             }
 
             html =
@@ -848,6 +854,7 @@ ActualizarCampos = () => {
     });
 
     if( r == true ){
+        ClickActCamp = true;
         Validar.guardarRutaCampos(guardarRutaCamposHTML);
     }
 
@@ -900,7 +907,7 @@ guardarTodo=function(){
     var validacheck=0;
 
     
-    if( $(".DatosPersonalizadosG .glyphicon-remove").length > 0 && alerta == false ){
+    if( ( $(".DatosPersonalizadosG .glyphicon-remove").length > 0 && alerta == false ) || ClickActCamp == false ){
         msjG.mensaje("warning","Registre los datos que contienen una 'X' en DATOS PERSONALIZADOS y/o presione el botón actualizar para validar su registro",8000);
         $(".DatosPersonalizadosG #datos_personalizados").focus();
         alerta = true;

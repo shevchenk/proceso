@@ -49,6 +49,7 @@ var Pois={
             cache       : false,
             dataType    : 'json',
             data        : datos,
+            async       : false,
             beforeSend : function() {
                 $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
             },
