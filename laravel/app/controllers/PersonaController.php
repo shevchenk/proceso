@@ -320,6 +320,7 @@ class PersonaController extends BaseController
             $persona['responsable_asigt']=1;
             $persona['responsable_dert']=1;}*/
             $persona['responsable_area'] = Input::get('responsable_area');
+            $persona['local_id'] = Input::get('local');
             $persona['area_id'] = Input::get('area');
             $persona['rol_id'] = Input::get('rol');
             $persona['modalidad'] = Input::get('modalidad');
@@ -480,6 +481,7 @@ class PersonaController extends BaseController
             $persona['email_mdi'] = Input::get('email_mdi');
             $persona['dni'] = Input::get('dni');
             $persona['sexo'] = Input::get('sexo');
+            $persona['local_id'] = Input::get('local');
             $persona['area_id'] = Input::get('area');
             $persona['rol_id'] = Input::get('rol');
             $persona['doc_privados'] = Input::get('doc_privados');

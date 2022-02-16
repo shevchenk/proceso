@@ -30,7 +30,7 @@ class Local extends Base
 
      public function getListar(){
         $local=DB::table('locales')
-                ->select('id','local','estado')
+                ->select('id','local AS nombre','estado')
                 ->where( 
                     function($query){
                         if ( Input::get('estado') ) {

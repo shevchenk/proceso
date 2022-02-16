@@ -139,25 +139,76 @@
                       <option value='M' selected>Masculino</option>
                   </select>
                 </div>
-                <div class="col-sm-2">
-                  <label class="control-label">Modalidad:
-                  </label>
-                  <select class="form-control" name="slct_modalidad" id="slct_modalidad">
-                      <!-- <option value='' style="display:none">.:Seleccione:.</option> -->
-                      <option value='1' selected>Trabajador</option>
-                      <option value='2'>Tercero</option>
-                  </select>
+              </div>
+
+            </div>
+          </fieldset>
+          <fieldset id="f_areas_cargo">
+            <legend>Rol que desempeña en la institución</legend>
+
+            <div class="row form-group">
+                <div class="col-sm-12">
+                  <div class="col-sm-2">
+                    <label class="control-label">Modalidad:
+                    </label>
+                    <select class="form-control" name="slct_modalidad" id="slct_modalidad">
+                        <!-- <option value='' style="display:none">.:Seleccione:.</option> -->
+                        <option value='1' selected>Trabajador</option>
+                        <option value='2'>Tercero</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-2">
+                    <label class="control-label">Es Responsable de área?:
+                    </label>
+                    <select class="form-control" name="slct_responsable_area" id="slct_responsable_area">
+                        <!-- <option value='' style="display:none">.:Seleccione:.</option> -->
+                        <option value='0' selected>No</option>
+                        <option value='1'>Si</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4">
+                    <label class="control-label">Area:
+                    </label>
+                    <select class="form-control" name="slct_area" id="slct_area">
+                    </select>
+                    <select style="display:none" name="slct_area_aux" id="slct_area_aux">
+                    </select>
+                  </div>
                 </div>
-                <div class="col-sm-2">
-                  <label class="control-label">Es Responsable de área?:
-                  </label>
-                  <select class="form-control" name="slct_responsable_area" id="slct_responsable_area">
-                      <!-- <option value='' style="display:none">.:Seleccione:.</option> -->
-                      <option value='0' selected>No</option>
-                      <option value='1'>Si</option>
-                  </select>
+                <div class="col-sm-12">
+                  <div class="col-sm-4">
+                    <label class="control-label">Rol:
+                    </label>
+                    <select class="form-control" name="slct_rol" id="slct_rol">
+                    </select>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <label class="control-label">Local:
+                    </label>
+                    <select class="form-control" name="slct_local" id="slct_local">
+                    </select>
+                  </div>
+
+                  <div class="col-sm-2" style="display:none;">
+                    <label class="control-label" style="color: red;">Documentos Privados:
+                    </label>
+                    <select class="form-control" name="slct_doc_privados" id="slct_doc_privados">                      
+                        <option value='1'>Si</option>
+                        <option value='0'>No</option>
+                    </select>
+                  </div>
+
                 </div>
-                <div class="col-sm-2">
+            </div>
+
+          </fieldset>
+          <fieldset id="f_areas_cargo">
+            <legend>Rol que desempeña en el sistema</legend>
+
+            <div class="row form-group">
+              <div class="col-sm-12">
+                <div class="col-sm-4">
                   <label class="control-label">Nivel de documento:
                   </label>
                   <select class="form-control" name="slct_nivel" id="slct_nivel">
@@ -169,40 +220,6 @@
                   </select>
                 </div>
               </div>
-
-              <div class="col-sm-12">
-                <div class="col-sm-4">
-                  <label class="control-label">Area:
-                  </label>
-                  <select class="form-control" name="slct_area" id="slct_area">
-                  </select>
-                  <select style="display:none" name="slct_area_aux" id="slct_area_aux">
-                  </select>
-                </div>
-                <div class="col-sm-4">
-                  <label class="control-label">Rol:
-                  </label>
-                  <select class="form-control" name="slct_rol" id="slct_rol">
-                  </select>
-                </div>
-
-                <div class="col-sm-2" style="display:none;">
-                  <label class="control-label" style="color: red;">Documentos Privados:
-                  </label>
-                  <select class="form-control" name="slct_doc_privados" id="slct_doc_privados">                      
-                      <option value='1'>Si</option>
-                      <option value='0'>No</option>
-                  </select>
-                </div>
-
-              </div>
-
-            </div>
-          </fieldset>
-          <fieldset id="f_areas_cargo">
-            <legend>Niveles de Acceso</legend>
-
-            <div class="row form-group">
               <div class="col-sm-12">
                 <div class="col-sm-6">
                   <label class="control-label">Roles:

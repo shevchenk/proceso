@@ -150,12 +150,7 @@ validaLocales = function(){
         $("#form_locales_modal #txt_fecha_inicio").focus();
         r=false;
     }
-    else if( $("#form_locales_modal #txt_fecha_final").val()=='' ){
-        msj = "Ingrese Fecha de Cierre del Local";
-        msjG.mensaje('warning',msj,4000);
-        $("#form_locales_modal #txt_fecha_final").focus();
-        r=false;
-    }
+    
     return r;
 };
 </script>

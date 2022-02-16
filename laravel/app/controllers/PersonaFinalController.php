@@ -89,6 +89,7 @@ class PersonaFinalController extends BaseController
             $persona['responsable_area'] = Input::get('responsable_area');
             $persona['area_id'] = Input::get('area');
             $persona['rol_id'] = Input::get('rol');
+            $persona['local_id'] = Input::get('local');
             $persona['modalidad'] = Input::get('modalidad');
             $persona['vista_doc'] = Input::get('vista_doc');
             $persona['estado'] = Input::get('estado');
@@ -273,6 +274,7 @@ class PersonaFinalController extends BaseController
             $persona['sexo'] = Input::get('sexo');
             $persona['area_id'] = Input::get('area');
             $persona['rol_id'] = Input::get('rol');
+            $persona['local_id'] = Input::get('local');
             $persona['doc_privados'] = Input::get('doc_privados');
             
             if (Input::has('password'))
@@ -472,6 +474,7 @@ class PersonaFinalController extends BaseController
             $persona['responsable_area'] = Input::get('responsable_area');
             $persona['area_id'] = 10;
             $persona['rol_id'] = 46;
+            $persona['local_id'] = Input::get('local');
             $persona['modalidad'] = Input::get('modalidad');
             $persona['vista_doc'] = Input::get('vista_doc');
             $persona['estado'] = Input::get('estado');
@@ -631,6 +634,7 @@ class PersonaFinalController extends BaseController
             if (Input::has('fecha_nacimiento'))
                 $persona['fecha_nacimiento'] = Input::get('fecha_nacimiento');
 
+            $persona['local_id'] = Input::get('local');
             $persona['responsable_area'] = Input::get('responsable_area');
             $persona['modalidad'] = Input::get('modalidad');
             $persona['vista_doc'] = Input::get('vista_doc');

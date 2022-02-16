@@ -176,7 +176,7 @@ class Persona extends Base implements UserInterface, RemindableInterface {
 
         $sSql = " SELECT p.id ,a.id area_id,r.id rol_id, p.doc_privados, p.paterno, p.materno, p.nombre,p.dni,p.sexo sexo_id,p.fecha_nacimiento,
 
-                                a.nombre area,r.nombre rol, p.telefono, p.celular, p.direccion,
+                                a.nombre area,r.nombre rol, p.telefono, p.celular, p.direccion, p.local_id, l.local,
                                 p.estado,p.email, p.email_mdi, p.password, p.responsable_area, p.nivel,
                                 CASE p.sexo
                                 WHEN 'M' THEN 'Masculino'
@@ -197,6 +197,7 @@ class Persona extends Base implements UserInterface, RemindableInterface {
                 FROM personas p
                 LEFT JOIN roles r ON r.id=p.rol_id 
                 LEFT JOIN areas a ON a.id=p.area_id 
+                LEFT JOIN locales l ON l.id=p.local_id 
                 
                                 WHERE 1=1";
         $sSql .= $array['where'] .

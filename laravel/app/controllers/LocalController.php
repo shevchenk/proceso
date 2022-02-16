@@ -80,7 +80,7 @@ class LocalController extends \BaseController
      *
      * @return Response
      */
-    public function postListarLocales()
+    public function postListarlocales()
     {
         if ( Request::ajax() ) {
             $a      = new Local;

@@ -137,6 +137,12 @@
                   <input type="text" class="form-control" placeholder="Ingrese Dirección" name="txt_direccion" id="txt_direccion">
                 </div>
 
+                <div class="col-sm-4">
+                  <label class="control-label">Local donde estudia el alumno</label>
+                  <select class="form-control" name="slct_local" id="slct_local">
+                  </select>
+                </div>
+
               </div>
               <div class="col-sm-12">
                 <div class="col-sm-4" style="display:none;">

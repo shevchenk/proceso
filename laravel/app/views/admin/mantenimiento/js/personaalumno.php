@@ -85,6 +85,7 @@ $(document).ready(function() {
             $('#form_personas_modal #txt_nombre').focus();
             slctGlobal.listarSlct('area','slct_area','simple',null,datos);
             slctGlobal.listarSlct('rol','slct_rol','simple',null,datos);
+            slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','simple',null,datos);
         }
         else{
             Persona.CargarAreas(PersonasG.id); //no es multiselect
@@ -120,7 +121,7 @@ $(document).ready(function() {
             slctGlobal.listarSlct('area','slct_area','simple',PersonasG.area,datos);
          //   alert(PersonasG.fecha_nacimiento_id);
             slctGlobal.listarSlct('rol','slct_rol','simple',PersonasG.rol,datos);
-            
+            slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','simple',PersonasG.local_id,datos);
             //slctGlobal.listarSlctFijo('rol','slct_rol',PersonasG.rol);
         }
 
@@ -144,7 +145,7 @@ $(document).ready(function() {
     $('#personaModal').on('hide.bs.modal', function (event) {
         var modal = $(this); //captura el modal
         modal.find('.modal-body input').val(''); // busca un input para copiarle texto
-        $('#slct_cargos,#slct_rol,#slct_area').multiselect('destroy');
+        $('#slct_cargos,#slct_rol,#slct_area,#slct_local').multiselect('destroy');
         $("#t_cargoPersona").html('');
     });
 });
@@ -165,6 +166,7 @@ BtnEditar=function(btn,id){
     PersonasG.telefono=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('telefono');
     PersonasG.celular=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('celular');
     PersonasG.direccion=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('direccion');
+    PersonasG.local_id=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('local_id');
     PersonasG.area=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('area');
     PersonasG.rol=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('rol');
     PersonasG.modalidad=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('modalidad'); 
@@ -194,6 +196,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         //se envia de manera ocultada la fecha de nacimiento en el txt_sexo
         return row.sexo+"<input type='hidden'name='txt_sexo' fecha_nacimiento='"+row.fecha_nacimiento+"' responsable_area='"+row.responsable_area+"' "+
                 "telefono='"+row.telefono+"' celular='"+row.celular+"' direccion='"+row.direccion+"' doc_privados='"+row.doc_privados+"' "+
+                "local_id='"+$.trim(row.local_id)+"' "+
                 "area='"+row.area_id+"' rol='"+row.rol_id+"' modalidad='"+row.modalidad_id+"' vista_doc='"+row.vista_doc_id+"' "+
                 "value='"+row.sexo_id+"'>";
     }
@@ -315,6 +318,10 @@ validaPersonas=function(){
     
     else if( $("#form_personas_modal #txt_dni").val()=='' ){
         alert("Ingrese Numero DNI");
+        r=false;
+    }
+    else if( $("#form_personas_modal #slct_local").val()=='' ){
+        alert("Seleccione Local");
         r=false;
     }
 
