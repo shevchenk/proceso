@@ -1,5 +1,4 @@
 <?php
-
 class LocalController extends \BaseController
 {
     protected $_errorController;
@@ -123,8 +122,9 @@ class LocalController extends \BaseController
         if ( Request::ajax() ) {
             $regex = 'regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú]{2,60})$/i';
             $required = 'required';
+            
             $reglas = array(
-                'local' => $required.'|'.$regex,
+                'local' => 'required|unique:locales,local',
             );
 
             $mensaje= array(
@@ -162,8 +162,9 @@ class LocalController extends \BaseController
         if ( Request::ajax() ) {
             $regex = 'regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú]{2,60})$/i';
             $required = 'required';
+
             $reglas = array(
-                'local' => $required.'|'.$regex,
+                'local' => 'required|unique:locales,local,'.Input::get('id'),
             );
 
             $mensaje= array(

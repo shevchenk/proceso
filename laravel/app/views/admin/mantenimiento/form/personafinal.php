@@ -186,7 +186,7 @@
                   <div class="col-sm-4">
                     <label class="control-label">Local:
                     </label>
-                    <select class="form-control" name="slct_local" id="slct_local">
+                    <select class="form-control" name="slct_local[]" id="slct_local" multiple>
                     </select>
                   </div>
 

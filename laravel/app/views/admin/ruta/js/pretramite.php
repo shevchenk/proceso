@@ -13,8 +13,11 @@ $(document).ready(function() {
 
 
     UsuarioId='<?php echo Auth::user()->id; ?>';
+    UsuarioLocalId='<?php echo trim(Auth::user()->local_id); ?>';
     DataUser = '<?php echo Auth::user(); ?>';
     /*Inicializar tramites*/
+    slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','simple',UsuarioLocalId,{estado:1});
+
     var data={'persona':UsuarioId,'estado':1, 'filtro_fecha': $("#filtro_fecha").val()};  
     Bandeja.MostrarPreTramites(data,HTMLPreTramite);
     /*end Inicializar tramites*/
@@ -229,7 +232,7 @@ HTMLPreTramite = function(data){
             html+=    "<td>"+el.solicitante+"</td>";
             html+=    "<td>"+el.tipotramite+"</td>";
             html+=    "<td>"+el.tipodoc+"</td>";
-            html+=    "<td>"+el.documento+"</td>";
+            html+=    "<td>"+$.trim(el.local)+"</td>";
             html+=    "<td>"+el.tramite+"</td>";
             html+=    "<td>"+el.fecha+"</td>";
             html+=    "<td>"+archivo+"</td>";
@@ -548,8 +551,11 @@ generarPreTramite = function(){
     else if($("#txt_nombretramite").val()==''){
         msjG.mensaje("warning", 'Busque y seleccione trámite',3000);
     }
+    else if( $("#slct_local").val()=='' ){
+        msjG.mensaje("warning", 'Seleccione local donde se solicita el servicio',3000);
+    }
     else if( $("#cbo_tipodoc").val()=='' ){
-        msjG.mensaje("warning", 'Seleccione Tipo de documento',3000);
+        msjG.mensaje("warning", 'Seleccione documento presentado',3000);
     }
     else if( $("#txt_numfolio").val()=='' ){
         msjG.mensaje("warning", 'Ingrese número de folio',3000);

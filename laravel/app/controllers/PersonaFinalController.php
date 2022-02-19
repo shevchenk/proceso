@@ -79,17 +79,20 @@ class PersonaFinalController extends BaseController
             $persona['sexo'] = Input::get('sexo');
             $persona['password'] = Input::get('password');
             $persona['doc_privados'] = Input::get('doc_privados');
+            
             if (Input::get('fecha_nacimiento')<>'') 
-            $persona['fecha_nacimiento'] = Input::get('fecha_nacimiento');
+                $persona['fecha_nacimiento'] = Input::get('fecha_nacimiento');
             if (Input::has('nivel'))
                 $persona['nivel'] = Input::get('nivel');
+            
+            $local = trim( implode( ",", Input::get('local') ) );
+            $persona['local_id'] = $local;
             /*if ($rol==9 or $rol==8){
             $persona['responsable_asigt']=1;
             $persona['responsable_dert']=1;}*/
             $persona['responsable_area'] = Input::get('responsable_area');
             $persona['area_id'] = Input::get('area');
             $persona['rol_id'] = Input::get('rol');
-            $persona['local_id'] = Input::get('local');
             $persona['modalidad'] = Input::get('modalidad');
             $persona['vista_doc'] = Input::get('vista_doc');
             $persona['estado'] = Input::get('estado');
@@ -274,8 +277,10 @@ class PersonaFinalController extends BaseController
             $persona['sexo'] = Input::get('sexo');
             $persona['area_id'] = Input::get('area');
             $persona['rol_id'] = Input::get('rol');
-            $persona['local_id'] = Input::get('local');
             $persona['doc_privados'] = Input::get('doc_privados');
+
+            $local = trim( implode( ",", Input::get('local') ) );
+            $persona['local_id'] = $local;
             
             if (Input::has('password'))
                 $persona['password'] = Input::get('password');

@@ -139,6 +139,7 @@ class ReporteFinalController extends BaseController
     {
       $array=array();
       $array['usuario']=Auth::user()->id;
+      $array['local_id']=Auth::user()->local_id;
       $array['limit']='';$array['order']='';
       $array['referido']=' LEFT ';
       $array['w']='';
@@ -177,6 +178,18 @@ class ReporteFinalController extends BaseController
         
         if( Input::has('id_res') AND Input::get('id_res')!='' ){
           $array['w'].=" AND CONCAT_WS(' ',p1.paterno,p1.materno,p1.nombre) LIKE '%".Input::get('id_res')."%' ";
+        }
+
+        if( Input::has('local') AND Input::get('local')!='' ){
+          $array['w'].=" AND l.local LIKE '%".Input::get('local')."%' ";
+        }
+
+        if( Input::has('norden') AND Input::get('norden')!='' ){
+          $array['w'].=" AND rd.norden = '".Input::get('norden')."' ";
+        }
+
+        if( Input::has('area') AND Input::get('area')!='' ){
+          $array['w'].=" AND a.nombre LIKE '%".Input::get('area')."%' ";
         }
 
         if( Input::has('id_ant') AND Input::get('id_ant')!='' ){
@@ -246,6 +259,8 @@ class ReporteFinalController extends BaseController
           $fecha_inicio=explode(" - ",Input::get('fechaRange'));
           $array['w'].=" AND DATE(rd.fecha_inicio) BETWEEN '".$fecha_inicio[0]."' AND '".$fecha_inicio[1]."' ";
         }
+
+        $array['w'].=" AND ( r.local_id = '0' OR FIND_IN_SET(r.local_id , '".$array['local_id']."') > 0 ) ";
 
       //$cant= Reporte::BandejaTramiteCount( $array );
       $r = Reporte::BandejaTramite( $array );

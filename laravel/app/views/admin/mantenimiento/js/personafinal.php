@@ -84,7 +84,7 @@ $(document).ready(function() {
             $('#form_personas_modal #slct_nivel').val( 1 );
             slctGlobal.listarSlct('area','slct_area','simple',null,datos);
             slctGlobal.listarSlct('rol','slct_rol','simple',null,datos);
-            slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','simple',null,datos);
+            slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','multiple',null,datos);
         }
         else{
 
@@ -123,7 +123,8 @@ $(document).ready(function() {
             slctGlobal.listarSlct('area','slct_area','simple',PersonasG.area,datos);
          //   alert(PersonasG.fecha_nacimiento_id);
             slctGlobal.listarSlct('rol','slct_rol','simple',PersonasG.rol,datos);
-            slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','simple',PersonasG.local_id,datos);
+
+            slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','multiple',PersonasG.local_id.split(","),datos);
             
             //slctGlobal.listarSlctFijo('rol','slct_rol',PersonasG.rol);
         }

@@ -172,8 +172,8 @@ td, th{
                                         <th>TIPO SOLICITANTE</th>
                                         <th>TIPO DE SERVICIO SOLICITADO</th>
                                         <th>DOCUMENTO PRESENTADO</th>
-                                        <th>NRO DEL DOCUMENTO</th>
-                                        <th>NOMBRE DELSERVICIO SOLICITADO</th>
+                                        <th>LOCAL DEL SERVICIO SOLICITADO</th>
+                                        <th>NOMBRE DEL SERVICIO SOLICITADO</th>
                                         <th>FECHA REGISTRADA</th>
                                         <th>REQUISITOS EN UN SOLO ARCHIVO PDF</th>
                                         <th>EXPEDIENTES GENERADOS</th>
@@ -205,6 +205,7 @@ td, th{
                             <input type="hidden" id="txt_tsolicitante" name="txt_tsolicitante">
                             <input type="hidden" id="txt_tdocumento" name="txt_tdocumento">
                             <input type="hidden" id="txt_area" name="txt_area">
+                            <input type="hidden" id="txt_local" name="txt_local">
 
                             <div class="col-sm-12 format">
                               <div class="row">
@@ -212,31 +213,36 @@ td, th{
                                    <div class="row form-group">
                                       <div class="col-sm-4">
                                           <label>TIPO DE SERVICIO SOLICITADO: </label>
-                                          <span id="spanTipoT"></span>
+                                          <div id="spanTipoT"></div>
                                       </div>
-                                       <div class="col-sm-4">
+                                      <div class="col-sm-4">
+                                          <label>LOCAL DEL SERVICIO SOLICITADO: </label>
+                                          <div id="spanTLocal"></div>
+                                      </div>
+                                      <div class="col-sm-2">
+                                          <label>#TIPO DOC: </label>
+                                          <div id="spanNumTP"></div> 
+                                          <input type="text" id="txt_tdoc" name="txt_tdoc" class="form-control" style="display:none;" readonly>
+                                      </div>
+                                       <div class="col-sm-2">
+                                          <label>#FOLIO: </label>
+                                          <div id="spanFolio"></div> 
+                                          <input type="text" id="txt_folio" name="txt_folio" class="form-control" style="display:none;" readonly>
+                                      </div> 
+                                   </div>
+                                   <div class="row form-group">
+                                      <div class="col-sm-4">
                                           <label>TIPO DOCUMENTO: </label>
-                                          <span id="spanTipoD"></span>
+                                          <div id="spanTipoD"></div>
                                       </div>
                                       <div class="col-sm-4">
                                           <label>TIPO SOLICITANTE: </label>
-                                          <span id="spanTSoli"></span>
+                                          <div id="spanTSoli"></div>
                                       </div>
-                                   </div>
-                                   <div class="row form-group">
-                                       <div class="col-sm-4">
-                                          <label>#TIPO DOC: </label>
-                                          <span id="spanNumTP"></span> 
-                                          <input type="text" id="txt_tdoc" name="txt_tdoc" class="form-control" style="display:none;" readonly>
-                                      </div>
-                                       <div class="col-sm-4">
-                                          <label>#FOLIO: </label>
-                                          <span id="spanFolio"></span> 
-                                          <input type="text" id="txt_folio" name="txt_folio" class="form-control" style="display:none;" readonly>
-                                      </div>
+                                      
                                       <div class="col-sm-4">
                                         <label>NOMBRE DEL SERVICIO SOLICITADO: </label><br>
-                                        <span id="spanNombreT"></span>
+                                        <div id="spanNombreT"></div>
                                       </div>
                                    </div>
                                 </div>

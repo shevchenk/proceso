@@ -137,8 +137,8 @@ td, th{
                                         <th>TIPO SOLICITANTE</th>
                                         <th>TIPO DE SERVICIO SOLICITADO</th>
                                         <th>DOCUMENTO PRESENTADO</th>
-                                        <th>NRO DEL DOCUMENTO</th>
-                                        <th>NOMBRE DELSERVICIO SOLICITADO</th>
+                                        <th>LOCAL DEL SERVICIO SOLICITADO</th>
+                                        <th>NOMBRE DEL SERVICIO SOLICITADO</th>
                                         <th>FECHA REGISTRADA</th>
                                         <th>REQUISITOS EN UN SOLO ARCHIVO PDF</th>
                                         <th>ESTADO DEL SERVICIO SOLICITADO</th>
@@ -188,17 +188,18 @@ td, th{
                           <input type="hidden" name="txt_idarea" id="txt_idarea" class="form-control">
                         </div>
                       </div>
-                      <div class="col-md-5  form-group">
-                        <div class="col-md-5">
-                          <span>CANTIDAD DE FOLIOS(Considere la suma de las páginas de los requisitos, más el documento presentado para solicitar el servicio): </span>
+                      <div class="col-sm-5">
+                        <div class="col-md-4">
+                          <span>LOCAL DONDE SOLICITA EL SERVICIO: </span>
                         </div>
-                        <div class="col-md-7">
-                          <input type="text" name="txt_numfolio" id="txt_numfolio" class="form-control">
+                        <div class="col-md-8">
+                          <select class="form-control" name="slct_local" id="slct_local">
+                          </select>
                         </div>
                       </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="col-md-7">
+                      <div class="col-md-7">
                         <div class="col-md-4" style="padding-top: 5px;">
                           <span>DOCUMENTO PRESENTADO(Para solicitar el servicio): </span>
                         </div>
@@ -206,6 +207,15 @@ td, th{
                           <select class="form-control select" onChange="ValidarDoc();" id="cbo_tipodoc" name="cbo_tipodoc">
                               <option value="-1">Selecciona</option>
                           </select>
+                        </div>
+                      </div>
+
+                      <div class="col-md-5  form-group">
+                        <div class="col-md-5">
+                          <span>CANTIDAD DE FOLIOS(Considere la suma de las páginas de los requisitos, más el documento presentado para solicitar el servicio): </span>
+                        </div>
+                        <div class="col-md-7">
+                          <input type="text" name="txt_numfolio" id="txt_numfolio" class="form-control">
                         </div>
                       </div>
 

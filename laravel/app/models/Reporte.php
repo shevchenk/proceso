@@ -251,9 +251,10 @@ class Reporte extends Eloquent
                 IF( 
                     IFNULL(rd.fecha_proyectada,CURRENT_TIMESTAMP())>=CURRENT_TIMESTAMP(),'Dentro del Tiempo','Fuera del Tiempo'
                 ) tiempo_final_n,
-                rf.alerta
+                rf.alerta, l.local, a.nombre AS area
                 FROM rutas r
                 INNER JOIN rutas_detalle rd ON rd.ruta_id=r.id AND rd.estado=1 AND rd.condicion=0
+                INNER JOIN areas a ON a.id = rd.area_id 
                 INNER JOIN tablas_relacion tr ON r.tabla_relacion_id=tr.id AND tr.estado=1
                 INNER JOIN personas ptr ON ptr.id = tr.usuario_created_at
                 INNER JOIN tiempos t ON t.id=rd.tiempo_id
@@ -261,6 +262,7 @@ class Reporte extends Eloquent
                     INNER JOIN rutas_flujo rf ON rf.flujo_id=f.id
                 ".$array['referido']." JOIN referidos re ON re.ruta_detalle_id=rd.ruta_detalle_id_ant and re.estado=1
                 ".$array['referido']." JOIN personas pre ON pre.id = re.usuario_referido 
+                LEFT JOIN locales l ON l.id = r.local_id
                 WHERE r.estado=1 
                 AND rd.fecha_inicio<=CURRENT_TIMESTAMP()
                 AND rd.fecha_inicio IS NOT NULL ".

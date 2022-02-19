@@ -239,6 +239,7 @@ class TramiteController extends BaseController {
 					}
 	
 					$tramite['area_id'] = $data['txt_area'];
+					$tramite['local_id'] = $data['txt_local'];
 					$tramite['clasificador_tramite_id'] = $data['txt_ctramite'];
 					$tramite['tipo_solicitante_id'] = $data['txt_tsolicitante'];
 					$tramite['tipo_documento_id'] = $data['txt_tdocumento'];
@@ -347,6 +348,7 @@ class TramiteController extends BaseController {
 							$ruta['flujo_id']=$rutaFlujo->flujo_id;
 							$ruta['persona_id']=$rutaFlujo->persona_id;
 							$ruta['area_id']=$rutaFlujo->area_id;
+							$ruta['local_id'] = $tramite->local_id;
 							$ruta['usuario_created_at']= Auth::user()->id;
 							$ruta->save();
 

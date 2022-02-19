@@ -27,6 +27,7 @@ class Pretramite extends Eloquent {
                             WHERE acp.estado=1
                             AND cp.persona_id='.Auth::user()->id.'
                             ) )>0';
+            $filtro .= ' AND ( pt.local_id = 0 OR FIND_IN_SET(pt.local_id, "'.trim(Auth::user()->local_id).'") > 0 ) ';
         }
 
 
@@ -36,7 +37,7 @@ class Pretramite extends Eloquent {
             IF(pt.estado_atencion = 0, 'Pendiente',
                 IF(pt.estado_atencion = 1, 'Aprobado', 'Desaprobado')
             ) atencion, pt.estado_atencion, pt.updated_at, t.observacion, tr.id_union, DATE(t.fecha_tramite) AS fecha_tramite,
-            pt.observacion AS observacion2, rfd.area_id,
+            pt.observacion AS observacion2, rfd.area_id, l.local,
             (SELECT GROUP_CONCAT('<b>', tr_aux.id_union, ' </b><br>' ,tr_aux.fecha_tramite) 
             FROM tablas_relacion tr_aux
             INNER JOIN tramites t_aux ON t_aux.id = tr_aux.tramite_id AND t_aux.estado = 1 
@@ -50,6 +51,7 @@ class Pretramite extends Eloquent {
             INNER JOIN documentos d on d.id=pt.tipo_documento_id 
             INNER JOIN rutas_flujo rf ON rf.id = ct.ruta_flujo_id 
             INNER JOIN rutas_flujo_detalle rfd ON rfd.ruta_flujo_id = rf.id AND rfd.norden = 1 AND rfd.estado = 1
+            LEFT JOIN locales l ON l.id = pt.local_id
             LEFT JOIN empresas e on e.id=pt.empresa_id 
             LEFT JOIN tramites t ON t.pretramite_id=pt.id AND t.estado = 1
             LEFT JOIN tablas_relacion tr ON tr.tramite_id=t.id AND tr.estado = 1 
@@ -88,16 +90,17 @@ class Pretramite extends Eloquent {
 				ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
                 pt.fecha_pretramite fecha ,pt.nro_folios folio, pt.documento as nrotipodoc,ts.pide_empresa statusemp,
                 CASE e.tipo_id WHEN 1 THEN 'Natural' WHEN 2 THEN 'Juridico' WHEN 3 THEN 'Organizacion Social' END as tipoempresa,
-                p.email, p.direccion, p.celular, p.telefono, pt.ruta_archivo, ct.ruta_flujo_id
+                p.email, p.direccion, p.celular, p.telefono, pt.ruta_archivo, ct.ruta_flujo_id, pt.local_id, l.local
 				from pretramites pt 
 				INNER JOIN personas p on p.id=pt.persona_id 
 				INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id
 				INNER JOIN tipo_tramite tt on tt.id=ct.tipo_tramite_id 
-				LEFT JOIN empresas e on e.id=pt.empresa_id 
-				LEFT JOIN personas p2 on p2.id=e.persona_id
 				INNER JOIN tipo_solicitante ts on ts.id=pt.tipo_solicitante_id 
 				INNER JOIN documentos d on d.id=pt.tipo_documento_id 
+				LEFT JOIN empresas e on e.id=pt.empresa_id 
+				LEFT JOIN personas p2 on p2.id=e.persona_id
                 LEFT JOIN areas a on a.id=pt.area_id 
+                LEFT JOIN locales l on l.id=pt.local_id 
 				WHERE pt.estado = 1";
 
         if(Input::has('idpretramite')){

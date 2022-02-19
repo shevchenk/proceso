@@ -167,36 +167,46 @@ var Bandeja={
                     },
                     {
                         "targets": 4,
+                        "data": "local",
+                        "name": "local"
+                    },
+                    {
+                        "targets": 5,
                         "data": "id_union",
                         "name": "id_union"
                     },
                     {
-                        "targets": 5,
+                        "targets": 6,
                         "data": "tiempo",
                         "name": "tiempo"
                     },
                     {
-                        "targets": 6,
+                        "targets": 7,
                         "data": "fecha_inicio",
                         "name": "fecha_inicio"
                     },
                     {
-                        "targets": 7,
+                        "targets": 8,
                         "data": "tiempo_final",
                         "name": "tiempo_final"
                     },
                     {
-                        "targets": 8,
+                        "targets": 9,
+                        "data": "area",
+                        "name": "area"
+                    },
+                    {
+                        "targets": 10,
                         "data": "norden",
                         "name": "norden"
                     },
                     {
-                        "targets": 9,
+                        "targets": 11,
                         "data": "proceso",
                         "name": "proceso"
                     },
                     {
-                        "targets": 10,
+                        "targets": 12,
                         "data": "persona",
                         "name": "persona"
                     }

@@ -277,7 +277,7 @@ HTMLPreTramite = function(data){
         html+=    "<td>"+el.solicitante+"</td>";
         html+=    "<td>"+el.tipotramite+"</td>";
         html+=    "<td>"+el.tipodoc+"</td>";
-        html+=    "<td>"+el.documento+"</td>";
+        html+=    "<td>"+$.trim(el.local)+"</td>";
         html+=    "<td>"+el.tramite+"</td>";
         html+=    "<td>"+el.fecha+"</td>";
         html+=    "<td>"+archivo+"</td>";
@@ -340,6 +340,7 @@ poblarDetalle = function(data){
             document.querySelector('#spanTipoD').innerHTML=result.tipodoc;
             document.querySelector('#txt_tdoc').value=result.nrotipodoc;
             document.querySelector('#spanNumTP').innerHTML=result.nrotipodoc;
+            document.querySelector('#spanTLocal').innerHTML=result.local;
             
             document.querySelector('#spanTSoli').innerHTML=result.solicitante;
             document.querySelector('#txt_folio').value=result.folio;
@@ -379,6 +380,7 @@ poblarDetalle = function(data){
             document.querySelector('#txt_tsolicitante').value=result.tsid;
             document.querySelector('#txt_tdocumento').value=result.tdocid;
             document.querySelector('#txt_area').value=result.areaid;
+            document.querySelector('#txt_local').value=result.local_id;
 
             masterG.SelectImagen(result.ruta_archivo,"#pdf_img","#pdf_href");
 
