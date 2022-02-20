@@ -357,9 +357,11 @@ table>tbody>tr>td{
                                                             </div>
                                                         </div>
                                                         <div class="box-body" style="">
-                                                            <div><b>Nombre y Apellido: </b><span id="ptra_nombre"></span></div>
-                                                            <div><b>Celular: </b><span id="ptra_celular"></span></div>
-                                                            <div><b>Dirección: </b><span id="ptra_direccion"></span></div>
+                                                            <div><b>Tipo Solicitante: </b><span id="ptra_tipo_solicitante"></span></div>
+                                                            <div><b>(DNI / RUC): </b><span id="ptra_id_solicitante"></span></div>
+                                                            <div><b>Solicitante: </b><span id="ptra_solicitante"></span></div>
+                                                            <div><b>Teléfono: </b><span id="ptra_tel_solicitante"></span></div>
+                                                            <div><b>Dirección: </b><span id="ptra_dir_solicitante"></span></div>
                                                         </div>
                                                     </div>
                                                 </div> 

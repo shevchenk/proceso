@@ -401,9 +401,11 @@ mostrarDetalleHTML=function(datos){
     $("#form_ruta_detalle #txt_fecha_inicio").val(datos.fecha_inicio);
     $("#form_ruta_detalle #txt_tiempo").val(datos.tiempo);
 
-    $("#ptra_nombre").text(datos.ptra_nombre);
-    $("#ptra_celular").text(datos.ptra_telefono+' / '+datos.ptra_celular);
-    $("#ptra_direccion").text(datos.ptra_direccion);
+    $("#ptra_tipo_solicitante").text(datos.tipo_solicitante);
+    $("#ptra_id_solicitante").text(datos.id_solicitante);
+    $("#ptra_solicitante").text(datos.solicitante);
+    $("#ptra_tel_solicitante").text(datos.tel_solicitante);
+    $("#ptra_dir_solicitante").text(datos.dir_solicitante);
 
     $("#form_ruta_detalle>#txt_fecha_max").remove();
     $("#form_ruta_detalle").append("<input type='hidden' id='txt_fecha_max' name='txt_fecha_max' value='"+datos.fecha_max+"'>");

@@ -195,25 +195,43 @@ class VisualizacionTramite extends Eloquent
                 IFNULL(rsp.nombre,'') AS respuesta,
                 IFNULL(rspd.nombre,'') AS respuestad,
                 IFNULL(rd.observacion,'') AS observacion,
-                IFNULL(ts.nombre,'') AS tipo_solicitante,
+                IFNULL(tstm.nombre,'') AS tipo_solicitante,
                 IFNULL(
-                    IF(tr.tipo_persona='1',
-                       CONCAT(tr.paterno,' ',tr.materno,' ',tr.nombre),
-                      tr.razon_social),''
-                ) AS solicitante,
+                    CASE
+                        WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN atm.nombre
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN CONCAT(ptm.paterno,' ',ptm.materno,' ',ptm.nombre)
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.razon_social
+                        ELSE (SELECT nombre FROM areas WHERE id = tr.area_id)
+                    END
+                , '') AS solicitante,
+                IFNULL(
+                    CASE
+                        WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN 'S/N'
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN ptm.dni
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.ruc
+                        ELSE 'S/N'
+                    END
+                , '') AS id_solicitante,
                 IFNULL(rd.alerta_tipo,'') AS alerta_tipo,
                 IFNULL(rd.alerta,'') AS alerta,
                 IFNULL(rd.condicion,'') AS condicion,
                 IFNULL(rd.estado_ruta,'') AS estado_ruta,
                 '1' AS id,
                 IFNULL(tr.ruc,'') AS ruc,
-                IFNULL(tr.sumilla,'') AS sumilla
+                IFNULL(tr.sumilla,'') AS sumilla,
+                a.nombre AS area, l.local
                 FROM rutas_detalle rd
                 JOIN rutas r ON rd.ruta_id=r.id and r.estado=1
                 JOIN tablas_relacion tr ON r.tabla_relacion_id=tr.id 
                 JOIN flujos f ON r.flujo_id=f.id
                 JOIN tiempos t ON rd.tiempo_id=t.id
-                LEFT JOIN tipo_solicitante ts ON tr.tipo_persona=ts.id
+                JOIN areas a ON a.id = rd.area_id 
+                LEFT JOIN locales l ON l.id = r.local_id
+                LEFT JOIN tramites tm ON tm.id = tr.tramite_id
+                LEFT JOIN personas ptm ON ptm.id = tm.persona_id 
+                LEFT JOIN empresas etm ON etm.id = tm.empresa_id 
+                LEFT JOIN areas atm ON atm.id = tm.area_id
+                LEFT JOIN tipo_solicitante tstm ON tstm.id = tm.tipo_solicitante_id
                 LEFT JOIN tipos_respuesta rsp ON rd.tipo_respuesta_id=rsp.id
                 LEFT JOIN tipos_respuesta_detalle rspd
                         ON rd.tipo_respuesta_detalle_id=rspd.id

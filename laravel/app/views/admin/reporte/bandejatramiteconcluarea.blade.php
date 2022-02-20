@@ -207,9 +207,13 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12">
-                                                        <div class="col-sm-2">
+                                                        <div class="col-sm-4">
                                                             <label class="control-label">Proceso:</label>
                                                             <input type="text" class="form-control" id="txt_flujo" readonly>
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label">Local:</label>
+                                                            <input type="text" class="form-control" id="txt_local" readonly>
                                                         </div>
                                                         <div class="col-sm-2">
                                                             <label class="control-label">Area:</label>

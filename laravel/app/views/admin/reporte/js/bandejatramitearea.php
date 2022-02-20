@@ -225,6 +225,7 @@ mostrarDetalleHTML=function(datos){
 
     $("#form_ruta_detalle #txt_flujo").val(datos.flujo);
     $("#form_ruta_detalle #txt_area").val(datos.area);
+    $("#form_ruta_detalle #txt_local").val(datos.local);
     $("#form_ruta_detalle #txt_id_doc").val(datos.id_doc);
     $("#form_ruta_detalle #txt_orden").val(datos.norden);
     $("#form_ruta_detalle #txt_fecha_inicio").val(datos.fecha_inicio);

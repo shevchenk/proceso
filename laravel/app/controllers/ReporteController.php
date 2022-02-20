@@ -945,12 +945,23 @@ class ReporteController extends BaseController
                 IFNULL(rsp.nombre,'') AS respuesta,
                 IFNULL(rspd.nombre,'') AS respuestad,
                 IFNULL(rd.observacion,'') AS observacion,
-                IFNULL(ts.nombre,'') AS tipo_solicitante,
+                IFNULL(tstm.nombre,'') AS tipo_solicitante,
                 IFNULL(
-                    IF(tr.tipo_persona='1',
-                       CONCAT(tr.paterno,' ',tr.materno,' ',tr.nombre),
-                      tr.razon_social),''
-                ) AS solicitante,
+                    CASE
+                        WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN atm.nombre
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN CONCAT(ptm.paterno,' ',ptm.materno,' ',ptm.nombre)
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.razon_social
+                        ELSE (SELECT nombre FROM areas WHERE id = tr.area_id)
+                    END
+                , '') AS solicitante,
+                IFNULL(
+                    CASE
+                        WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN 'S/N'
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN ptm.dni
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.ruc
+                        ELSE 'S/N'
+                    END
+                , '') AS id_solicitante,
                 IFNULL(rd.alerta_tipo,'') AS alerta_tipo,
                 IFNULL(rd.alerta,'') AS alerta,
                 IFNULL(rd.condicion,'') AS condicion,
@@ -958,7 +969,7 @@ class ReporteController extends BaseController
                 '1' AS id,
                 IFNULL(tr.ruc,'') AS ruc,
                 IFNULL(tr.sumilla,'') AS sumilla,
-                a.nombre AS area,
+                a.nombre AS area, l.local,
                 CONCAT(ptr.paterno, ' ', ptr.materno, ',', ptr.nombre) res_id_union,
                 $datos AS datos
                 FROM rutas_detalle rd
@@ -968,7 +979,12 @@ class ReporteController extends BaseController
                 JOIN personas ptr ON ptr.id = tr.usuario_created_at
                 JOIN flujos f ON r.flujo_id=f.id
                 JOIN tiempos t ON rd.tiempo_id=t.id
-                LEFT JOIN tipo_solicitante ts ON tr.tipo_persona=ts.id
+                LEFT JOIN locales l ON l.id = r.local_id
+                LEFT JOIN tramites tm ON tm.id = tr.tramite_id
+                LEFT JOIN personas ptm ON ptm.id = tm.persona_id 
+                LEFT JOIN empresas etm ON etm.id = tm.empresa_id 
+                LEFT JOIN areas atm ON atm.id = tm.area_id
+                LEFT JOIN tipo_solicitante tstm ON tstm.id = tm.tipo_solicitante_id
                 LEFT JOIN tipos_respuesta rsp ON rd.tipo_respuesta_id=rsp.id
                 LEFT JOIN tipos_respuesta_detalle rspd ON rd.tipo_respuesta_detalle_id=rspd.id
                 $left
@@ -1045,12 +1061,14 @@ class ReporteController extends BaseController
                           ->setCellValue($head[4].'3', 'FEC FIN PASO')
                           ->setCellValue($head[5].'3', 'PASO')
                           ->setCellValue($head[6].'3', 'AREA DEL PASO')
-                          ->setCellValue($head[7].'3', 'TIEMPO')
-                          ->setCellValue($head[8].'3', 'RESPONSABLE PDI')
-                          ->setCellValue($head[9].'3', 'NOMBRE DEL PROCESO')
-                          ->setCellValue($head[10].'3', 'OBSERVACION')
-                          ->setCellValue($head[11].'3', 'TIPO SOLICITA')
-                          ->setCellValue($head[12].'3', 'SOLICITANTE')                        
+                          ->setCellValue($head[7].'3', 'LOCAL DEL SERVICIO SOLICITADO')
+                          ->setCellValue($head[8].'3', 'TIEMPO')
+                          ->setCellValue($head[9].'3', 'RESPONSABLE PDI')
+                          ->setCellValue($head[10].'3', 'NOMBRE DEL PROCESO')
+                          ->setCellValue($head[11].'3', 'OBSERVACION')
+                          ->setCellValue($head[12].'3', 'TIPO SOLICITANTE')
+                          ->setCellValue($head[13].'3', 'DNI/RUC')
+                          ->setCellValue($head[14].'3', 'SOLICITANTE')
                     ->mergeCells('A1:M1')
                     ->setCellValue('A1', 'LISTADO CONCLUIDOS POR AREA Y PROCESO')
                     ->getStyle('A1:M1')->getFont()->setSize(18);
@@ -1068,11 +1086,13 @@ class ReporteController extends BaseController
               $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('K')->setAutoSize(true);
               $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('L')->setAutoSize(true);
               $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('M')->setAutoSize(true);
+              $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('N')->setAutoSize(true);
+              $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('O')->setAutoSize(true);
               /*end head*/
               /*body*/
               
               $cabecera=array();
-              $max = 12;
+              $max = 14;
               $ini = 4;
               if($result){
                 foreach ($result as $key => $value) {
@@ -1085,28 +1105,30 @@ class ReporteController extends BaseController
                                 ->setCellValue( $head[4] . $ini, $value->dtiempo_final)
                                 ->setCellValue( $head[5] . $ini, $value->norden)
                                 ->setCellValue( $head[6] . $ini, $value->area)
-                                ->setCellValue( $head[7] . $ini, $value->tiempo)
-                                ->setCellValue( $head[8] . $ini, $value->res_id_union)
-                                ->setCellValue( $head[9] . $ini, $value->nombre)
-                                ->setCellValue( $head[10] . $ini, $value->observacion)
-                                ->setCellValue( $head[11] . $ini, $value->tipo_solicitante)
-                                ->setCellValue( $head[12] . $ini, $value->solicitante)
+                                ->setCellValue( $head[7] . $ini, trim($value->local))
+                                ->setCellValue( $head[8] . $ini, $value->tiempo)
+                                ->setCellValue( $head[9] . $ini, $value->res_id_union)
+                                ->setCellValue( $head[10] . $ini, $value->nombre)
+                                ->setCellValue( $head[11] . $ini, $value->observacion)
+                                ->setCellValue( $head[12] . $ini, $value->tipo_solicitante)
+                                ->setCellValue( $head[13] . $ini, $value->id_solicitante)
+                                ->setCellValue( $head[14] . $ini, $value->solicitante)
                                 ;
                     $cabecera = explode("**", $value->datos);
                     if( trim( $cabecera[0] ) != '' ){
                         for( $i = 0; $i < count($cabecera); $i++ ){
                             $cabeceradet = explode("|", $cabecera[$i]);
                             if( trim($cabeceradet[0]) != '' ){
-                                $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(13+$i)])->setAutoSize(true);
-                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(13+$i)].'3', $cabeceradet[0]);
+                                $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(15+$i)])->setAutoSize(true);
+                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(15+$i)].'3', $cabeceradet[0]);
                                 if( isset($cabeceradet[1]) ){
-                                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(13+$i)] . $ini, $cabeceradet[1]);
+                                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(15+$i)] . $ini, $cabeceradet[1]);
                                 }
                             }
     
                         }
     
-                        $max_aux = 12 + count($cabecera);
+                        $max_aux = 14 + count($cabecera);
                         if( $max < $max_aux ){
                             $max = $max_aux;
                         }

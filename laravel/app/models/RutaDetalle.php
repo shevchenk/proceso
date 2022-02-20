@@ -59,22 +59,40 @@ class RutaDetalle extends Eloquent
             a.id area_id, a.nombre AS area,f.nombre AS flujo,
             tr.id_union AS id_doc,tr.id id_tr,
             rd.norden, IFNULL(rd.fecha_inicio,"") AS fecha_inicio,
-            CONCAT( ts.nombre,": ",
-                IF(tr.tipo_persona=1 or tr.tipo_persona=6,
-                    CONCAT(IFNULL(tr.paterno,"")," ",IFNULL(tr.materno,""),", ",IFNULL(tr.nombre,"")),
-                    IF(tr.tipo_persona=2,
-                        CONCAT(tr.razon_social," | RUC:",tr.ruc),
-                        IF(tr.tipo_persona=3,
-                            a.nombre,
-                            IF(tr.tipo_persona=4 or tr.tipo_persona=5,
-                                tr.razon_social,""
-                            )
-                        )
-                    )
-                ) 
-            ) AS solicitante
-            ,tr.fecha_tramite,tr.sumilla, rd.archivo,
-            ptra.id ptra_id, CONCAT_WS(" ", ptra.nombre, ptra.paterno, ptra.materno) ptra_nombre, ptra.telefono ptra_telefono, ptra.celular ptra_celular, ptra.direccion ptra_direccion,
+            IFNULL(tstm.nombre,"") AS tipo_solicitante,
+            IFNULL(
+                CASE
+                    WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN atm.nombre
+                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN CONCAT(ptm.paterno," ",ptm.materno," ",ptm.nombre)
+                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.razon_social
+                    ELSE (SELECT nombre FROM areas WHERE id = tr.area_id)
+                END
+            , "") AS solicitante,
+            IFNULL(
+                CASE
+                    WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN "S/N"
+                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN ptm.dni
+                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.ruc
+                    ELSE "S/N"
+                END
+            , "") AS id_solicitante,
+            IFNULL(
+                CASE
+                    WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN "S/D"
+                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN ptm.direccion
+                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.direccion_fiscal
+                    ELSE "S/D"
+                END
+            , "") AS dir_solicitante,
+            IFNULL(
+                CASE
+                    WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN "S/T"
+                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN CONCAT(ptm.celular, " / ", ptm.telefono)
+                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.telefono
+                    ELSE "S/T"
+                END
+            , "") AS tel_solicitante,
+            tr.fecha_tramite,tr.sumilla, rd.archivo,        
             IFNULL(GROUP_CONCAT(
                 CONCAT(
                     rdv.id,
@@ -138,10 +156,12 @@ class RutaDetalle extends Eloquent
             INNER JOIN flujos f ON f.id=r.flujo_id
             INNER JOIN tablas_relacion tr ON tr.id=r.tabla_relacion_id
             INNER JOIN tiempos t ON t.id=rd.tiempo_id 
-            LEFT JOIN locales l ON l.id = r.local_id 
-            LEFT JOIN tramites tra ON tra.id = tr.tramite_id 
-            LEFT JOIN personas ptra on ptra.id = tra.persona_id
-            LEFT JOIN tipo_solicitante ts ON ts.id=tr.tipo_persona and ts.estado=1
+            LEFT JOIN locales l ON l.id = r.local_id
+            LEFT JOIN tramites tm ON tm.id = tr.tramite_id
+            LEFT JOIN personas ptm ON ptm.id = tm.persona_id 
+            LEFT JOIN empresas etm ON etm.id = tm.empresa_id 
+            LEFT JOIN areas atm ON atm.id = tm.area_id
+            LEFT JOIN tipo_solicitante tstm ON tstm.id = tm.tipo_solicitante_id
             LEFT JOIN personas p ON p.id=rdv.usuario_updated_at
             LEFT JOIN personas p2 ON p2.id=rd.persona_responsable_id
             LEFT JOIN roles ro ON ro.id=rdv.rol_id
