@@ -167,28 +167,28 @@ var Bandeja={
                     },
                     {
                         "targets": 4,
-                        "data": "local",
-                        "name": "local"
-                    },
-                    {
-                        "targets": 5,
                         "data": "id_union",
                         "name": "id_union"
                     },
                     {
-                        "targets": 6,
+                        "targets": 5,
                         "data": "tiempo",
                         "name": "tiempo"
                     },
                     {
-                        "targets": 7,
+                        "targets": 6,
                         "data": "fecha_inicio",
                         "name": "fecha_inicio"
                     },
                     {
-                        "targets": 8,
+                        "targets": 7,
                         "data": "tiempo_final",
                         "name": "tiempo_final"
+                    },
+                    {
+                        "targets": 8,
+                        "data": "local",
+                        "name": "local"
                     },
                     {
                         "targets": 9,

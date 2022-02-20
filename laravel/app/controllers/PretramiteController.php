@@ -178,6 +178,7 @@ class PretramiteController extends BaseController {
         $pretramite['documento'] = $array_data->tipodoc;
         $pretramite['nro_folios'] = $array_data->numfolio;
         $pretramite['area_id'] = $array_data->idarea;
+        $pretramite['local_id'] = $array_data->local;
         $pretramite['estado_atencion'] = 1;
         $pretramite['fecha_pretramite'] = date('Y-m-d H:i:s');
         $pretramite['usuario_created_at'] = Auth::user()->id;
@@ -237,6 +238,7 @@ class PretramiteController extends BaseController {
 	        }
             
             $tramite['area_id'] = $array_data->idarea;
+            $tramite['local_id'] = $pretramite->local_id;
 	        $tramite['clasificador_tramite_id'] = $pretramite->clasificador_tramite_id;
 	        $tramite['tipo_solicitante_id'] = $pretramite->tipo_solicitante_id;
 	        $tramite['tipo_documento_id'] = $pretramite->tipo_documento_id;
@@ -348,6 +350,7 @@ class PretramiteController extends BaseController {
 		        $ruta['flujo_id']=$rutaFlujo->flujo_id;
 		        $ruta['persona_id']=$rutaFlujo->persona_id;
 		        $ruta['area_id']=$rutaFlujo->area_id;
+		        $ruta['local_id']=$tramite->local_id;
 		        $ruta['usuario_created_at']= Auth::user()->id;
 		        $ruta->save();
 		        /**************CARTA *************************************************/

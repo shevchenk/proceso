@@ -10,12 +10,13 @@ $(document).ready(function() {
 
     UsuarioId='<?php echo Auth::user()->id; ?>';
     DataUser = '<?php echo Auth::user(); ?>';
+    UsuarioLocalId='<?php echo trim(Auth::user()->local_id); ?>';
     poblateData('x',DataUser);
     /*Inicializar tramites*/
     var data={'persona':UsuarioId,'estado':1};
     Bandeja.MostrarTramites(data,HTMLTramite);
     /*end Inicializar tramites*/
-
+    slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','simple',UsuarioLocalId,{estado:1});
     /*inicializate selects*/
     slctGlobalHtml('cbo_tipodocumento, #slct_tipo_usuario, #cbo_tipotramite, #cbo_tipodoc','simple');
     slctGlobal.listarSlct('persona','cbo_persona','simple',null,{estado_persona:1});
@@ -622,7 +623,10 @@ generarPreTramite = function(){
     }
     else if($("#txt_nombretramite").val()==''){
         msjG.mensaje("warning", 'Busque y seleccione trámite',3000);
-    }    
+    }
+    else if( $("#slct_local").val()=='' ){
+        msjG.mensaje("warning", 'Seleccione local donde se solicita el servicio',3000);
+    }
     else if($("#cbo_tipodoc").val()==''){
         msjG.mensaje("warning", 'Seleccione Tipo de documento',3000);
     }

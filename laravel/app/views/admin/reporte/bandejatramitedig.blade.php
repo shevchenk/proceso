@@ -171,9 +171,6 @@ table>tbody>tr>td{
                                             <input style='width:250px' name="txt_id_ant" id="txt_id_ant" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_dg',1)" onkeyup="Limpiar('txt_id_union,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
                                             </th>
                                             <th>Responsable PDI</th>
-                                            <th id="th_lo" style='width:200px !important;' class="unread">Local del servicio solicitado <br>
-                                            <input style='width:250px' name="txt_local" id="txt_local" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pd',1)" onkeyup="Limpiar('txt_id_ant,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
-                                            </th>
                                             <th id="th_pd" style='width:250px !important;' class="unread">Primer documento ingresado(PDI)<br>
                                             <input style='width:250px' name="txt_id_union" id="txt_id_union" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pd',1)" onkeyup="Limpiar('txt_id_ant,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
                                             </th>
@@ -188,6 +185,9 @@ table>tbody>tr>td{
                                             <option value="0">Fuera del Tiempo</option>
                                             </select>
                                             </td>
+                                            <th id="th_lo" style='width:200px !important;' class="unread">Local del servicio solicitado <br>
+                                            <input style='width:250px' name="txt_local" id="txt_local" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pd',1)" onkeyup="Limpiar('txt_id_ant,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
+                                            </th>
                                             <th id="th_pa" style='width:250px !important;' class="unread">Área del paso <br>
                                             <input style='width:150px' name="txt_area" id="txt_area" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pd',1)" onkeyup="Limpiar('txt_id_ant,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
                                             </th>
@@ -210,11 +210,11 @@ table>tbody>tr>td{
                                             <th>Responsable DGPA</th>
                                             <th>Doc. Generado por el paso anterior</th>
                                             <th>Responsable PDI</th>
-                                            <th>Local del servicio solicitado</th>
                                             <th>Primer documento ingreso</th>
                                             <th>Tiempo</th>
                                             <th>Fecha de Inicio</th>
                                             <th>Estado de la Actividad</th>
+                                            <th>Local del servicio solicitado</th>
                                             <th>Área del paso</th>
                                             <th>Paso</th>
                                             <th>Proceso</th>
