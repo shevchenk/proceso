@@ -16,7 +16,7 @@ $(document).ready(function() {
     var data={'persona':UsuarioId,'estado':1};
     Bandeja.MostrarTramites(data,HTMLTramite);
     /*end Inicializar tramites*/
-    slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','simple',UsuarioLocalId,{estado:1});
+    slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','simple',UsuarioLocalId,{estado:1, usuario_local:1});
     /*inicializate selects*/
     slctGlobalHtml('cbo_tipodocumento, #slct_tipo_usuario, #cbo_tipotramite, #cbo_tipodoc','simple');
     slctGlobal.listarSlct('persona','cbo_persona','simple',null,{estado_persona:1});

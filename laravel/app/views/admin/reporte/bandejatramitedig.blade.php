@@ -280,15 +280,18 @@ table>tbody>tr>td{
                                                 </div>
                                                 <div class="box-body row" style="">
                                                     <div class="col-sm-12">
-                                                        <div class="col-sm-4">
+                                                        <div class="col-sm-2">
                                                             <label class="control-label">Nro Trámite:</label>
                                                             <input type="text" class="form-control" id="txt_id_doc" readonly>
                                                         </div>
-                                                        <div class="col-sm-4">
+                                                        <div class="col-sm-3">
+                                                            <label class="control-label">Local:</label>
+                                                            <input type="text" class="form-control" id="txt_local" readonly>
+                                                        </div>
+                                                        <div class="col-sm-3">
                                                             <label class="control-label">Area:</label>
                                                             <input type="text" class="form-control" id="txt_area" readonly>
                                                         </div>
-                                                        
                                                         <div class="col-sm-4">
                                                             <label class="control-label">Proceso:</label>
                                                             <input type="text" class="form-control" id="txt_flujo" readonly>

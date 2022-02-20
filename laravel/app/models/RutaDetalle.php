@@ -130,7 +130,7 @@ class RutaDetalle extends Eloquent
             ORDER BY rdv.orden ASC
             SEPARATOR "|"),"") AS verbo2,IFNULL(rd.fecha_inicio,"9999") fi,
             rd.fecha_proyectada AS fecha_max, now() AS hoy
-            ,IFNULL( max( IF(rdv.finalizo=1,rdv.condicion,NULL) ) ,"0") maximo
+            ,IFNULL( max( IF(rdv.finalizo=1,rdv.condicion,NULL) ) ,"0") maximo, l.local
             FROM rutas_detalle rd
             INNER JOIN rutas r ON (r.id=rd.ruta_id AND r.estado=1)
             INNER JOIN rutas_detalle_verbo rdv ON (rd.id=rdv.ruta_detalle_id AND rdv.estado=1)
@@ -138,6 +138,7 @@ class RutaDetalle extends Eloquent
             INNER JOIN flujos f ON f.id=r.flujo_id
             INNER JOIN tablas_relacion tr ON tr.id=r.tabla_relacion_id
             INNER JOIN tiempos t ON t.id=rd.tiempo_id 
+            LEFT JOIN locales l ON l.id = r.local_id 
             LEFT JOIN tramites tra ON tra.id = tr.tramite_id 
             LEFT JOIN personas ptra on ptra.id = tra.persona_id
             LEFT JOIN tipo_solicitante ts ON ts.id=tr.tipo_persona and ts.estado=1

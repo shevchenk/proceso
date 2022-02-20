@@ -36,6 +36,11 @@ class Local extends Base
                         if ( Input::get('estado') ) {
                             $query->where('estado','=','1');
                         }
+                        if ( Input::has('usuario_local') ) {
+                            $locales = Auth::user()->local_id;
+                            $query->whereRaw('FIND_IN_SET(id , "'.$locales.'") > 0 ');
+                        }
+                        
                     }
                 )
                 ->orderBy('local')
