@@ -650,7 +650,7 @@ class ReporteFinalController extends BaseController
                         ->setCellValue($head[7].'3', 'ESTADO DEL PASO')
                         ->setCellValue($head[8].'3', 'PASO')
                         ->setCellValue($head[9].'3', 'AREA DEL PASO')
-                        ->setCellValue($head[10].'3', 'LOCAL DEL SERVICIO SOLICITADO')
+                        ->setCellValue($head[10].'3', 'LUGAR DE PROCEDENCIA')
                         ->setCellValue($head[11].'3', 'FEC INI TRAMITE')
                         ->setCellValue($head[12].'3', 'RESPONSABLE PDI')
                         ->setCellValue($head[13].'3', 'NOMBRE DEL PROCESO')

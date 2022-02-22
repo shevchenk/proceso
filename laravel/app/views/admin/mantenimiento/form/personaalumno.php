@@ -138,7 +138,7 @@
                 </div>
 
                 <div class="col-sm-4">
-                  <label class="control-label">Local donde estudia el alumno</label>
+                  <label class="control-label">Lugar de procedencia</label>
                   <select class="form-control" name="slct_local" id="slct_local">
                   </select>
                 </div>

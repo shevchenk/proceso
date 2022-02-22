@@ -184,7 +184,7 @@
                   </div>
 
                   <div class="col-sm-4">
-                    <label class="control-label">Local:
+                    <label class="control-label">Lugar de procedencia:
                     </label>
                     <select class="form-control" name="slct_local[]" id="slct_local" multiple>
                     </select>

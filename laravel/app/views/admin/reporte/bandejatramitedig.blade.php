@@ -185,7 +185,7 @@ table>tbody>tr>td{
                                             <option value="0">Fuera del Tiempo</option>
                                             </select>
                                             </td>
-                                            <th id="th_lo" style='width:200px !important;' class="unread">Local del servicio solicitado <br>
+                                            <th id="th_lo" style='width:200px !important;' class="unread">Lugar de procedencia <br>
                                             <input style='width:250px' name="txt_local" id="txt_local" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pd',1)" onkeyup="Limpiar('txt_id_ant,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
                                             </th>
                                             <th id="th_pa" style='width:250px !important;' class="unread">Área del paso <br>
@@ -214,7 +214,7 @@ table>tbody>tr>td{
                                             <th>Tiempo</th>
                                             <th>Fecha de Inicio</th>
                                             <th>Estado de la Actividad</th>
-                                            <th>Local del servicio solicitado</th>
+                                            <th>Lugar de procedencia</th>
                                             <th>Área del paso</th>
                                             <th>Paso</th>
                                             <th>Proceso</th>
@@ -285,7 +285,7 @@ table>tbody>tr>td{
                                                             <input type="text" class="form-control" id="txt_id_doc" readonly>
                                                         </div>
                                                         <div class="col-sm-3">
-                                                            <label class="control-label">Local:</label>
+                                                            <label class="control-label">Lugar de procedencia:</label>
                                                             <input type="text" class="form-control" id="txt_local" readonly>
                                                         </div>
                                                         <div class="col-sm-3">

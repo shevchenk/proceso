@@ -625,7 +625,7 @@ generarPreTramite = function(){
         msjG.mensaje("warning", 'Busque y seleccione trámite',3000);
     }
     else if( $("#slct_local").val()=='' ){
-        msjG.mensaje("warning", 'Seleccione local donde se solicita el servicio',3000);
+        msjG.mensaje("warning", 'Seleccione Lugar de procedencia',3000);
     }
     else if($("#cbo_tipodoc").val()==''){
         msjG.mensaje("warning", 'Seleccione Tipo de documento',3000);

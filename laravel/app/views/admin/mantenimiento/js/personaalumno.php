@@ -321,7 +321,7 @@ validaPersonas=function(){
         r=false;
     }
     else if( $("#form_personas_modal #slct_local").val()=='' ){
-        alert("Seleccione Local");
+        alert("Seleccione Lugar de procedencia");
         r=false;
     }
 

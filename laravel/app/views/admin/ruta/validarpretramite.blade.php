@@ -172,7 +172,7 @@ td, th{
                                         <th>TIPO SOLICITANTE</th>
                                         <th>TIPO DE SERVICIO SOLICITADO</th>
                                         <th>DOCUMENTO PRESENTADO</th>
-                                        <th>LOCAL DEL SERVICIO SOLICITADO</th>
+                                        <th>LUGAR DE PROCEDENCIA</th>
                                         <th>NOMBRE DEL SERVICIO SOLICITADO</th>
                                         <th>FECHA REGISTRADA</th>
                                         <th>REQUISITOS EN UN SOLO ARCHIVO PDF</th>
@@ -216,7 +216,7 @@ td, th{
                                           <div id="spanTipoT"></div>
                                       </div>
                                       <div class="col-sm-4">
-                                          <label>LOCAL DEL SERVICIO SOLICITADO: </label>
+                                          <label>LUGAR DE PROCEDENCIA: </label>
                                           <div id="spanTLocal"></div>
                                       </div>
                                       <div class="col-sm-2">

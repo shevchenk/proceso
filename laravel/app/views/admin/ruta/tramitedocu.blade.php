@@ -357,7 +357,7 @@ td, th{
                       </div>
                       <div class="col-sm-5">
                         <div class="col-md-4">
-                          <span>LOCAL DONDE SOLICITA EL SERVICIO: </span>
+                          <span>LUGAR DE PROCEDENCIA: </span>
                         </div>
                         <div class="col-md-8">
                           <select class="form-control" name="slct_local" id="slct_local">
