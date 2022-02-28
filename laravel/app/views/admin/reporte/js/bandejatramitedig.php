@@ -212,7 +212,7 @@ MostrarAjax=function(){
 hora=function(){
 
     //Bandeja.FechaActual();
-    tiempo=horaTG.split(":");
+    /*tiempo=horaTG.split(":");
     tiempo[1]=tiempo[1]*1+1;
     if(tiempo[1]*1==60){
         tiempo[0]=tiempo[0]*1+1;
@@ -225,9 +225,16 @@ hora=function(){
 
     if(tiempo[1]*1<10){
     tiempo[1] = "0" + tiempo[1]*1;
-    }
+    }*/
+
+    var currentdate = new Date(); 
+    var fechaTG = currentdate.getFullYear() + "-"
+                + ('00' + (currentdate.getMonth()+1)).slice(-2)  + "-" 
+                + ('00' + currentdate.getDate()).slice(-2);
     
-    horaTG=tiempo.join(":");
+    var horaTG = ('00' + currentdate.getHours()).slice(-2) + ":"  
+                + ('00' + currentdate.getMinutes()).slice(-2) + ":" 
+                + ('00' + currentdate.getSeconds()).slice(-2);
     $("#txt_respuesta").val(fechaTG+" "+horaTG);
     $("#div_cumple>span").html("CUMPLIENDO TIEMPO");
     $("#txt_alerta").val("0");
@@ -235,13 +242,13 @@ hora=function(){
 
     $("#div_cumple").removeClass("progress-bar-danger").removeClass("progress-bar-warning").addClass("progress-bar-success");
         
-        if ( $("#txt_fecha_max").val() < $("#txt_respuesta").val() ) {
-            $("#txt_alerta").val("1");
-            $("#txt_alerta_tipo").val("1");
-            $("#div_cumple").removeClass("progress-bar-success").removeClass("progress-bar-warning").addClass("progress-bar-danger");
-            $("#div_cumple>span").html("NO CUMPLE TIEMPO");
-        }
-TiempoFinalTG = setTimeout('hora()',60000);
+    if ( $("#txt_fecha_max").val() < $("#txt_respuesta").val() ) {
+        $("#txt_alerta").val("1");
+        $("#txt_alerta_tipo").val("1");
+        $("#div_cumple").removeClass("progress-bar-success").removeClass("progress-bar-warning").addClass("progress-bar-danger");
+        $("#div_cumple>span").html("NO CUMPLE TIEMPO");
+    }
+    TiempoFinalTG = setTimeout('hora()',1000);
 }
 
 activar=function(id,ruta_detalle_id,td,ruta_id=''){//establecer como visto
@@ -1245,14 +1252,14 @@ function HTMLExpedienteUnico(data){
 
     /*return to last order*/
     retornar = function(){
-        var r = confirm("¿Esta Seguro de retornar al paso anterior?");
+        var r = confirm("¿Esta Seguro de retornar a la actividad anterior?");
         if(r == true){
             var rd_id=document.querySelector("#ruta_detalle_id").value;
             var ruta_id=document.querySelector("#ruta_id").value;
             var nroden=document.querySelector("#txt_orden").value;
             Bandeja.retornarPaso({'ruta_detalle_id':rd_id,'ruta_id':ruta_id,'orden':nroden});            
         }else{
-            alert('No es posible retornar al paso anterior');
+            alert('No es posible retornar a la actividad anterior');
         }
     }
     /*end return to last order*/
