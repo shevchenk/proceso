@@ -86,6 +86,10 @@ class RutaFlujoCampo extends \Eloquent {
                     if ( isset( $r['ruta_flujo_id'] ) ) {
                         $query->where('rfc.ruta_flujo_id','=', $r['ruta_flujo_id']);
                     }
+
+                    if ( isset( $r['clasificador_tramite_id'] ) ) {
+                        $query->where('rfc.clasificador_tramite_id','=', $r['clasificador_tramite_id']);
+                    }
                 }
             )
             ->groupBy('rfc.id')

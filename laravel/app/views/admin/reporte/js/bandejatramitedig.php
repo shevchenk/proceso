@@ -338,7 +338,7 @@ mostrarDetalleHTML=function(datos){
     var filtro={estado:1};
     slctGlobal.listarSlct2('documento','cbotipoDoc',filtro);
     slctGlobal.listarSlct2('rol','cboRoles',filtro);
-    var data = {area_id: datos.area_id, ruta_flujo_id: datos.ruta_flujo_id, ruta_id: datos.ruta_id}
+    var data = {area_id: datos.area_id, ruta_flujo_id: datos.ruta_flujo_id, ruta_id: datos.ruta_id, clasificador_tramite_id: datos.clasificador_tramite_id}
     Validar.mostrarCampos(data,mostrarCamposHTML);
     /*Bandeja.poblarCombo('documento','cbotipoDoc',filtro,HTMLCombo);
     Bandeja.poblarCombo('rol','cboRoles',filtro,HTMLCombo);*/

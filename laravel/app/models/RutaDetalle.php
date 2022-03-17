@@ -98,8 +98,8 @@ class RutaDetalle extends Eloquent
                     WHEN tm.id IS NOT NULL AND tm.empresa_id IS NOT NULL THEN etm.telefono
                     ELSE "S/T"
                 END
-            , "") AS tel_solicitante,
-            tr.fecha_tramite,tr.sumilla, rd.archivo,        
+            , "") AS tel_solicitante, tm.clasificador_tramite_id,
+            tr.fecha_tramite,tr.sumilla, rd.archivo,
             IFNULL(GROUP_CONCAT(
                 CONCAT(
                     rdv.id,
