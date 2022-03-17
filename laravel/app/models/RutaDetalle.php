@@ -58,7 +58,7 @@ class RutaDetalle extends Eloquent
             IFNULL(CONCAT(p2.paterno," ",p2.materno,", ",p2.nombre),"") persona_responsable,
             a.id area_id, a.nombre AS area,f.nombre AS flujo,
             tr.id_union AS id_doc,tr.id id_tr,
-            rd.norden, IFNULL(rd.fecha_inicio,"") AS fecha_inicio, tr.tramite_id,
+            rd.norden, IFNULL(rd.fecha_inicio,"") AS fecha_inicio, tr.tramite_id, rd.ruta_detalle_id_ant,
             IFNULL(
                 CASE
                     WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN "Área"
@@ -93,8 +93,15 @@ class RutaDetalle extends Eloquent
             , "") AS dir_solicitante,
             IFNULL(
                 CASE
+                    WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN "S/E"
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NULL THEN ptm.email
+                    ELSE "S/E"
+                END
+            , "") AS email_solicitante,
+            IFNULL(
+                CASE
                     WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN "S/T"
-                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NULL THEN CONCAT(ptm.celular, " / ", ptm.telefono)
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NULL THEN CONCAT( TRIM(ptm.celular), " / ", TRIM(ptm.telefono))
                     WHEN tm.id IS NOT NULL AND tm.empresa_id IS NOT NULL THEN etm.telefono
                     ELSE "S/T"
                 END
@@ -376,6 +383,22 @@ class RutaDetalle extends Eloquent
         $area=DB::select($query);
                 
         return $area;
+    }
+
+    public static function getObservaciones()
+    {
+        $ruta_detalle_id = Input::get('ruta_detalle_id');
+        $sql = "SELECT d.nombre AS tipo_documento, v.nombre AS verbo, dd.titulo AS documento, rdv.observacion, CONCAT(p.paterno, ' ', p.materno, ', ', p.nombre) AS usuario, rdv.updated_at AS fecha_observacion
+                FROM rutas_detalle_verbo rdv 
+                INNER JOIN verbos v ON v.id = rdv.verbo_id
+                INNER JOIN personas p ON p.id = rdv.usuario_updated_at
+                LEFT JOIN doc_digital dd ON dd.id = rdv.doc_digital_id
+                LEFT JOIN documentos d ON d.id = rdv.documento_id
+                WHERE rdv.estado = 1 
+                AND IFNULL(rdv.observacion,'') != ''
+                AND rdv.ruta_detalle_id = $ruta_detalle_id ";
+        $data = DB::select($sql);
+        return $data;
     }
 
     // ARCHIVOS PROCESO DESMONTE

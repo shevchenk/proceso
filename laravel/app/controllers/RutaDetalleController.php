@@ -95,6 +95,16 @@ class RutaDetalleController extends \BaseController
           );
 	}
 
+    public function postObservaciones(){
+		$rst=RutaDetalle::getObservaciones();
+          return Response::json(
+              array(
+                  'rst'=>1,
+                  'datos'=>$rst
+              )
+          );
+	}
+
     public function postCargardetalle()
     {
         $r          = new RutaDetalle;

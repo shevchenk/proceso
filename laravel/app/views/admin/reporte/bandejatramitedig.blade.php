@@ -344,62 +344,90 @@ table>tbody>tr>td{
                                         </div>
 
                                         <div class="col-sm-12">
+                                            <div class="col-sm-3 solicitantesimple">
+                                                <div class="box box-warning">
+                                                    <div class="box-header with-border">
+                                                        <h3 class="box-title">DATOS DEL SOLICITANTE</h3>
+
+                                                        <div class="box-tools pull-right">
+                                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="box-body" style="">
+                                                        <div><b>Tipo Solicitante: </b><span id="ptra_tipo_solicitante"></span></div>
+                                                        <div><b>(DNI / RUC): </b><span id="ptra_id_solicitante"></span></div>
+                                                        <div><b>Solicitante: </b><span id="ptra_solicitante"></span></div>
+                                                        <div><b>Teléfono: </b><span id="ptra_tel_solicitante"></span></div>
+                                                        <div><b>Email: </b><span id="ptra_email_solicitante"></span></div>
+                                                        <div><b>Dirección: </b><span id="ptra_dir_solicitante"></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                
+                                            <div class="col-md-7 table-responsive solicitantemultiple" style="margin-top:10px">
+                                                <div class="box box-warning">
+                                                    <div class="box-header with-border">
+                                                        <h3 class="box-title" tabindex="0" id="datos_personalizados">Solicitante(s)</h3>
+                                                        <div class="box-tools pull-right">
+                                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="box-body col-md-12">
+                                                        <table id="t_usuarios" class="table table-bordered table-striped">
+                                                            <thead>
+                                                                <tr class="bg-navy">
+                                                                    <th style="width:80px;">Tipo Solicitante</th>
+                                                                    <th style="width:120px;">Solicitante</th>
+                                                                    <th style="width:50px;">DNI / RUC</th>
+                                                                    <th style="width:50px;">Teléfono</th>
+                                                                    <th style="width:100px;">Email</th>
+                                                                    <th style="width:150px;">Dirección</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="tb_usuarios"></tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-5 table-responsive observaciones" style="margin-top:10px">
+                                                <div class="box box-warning">
+                                                    <div class="box-header with-border">
+                                                        <h3 class="box-title" tabindex="0" id="datos_personalizados">Observacion(es)</h3>
+                                                        <div class="box-tools pull-right">
+                                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="box-body col-md-12">
+                                                        <table id="t_observaciones" class="table table-bordered table-striped">
+                                                            <thead>
+                                                                <tr class="bg-navy">
+                                                                    <th style="width:80px;">Verbo</th>
+                                                                    <th style="width:80px;">Tipo Documento</th>
+                                                                    <th style="width:100px;">Documento Generado</th>
+                                                                    <th style="width:110px;">Observación</th>
+                                                                    <th style="width:80px;">Usuario</th>
+                                                                    <th style="width:80px;">Fecha Observación</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="tb_observaciones"></tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="sectionmicro">
 
-                                                
-                                                <div class="col-sm-3 solicitantesimple">
-                                                    <div class="box box-warning">
-                                                        <div class="box-header with-border">
-                                                            <h3 class="box-title">DATOS DEL SOLICITANTE</h3>
-
-                                                            <div class="box-tools pull-right">
-                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="box-body" style="">
-                                                            <div><b>Tipo Solicitante: </b><span id="ptra_tipo_solicitante"></span></div>
-                                                            <div><b>(DNI / RUC): </b><span id="ptra_id_solicitante"></span></div>
-                                                            <div><b>Solicitante: </b><span id="ptra_solicitante"></span></div>
-                                                            <div><b>Teléfono: </b><span id="ptra_tel_solicitante"></span></div>
-                                                            <div><b>Dirección: </b><span id="ptra_dir_solicitante"></span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="col-md-5 table-responsive solicitantemultiple" style="margin-top:10px">
-                                                    <div class="box box-warning">
-                                                        <div class="box-header with-border">
-                                                            <h3 class="box-title" tabindex="0" id="datos_personalizados">Solicitante(s)</h3>
-                                                            <div class="box-tools pull-right">
-                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="box-body col-md-12">
-                                                            <table id="t_usuarios" class="table table-bordered table-striped">
-                                                                <thead>
-                                                                    <tr class="bg-navy">
-                                                                        <th style="width:80px;">Tipo Solicitante</th>
-                                                                        <th style="width:120px;">Solicitante</th>
-                                                                        <th style="width:50px;">DNI / RUC</th>
-                                                                        <th style="width:50px;">Teléfono</th>
-                                                                        <th style="width:150px;">Dirección</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="tb_usuarios"></tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-3">
+                                                <div class="col-md-3">
                                                     <label class="control-label">Sub Procesos:</label>
                                                     <select id="slct_micro" name="slct_micro">
                                                         <option>Seleccione</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-sm-2">
+                                                <div class="col-md-2">
                                                     <label class="control-label">&nbsp;&nbsp;&nbsp;</label><br>
                                                     <a class="btn btn-success btn-sm"  id="btn_siguiente_rd" style="display: none;">
                                                     </a>

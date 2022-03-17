@@ -80,6 +80,10 @@ class Tramite extends Eloquent {
 						ELSE e.direccion_fiscal
 					END AS dir_solicitante,
 					CASE
+						WHEN ta.empresa_id IS NULL THEN p.email
+						ELSE ''
+					END AS email_solicitante,
+					CASE
 						WHEN ta.empresa_id IS NULL THEN CONCAT(p.celular, ' / ', p.telefono)
 						ELSE e.telefono
 					END AS tel_solicitante

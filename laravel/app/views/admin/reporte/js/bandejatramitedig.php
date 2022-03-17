@@ -414,7 +414,7 @@ mostrarDetalleHTML=function(datos){
     $("#form_ruta_detalle #txt_fecha_inicio").val(datos.fecha_inicio);
     $("#form_ruta_detalle #txt_tiempo").val(datos.tiempo);
 
-    $(".solicitantesimple, .solicitantemultiple").hide();
+    $(".solicitantesimple, .solicitantemultiple, .observaciones").hide();
     if( $.trim(datos.tramite_id) != '' ){
         $(".solicitantemultiple").show();
         var data = {tramite_id: datos.tramite_id};
@@ -423,11 +423,18 @@ mostrarDetalleHTML=function(datos){
     else{
         $(".solicitantesimple").show();
     }
+
+    if( $.trim(datos.ruta_detalle_id_ant) != '' ){
+        $(".observaciones").show();
+        var data = {ruta_detalle_id: datos.ruta_detalle_id_ant};
+        Validar.mostrarObservaciones(data,mostrarObservacionesHTML);
+    }
     
     $("#ptra_tipo_solicitante").text(datos.tipo_solicitante);
     $("#ptra_id_solicitante").text(datos.id_solicitante);
     $("#ptra_solicitante").text(datos.solicitante);
     $("#ptra_tel_solicitante").text(datos.tel_solicitante);
+    $("#ptra_email_solicitante").text(datos.email_solicitante);
     $("#ptra_dir_solicitante").text(datos.dir_solicitante);
     
     
@@ -709,15 +716,43 @@ mostrarSolicitantesHTML = (result) => {
         $("#tb_usuarios").html('');
         $.each(result,function(index,r){
             html =  '<tr>'+
-                        '<td>'+ r.tipo_solicitante +'</td>'+
-                        '<td>'+ r.solicitante +'</td>'+
-                        '<td>'+ r.id_solicitante +'</td>'+
-                        '<td>'+ r.tel_solicitante +'</td>'+
-                        '<td>'+ r.dir_solicitante +'</td>'+
+                        '<td>'+ $.trim(r.tipo_solicitante) +'</td>'+
+                        '<td>'+ $.trim(r.solicitante) +'</td>'+
+                        '<td>'+ $.trim(r.id_solicitante) +'</td>'+
+                        '<td>'+ $.trim(r.tel_solicitante) +'</td>'+
+                        '<td>'+ $.trim(r.email_solicitante) +'</td>'+
+                        '<td>'+ $.trim(r.dir_solicitante) +'</td>'+
                     '</tr>';
             $("#tb_usuarios").append(html);
         });
         $("#t_usuarios").dataTable({
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "ordering": true,
+            "searching": false,
+        });
+    }
+}
+
+mostrarObservacionesHTML = (result) => {
+    if( result.length == 0 ){
+        $(".observaciones").hide();
+    }
+    else{
+        html = '';
+        $("#t_observaciones").dataTable().fnDestroy();
+        $("#tb_observaciones").html('');
+        $.each(result,function(index,r){
+            html =  '<tr>'+
+                        '<td>'+ $.trim(r.verbo) +'</td>'+
+                        '<td>'+ $.trim(r.tipo_documento) +'</td>'+
+                        '<td>'+ $.trim(r.documento) +'</td>'+
+                        '<td>'+ $.trim(r.observacion) +'</td>'+
+                        '<td>'+ $.trim(r.usuario) +'</td>'+
+                        '<td>'+ $.trim(r.fecha_observacion) +'</td>'+
+                    '</tr>';
+            $("#tb_observaciones").append(html);
+        });
+        $("#t_observaciones").dataTable({
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
             "ordering": true,
             "searching": false,
