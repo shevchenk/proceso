@@ -129,6 +129,7 @@ class RutaFlujoCampo extends \Eloquent {
             ->join('rutas_flujo_detalle AS rfd', 'rfd.ruta_flujo_id', '=', 'rf.id')
             ->join('areas AS a', 'a.id', '=', 'rfd.area_id')
             ->select('a.id', 'a.nombre')
+            ->where('rfd.estado', '=', 1)
             ->where( 
                 function($query) use( $r, $clasificadorTramite ){
                     $id = $r['id'];
