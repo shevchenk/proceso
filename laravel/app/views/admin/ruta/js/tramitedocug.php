@@ -212,6 +212,8 @@ $(document).ready(function() {
         var resG=dataTableG.CargarCol(cabeceraG,columnDefsG,targetsG,0,'referente','t_referente');
         columnDefsG=resG[0]; // registra las columnas del datatable
         targetsG=resG[1]; // registra los contadores
+
+        $("#t_referidos").dataTable().fnDestroy();
     });
 
     $('#referenteModal').on('hide.bs.modal', function (event) {
@@ -220,7 +222,39 @@ $(document).ready(function() {
         cabeceraG=[]; // Cabecera del Datatable
         columnDefsG=[]; // Columnas de la BD del datatable
         targetsG=-1; // Posiciones de las columnas del datatable
+        $("#t_referidos").dataTable({
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "ordering": true,
+            "searching": false,
+        });
     });
+
+    $('#selectPersona').on('show.bs.modal', function (event) {
+        $("#t_usuarios").dataTable().fnDestroy();
+    });
+
+    $('#selectPersona').on('hide.bs.modal', function (event) {
+        $("#t_usuarios").dataTable({
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "ordering": true,
+            "searching": false,
+        });
+    });
+
+    $('#empresasbyuser').on('show.bs.modal', function (event) {
+        $("#t_usuarios").dataTable().fnDestroy();
+    });
+
+    $('#empresasbyuser').on('hide.bs.modal', function (event) {
+        $("#t_usuarios").dataTable({
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "ordering": true,
+            "searching": false,
+        });
+    });
+    
+
+
 });
 
 
@@ -257,7 +291,6 @@ SeleccionaReferido = (id, ruta_id, tabla_relacion_id, ruta_detalle_id, referido)
     }
     
     if( validarRegistro == false ){
-        $("#t_referidos").dataTable().fnDestroy();
         html=   '<tr id="r'+id+'">'+
                 '<td>'+referido+
                     '<input type="hidden" value="'+tabla_relacion_id+'" name="tabla_relacion_id_ref[]">'+
@@ -267,12 +300,6 @@ SeleccionaReferido = (id, ruta_id, tabla_relacion_id, ruta_detalle_id, referido)
                 '<td><span class="btn btn-danger btn-sm" onClick="EliminarTr(\'r'+id+'\',\'referidos\')"><i class="fa fa-trash"></i></span></td>'
             '</tr>';
         $("#tb_referidos").append(html);
-        
-        $("#t_referidos").dataTable({
-            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-            "ordering": true,
-            "searching": false,
-        });
     }
     else{
         msjG.mensaje("warning", 'Solicitante ya fue seleccionado!',3000);
@@ -430,17 +457,19 @@ ValidacionEmpresa = function(data){
     //if(data.length > 1){
         var html = '';
         $.each(data,function(index, el) {
-            html+='<tr id='+el.id+'>';
-            html+='<td name="ruc">'+el.ruc+'</td>';
-            html+='<td name="tipo_id">'+el.tipo+'</td>';
-            html+='<td name="razon_social">'+el.razon_social+'</td>';
-            html+='<td name="nombre_comercial">'+el.nombre_comercial+'</td>';
-            html+='<td name="direccion_fiscal">'+el.direccion_fiscal+'</td>';
-            html+='<td name="telefono">'+el.telefono+'</td>';
-            html+='<td name="fecha_vigencia">'+el.fecha_vigencia+'</td>';
-            html+='<td name="estado">'+el.estado+'</td>';
-            html+='<td name="representante">'+el.representante+'</td>';
-            html+='<td name="dnirepre">'+el.dnirepre+'</td>';
+            html+='<tr id=e'+el.id+'>';
+            html+='<td class="ruc">'+el.ruc+
+                    '<input type="hidden" class="persona_id" value="'+el.persona_id+'">'+
+                    '</td>';
+            html+='<td class="tipo">'+ $.trim(el.tipo)+'</td>';
+            html+='<td class="razon_social">'+ $.trim(el.razon_social)+'</td>';
+            html+='<td class="nombre_comercial">'+ $.trim(el.nombre_comercial)+'</td>';
+            html+='<td class="direccion_fiscal">'+ $.trim(el.direccion_fiscal)+'</td>';
+            html+='<td class="telefono">'+ $.trim(el.telefono)+'</td>';
+            html+='<td class="fecha_vigencia">'+ $.trim(el.fecha_vigencia)+'</td>';
+            html+='<td class="estado">'+ $.trim(el.estado)+'</td>';
+            html+='<td class="representante">'+ $.trim(el.representante)+'</td>';
+            html+='<td class="dnirepre">'+ $.trim(el.dnirepre)+'</td>';
             html+='<td><span class="btn btn-primary btn-sm" id-empresa='+el.id+' onClick="selectEmpresa(this)">Seleccionar</span></td>';
             html+='</tr>';
         });
@@ -458,7 +487,18 @@ ValidacionEmpresa = function(data){
 selectEmpresa = function(obj){
     var idempresa = obj.getAttribute('id-empresa');
     if(idempresa != ''){
-        Bandeja.GetEmpresabyId({id:idempresa});
+        //Bandeja.GetEmpresabyId({id:idempresa});
+        datos = {
+            id: idempresa,
+            tipo: $("#tb_empresa #e"+idempresa+" .tipo").text(),
+            persona_id: $("#tb_empresa #e"+idempresa+" .persona_id").val(),
+            razon_social: $("#tb_empresa #e"+idempresa+" .razon_social").text(),
+            ruc: $("#tb_empresa #e"+idempresa+" .ruc").text(),
+            telefono: $("#tb_empresa #e"+idempresa+" .telefono").text(),
+            direccion_fiscal: $("#tb_empresa #e"+idempresa+" .direccion_fiscal").text(),
+        }
+        console.log(datos);
+        poblateData('empresa',datos);
     }else{
         alert('Seleccione empresa');
     }
@@ -469,13 +509,17 @@ HTMLPersonas = function(data){
     if(data.length > 0){
         var html = '';
         $.each(data,function(index, el) {
-            html+='<tr id='+el.id+'>';
-            html+='<td name="ruc">'+el.name+'</td>';
-            html+='<td name="tipo_id">'+el.paterno+'</td>';
-            html+='<td name="razon_social">'+el.materno+'</td>';
-            html+='<td name="nombre_comercial">'+el.dni+'</td>';
-            html+='<td name="direccion_fiscal">'+el.email+'</td>';
-           /* html+='<td name="telefono">'+el.telefono+'</td>';*/
+            html+='<tr id=p'+el.id+'>';
+            html+='<td class="nombre">'+$.trim(el.name)+
+                    '<input class="celular" type="hidden" value="'+$.trim(el.celular)+'">'+
+                    '<input class="telefono" type="hidden" value="'+$.trim(el.telefono)+'">'+
+                    '<input class="direccion" type="hidden" value="'+$.trim(el.direccion)+'">'+
+                    '</td>';
+            html+='<td class="paterno">'+$.trim(el.paterno)+'</td>';
+            html+='<td class="materno">'+$.trim(el.materno)+'</td>';
+            html+='<td class="dni">'+$.trim(el.dni)+'</td>';
+            html+='<td class="email">'+$.trim(el.email)+'</td>';
+           /* html+='<td class="telefono">'+el.telefono+'</td>';*/
             html+='<td><span class="btn btn-primary btn-sm" id-user='+el.id+' onClick="selectUser(this)">Seleccionar</span></td>';
             html+='</tr>';
         });
@@ -513,7 +557,20 @@ HTMLPersonas = function(data){
 selectUser = function(obj){
     var iduser = obj.getAttribute('id-user');
     if(iduser){
-        Bandeja.GetPersonabyId({persona_id:iduser});
+        //Bandeja.GetPersonabyId({persona_id:iduser});
+        datos = {
+            id: iduser,
+            nombre: $("#tb_persona #p"+iduser+" .nombre").text(),
+            paterno: $("#tb_persona #p"+iduser+" .paterno").text(),
+            materno: $("#tb_persona #p"+iduser+" .materno").text(),
+            dni: $("#tb_persona #p"+iduser+" .dni").text(),
+            email: $("#tb_persona #p"+iduser+" .email").text(),
+            celular: $("#tb_persona #p"+iduser+" .celular").val(),
+            telefono: $("#tb_persona #p"+iduser+" .telefono").val(),
+            direccion: $("#tb_persona #p"+iduser+" .direccion").val(),
+        };
+        console.log(datos);
+        poblateData('persona',datos);
         //$('#selectPersona').modal('hide');
     }else{
         alert('Seleccione persona');
@@ -527,12 +584,11 @@ poblateData = function(tipo,data){
     document.querySelector('#txt_userapemat').value='<?php echo Auth::user()->materno; ?>';
     
     validarRegistro = false;
-    if( $.trim($("#e"+data.id).html()) != '' || $.trim($("#p"+data.id).html()) != '' ){
+    if( $.trim($("#t_usuarios #e"+data.id).html()) != '' || $.trim($("#t_usuarios #p"+data.id).html()) != '' ){
         validarRegistro = true;
     }
     
     if( validarRegistro == false ){
-        $("#t_usuarios").dataTable().fnDestroy();
         if(tipo == 'empresa'){
             html=   '<tr id="e'+data.id+'">'+
                         '<td>Empresa | '+data.tipo+' <input type="hidden" value="'+data.id+'" name="empresa_id_sol[]"><input type="hidden" value="'+data.persona_id+'" name="persona_id_sol[]"></td>'+
@@ -559,11 +615,6 @@ poblateData = function(tipo,data){
                     '</tr>';
             $("#tb_usuarios").append(html);
         }
-        $("#t_usuarios").dataTable({
-            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-            "ordering": true,
-            "searching": false,
-        });
     }
     else{
         msjG.mensaje("warning", 'Solicitante ya fue seleccionado!',3000);
