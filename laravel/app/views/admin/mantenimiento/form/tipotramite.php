@@ -37,6 +37,15 @@
           </div>
 
           <div class="form-group">
+            <label class="control-label">El solicitante puede realizar seguimiento:</label>
+            <select class="form-control" name="slct_seguimiento" id="slct_seguimiento">
+                <option value="">.::Seleccione::.</option>
+                <option value="0">No</option>
+                <option value='1'>Si</option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label class="control-label">Estado:
             </label>
             <select class="form-control" name="slct_estado" id="slct_estado">

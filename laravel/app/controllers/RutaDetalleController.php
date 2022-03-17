@@ -85,13 +85,23 @@ class RutaDetalleController extends \BaseController
         }
     }
 
+    public function postSolicitantes(){
+		$rst=Tramite::getSolicitantes();
+          return Response::json(
+              array(
+                  'rst'=>1,
+                  'datos'=>$rst
+              )
+          );
+	}
+
     public function postCargardetalle()
     {
         $r          = new RutaDetalle;
         $res        = Array();
         $res        = $r->getRutadetalle();
 
-
+        
 
         if ( Input::get('ruta_detalle_id') ) {
 
@@ -103,8 +113,8 @@ class RutaDetalleController extends \BaseController
         $fList='';
         $time[] = "archivos listos:".time();
         
+        
             for ($i=0; $i < count($d); $i++) {
-
                 $d1 = explode("=>", $d[$i]);
                 $make=false;
 
@@ -283,7 +293,7 @@ class RutaDetalleController extends \BaseController
                 for($i = 0; $i < 2; $i++){                    
                     if($i==1){ //paso anterios
                         $rd = RutaDetalle::find($rd_ant->ruta_detalle_id_ant);
-//                      $rd = RutaDetalle::where('ruta_id',Input::get('ruta_id'))->where('condicion',0)->where('norden',Input::get('orden') - 1)->get()[0];
+                      //$rd = RutaDetalle::where('ruta_id',Input::get('ruta_id'))->where('condicion',0)->where('norden',Input::get('orden') - 1)->get()[0];
                         $rd->condicion=3;
                         $rd->usuario_retorno=Auth::user()->id;
                         $rd->save();
@@ -302,7 +312,18 @@ class RutaDetalleController extends \BaseController
                     $rdetalle['tiempo_id'] = $rd->tiempo_id;
                     $rdetalle['dtiempo'] = $rd->dtiempo;
                     $rdetalle['norden'] = $rd->norden;
-                    $rdetalle['ruta_flujo_id'] = $rd->ruta_flujo_id;
+                    $rdetalle['ruta_flujo_id_dep'] = $rd->ruta_flujo_id_dep;
+                    
+                    if( trim($rd->ruta_flujo_id) != '' ){
+                        $sql = "UPDATE rutas_detalle AS rd 
+                                INNER JOIN rutas_detalle_verbo AS rdv ON rdv.ruta_detalle_id = rd.id
+                                SET rd.estado = 0, rdv.estado = 0
+                                WHERE rd.ruta_id = '".$rd->ruta_id."'
+                                AND rd.norden LIKE '".$rd->norden.".%'
+                                AND rd.ruta_flujo_id_dep = '".$rd->ruta_flujo_id."'";
+                        DB::update($sql);
+                    }
+                    
                     $rdetalle['fecha_inicio'] =  ($i==1) ? $fecha_inicio : NULL; 
                     if($i==1){
                         $sql="SELECT CalcularFechaFinal( '".$fecha_inicio."', (".$rd->dtiempo."*1440), ".$rd->area_id." ) fproy";
@@ -317,9 +338,10 @@ class RutaDetalleController extends \BaseController
                     $rdetalle['usuario_created_at'] = Auth::user()->id;
                     $rdetalle->save();
                     
+                    
                     $rdverbo = RutaDetalleVerbo::where('ruta_detalle_id',$rd->id)->get();
                     foreach($rdverbo as $value){
-                        if($i==0){ //paso anterios
+                        if($i==0){ //paso actual
                             $value->estado=0;
                             $value->save();                      
                         }
@@ -341,10 +363,10 @@ class RutaDetalleController extends \BaseController
                 $msj='Se retornó con éxito';
                 $rst=1;
                  DB::commit();
-        }else{
-            $msj='No se logró retornar,Comunicarse con la Gerencia de Modernización';
-            $rst=2;
-        }
+            }else{
+                $msj='No se logró retornar,Comunicarse con la Gerencia de Modernización';
+                $rst=2;
+            }
             return Response::json(array(
                 'rst'=>$rst,
                 'msj'=>$msj
@@ -479,12 +501,17 @@ class RutaDetalleController extends \BaseController
                 if( Input::get('finalizado')==2){
                     $rd['archivado']=2;
                 }
-                $rd['dtiempo_final']= Input::get('respuesta');
+                $hoy = date('Y-m-d H:i:s');
+                $rd['dtiempo_final']= $hoy;
                 $rd['tipo_respuesta_id']= 1;
                 $rd['tipo_respuesta_detalle_id']= 1;
                 $rd['observacion']= Input::get('observacion');
-                $rd['alerta']= Input::get('alerta');
-                $rd['alerta_tipo']= Input::get('alerta_tipo');
+                $rd['alerta'] = 0;
+                $rd['alerta_tipo']= 0;
+                if( $hoy > $rd->fecha_proyectada ){
+                    $rd['alerta'] = 1;
+                    $rd['alerta_tipo']= 1;
+                }
                 $rd['usuario_updated_at']= Auth::user()->id;
                 $rd->save();
 

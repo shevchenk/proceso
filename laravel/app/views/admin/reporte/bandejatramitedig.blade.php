@@ -243,10 +243,10 @@ table>tbody>tr>td{
                                                 <i class="fa fa-search fa-lg"></i>
                                                 .::Expediente::.
                                             </a>
-                                            <?php /*<a class="btn btn-sm btn-primary" id="RetornarP" onclick="retornar()">
+                                            <a class="btn btn-sm btn-primary" id="RetornarP" onclick="retornar()">
                                                 <i class="glyphicon glyphicon-repeat"></i>
-                                                Retornar Paso
-                                            </a> */ ?>
+                                                Retornar Actividad
+                                            </a>
                                             </h1>
                                         </div>
 
@@ -346,7 +346,8 @@ table>tbody>tr>td{
                                         <div class="col-sm-12">
                                             <div class="sectionmicro">
 
-                                                <div class="col-sm-3">
+                                                
+                                                <div class="col-sm-3 solicitantesimple">
                                                     <div class="box box-warning">
                                                         <div class="box-header with-border">
                                                             <h3 class="box-title">DATOS DEL SOLICITANTE</h3>
@@ -364,19 +365,42 @@ table>tbody>tr>td{
                                                             <div><b>Dirección: </b><span id="ptra_dir_solicitante"></span></div>
                                                         </div>
                                                     </div>
-                                                </div> 
+                                                </div>
+                                                
+                                                <div class="col-md-5 table-responsive solicitantemultiple" style="margin-top:10px">
+                                                    <div class="box box-warning">
+                                                        <div class="box-header with-border">
+                                                            <h3 class="box-title" tabindex="0" id="datos_personalizados">Solicitante(s)</h3>
+                                                            <div class="box-tools pull-right">
+                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-body col-md-12">
+                                                            <table id="t_usuarios" class="table table-bordered table-striped">
+                                                                <thead>
+                                                                    <tr class="bg-navy">
+                                                                        <th style="width:80px;">Tipo Solicitante</th>
+                                                                        <th style="width:120px;">Solicitante</th>
+                                                                        <th style="width:50px;">DNI / RUC</th>
+                                                                        <th style="width:50px;">Teléfono</th>
+                                                                        <th style="width:150px;">Dirección</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tb_usuarios"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                                <div class="col-sm-2 text-right">
+                                                <div class="col-sm-3">
                                                     <label class="control-label">Sub Procesos:</label>
-                                                </div>    
-                                                <div class="col-sm-5">
-                                                    
                                                     <select id="slct_micro" name="slct_micro">
                                                         <option>Seleccione</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-2">
-                                                    <label class="control-label">&nbsp;&nbsp;&nbsp;</label>
+                                                    <label class="control-label">&nbsp;&nbsp;&nbsp;</label><br>
                                                     <a class="btn btn-success btn-sm"  id="btn_siguiente_rd" style="display: none;">
                                                     </a>
                                                 </div>

@@ -1,65 +1,48 @@
-<script type="text/javascript">var posicionDetalleVerboG=0;
-
-function imprimirTicket(url){
-    parametrosPop="height=600,width=350,toolbar=No,location = No,scrollbars=yes,left=-15,top=800,status=No,resizable= No,fullscreen =No'";
-    printTicket=window.open(url,'tTicket',parametrosPop);
-    printTicket.focus();  
-}
-
-
-
+<script type="text/javascript">
+var cabeceraG=[]; // Cabecera del Datatable
+var columnDefsG=[]; // Columnas de la BD del datatable
+var targetsG=-1; // Posiciones de las columnas del datatable
 $(document).ready(function() {
 
+     $('#fecha_nacimiento').daterangepicker({
+                format: 'YYYY-MM-DD',
+                singleDatePicker: true,
+                showDropdowns: true
+    });
+
+    $("#t_usuarios").dataTable({
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "ordering": true,
+        "searching": false,
+    });
 
 
     UsuarioId='<?php echo Auth::user()->id; ?>';
-    UsuarioLocalId='<?php echo trim(Auth::user()->local_id); ?>';
     DataUser = '<?php echo Auth::user(); ?>';
+    UsuarioLocalId='<?php echo trim(Auth::user()->local_id); ?>';
+    poblateData('x',DataUser);
     /*Inicializar tramites*/
-    slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','simple',UsuarioLocalId,{estado:1});
-
-    var data={'persona':UsuarioId, 'seguimiento':1, 'estado':1, 'filtro_fecha': $("#filtro_fecha").val()};  
-    Bandeja.MostrarPreTramites(data,HTMLPreTramite);
+    var data={'persona':UsuarioId,'estado':1};
+    Bandeja.MostrarTramites(data,HTMLTramite);
     /*end Inicializar tramites*/
-    
+    slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','simple',UsuarioLocalId,{estado:1, usuario_local:1});
     /*inicializate selects*/
-    data = {estado:1, tipo:'Ingreso', solicitante: 'Cliente'};
-    slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data); 
-    slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);  
-    slctGlobal.listarSlctFuncion('tiposolicitante','listar?pretramite=1','cbo_tiposolicitante','simple',null,data);
+    slctGlobalHtml('cbo_tipodocumento, #slct_tipo_usuario, #cbo_tipotramite, #cbo_tipodoc','simple');
+    slctGlobal.listarSlct('persona','cbo_persona','simple',null,{estado_persona:1});
+    slctGlobal.listarSlct('empresa','cbo_empresa','simple',null,{estado:1});
+    slctGlobal.listarSlct('area','slct_areas','simple',null,{estado:1, areapersona:1});
+    slctGlobal.listarSlctFuncion('tiposolicitante','listar?pretramite=1','cbo_tiposolicitante','simple',null,{'estado':1,'validado':1});
+    
     /*end inicializate selects*/
     
     data = {estado:1};
     var ids = [];
-    //slctGlobal.listarSlct('software','slct_software_id_modal','simple',ids,data);
+    slctGlobal.listarSlct('software','slct_software_id_modal','simple',ids,data);
     slctGlobal.listarSlct2('rol','slct_rol_modal',data);
     slctGlobal.listarSlct2('verbo','slct_verbo_modal',data);
+    
     slctGlobal.listarSlct2('documento','slct_documento_modal',data);
-    
-    $(document).on('change', '#cbo_tiposolicitante', function(event) {
-        var data={'id':$(this).val(),'estado':1};
-        $("#txt_idempresa").val('');
-        Bandeja.GetTipoSolicitante(data,Mostrar);
-    });
-
-    $(document).on('click', '#btnnuevo', function(event) {
-        $(".crearPreTramite").removeClass('hidden');
-        $("input[type='text'], .select").not('.mant').val('');
-        $(".select").multiselect('refresh');
-
-        ///////////////////////////////////////////////////
-        //$("#cbo_tiposolicitante").val(1);
-        var data={'id':1,'estado':1};
-        $("#txt_idempresa").val('');
-        Bandeja.GetTipoSolicitante(data,Mostrar);
-        Bandeja.GetMisDatos({},GetMisDatos);
-        
-        ///////////////////////////////////////////////////
-
-        window.scrollTo(0,document.body.scrollHeight);
-    });
-    
-         $('#rutaModal').on('show.bs.modal', function (event) {
+    $('#rutaModal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget); // captura al boton
       var text = $.trim( button.data('text') );
       var id= $.trim( button.data('id') );
@@ -126,9 +109,6 @@ $(document).ready(function() {
         }
 
       pintarTiempoG(tid);
-
-
-
       $("#form_ruta_verbo #txt_nombre").val(text);
       $("#form_ruta_verbo").append('<input type="hidden" value="'+id+'" id="txt_area_id_modal">');
     });
@@ -139,42 +119,171 @@ $(document).ready(function() {
       $("#form_ruta_verbo input[type='hidden']").remove();
       modal.find('.modal-body input').val(''); // busca un input para copiarle texto
     });
+
+
+    $(document).on('click', '#btnTipoSolicitante', function(event) {
+        var tiposolicitante = $("#cbo_tiposolicitante").val();
+        var pide_empresa = $("#cbo_tiposolicitante option:selected").attr('data-select');
+        var solicitante = $("#cbo_tiposolicitante option:selected").attr('data-val');
+        if( $.trim(pide_empresa) == '|0|'){
+            Bandeja.GetPersons({'apellido_nombre':1},HTMLPersonas);
+        }else if( $.trim(pide_empresa) == '|1|'){
+            Bandeja.getEmpresasByPersona({'estado':1},ValidacionEmpresa);
+        }
+        else {
+            solicitante = 'Indefinido';
+            alert("Seleccionar Tipo de Solicitante");
+        }
+
+        $("#cbo_tipotramite, #cbo_tipodoc").multiselect('destroy');
+        data = {estado:1, tipo:'Salida', solicitante: solicitante};
+        slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);
+        data = {estado:1, tipo:'Ingreso', solicitante: solicitante};
+        slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data);
+
+    });
+
+    $(document).on('click', '#btnAgregarP', function(event) {
+        $("#selectPersona").modal('hide');
+        $("#CrearUsuario").modal('show');
+        /* Act on the event */
+    });
+
+    $(document).on('click', '#btnAgregarEmpresa', function(event) {
+        $("#empresasbyuser").modal('hide');
+        $("#crearEmpresa").modal('show');
+        /* Act on the event */
+    });
     
-     $('#buscartramite').on('hide.bs.modal', function (event) {
+    $(document).on('click', '#btnSeleccionarPersona', function(event) {
+//        $("#crearEmpresa").modal('hide');
+        
+        $("#selectPersona").modal('show');
+        Bandeja.GetPersons({'apellido_nombre':1},HTMLPersonas);
+        /* Act on the event */
+    });
+
+    $(document).on('click', '#btnnuevo', function(event) {
+        $(".crearPreTramite").removeClass('hidden');
+        
+        window.scrollTo(0,document.body.scrollHeight);
+    });
+    
+    $('#buscartramite').on('hide.bs.modal', function (event) {
 //      var modal = $(this); //captura el modal
 //      $("#form_ruta_tiempo input[type='hidden']").remove();
 //      $("#form_ruta_verbo input[type='hidden']").remove();
       $("#buscartramite #reporte").show();
     });
+
+    $("#btnReferido").click( ()=>{
+        $("#referenteModal").modal('show');
+    })
      /*validaciones*/
-    $('#FormCrearPreTramite').bootstrapValidator({
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh',
-        },
-        excluded: ':disabled',
-        fields: {
-            txt_numfolio: {
-                validators: {
-                    notEmpty: {
-                        message: 'campo requerido'
-                    },
-                    digits:{
-                        message: 'dato numerico'
-                    }
-                }
-            },
-            txt_tipodoc: {
-                validators: {
-                    notEmpty: {
-                        message: 'campo requerido'
-                    }
-                }
-            }
+
+    $(document).on('click', '.btnEnviar', function(event) {
+        generarUsuario();
+    });
+    
+    $("#cbo_tiposolicitante").change(function(){
+        $('#txt_ruc').val(''); 
+        $('#txt_userdni2').val('');
+        var pide_empresa = $("#cbo_tiposolicitante option:selected").attr('data-select');
+        if( $.trim(pide_empresa) == '|0|'){
+            $('.usuarioSeleccionado').addClass('hidden');
+            $('.empresa').removeClass('hidden');
+        }else if( $.trim(pide_empresa) == '|1|'){
+            $('.empresa').addClass('hidden');
+            $('.usuarioSeleccionado').removeClass('hidden');
         }
+	});
+
+    $('#referenteModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // captura al boton
+      
+        var modal = $(this); //captura el modal
+        var idG={   referido        :'onBlur|Referido|#DCE6F1', //#DCE6F1
+                        fecha_hora_referido   :'onChange|Fecha Referido|#DCE6F1|fechaG', //#DCE6F1
+                        id        :'1|[]|#DCE6F1', //#DCE6F1
+        };
+
+        var resG=dataTableG.CargarCab(idG);
+        cabeceraG=resG; // registra la cabecera
+        var resG=dataTableG.CargarCol(cabeceraG,columnDefsG,targetsG,0,'referente','t_referente');
+        columnDefsG=resG[0]; // registra las columnas del datatable
+        targetsG=resG[1]; // registra los contadores
+    });
+
+    $('#referenteModal').on('hide.bs.modal', function (event) {
+        var modal = $(this); //captura el modal
+        $("#t_referente>thead>tr:eq(0),#t_referente>tfoot>tr:eq(0)").html('');
+        cabeceraG=[]; // Cabecera del Datatable
+        columnDefsG=[]; // Columnas de la BD del datatable
+        targetsG=-1; // Posiciones de las columnas del datatable
     });
 });
+
+
+eventoSlctGlobalSimple=function(slct,valores){
+    /*if( slct=="slct_areas" ){
+        
+    }*/
+}
+
+
+MostrarAjax=function(t){
+    if( t=="referente" ){
+        if( columnDefsG.length>0 ){
+            dataTableG.CargarDatos(t,'referido','cargar',columnDefsG);
+        }
+        else{
+            alert('Faltas datos');
+        }
+    } 
+};
+
+GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion fn
+   if(typeof(fn)!='undefined' && fn.col==2){
+      var estadohtml='';
+      estadohtml='<span id="'+row.id+'" onClick="SeleccionaReferido(\''+row.id+'\',\''+row.ruta_id+'\',\''+row.tabla_relacion_id+'\',\''+row.ruta_detalle_id+'\',\''+row.referido+'\')" class="btn btn-success">Seleccionar</span>';
+      return estadohtml;
+  }
+};
+
+SeleccionaReferido = (id, ruta_id, tabla_relacion_id, ruta_detalle_id, referido) => {
+    validarRegistro = false;
+    if( $.trim($("#r"+id).html()) != '' || $.trim($("#r"+id).html()) != '' ){
+        validarRegistro = true;
+    }
+    
+    if( validarRegistro == false ){
+        $("#t_referidos").dataTable().fnDestroy();
+        html=   '<tr id="r'+id+'">'+
+                '<td>'+referido+
+                    '<input type="hidden" value="'+tabla_relacion_id+'" name="tabla_relacion_id_ref[]">'+
+                    '<input type="hidden" value="'+ruta_id+'" name="ruta_id_ref[]">'+
+                    '<input type="hidden" value="'+ruta_detalle_id+'" name="ruta_detalle_id_ref[]">'+
+                '</td>'+
+                '<td><span class="btn btn-danger btn-sm" onClick="EliminarTr(\'r'+id+'\',\'referidos\')"><i class="fa fa-trash"></i></span></td>'
+            '</tr>';
+        $("#tb_referidos").append(html);
+        
+        $("#t_referidos").dataTable({
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "ordering": true,
+            "searching": false,
+        });
+    }
+    else{
+        msjG.mensaje("warning", 'Solicitante ya fue seleccionado!',3000);
+    }
+}
+/*
+CargarPreTramites = function(){
+    var data={'persona':UsuarioId,'estado':1};
+    Bandeja.MostrarPreTramites(data,HTMLPreTramite);
+}
+*/
 
 ValidarDoc = ()=> {
     valor = $("#cbo_tipodoc option:selected").attr('data-val');
@@ -185,83 +294,42 @@ ValidarDoc = ()=> {
     $("#txt_tipodoc").val('');
 }
 
-GetMisDatos = (data)=>{
-    document.querySelector('#txt_userdni').value= data.dni;
-    document.querySelector('#txt_usernomb').value= data.nombre;
-    document.querySelector('#txt_userapepat').value= data.paterno;
-    document.querySelector('#txt_userapemat').value= data.materno;
-
-    document.querySelector('#txt_usertelf').value= data.telefono;
-    document.querySelector('#txt_usercel').value= data.celular;
-    document.querySelector('#txt_useremail').value= data.email;
-    $('#txt_userdirec').val(data.direccion);
-}
-
-CargarPreTramites = function(){
-    var data={'persona':'<?php echo Auth::user()->id; ?>', 'seguimiento':1, 'estado':1, 'filtro_fecha': $("#filtro_fecha").val()};
-    Bandeja.MostrarPreTramites(data,HTMLPreTramite);
-}
-
-HTMLPreTramite = function(data){
-    $('#t_reporte').dataTable().fnDestroy();
-        var html =''; var archivo = '';
+HTMLTramite = function(data){
+    if(data){
+        var html ='';
         $.each(data,function(index, el) {
-            color = ''; archivo = '';
-            obs = $.trim(el.observacion);
-                if( el.estado_atencion == 1 ){
-                    color = 'alert-success';
-                }
-                else if( el.estado_atencion == 2 ){
-                    color = 'alert-danger';
-                    obs = $.trim(el.observacion2);
-                }
-            html+="<tr class='"+color+"'>";
-            html+=    "<td>"+el.pretramite +"</td>";
+            html+="<tr>";
+            html+=    "<td>"+el.idtramite +"</td>";
+            html+=    "<td>"+el.usuario+"</td>";
             
             if(el.empresa){
-                html+=    "<td>"+el.empresa+"</td>";                
+                html+=    "<td>"+el.empresa+"</td>";
             }else{
-                html+=    "<td>"+el.usuario+"</td>";
+                html+=    "<td>&nbsp;</td>";
             }
-
-            if( $.trim(el.ruta_archivo) != '' ){
-                archivo = "<a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file-pdf-o fa-lg'></i>";
-            }
-
             
             html+=    "<td>"+el.solicitante+"</td>";
             html+=    "<td>"+el.tipotramite+"</td>";
             html+=    "<td>"+el.tipodoc+"</td>";
-            html+=    "<td>"+$.trim(el.local)+"</td>";
             html+=    "<td>"+el.tramite+"</td>";
             html+=    "<td>"+el.fecha+"</td>";
-            html+=    "<td>"+archivo+"</td>";
-            html+=    "<td>"+el.atencion+"</td>";
-            html+=    "<td>"+el.updated_at+"</td>";
-            html+=    "<td>"+obs+"</td>";
-            html+=    "<td>"+$.trim(el.id_union)+"</td>";
-            btn='';
-            if( $.trim(el.id_union)!='' ){
-                btn = '<a class="btn btn-default btn-lg" target="_blank" href="https://mitramite.isamtramites.pe/?tramite='+$.trim(el.id_union)+'&fecha='+$.trim(el.fecha_tramite)+'"><i class="fa fa-eye"></i></a>';
-            }
-            html+=    '<td>'+btn+'</td>';
-            //html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="Detallepret(this)"><i class="glyphicon glyphicon-th-list"></i></span></td>';
-
-            var url = "documentodig/ticket/"+el.pretramite;
-
-            //html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="imprimirTicket(\''+url+'\')"><i class="glyphicon glyphicon-search"></i></span></td>';
-            html+="</tr>";            
+            var url = "documentodig/ticket/"+el.idtramite;
+            html+=    '<td><span class="btn btn-primary btn-sm" id-tramite="'+el.tramite+'" onclick="imprimirTicket(\''+url+'\')"><i class="glyphicon glyphicon-search"></i></span></td>';
+            html+="</tr>";
         });
         $("#tb_reporte").html(html);
-        //$("#tb_reporte").html(html);
-        $("#t_reporte").dataTable(
-            {
-                "order": [[ 0, "desc" ]],
-                "pageLength": 5,
-            }
-        ); 
+    }else{
+        alert('no hay nada');
+    }
 }
 
+function imprimirTicket(url){
+    parametrosPop="height=600,width=350,toolbar=No,location = No,scrollbars=yes,left=-15,top=800,status=No,resizable= No,fullscreen =No'";
+    printTicket=window.open(url,'tTicket',parametrosPop);
+    printTicket.focus();  
+}
+
+/*
 Detallepret = function(obj){
     var id_pretramite = obj.getAttribute('id-pretramite');
     var data = {'idpretramite':id_pretramite};
@@ -287,8 +355,6 @@ poblarDetalle = function(data){
         document.querySelector('#spanDomiFiscal').innerHTML = result.edireccion;
         document.querySelector('#spanTelefonoE').innerHTML = result.etelf;
         document.querySelector('#spanFechavE').innerHTML = result.efvigencia;
-        document.querySelector('#spanRepreL').innerHTML = result.reprelegal;
-        document.querySelector('#spanDniRL').innerHTML = result.repredni;
         $('.empresadetalle').removeClass('hidden');        
     }else{
         $('.empresadetalle').addClass('hidden');
@@ -304,8 +370,8 @@ poblarDetalle = function(data){
 }
 
 Voucherpret = function(obj){
-    var id_pretramite = obj.getAttribute('id-pretramite');
-    var data = {'idpretramite':id_pretramite};
+    var id_tramite = obj.getAttribute('id-tramite');
+    var data = {'idtramite':id_tramite};
     Bandeja.GetPreTramitebyid(data,poblarVoucher);
 }
 
@@ -314,7 +380,7 @@ poblarVoucher = function(data){
     document.querySelector('#spanvfecha').innerHTML=result.fregistro;
     document.querySelector('#spanvcodpretramite').innerHTML=result.pretramite;
     document.querySelector('#spantArea').innerHTML=result.area;
-    document.querySelector('#spanImprimir').setAttribute('idpretramite',result.pretramite);
+    document.querySelector('#spanImprimir').setAttribute('idtramite',result.pretramite);
 
    if(result.empresa){
         document.querySelector('#spanveruc').innerHTML=result.ruc;
@@ -339,14 +405,13 @@ poblarVoucher = function(data){
 }
 
 exportPDF = function(obj){
-    var idpretramite = obj.getAttribute('idpretramite');
+    var idtramite = obj.getAttribute('idtramite');
     if(idpretramite){
-        obj.setAttribute('href','pretramite/voucherpretramite'+'?idpretramite='+idpretramite);
-       /* $(this).attr('href','reporte/exportprocesosactividades'+'?estado='+data[0]['estado']+'&area_id='+data[0]['area_id']);*/
+        obj.setAttribute('href','pretramite/voucherpretramite'+'?idpretramite='+idtramite);
     }else{
         event.preventDefault();
     }
-}
+}*/
 
 Mostrar = function(data){
     if(data[0].pide_empresa == 1){
@@ -361,98 +426,199 @@ Mostrar = function(data){
 }
 
 ValidacionEmpresa = function(data){
-    if(data.length > 1){
+     $('#t_empresa').dataTable().fnDestroy();
+    //if(data.length > 1){
         var html = '';
         $.each(data,function(index, el) {
-            estado = 'Inactivo';
-            if( el.estado == 1 ){
-                estado = 'Activo';
-            }
             html+='<tr id='+el.id+'>';
-            html+='<td name="ruc">'+$.trim(el.ruc)+'</td>';
-            html+='<td name="tipo">'+$.trim(el.tipo)+'</td>';
-            html+='<td name="razon_social">'+$.trim(el.razon_social)+'</td>';
-            html+='<td name="nombre_comercial">'+$.trim(el.nombre_comercial)+'</td>';
-            html+='<td name="direccion_fiscal">'+$.trim(el.direccion_fiscal)+'</td>';
-            html+='<td name="telefono">'+$.trim(el.telefono)+'</td>';
-            html+='<td name="fecha_vigencia">'+$.trim(el.fecha_vigencia)+'</td>';
-            html+='<td name="estado">'+estado+'</td>';
-            html+='<td name="representante">'+$.trim(el.representante)+'</td>';
-            html+='<td name="dnirepre">'+$.trim(el.dnirepre)+'</td>';
+            html+='<td name="ruc">'+el.ruc+'</td>';
+            html+='<td name="tipo_id">'+el.tipo+'</td>';
+            html+='<td name="razon_social">'+el.razon_social+'</td>';
+            html+='<td name="nombre_comercial">'+el.nombre_comercial+'</td>';
+            html+='<td name="direccion_fiscal">'+el.direccion_fiscal+'</td>';
+            html+='<td name="telefono">'+el.telefono+'</td>';
+            html+='<td name="fecha_vigencia">'+el.fecha_vigencia+'</td>';
+            html+='<td name="estado">'+el.estado+'</td>';
+            html+='<td name="representante">'+el.representante+'</td>';
+            html+='<td name="dnirepre">'+el.dnirepre+'</td>';
             html+='<td><span class="btn btn-primary btn-sm" id-empresa='+el.id+' onClick="selectEmpresa(this)">Seleccionar</span></td>';
             html+='</tr>';
         });
         $('#tb_empresa').html(html);
+         $("#t_empresa").dataTable(); 
         $('#empresasbyuser').modal('show');
-    }else if(data.length == 1){
+    /*}else if(data.length == 1){
         poblateData('empresa',data[0]);
     }else{
         $(".empresa").addClass('hidden');
         alert('no cuenta con una empresa');
-    }
+    }*/
 }
 
 selectEmpresa = function(obj){
-    var idempresa = obj.parentNode.parentNode.getAttribute('id');
-    var td = document.querySelectorAll("#t_empresa tr[id='"+idempresa+"'] td");
-    var data = '{';
-    for (var i = 0; i < td.length; i++) {
-        if(td[i].getAttribute('name')){
-          data+=(i==0) ? '"'+td[i].getAttribute('name')+'":"'+td[i].innerHTML : '","' + td[i].getAttribute('name')+'":"'+td[i].innerHTML;   
-        }
+    var idempresa = obj.getAttribute('id-empresa');
+    if(idempresa != ''){
+        Bandeja.GetEmpresabyId({id:idempresa});
+    }else{
+        alert('Seleccione empresa');
     }
-    data+='","id":'+idempresa+'}';
-    poblateData('empresa',JSON.parse(data));
-    $('#empresasbyuser').modal('hide');
 }
-   
-poblateData = function(tipo,data){
-/*    if(tipo == 'usuario'){*/
 
-    /*    user_telf.value=data.;
-        user_direc.value=data.;*/
-    /*  */
+HTMLPersonas = function(data){
+     $('#t_persona').dataTable().fnDestroy();
+    if(data.length > 0){
+        var html = '';
+        $.each(data,function(index, el) {
+            html+='<tr id='+el.id+'>';
+            html+='<td name="ruc">'+el.name+'</td>';
+            html+='<td name="tipo_id">'+el.paterno+'</td>';
+            html+='<td name="razon_social">'+el.materno+'</td>';
+            html+='<td name="nombre_comercial">'+el.dni+'</td>';
+            html+='<td name="direccion_fiscal">'+el.email+'</td>';
+           /* html+='<td name="telefono">'+el.telefono+'</td>';*/
+            html+='<td><span class="btn btn-primary btn-sm" id-user='+el.id+' onClick="selectUser(this)">Seleccionar</span></td>';
+            html+='</tr>';
+        });
+        $('#tb_persona').html(html);
+        $('#t_persona thead th').each( function () {
+            var title = $('#t_persona tfoot th').eq( $(this).index() ).text();
+            if( title!= 'SELECCIONAR' ){
+                $(this).html( '<input type="text" class="col-sm-12" placeholder="Buscar '+title+'">' );
+            }
+        } );
 
-    if(tipo == 'empresa'){
-        document.querySelector('#txt_idempresa').value=data.id;
-        document.querySelector('#txt_ruc').value=data.ruc;
-        document.querySelector('#txt_tipoempresa').value=data.tipo;
-        document.querySelector('#txt_razonsocial').value=data.razon_social;
-        document.querySelector('#txt_nombcomercial').value=data.nombre_comercial;
-        document.querySelector('#txt_domiciliofiscal').value=data.direccion_fiscal;
-        document.querySelector('#txt_emptelefono').value=data.telefono;
-        document.querySelector('#txt_empfechav').value=data.fecha_vigencia;
-        document.querySelector('#txt_reprelegal').value=data.representante;
-        document.querySelector('#txt_repredni').value=data.dnirepre;
+        // DataTable
+        var table = $('#t_persona').DataTable({
+            ordering: false,
+        });
+
+        $("#t_persona_filter").addClass("hidden");
+
+        // Apply the search
+        table.columns().eq( 0 ).each( function ( colIdx ) {
+            $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+                table
+                    .column( colIdx )
+                    .search( this.value )
+                    .draw();
+            } );
+        } );
+        $('#selectPersona').modal('show'); 
+    }else{
+        $(".empresa").addClass('hidden');
+        alert('Error');
     }
+}
+
+selectUser = function(obj){
+    var iduser = obj.getAttribute('id-user');
+    if(iduser){
+        Bandeja.GetPersonabyId({persona_id:iduser});
+        //$('#selectPersona').modal('hide');
+    }else{
+        alert('Seleccione persona');
+    }
+    }
+
+poblateData = function(tipo,data){
+    document.querySelector('#txt_userdni').value=  '<?php echo Auth::user()->dni; ?>';
+    document.querySelector('#txt_usernomb').value='<?php echo Auth::user()->nombre; ?>';
+    document.querySelector('#txt_userapepat').value='<?php echo Auth::user()->paterno; ?>';
+    document.querySelector('#txt_userapemat').value='<?php echo Auth::user()->materno; ?>';
+    
+    validarRegistro = false;
+    if( $.trim($("#e"+data.id).html()) != '' || $.trim($("#p"+data.id).html()) != '' ){
+        validarRegistro = true;
+    }
+    
+    if( validarRegistro == false ){
+        $("#t_usuarios").dataTable().fnDestroy();
+        if(tipo == 'empresa'){
+            html=   '<tr id="e'+data.id+'">'+
+                        '<td>Empresa | '+data.tipo+' <input type="hidden" value="'+data.id+'" name="empresa_id_sol[]"><input type="hidden" value="'+data.persona_id+'" name="persona_id_sol[]"></td>'+
+                        '<td>'+ data.razon_social +'</td>'+
+                        '<td>'+ data.ruc +'</td>'+
+                        '<td><input class="form-control" name="txt_telefono_sol[]" type="text" value="'+ $.trim(data.telefono) +'"></td>'+
+                        '<td>-<input type="hidden" name="txt_celular_sol[]" value=""></td>'+
+                        '<td>-<input type="hidden" name="txt_email_sol[]" value=""></td>'+
+                        '<td><TextArea class="col-md-12" name="txt_direccion_sol[]" row=3>'+ $.trim(data.direccion_fiscal) +'</TextArea></td>'+
+                        '<td><span class="btn btn-danger btn-sm" onClick="EliminarTr(\'e'+data.id+'\',\'usuarios\')"><i class="fa fa-trash"></i></span></td>'
+                    '</tr>';
+            $("#tb_usuarios").append(html);
+        }
+        else if(tipo== 'persona'){
+            html=   '<tr id="p'+data.id+'">'+
+                        '<td>Persona<input type="hidden" value="0" name="empresa_id_sol[]"><input type="hidden" value="'+data.id+'" name="persona_id_sol[]"></td>'+
+                        '<td>'+ data.paterno + ' ' + data.materno + ', ' + data.nombre +'</td>'+
+                        '<td>'+ data.dni +'</td>'+
+                        '<td><input class="form-control" name="txt_telefono_sol[]" type="text" value="'+ $.trim(data.telefono) +'"></td>'+
+                        '<td><input class="form-control" name="txt_celular_sol[]" type="text" value="'+ $.trim(data.celular) +'"></td>'+
+                        '<td><TextArea class="col-md-12" name="txt_email_sol[]" row=3>'+ $.trim(data.email) +'</TextArea></td>'+
+                        '<td><TextArea class="col-md-12" name="txt_direccion_sol[]" row=3>'+ $.trim(data.direccion) +'</TextArea></td>'+
+                        '<td><span class="btn btn-danger btn-sm" onClick="EliminarTr(\'p'+data.id+'\',\'usuarios\')"><i class="fa fa-trash"></i></span></td>'
+                    '</tr>';
+            $("#tb_usuarios").append(html);
+        }
+        $("#t_usuarios").dataTable({
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "ordering": true,
+            "searching": false,
+        });
+    }
+    else{
+        msjG.mensaje("warning", 'Solicitante ya fue seleccionado!',3000);
+    }
+    
+    if(tipo== 'selectpersona'){
+        document.querySelector('#FrmCrearEmpresa #txt_persona_id2').value=data.id;
+        document.querySelector('#FrmCrearEmpresa #txt_persona2').value=data.nombre+" "+data.paterno+" "+data.materno;
+        document.querySelector('#txt_idclasitramite').value=data.id;
+//        document.querySelector('#txt_idarea').value=data.areaid;
+    }
+
 
     if(tipo== 'tramite'){
         document.querySelector('#txt_nombretramite').value=data.nombre;
         document.querySelector('#txt_idclasitramite').value=data.id;
-        document.querySelector('#txt_idarea').value=data.areaid;
+        document.querySelector('#txt_idarea').value=data.area_id;
     }
+}
 
+EliminarTr = (t, idname) =>{
+    $("#t_"+idname).dataTable().fnDestroy();
+    $("#"+t).remove();
+    $("#t_"+idname).dataTable({
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "ordering": true,
+        "searching": false,
+    });
 }
 
 consultar = function(){
     var busqueda = document.querySelector("#txtbuscarclasificador");
     var tipotramite = document.querySelector('#cbo_tipotramite');
-    if( $("#cbo_tipotramite").val()=='' ){
-        msjG.mensaje("warning", 'Seleccione tipo de servicio',3000);
-    }
-    else{
-        var data = {};
-        data.estado = 1;
+    var area = document.querySelector('#slct_areas');
+
+    var data = {};
+    data.estado = 1;
+    if( $("#cbo_tipotramite").val()!==""){
         if(busqueda){
         data.buscar = busqueda.value;
         }
         if(tipotramite){
-            data.tipotra = tipotramite.value;
+        data.tipotra = tipotramite.value;
+        }
+        if(area){
+        data.areaini = area.value;
         }
         Bandeja.getClasificadoresTramite(data,HTMLClasificadores);
         $(".rowArea").addClass('hidden');
         $('#buscartramite').modal('show');
     }
+    else{
+       alert("Seleccione tipo de documento"); 
+    }
+    
 }
 
 HTMLClasificadores = function(data){
@@ -465,7 +631,7 @@ HTMLClasificadores = function(data){
             html+='<td style="text-align: left">'+el.nombre_clasificador_tramite+'</td>';
             html+='<td><span class="btn btn-info btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onClick="getRequisitos(this)">Ver</span></td>';
             html+='<td><span class="btn btn-info btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" onclick="cargarRutaId('+el.ruta_flujo_id+',2)">Ver Ruta</span></td>';
-            html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" areaid="'+el.area_id+'" onclick="selectClaTramite(this)">Seleccionar</span></td>';
+            html+='<td><span class="btn btn-primary btn-sm" id="'+el.id+'" nombre="'+el.nombre_clasificador_tramite+'" area_id="'+el.area_id+'" onclick="selectClaTramite(this)">Seleccionar</span></td>';
             html+='</tr>';        
         });
     }
@@ -479,10 +645,11 @@ HTMLClasificadores = function(data){
 }
 
 selectClaTramite = function(obj){
-    data ={'id':obj.getAttribute('id'),'nombre':obj.getAttribute('nombre'), 'areaid': obj.getAttribute('areaid')};
+    console.log(obj);
+    data ={'id':obj.getAttribute('id'),'nombre':obj.getAttribute('nombre'),'area_id':obj.getAttribute('area_id')};
     poblateData('tramite',data);
     $('#buscartramite').modal('hide');
-    /*Bandeja.GetAreasbyCTramite({'idc':obj.getAttribute('id')},data);*/
+   /* Bandeja.GetAreasbyCTramite({'idc':obj.getAttribute('id')},data);*/
 }
 
 selectCA = function(obj){
@@ -526,7 +693,7 @@ HTMLRequisitos = function(data,tramite){
             html+='<td style="text-align: left;"><li>'+el.nombre+'</li></td>';
             html+='<td>'+el.cantidad+'</td>';
             if( $.trim(el.ruta_archivo)!='' ){
-                html+="<td data-url='"+el.ruta_archivo+"'><a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-download fa-lg'></i></td>";
+                html+="<td data-url='"+el.ruta_archivo+"'><a class='btn btn-info btn-lg' href='"+el.ruta_archivo+"' target='_blank'><i class='fa fa-file fa-lg'></i></td>";
             }
             else{
                 html+='<td data-url="'+el.ruta_archivo+'"> - </td>';
@@ -543,10 +710,30 @@ generarPreTramite = function(){
     if( $(".tipo_documento").css("display") == 'none' ){
         $("#txt_tipodoc").val('S/N');
     }
-
-    $("#cbo_tiposolicitante").val('1');
-    if( $("#cbo_tipotramite").val()=='' ){
-        msjG.mensaje("warning", 'Seleccione Tipo de servicio',3000);
+    /*if($("#cbo_tipodocumento").val()==''){
+        msjG.mensaje("warning", 'Selecciona Tipo documento de ingreso',3000);
+    }
+    else */
+    if($("#slct_areas").val()==''){
+        msjG.mensaje("warning", 'Selecciona Área de inicio del servicio',3000);
+    }
+    else if($("#cbo_tiposolicitante").val()==''){
+        msjG.mensaje("warning", 'Selecciona Tipo de solicitante',3000);
+    }
+    else if( $("#tb_usuarios tr").legnth==0 ){
+        msjG.mensaje("warning", 'Busque y seleccione solicitante',3000);
+    }
+    /*else if( $("#txt_usertelf2").val()=='' && $("#txt_usercel2").val()==''){
+        msjG.mensaje("warning", 'Ingrese número de teléfono y/o número de celular',5000);
+    }
+    else if( $("#txt_useremail2").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese email',3000);
+    }
+    else if( $("#txt_userdirec2").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese dirección',3000);
+    }*/
+    else if($("#cbo_tipotramite").val()==''){
+        msjG.mensaje("warning", 'Seleccione Tipo de trámite',3000);
     }
     else if($("#txt_nombretramite").val()==''){
         msjG.mensaje("warning", 'Busque y seleccione trámite',3000);
@@ -554,8 +741,8 @@ generarPreTramite = function(){
     else if( $("#slct_local").val()=='' ){
         msjG.mensaje("warning", 'Seleccione Lugar de procedencia',3000);
     }
-    else if( $("#cbo_tipodoc").val()=='' ){
-        msjG.mensaje("warning", 'Seleccione documento presentado',3000);
+    else if($("#cbo_tipodoc").val()==''){
+        msjG.mensaje("warning", 'Seleccione Tipo de documento',3000);
     }
     else if( $("#txt_numfolio").val()=='' ){
         msjG.mensaje("warning", 'Ingrese número de folio',3000);
@@ -563,35 +750,17 @@ generarPreTramite = function(){
     else if( $("#txt_tipodoc").val()=='' ){
         msjG.mensaje("warning", 'Ingrese número del documento presentado',3000);
     }
-    else if( $("#cbo_tiposolicitante").val()=='' ){
-        msjG.mensaje("warning", 'Seleccione tipo de solicitante',3000);
-    }
-    else if( $("#txt_usertelf").val()=='' && $("#txt_usercel").val()==''){
-        msjG.mensaje("warning", 'Ingrese número de teléfono y/o número de celular',5000);
-    }
-    else if( $("#txt_useremail").val()=='' ){
-        msjG.mensaje("warning", 'Ingrese email',3000);
-    }
-    else if( $("#txt_userdirec").val()=='' ){
-        msjG.mensaje("warning", 'Ingrese dirección',3000);
-    }
-    else if( $("#pdf_archivo").val()=='' ){
-        msjG.mensaje("warning", 'Ingrese su archivo',3000);
-    }
-    else if( $("#pdf_archivo").val().split("/pdf;").length < 2 ){
-        msjG.mensaje("warning", 'Solo se permite archivo PDF',3000);
-    }
     else{
-        datos=$("#FormCrearPreTramite").serialize().split("txt_").join("").split("slct_").join("").split("%5B%5D").join("[]").split("+").join(" ").split("%7C").join("|").split("&");
-        data = '{';
+        datos=$("#FormCrearPreTramite").serialize().split("txt_").join("").split("slct_").join("");
+        //.split("%5B%5D").join("[]").split("+").join(" ").split("%7C").join("|").split("&");
+        /*data = '{';
         for (var i = 0; i < datos.length ; i++) {
             var elemento = datos[i].split('=');
             data+=(i == 0) ? '"'+elemento[0]+'":"'+elemento[1] : '","' + elemento[0]+'":"'+elemento[1];   
         }
-        data+='"}';
-        //console.log(data);
-        Bandeja.GuardarPreTramite(data,CargarPreTramites);
-        
+        data+='"}';*/
+        Bandeja.GuardarPreTramite(datos);
+       
     }
 }
 
@@ -605,6 +774,44 @@ cargarRutaId=function(ruta_flujo_id,permiso,ruta_id){
     Ruta.CargarDetalleRuta(ruta_flujo_id,permiso,CargarDetalleRutaHTML,ruta_id);
     $("#rutaflujoModal").modal('show');
 }
+
+generarUsuario = function(){
+    if($("#nombre").val() == ''){
+        alert('Digite su nombre');
+    }else if($("#paterno").val() == ''){
+        alert('Digite su apellido paterno');
+    }else if($("#materno").val() == ''){
+        alert('Digite su apellido materno');
+    }else if($("#dni").val() == ''){
+        alert('Digite su dni');
+    }else if($("#email").val() == ''){
+        alert('Digite su email');
+    }else if($("#sexo").val() == ''){
+        alert('Seleccione sexo');
+    }else if($("#celular").val() == '' && $("#telefono").val() == ''){
+        alert('Ingrese Celular y/o Teléfono');
+    }else{
+        Bandeja.guardarUsuario();        
+    }
+}
+
+generarEmpresa = function(){
+    if($("#txt_ruc2").val() == ''){
+        alert('Digite su ruc');
+    }else if($("#txt_razonsocial2").val() == ''){
+        alert('Digite su razon social');
+    }else if($("#txt_nombcomer").val() == ''){
+        alert('Digite su nombre comercial');
+    }else if($("#txt_direcfiscal").val() == ''){
+        alert('Digite su direccion fiscal');
+    }else if($("#cbo_tipoempresa").val() == ''){
+        alert('Seleccione un tipo de empresa');
+    }else{
+        Bandeja.guardarEmpresa();        
+    }
+}
+
+
 CargarDetalleRutaHTML=function(permiso,datos){
 areasG="";  areasG=[]; // texto area
 areasGId="";  areasGId=[]; // id area
@@ -621,9 +828,9 @@ validandoconteo=0;
     $.each(datos,function(index,data){
         validandoconteo++;
         if(validandoconteo==1){
-            $("#txt_persona_1").val(data.persona);
+            $("#txt_persona").val(data.persona);
             $("#txt_proceso_1").val(data.flujo);
-            $("#txt_area_1").val(data.area);
+            $("#txt_area").val(data.area);
         }
         adicionarRutaDetalleAutomatico(data.area2,data.area_id2,data.tiempo_id+"_"+data.dtiempo,data.verbo,data.imagen,data.imagenc,data.imagenp,data.estado_ruta);
     });
@@ -929,4 +1136,5 @@ pintarTiempoG=function(tid){
         //fin verbo
     }
 }
+
 </script>

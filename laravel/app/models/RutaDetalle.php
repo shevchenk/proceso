@@ -58,37 +58,44 @@ class RutaDetalle extends Eloquent
             IFNULL(CONCAT(p2.paterno," ",p2.materno,", ",p2.nombre),"") persona_responsable,
             a.id area_id, a.nombre AS area,f.nombre AS flujo,
             tr.id_union AS id_doc,tr.id id_tr,
-            rd.norden, IFNULL(rd.fecha_inicio,"") AS fecha_inicio,
-            IFNULL(tstm.nombre,"") AS tipo_solicitante,
+            rd.norden, IFNULL(rd.fecha_inicio,"") AS fecha_inicio, tr.tramite_id,
+            IFNULL(
+                CASE
+                    WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN "Área"
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NULL THEN "Persona"
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NOT NULL THEN "Empresa"
+                    ELSE "S/T"
+                END
+            ,"") AS tipo_solicitante,
             IFNULL(
                 CASE
                     WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN atm.nombre
-                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN CONCAT(ptm.paterno," ",ptm.materno," ",ptm.nombre)
-                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.razon_social
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NULL THEN CONCAT(ptm.paterno," ",ptm.materno," ",ptm.nombre)
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NOT NULL THEN etm.razon_social
                     ELSE (SELECT nombre FROM areas WHERE id = tr.area_id)
                 END
             , "") AS solicitante,
             IFNULL(
                 CASE
                     WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN "S/N"
-                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN ptm.dni
-                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.ruc
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NULL THEN ptm.dni
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NOT NULL THEN etm.ruc
                     ELSE "S/N"
                 END
             , "") AS id_solicitante,
             IFNULL(
                 CASE
                     WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN "S/D"
-                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN ptm.direccion
-                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.direccion_fiscal
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NULL THEN ptm.direccion
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NOT NULL THEN etm.direccion_fiscal
                     ELSE "S/D"
                 END
             , "") AS dir_solicitante,
             IFNULL(
                 CASE
                     WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN "S/T"
-                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN CONCAT(ptm.celular, " / ", ptm.telefono)
-                    WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.telefono
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NULL THEN CONCAT(ptm.celular, " / ", ptm.telefono)
+                    WHEN tm.id IS NOT NULL AND tm.empresa_id IS NOT NULL THEN etm.telefono
                     ELSE "S/T"
                 END
             , "") AS tel_solicitante,

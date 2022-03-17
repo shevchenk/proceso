@@ -59,4 +59,35 @@ class Tramite extends Eloquent {
 		$r= DB::select($sql);
         return $r[0]; 
 	}
+
+	public static function getSolicitantes(){
+		$id = Input::get('tramite_id');
+		$sql =" SELECT 
+					CASE
+						WHEN ta.empresa_id IS NULL THEN 'Persona'
+						ELSE 'Empresa'
+					END AS tipo_solicitante,
+					CASE
+						WHEN ta.empresa_id IS NULL THEN CONCAT(p.paterno,' ',p.materno,' ',p.nombre)
+						ELSE e.razon_social
+					END AS solicitante,
+					CASE
+						WHEN ta.empresa_id IS NULL THEN p.dni
+						ELSE e.ruc				
+					END AS id_solicitante,
+					CASE
+						WHEN ta.empresa_id IS NULL THEN p.direccion
+						ELSE e.direccion_fiscal
+					END AS dir_solicitante,
+					CASE
+						WHEN ta.empresa_id IS NULL THEN CONCAT(p.celular, ' / ', p.telefono)
+						ELSE e.telefono
+					END AS tel_solicitante
+				FROM tramites_anexo ta
+				INNER JOIN personas p ON p.id = ta.persona_id 
+				LEFT JOIN empresas e ON e.id = ta.empresa_id 
+				WHERE ta.estado = 1 AND ta.tramite_id = '$id'";
+		$r= DB::select($sql);
+        return $r; 
+	}
 }

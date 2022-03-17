@@ -30,6 +30,10 @@ class Pretramite extends Eloquent {
             $filtro .= ' AND ( pt.local_id = 0 OR FIND_IN_SET(pt.local_id, "'.trim(Auth::user()->local_id).'") > 0 ) ';
         }
 
+        if( Input::has('seguimiento') ){
+            $filtro .= ' AND t.seguimiento = 1 ';
+        }
+
 
         $sql = "SELECT pt.id as pretramite,CONCAT_WS(' ',p.nombre,p.paterno,p.materno) as usuario,e.razon_social as empresa,
             ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
@@ -147,6 +151,11 @@ class Pretramite extends Eloquent {
                     ->where('rfd.norden','=',2)
                     ->where('rfd.estado','=',1);
                 })
+                ->join('rutas_flujo_detalle AS rfd2',function($join){
+                    $join->on('rfd2.ruta_flujo_id','=','ct.ruta_flujo_id')
+                    ->where('rfd2.norden','=',1)
+                    ->where('rfd2.estado','=',1);
+                })
                 ->select(DB::raw('ct.*, rfd.area_id'))
                 ->where( 
                     function($query){
@@ -156,6 +165,9 @@ class Pretramite extends Eloquent {
                         }
                         if ( Input::get('tipotra') ) {
                             $query->where('ct.tipo_tramite_id','=',Input::get('tipotra'));
+                        }
+                        if ( Input::get('areaini') ) {
+                            $query->where('rfd2.area_id','=',Input::get('areaini'));
                         }
                         $query->where('ct.estado','=','1');
                         $query->where('ct.estado_final','=','1');

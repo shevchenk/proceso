@@ -353,7 +353,13 @@ mostrarDetalleHTML=function(datos){
         $("#btn_siguiente_rd").show().html('<i class="glyphicon glyphicon-check"></i>&nbsp;Activar Sub Proceso');
     }else{
         $("#btn_siguiente_rd").hide();
-        $(".sectionmicro").css("display","none");}
+        $(".sectionmicro").css("display","none");
+    }
+
+    $("#RetornarP").show();
+    if( datos.norden*1 == 1 ){
+        $("#RetornarP").hide();
+    }
     // --
     //***************************Mostrar archivado**********************************/
     if(datos.archivado==1){
@@ -408,11 +414,23 @@ mostrarDetalleHTML=function(datos){
     $("#form_ruta_detalle #txt_fecha_inicio").val(datos.fecha_inicio);
     $("#form_ruta_detalle #txt_tiempo").val(datos.tiempo);
 
+    $(".solicitantesimple, .solicitantemultiple").hide();
+    if( $.trim(datos.tramite_id) != '' ){
+        $(".solicitantemultiple").show();
+        var data = {tramite_id: datos.tramite_id};
+        Validar.mostrarSolicitantes(data,mostrarSolicitantesHTML);
+    }
+    else{
+        $(".solicitantesimple").show();
+    }
+    
     $("#ptra_tipo_solicitante").text(datos.tipo_solicitante);
     $("#ptra_id_solicitante").text(datos.id_solicitante);
     $("#ptra_solicitante").text(datos.solicitante);
     $("#ptra_tel_solicitante").text(datos.tel_solicitante);
     $("#ptra_dir_solicitante").text(datos.dir_solicitante);
+    
+    
 
     $("#form_ruta_detalle>#txt_fecha_max").remove();
     $("#form_ruta_detalle").append("<input type='hidden' id='txt_fecha_max' name='txt_fecha_max' value='"+datos.fecha_max+"'>");
@@ -678,6 +696,33 @@ mostrarDetalleHTML=function(datos){
     hora();
     $("#txt_observacion").attr('disabled','true');
 
+}
+
+mostrarSolicitantesHTML = (result) => {
+    if( result.length == 0 ){
+        $(".solicitantesimple").show();
+        $(".solicitantemultiple").hide();
+    }
+    else{
+        html = '';
+        $("#t_usuarios").dataTable().fnDestroy();
+        $("#tb_usuarios").html('');
+        $.each(result,function(index,r){
+            html =  '<tr>'+
+                        '<td>'+ r.tipo_solicitante +'</td>'+
+                        '<td>'+ r.solicitante +'</td>'+
+                        '<td>'+ r.id_solicitante +'</td>'+
+                        '<td>'+ r.tel_solicitante +'</td>'+
+                        '<td>'+ r.dir_solicitante +'</td>'+
+                    '</tr>';
+            $("#tb_usuarios").append(html);
+        });
+        $("#t_usuarios").dataTable({
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "ordering": true,
+            "searching": false,
+        });
+    }
 }
 
 mostrarCamposHTML = (result) => {

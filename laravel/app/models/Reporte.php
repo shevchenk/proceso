@@ -707,15 +707,20 @@ class Reporte extends Eloquent
     }
     
     public static function getExpedienteUnico(){
-            $referido=Referido::where('ruta_id', '=', Input::get('ruta_id'))->firstOrFail();
+            $referido=DB::table('referidos')
+                      ->select(DB::raw('GROUP_CONCAT( DISTINCT(tabla_relacion_id) ) as tabla_relacion_id'))
+                      ->where('ruta_id', '=', Input::get('ruta_id'))
+                      ->groupBy('ruta_id')
+                      ->first();
+            
       /*  if(Input::get('ruta_detalle_id')){*/
-            if($referido){
+            if( isset($referido->tabla_relacion_id) ){
                 $data = [];
-
-                if(Auth::user()->rol_id != 8 && Auth::user()->rol_id != 9)
+                $qExtra = '';
+                /*if(Auth::user()->rol_id != 8 && Auth::user()->rol_id != 9)
                     $qExtra = 'AND IF(dd.doc_privado=1,dd.persona_id,\''.Auth::user()->id.'\')=\''.Auth::user()->id.'\'';
                 else
-                    $qExtra = "";
+                    $qExtra = "";*/
 
                 $sql = "SELECT re.ruta_id,re.ruta_detalle_id,re.referido,re.fecha_hora_referido fecha_hora,f.nombre proceso,a.nombre area,re.norden, 'r' tipo, dd.id as doc_digital_id
                         FROM referidos re 
@@ -724,11 +729,11 @@ class Reporte extends Eloquent
                         LEFT JOIN rutas_detalle rd ON re.ruta_detalle_id=rd.id 
                         LEFT JOIN areas a ON rd.area_id=a.id  
                         LEFT JOIN doc_digital_temporal dd ON re.doc_digital_id = dd.id $qExtra
-                        WHERE re.estado=1 and re.tabla_relacion_id='".$referido->tabla_relacion_id."'
+                        WHERE re.estado=1 and FIND_IN_SET( re.tabla_relacion_id, '".$referido->tabla_relacion_id."' ) > 0
                         UNION
                         SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,null as doc_digital_id
                         FROM sustentos s
-                        INNER JOIN referidos re ON re.id=s.referido_id AND re.tabla_relacion_id='".$referido->tabla_relacion_id."'
+                        INNER JOIN referidos re ON re.id=s.referido_id AND FIND_IN_SET( re.tabla_relacion_id, '".$referido->tabla_relacion_id."' ) > 0
                         INNER JOIN rutas_detalle rd ON rd.id=s.ruta_detalle_id
                         LEFT JOIN areas a ON rd.area_id=a.id  
                         INNER JOIN rutas r ON re.ruta_id=r.id 

@@ -32,7 +32,7 @@ $(document).ready(function() {
 
         var resG=dataTableG.CargarCab(idG);
         cabeceraG=resG; // registra la cabecera
-        var resG=dataTableG.CargarCol(cabeceraG,columnDefsG,targetsG,1,'referente','t_referente');
+        var resG=dataTableG.CargarCol(cabeceraG,columnDefsG,targetsG,0,'referente','t_referente');
         columnDefsG=resG[0]; // registra las columnas del datatable
         targetsG=resG[1]; // registra los contadores
         
@@ -56,7 +56,7 @@ $(document).ready(function() {
 
     $('#referenteModal').on('hide.bs.modal', function (event) {
       var modal = $(this); //captura el modal
-      $("#t_referente>thead>tr:eq(1),#t_referente>tfoot>tr:eq(0)").html('');
+      $("#t_referente>thead>tr:eq(0),#t_referente>tfoot>tr:eq(0)").html('');
         cabeceraG=[]; // Cabecera del Datatable
         columnDefsG=[]; // Columnas de la BD del datatable
         targetsG=-1; // Posiciones de las columnas del datatable
