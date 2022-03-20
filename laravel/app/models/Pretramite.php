@@ -5,7 +5,7 @@ class Pretramite extends Eloquent {
 
 
 	public static function getPreTramites(){
-        $filtro = ''; $estados = '';
+        $filtro = ''; $estados = ''; $tramite = '';
         if( Input::has('filtro_fecha') AND Input::get('filtro_fecha')!='' ){
             $filtro = ' AND DATE(pt.fecha_pretramite) = \''.Input::get('filtro_fecha').'\'';
         }
@@ -31,7 +31,7 @@ class Pretramite extends Eloquent {
         }
 
         if( Input::has('seguimiento') ){
-            $filtro .= ' AND t.seguimiento = 1 ';
+            $filtro .= ' AND (t.seguimiento = 1 OR t.id IS NULL) ';
         }
 
 
@@ -57,7 +57,7 @@ class Pretramite extends Eloquent {
             INNER JOIN rutas_flujo_detalle rfd ON rfd.ruta_flujo_id = rf.id AND rfd.norden = 1 AND rfd.estado = 1
             LEFT JOIN locales l ON l.id = pt.local_id
             LEFT JOIN empresas e on e.id=pt.empresa_id 
-            LEFT JOIN tramites t ON t.pretramite_id=pt.id AND t.estado = 1
+            LEFT JOIN tramites t ON t.pretramite_id=pt.id AND t.estado = 1 
             LEFT JOIN tablas_relacion tr ON tr.tramite_id=t.id AND tr.estado = 1 
             WHERE pt.estado = 1 ".
             $filtro."

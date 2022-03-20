@@ -108,6 +108,21 @@ class PretramiteController extends BaseController {
 	public function postCreatepretramite(){
 		if ( Request::ajax() ) {
 			$array_data = json_decode(Input::get('info'));
+			$persona_id = Auth::user()->id;
+			$valida = 	Pretramite::where('persona_id', $persona_id)
+						->where('clasificador_tramite_id', $array_data->idclasitramite)
+						->where('estado_atencion', 0)
+						->first();
+
+			if( isset($valida->id) ){
+				return Response::json(
+					array(
+					'rst'=>2,
+					'msj'=>'El servicio ya fue registrado, esta pendiente de ser atendido.',
+					)
+				);
+			}
+			
 			$pretramite = new Pretramite;
 
 	        $pretramite['clasificador_tramite_id'] = $array_data->idclasitramite;

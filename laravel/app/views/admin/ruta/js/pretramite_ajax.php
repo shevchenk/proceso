@@ -171,6 +171,9 @@ var Bandeja={
                     $(".crearPreTramite").addClass('hidden');
                     $('#FormCrearPreTramite').find('input[type="text"],input[type="email"],textarea,select').val('');        
                 }
+                else{
+                    msjG.mensaje("warning", obj.msj,3000);
+                }
             },
             error: function(){
                 $(".overlay,.loading-img").remove();
