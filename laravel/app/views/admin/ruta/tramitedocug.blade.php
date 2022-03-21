@@ -168,10 +168,24 @@ td, th{
                     </div>
                 </div>
 
-                <div class="col-md-12 table-responsive" style="margin-top:10px">
+                <div class="col-md-12" style="margin-top:10px">
+                    <div class="col-md-2" style="padding-top: 5px;">
+                      <span>TIPO DE SERVICIO: </span>
+                    </div>
+                    <div class="col-md-5">
+                      <select class="form-control" onChange="ValidarLimite();" id="cbo_tipotramite" name="cbo_tipotramite">
+                          <option value="-1">Selecciona</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <span class="btn btn-primary btn-sm" onclick="consultar()">Buscar servicio</span>
+                    </div>
+                </div>
+
+                <div class="col-md-12 table-responsive solicitantes" style="margin-top:10px">
                     <div class="box box-warning">
                         <div class="box-header with-border">
-                            <h3 class="box-title" tabindex="0" id="datos_personalizados">Solicitante(s)</h3>
+                            <h3 class="box-title" tabindex="0">Solicitante(s)</h3>
                             <div class="box-tools pull-left">
                                 <span class="btn btn-primary btn-sm" id="btnTipoSolicitante">Buscar solicitante</span>
                             </div>
@@ -223,20 +237,6 @@ td, th{
                                 <tbody id="tb_referidos"></tbody>
                             </table>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12" style="margin-top:10px">
-                    <div class="col-md-2" style="padding-top: 5px;">
-                      <span>TIPO DE SERVICIO: </span>
-                    </div>
-                    <div class="col-md-3">
-                      <select class="form-control" id="cbo_tipotramite" name="cbo_tipotramite">
-                          <option value="-1">Selecciona</option>
-                      </select>
-                    </div>
-                    <div class="col-md-4">
-                      <span class="btn btn-primary btn-sm" onclick="consultar()">Buscar servicio</span>
                     </div>
                 </div>
 

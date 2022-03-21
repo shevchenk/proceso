@@ -253,6 +253,19 @@ class TramiteController extends BaseController {
 				
 					/*start to create process*/
 					if($tramite->id){ // if registry was succesfully
+						$anexo = new Anexo;
+						$anexo['tramite_id'] = $tramite->id;
+						$anexo['persona_id'] = $tramite->persona_id;
+						if($data['txt_empresaid']){
+							$anexo['empresa_id'] = $data['txt_empresaid'];
+						}
+						$anexo['fecha_anexo'] = $tramite->fecha_tramite;
+						$anexo['documento_id'] = $tramite->tipo_documento_id;
+						$anexo['nombre'] = 'A';
+						$anexo['nro_folios'] = $tramite->nro_folios;
+						$anexo['obeservacion'] = $tramite->observacion;
+						$anexo['usuario_created_at'] = Auth::user()->id;
+						$anexo->save();
 						//$codigo = str_pad($tramite->id, 7, "0", STR_PAD_LEFT).'-'.date('Y'); //cod
 						$codigo= $clasificadorTramite->unidad_documentaria.'-'.$codigo->correlativo.'-'.date('Y');
 						/*get ruta flujo*/

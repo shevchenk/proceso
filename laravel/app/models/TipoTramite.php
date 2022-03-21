@@ -17,7 +17,7 @@ class TipoTramite extends Base
     }
     public static function getCargar( $array )
     {
-        $sSql=" SELECT tt.id, tt.nombre_tipo_tramite nombre, tt.estado, tt.solicitante, tt.inicia, tt.seguimiento
+        $sSql=" SELECT tt.id, tt.nombre_tipo_tramite nombre, tt.estado, tt.solicitante, tt.inicia, tt.seguimiento, tt.cant_solicitante
                 FROM tipo_tramite tt
                 WHERE 1=1 ";
         $sSql.= $array['where'].
@@ -28,7 +28,7 @@ class TipoTramite extends Base
     }
     public function getTipoTramite(){
         $tipotramite=DB::table('tipo_tramite')
-                ->select('id','nombre_tipo_tramite as nombre','estado')
+                ->select('id','nombre_tipo_tramite as nombre','estado', 'cant_solicitante AS evento')
                 ->where( 
                     function($query){
                         if ( Input::get('estado') ) {

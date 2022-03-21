@@ -18,11 +18,11 @@
 
           <div class="form-group">
             <label class="control-label">Quien es el solicitante:</label>
-            <select class="form-control" name="slct_solicitante" id="slct_solicitante">
+            <select class="form-control" onChange="ValidaInterno(this.value);" name="slct_solicitante" id="slct_solicitante">
                 <option value="">.::Seleccione::.</option>
                 <option value='Cliente'>Cliente</option>
                 <option value='Externo'>Externo</option>
-                <option value='Varios'>Varios</option>
+                <option value='Interno'>Interno</option>
             </select>
           </div>
 
@@ -42,6 +42,14 @@
                 <option value="">.::Seleccione::.</option>
                 <option value="0">No</option>
                 <option value='1'>Si</option>
+            </select>
+          </div>
+
+          <div class="form-group validacantsolicitante">
+            <label class="control-label">Cantidad de solicitantes:</label>
+            <select class="form-control" name="slct_cant_solicitante" id="slct_cant_solicitante">
+                <option value='1'>1</option>
+                <option value="Muchos">Muchos</option>
             </select>
           </div>
 

@@ -177,18 +177,39 @@ class PretramiteController extends BaseController {
 		$clasificadorTramite = ClasificadorTramite::find($array_data['idclasitramite']);
 		$tipoTramite = TipoTramite::find($clasificadorTramite->tipo_tramite_id);
 
+		if( $tipoTramite->solicitante != 'Interno' ){
+			if( $tipoTramite->cant_solicitante == 1 AND count( $array_data['persona_id_sol'] ) > $tipoTramite->cant_solicitante ){
+				return Response::json(
+					array(
+					'rst'=>2,
+					'msj'=>'El servicio seleccionado no puede contener más de 1 solicitante.',
+					)
+				);
+			}
+		}
+		else{
+
+		}
+
 		DB::beginTransaction();
 		
 		$pretramite = new Pretramite;
         $codigo = Pretramite::Correlativo($clasificadorTramite->unidad_documentaria);        //var_dump($codigo);exit();      
         $pretramite['clasificador_tramite_id'] = $array_data['idclasitramite'];
 
-        if($array_data['empresa_id_sol'][0] != 0){
-        	$pretramite['empresa_id'] = $array_data['empresa_id_sol'][0];
-            $pretramite['persona_id'] = $array_data['persona_id_sol'][0];
-        }else{
-        	$pretramite['persona_id'] =  $array_data['persona_id_sol'][0];
+        if($tipoTramite->solicitante != 'Interno' ){
+			if( $array_data['empresa_id_sol'][0] != 0 ){
+				$pretramite['empresa_id'] = $array_data['empresa_id_sol'][0];
+				$pretramite['persona_id'] = $array_data['persona_id_sol'][0];
+			}
+			else{
+				$pretramite['persona_id'] =  $array_data['persona_id_sol'][0];
+			}
         }
+		else{
+			$pretramite['area_id_sol'] =  $array_data['areas'];
+		}
+
         $pretramite['correlativo'] = $codigo->correlativo;
 		$pretramite->año = date("Y");
         $pretramite['tipo_solicitante_id'] = $array_data['cbo_tiposolicitante'];
@@ -241,12 +262,18 @@ class PretramiteController extends BaseController {
             $tramite = new Tramite;
             $tramite['pretramite_id'] = $pretramite->id;
 
-	        if( trim($pretramite->empresa_id) != '' ){
-	        	$tramite['empresa_id'] = $pretramite->empresa_id;  
-                $tramite['persona_id'] = $pretramite->persona_id; 
-	        }else{
-	        	$tramite['persona_id'] = $pretramite->persona_id;
+	        if( $tipoTramite->solicitante != 'Interno' ){
+				if( trim($pretramite->empresa_id) != '' ){
+					$tramite['empresa_id'] = $pretramite->empresa_id;  
+					$tramite['persona_id'] = $pretramite->persona_id; 
+				}
+				else{
+					$tramite['persona_id'] = $pretramite->persona_id;
+				}
 	        }
+			else{
+				$tramite['area_id_sol'] = $pretramite->area_id_sol;
+			}
             
             $tramite['area_id'] = $array_data['idarea'];
             $tramite['local_id'] = $pretramite->local_id;
@@ -263,27 +290,29 @@ class PretramiteController extends BaseController {
 	        $tramite->save();
 
 
-			for( $i = 0; $i < count($array_data['persona_id_sol']); $i++ ){
-				$persona = Persona::find($array_data['persona_id_sol'][$i]);
-				$persona->telefono = $array_data['telefono_sol'][$i];
-				$persona->celular = $array_data['celular_sol'][$i];
-				$persona->email = urldecode($array_data['email_sol'][$i]);
-				$persona->direccion = urldecode($array_data['direccion_sol'][$i]);
-				$persona->save();
-
-				$anexo = new Anexo;
-				$anexo['tramite_id'] = $tramite->id;
-				$anexo['persona_id'] = $array_data['persona_id_sol'][$i];
-				if( $array_data['empresa_id_sol'][$i] != 0 ){
-					$anexo['empresa_id'] = $array_data['empresa_id_sol'][$i];
+			if( $tipoTramite->solicitante != 'Interno' ){
+				for( $i = 0; $i < count($array_data['persona_id_sol']); $i++ ){
+					$persona = Persona::find($array_data['persona_id_sol'][$i]);
+					$persona->telefono = $array_data['telefono_sol'][$i];
+					$persona->celular = $array_data['celular_sol'][$i];
+					$persona->email = urldecode($array_data['email_sol'][$i]);
+					$persona->direccion = urldecode($array_data['direccion_sol'][$i]);
+					$persona->save();
+	
+					$anexo = new Anexo;
+					$anexo['tramite_id'] = $tramite->id;
+					$anexo['persona_id'] = $array_data['persona_id_sol'][$i];
+					if( $array_data['empresa_id_sol'][$i] != 0 ){
+						$anexo['empresa_id'] = $array_data['empresa_id_sol'][$i];
+					}
+					$anexo['fecha_anexo'] = $tramite->fecha_tramite;
+					$anexo['documento_id'] = $tramite->tipo_documento_id;
+					$anexo['nombre'] = 'A';
+					$anexo['nro_folios'] = $tramite->nro_folios;
+					$anexo['obeservacion'] = urldecode(trim($array_data['observacion']));
+					$anexo['usuario_created_at'] = Auth::user()->id;
+					$anexo->save();	
 				}
-				$anexo['fecha_anexo'] = $tramite->fecha_tramite;
-				$anexo['documento_id'] = $tramite->tipo_documento_id;
-				$anexo['nombre'] = 'A';
-				$anexo['nro_folios'] = $tramite->nro_folios;
-				$anexo['obeservacion'] = urldecode(trim($array_data['observacion']));
-				$anexo['usuario_created_at'] = Auth::user()->id;
-				$anexo->save();	
 			}
             
 			$codigo= $clasificadorTramite->unidad_documentaria.'-'.$codigo->correlativo.'-'.date('Y');
@@ -322,7 +351,7 @@ class PretramiteController extends BaseController {
 		        $tablaRelacion['fecha_tramite']= $tramite->fecha_tramite; //Input::get('fecha_tramite');
 		        $tablaRelacion['tipo_persona']=$tramite->tipo_solicitante_id;
 
-		       	if($tramite->persona_id){
+		       	if( trim($tramite->persona_id) != '' ){
 		            $persona = Persona::find($tramite->persona_id);
 		        	$tablaRelacion['paterno']=$persona['paterno'];
 		            $tablaRelacion['materno']=$persona['materno'];
@@ -333,8 +362,8 @@ class PretramiteController extends BaseController {
 		            $tablaRelacion['razon_social']= $empresa->razon_social;
 		            $tablaRelacion['ruc']=$empresa->ruc;
 		        }
-		        elseif( Input::has('area_p_id') ){
-		            $tablaRelacion['area_id']=Input::get('area_p_id');
+		        elseif( trim($tramite->area_id_sol) != '' ){
+		            $tablaRelacion['area_id']= $tramite->area_id_sol;
 		        }
 		        elseif( Input::has('razon_social') ){
 		            $tablaRelacion['razon_social']=Input::get('razon_social');
@@ -404,18 +433,8 @@ class PretramiteController extends BaseController {
 	                $rutaDetalle['dtiempo']=$rd->dtiempo;
 	                $rutaDetalle['norden']=$rd->norden;
 	                $rutaDetalle['estado_ruta']=$rd->estado_ruta;
-	                /*if($rd->norden==1 or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){
-	                    $rutaDetalle['fecha_inicio']=Input::get('fecha_inicio');
-	                }*/
+	                
                     if($rd->norden==1 or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){
-                        /*if($rd->norden==1 && $rd->area_id == 52){
-                            $rutaDetalle['dtiempo_final']=date("Y-m-d H:i:s");
-                            $rutaDetalle['tipo_respuesta_id']=2;
-                                        $rutaDetalle['tipo_respuesta_detalle_id']=1;
-                            $rutaDetalle['observacion']="";
-                            $rutaDetalle['usuario_updated_at']=Auth::user()->id;
-                            $rutaDetalle['updated_at']=date("Y-m-d H:i:s");
-                        }*/
                         $rutaDetalle['fecha_inicio']=date("Y-m-d H:i:s");
                     }
 	                else{

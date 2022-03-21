@@ -2,6 +2,7 @@
 var cabeceraG=[]; // Cabecera del Datatable
 var columnDefsG=[]; // Columnas de la BD del datatable
 var targetsG=-1; // Posiciones de las columnas del datatable
+var CantidadG = 0;
 $(document).ready(function() {
 
      $('#fecha_nacimiento').daterangepicker({
@@ -124,7 +125,6 @@ $(document).ready(function() {
     $(document).on('click', '#btnTipoSolicitante', function(event) {
         var tiposolicitante = $("#cbo_tiposolicitante").val();
         var pide_empresa = $("#cbo_tiposolicitante option:selected").attr('data-select');
-        var solicitante = $("#cbo_tiposolicitante option:selected").attr('data-val');
         if( $.trim(pide_empresa) == '|0|'){
             Bandeja.GetPersons({'apellido_nombre':1},HTMLPersonas);
         }else if( $.trim(pide_empresa) == '|1|'){
@@ -134,13 +134,6 @@ $(document).ready(function() {
             solicitante = 'Indefinido';
             alert("Seleccionar Tipo de Solicitante");
         }
-
-        $("#cbo_tipotramite, #cbo_tipodoc").multiselect('destroy');
-        data = {estado:1, tipo:'Salida', solicitante: solicitante};
-        slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);
-        data = {estado:1, tipo:'Ingreso', solicitante: solicitante};
-        slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data);
-
     });
 
     $(document).on('click', '#btnAgregarP', function(event) {
@@ -184,18 +177,27 @@ $(document).ready(function() {
     $(document).on('click', '.btnEnviar', function(event) {
         generarUsuario();
     });
+
+    $("div.solicitantes").hide();
     
     $("#cbo_tiposolicitante").change(function(){
         $('#txt_ruc').val(''); 
         $('#txt_userdni2').val('');
-        var pide_empresa = $("#cbo_tiposolicitante option:selected").attr('data-select');
-        if( $.trim(pide_empresa) == '|0|'){
-            $('.usuarioSeleccionado').addClass('hidden');
-            $('.empresa').removeClass('hidden');
-        }else if( $.trim(pide_empresa) == '|1|'){
-            $('.empresa').addClass('hidden');
-            $('.usuarioSeleccionado').removeClass('hidden');
+        //$("div.solicitantes").show();
+        
+        var solicitante = $("#cbo_tiposolicitante option:selected").attr('data-val');
+        if( $("#cbo_tiposolicitante").val() == '' ){
+            solicitante = 'Indefinido';
         }
+        else if( $("#cbo_tiposolicitante").val() == '0' ){
+            solicitante = 'Interno';
+            $("div.solicitantes").hide();
+        }
+        $("#cbo_tipotramite, #cbo_tipodoc").multiselect('destroy');
+        data = {estado:1, tipo:'Salida', solicitante: solicitante};
+        slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);
+        data = {estado:1, tipo:'Ingreso', solicitante: solicitante};
+        slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data);
 	});
 
     $('#referenteModal').on('show.bs.modal', function (event) {
@@ -258,6 +260,26 @@ $(document).ready(function() {
 });
 
 
+ValidarLimite = function(){
+    let cant = $("#cbo_tipotramite option:selected").data('evento');
+    if( typeof(cant) != 'undefined' && $("#cbo_tiposolicitante").val() != '0' ){
+        CantidadG = cant.split("|").join("");
+        console.log(CantidadG);
+        $("div.solicitantes").show();
+    }
+    else{
+        $("div.solicitantes").hide();
+    }
+
+    $("#t_usuarios").dataTable().fnDestroy(); //Reinicia solicitantes cada vez q cambia de tipo
+    $("#tb_usuarios").html('');
+    $("#t_usuarios").dataTable({
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "ordering": true,
+        "searching": false,
+    });
+}
+
 eventoSlctGlobalSimple=function(slct,valores){
     /*if( slct=="slct_areas" ){
         
@@ -302,7 +324,7 @@ SeleccionaReferido = (id, ruta_id, tabla_relacion_id, ruta_detalle_id, referido)
         $("#tb_referidos").append(html);
     }
     else{
-        msjG.mensaje("warning", 'Solicitante ya fue seleccionado!',3000);
+        msjG.mensaje("warning", 'Referido ya fue seleccionado!',3000);
     }
 }
 /*
@@ -346,7 +368,7 @@ HTMLTramite = function(data){
         });
         $("#tb_reporte").html(html);
     }else{
-        alert('no hay nada');
+        msjG.mensaje("warning", 'No hay registros',3000);
     }
 }
 
@@ -497,10 +519,9 @@ selectEmpresa = function(obj){
             telefono: $("#tb_empresa #e"+idempresa+" .telefono").text(),
             direccion_fiscal: $("#tb_empresa #e"+idempresa+" .direccion_fiscal").text(),
         }
-        console.log(datos);
         poblateData('empresa',datos);
     }else{
-        alert('Seleccione empresa');
+        msjG.mensaje("warning", 'Seleccione empresa',3000);
     }
 }
 
@@ -550,32 +571,38 @@ HTMLPersonas = function(data){
         $('#selectPersona').modal('show'); 
     }else{
         $(".empresa").addClass('hidden');
-        alert('Error');
+        msjG.mensaje("warning", 'Error',3000);
     }
 }
 
 selectUser = function(obj){
-    var iduser = obj.getAttribute('id-user');
-    if(iduser){
-        //Bandeja.GetPersonabyId({persona_id:iduser});
-        datos = {
-            id: iduser,
-            nombre: $("#tb_persona #p"+iduser+" .nombre").text(),
-            paterno: $("#tb_persona #p"+iduser+" .paterno").text(),
-            materno: $("#tb_persona #p"+iduser+" .materno").text(),
-            dni: $("#tb_persona #p"+iduser+" .dni").text(),
-            email: $("#tb_persona #p"+iduser+" .email").text(),
-            celular: $("#tb_persona #p"+iduser+" .celular").val(),
-            telefono: $("#tb_persona #p"+iduser+" .telefono").val(),
-            direccion: $("#tb_persona #p"+iduser+" .direccion").val(),
-        };
-        console.log(datos);
-        poblateData('persona',datos);
-        //$('#selectPersona').modal('hide');
-    }else{
-        alert('Seleccione persona');
+    if( CantidadG != 1 || ( CantidadG == 1 && $.trim($("#tb_usuarios").html()) == '' ) ){
+        var iduser = obj.getAttribute('id-user');
+        if(iduser){
+            //Bandeja.GetPersonabyId({persona_id:iduser});
+            datos = {
+                id: iduser,
+                nombre: $("#tb_persona #p"+iduser+" .nombre").text(),
+                paterno: $("#tb_persona #p"+iduser+" .paterno").text(),
+                materno: $("#tb_persona #p"+iduser+" .materno").text(),
+                dni: $("#tb_persona #p"+iduser+" .dni").text(),
+                email: $("#tb_persona #p"+iduser+" .email").text(),
+                celular: $("#tb_persona #p"+iduser+" .celular").val(),
+                telefono: $("#tb_persona #p"+iduser+" .telefono").val(),
+                direccion: $("#tb_persona #p"+iduser+" .direccion").val(),
+            };
+            console.log(datos);
+            poblateData('persona',datos);
+            //$('#selectPersona').modal('hide');
+        }
+        else{
+            msjG.mensaje("warning", 'Seleccione persona',3000);
+        }
     }
+    else{
+        msjG.mensaje("warning", 'El servicio seleccionado no puede contener más de 1 solicitante.',5000);
     }
+}
 
 poblateData = function(tipo,data){
     document.querySelector('#txt_userdni').value=  '<?php echo Auth::user()->dni; ?>';
@@ -667,7 +694,7 @@ consultar = function(){
         $('#buscartramite').modal('show');
     }
     else{
-       alert("Seleccione tipo de documento"); 
+        msjG.mensaje("warning", 'Seleccione tipo de servicio',3000);
     }
     
 }

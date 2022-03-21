@@ -120,6 +120,7 @@ class TipoTramiteController extends \BaseController
             $tipotramite->solicitante = Input::get('solicitante');
             $tipotramite->inicia = Input::get('inicia');
             $tipotramite->seguimiento = Input::get('seguimiento');
+            $tipotramite->cant_solicitante = Input::get('cant_solicitante');
             $tipotramite->estado = Input::get('estado');
             $tipotramite->usuario_created_at = Auth::user()->id;
             $tipotramite->save();
@@ -154,6 +155,7 @@ class TipoTramiteController extends \BaseController
             $tipotramite->solicitante = Input::get('solicitante');
             $tipotramite->inicia = Input::get('inicia');
             $tipotramite->seguimiento = Input::get('seguimiento');
+            $tipotramite->cant_solicitante = Input::get('cant_solicitante');
             $tipotramite->estado = Input::get('estado');
             $tipotramite->usuario_updated_at = Auth::user()->id;
             $tipotramite->save();

@@ -178,6 +178,9 @@ var Bandeja={
                     var data={'persona':UsuarioId,'estado':1};
                     Bandeja.MostrarTramites(data,HTMLTramite);
                 }
+                else{
+                    msjG.mensaje("warning", obj.msj, 5000);
+                }
             },
             error: function(){
                 $(".overlay,.loading-img").remove();
