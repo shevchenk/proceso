@@ -128,7 +128,7 @@ td, th{
             <!-- Inicia contenido -->
 
             <div class="crearPreTramite">
-              <h3>Gestión interna para atención a solicitantes</h3>
+              <h3>INICIO DE GESTIÓN</h3>
 
               <form id="FormCrearPreTramite" method="post">
                 <div class="col-md-12" style="margin-top:10px">

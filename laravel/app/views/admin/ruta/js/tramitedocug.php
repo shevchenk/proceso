@@ -278,6 +278,14 @@ ValidarLimite = function(){
         "ordering": true,
         "searching": false,
     });
+
+    $("#t_referidos").dataTable().fnDestroy(); //Reinicia solicitantes cada vez q cambia de tipo
+    $("#tb_referidos").html('');
+    $("#t_referidos").dataTable({
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "ordering": true,
+        "searching": false,
+    });
 }
 
 eventoSlctGlobalSimple=function(slct,valores){

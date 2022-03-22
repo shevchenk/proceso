@@ -135,12 +135,12 @@ table>tbody>tr>td{
             <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Bandeja de Activades Pendientes
+            TAREAS A GESTIONAR
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
             <li><a href="#">Reporte</a></li>
-            <li class="active">Bandeja de Inconclusos y Gestión</li>
+            <li class="active">Tareas a Gestionar</li>
         </ol>
     </section>
 
