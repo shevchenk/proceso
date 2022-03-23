@@ -475,7 +475,8 @@ var Bandeja={
             success : function(obj) {
                 $(".overlay,.loading-img").remove();
                 if(obj.rst==1){
-                    MostrarAjax();  
+                    MostrarAjax();
+                    $("#retornarModal").modal('hide');
                     msjG.mensaje('success',obj.msj,4000);
                 }else if(obj.rst==2){
                     console.log(obj.rst);

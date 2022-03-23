@@ -153,6 +153,21 @@ $(document).ready(function() {
       modal.find('.modal-body input').val(''); // busca un input para copiarle texto
     });
 
+    $('#retornarModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // captura al boton
+      var text = $.trim( button.data('text') );
+      var id= $.trim( button.data('id') );
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this); //captura el modal
+      
+    });
+
+    $('#retornarModal').on('hide.bs.modal', function (event) {
+      var modal = $(this); //captura el modal
+      modal.find('.modal-body .form-control').val('');
+    });
+
     $("#txt_fecha_inicio_c").datetimepicker({
             format: "yyyy-mm-dd",
             language: 'es',
@@ -370,6 +385,14 @@ mostrarDetalleHTML=function(datos){
         $(".sectionarchivado").css("display","none");
         $('#slct_archivado').multiselect('destroy');
     }
+
+    $(".motivoretorno").hide();
+    $("#motivo_retorno").text('');
+    if( $.trim(datos.motivo_retorno) != '' ){
+        $(".motivoretorno").show();
+        $("#motivo_retorno").html("<ul><li>"+datos.motivo_retorno.split("|").join("</li></li>")+"</li></ul>");
+    }
+
     //--
     /*ruta flujo id para visualizar la ruta */
     $("#VisualizarR").attr('ruta_flujo_id',datos.ruta_flujo_id);
@@ -626,7 +649,7 @@ mostrarDetalleHTML=function(datos){
                     }
                     else{
 
-                        obs = "<textarea class='area"+valorenviado+"' name='area_"+detalle[i].split("=>")[0]+"' id='area_"+detalle[i].split("=>")[0]+"'></textarea>";
+                        obs = "<textarea class='form-control area"+valorenviado+"' name='area_"+detalle[i].split("=>")[0]+"' id='area_"+detalle[i].split("=>")[0]+"'></textarea>";
                         //imagen="<input type='checkbox' class='check"+valorenviado+"' onChange='validacheck("+valorenviado+",this.id);' value='"+detalle[i].split("=>")[0]+"' name='chk_verbo_"+detalle[i].split("=>")[0]+"' id='chk_verbo_"+detalle[i].split("=>")[0]+"_"+$.trim(detalle[i].split("=>")[12])+"'>";
                         imagen='<div class="checkbox">'+
                                     '<label style="font-size: 1.5em">'+
@@ -1332,14 +1355,18 @@ function HTMLExpedienteUnico(data){
 
     /*return to last order*/
     retornar = function(){
-        var r = confirm("¿Esta Seguro de retornar a la actividad anterior?");
-        if(r == true){
+        $("#retornarModal").modal('show');
+    }
+
+    retornarOk = function(){
+        var motivo = document.querySelector("#txt_motivo_retorno").value;
+        if( $.trim(motivo) != '' ){
             var rd_id=document.querySelector("#ruta_detalle_id").value;
             var ruta_id=document.querySelector("#ruta_id").value;
             var nroden=document.querySelector("#txt_orden").value;
-            Bandeja.retornarPaso({'ruta_detalle_id':rd_id,'ruta_id':ruta_id,'orden':nroden});            
+            Bandeja.retornarPaso({'ruta_detalle_id':rd_id,'ruta_id':ruta_id,'orden':nroden, 'motivo':motivo});
         }else{
-            alert('No es posible retornar a la actividad anterior');
+            msjG.mensaje("warning","Ingrese el motivo del retorno",4000);
         }
     }
     /*end return to last order*/

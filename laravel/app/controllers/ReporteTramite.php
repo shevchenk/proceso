@@ -37,6 +37,7 @@ class ReporteTramite extends Eloquent
                        IFNULL(dtiempo,'') as dtiempo,
                        IFNULL(rd.fecha_inicio,'') as fecha_inicio,
                        IFNULL(dtiempo_final,'') as dtiempo_final,
+                       IFNULL(motivo_retorno, '') as motivo_retorno,
                        norden,
                        alerta,
                        alerta_tipo,

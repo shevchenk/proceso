@@ -337,6 +337,10 @@ table>tbody>tr>td{
                                                             <label class="control-label">Sumilla:</label>
                                                             <textarea type="text" class="form-control" id="txt_sumilla" readonly></textarea>
                                                         </div>
+                                                        <div class="col-sm-8 motivoretorno">
+                                                            <label class="control-label">Motivo del retorno:</label>
+                                                            <label class="form-control" id="motivo_retorno"></label>
+                                                        </div>
 
                                                     </div>
                                                 </div>

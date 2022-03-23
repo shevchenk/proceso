@@ -175,7 +175,8 @@ HTMLreported=function(datos){
                 "<td>"+data.verbo2.split("|").join("<br>")+"</td>"+
                 "<td>"+ archivo +"</td>"+
                 "<td>"+data.ordenv.split("|").join("<br>")+"</td>"+
-                "<td>"+data.retorno+"</td>"; // SE AÑADIO
+                "<td>"+data.retorno+"</td>"+ // SE AÑADIO
+                "<td>"+data.motivo_retorno+"</td>"; // SE AÑADIO
         html+=  "</tr>";
 
     });

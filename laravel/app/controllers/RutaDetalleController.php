@@ -297,6 +297,7 @@ class RutaDetalleController extends \BaseController
             $msj='';
             
             $rd_ant = RutaDetalle::find(Input::get('ruta_detalle_id'));
+            $motivo_retorno = Input::get('motivo');
             if(Input::has('ruta_detalle_id') and  $rd_ant->ruta_detalle_id_ant){
                 /*creating new norden to actual rd */
                 DB::beginTransaction();
@@ -306,6 +307,7 @@ class RutaDetalleController extends \BaseController
                       //$rd = RutaDetalle::where('ruta_id',Input::get('ruta_id'))->where('condicion',0)->where('norden',Input::get('orden') - 1)->get()[0];
                         $rd->condicion=3;
                         $rd->usuario_retorno=Auth::user()->id;
+                        $rd->motivo_retorno= (trim($rd->motivo_retorno)=='') ? $motivo_retorno : $rd->motivo_retorno.' | '.$motivo_retorno;
                         $rd->save();
                     }else{ //paso actual == 0
                         $rd = RutaDetalle::find(Input::get('ruta_detalle_id'));

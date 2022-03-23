@@ -59,6 +59,14 @@ class RutaDetalle extends Eloquent
             a.id area_id, a.nombre AS area,f.nombre AS flujo,
             tr.id_union AS id_doc,tr.id id_tr,
             rd.norden, IFNULL(rd.fecha_inicio,"") AS fecha_inicio, tr.tramite_id, rd.ruta_detalle_id_ant,
+                (SELECT GROUP_CONCAT(CONCAT(pre.paterno," ",pre.materno,", ",pre.nombre)," => ",rdre.motivo_retorno SEPARATOR " | ") 
+                FROM rutas_detalle rdre
+                INNER JOIN personas pre ON pre.id = rdre.usuario_retorno
+                WHERE rdre.ruta_id = r.id 
+                AND rdre.estado = 1 
+                AND rdre.motivo_retorno IS NOT NULL 
+                AND rdre.norden = rd.norden 
+                AND rdre.condicion = 3) AS motivo_retorno,
             IFNULL(
                 CASE
                     WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN "Área"
