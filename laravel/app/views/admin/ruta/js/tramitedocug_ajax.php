@@ -179,6 +179,16 @@ var Bandeja={
                     Bandeja.MostrarTramites(data,HTMLTramite);
                 }
                 else{
+                    $("#t_usuarios").dataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "ordering": true,
+                        "searching": false,
+                    });
+                    $("#t_referidos").dataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "ordering": true,
+                        "searching": false,
+                    });
                     msjG.mensaje("warning", obj.msj, 5000);
                 }
             },

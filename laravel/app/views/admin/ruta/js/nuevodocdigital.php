@@ -119,7 +119,8 @@ RegistraridsDelBoton = (id)=>{
 ListarDocumentos = (val)=>{
     $("#slct_tipo_documento_id").multiselect('destroy');
     var data = {estado:1, area_id: val};
-    slctGlobal.listarSlct('documento','slct_tipo_documento_id','simple',null,data); 
+    slctGlobal.listarSlct('documento','slct_tipo_documento_id','simple',null,data);
+    CargarDocumentosFecha();
 }
 
 CalcularCorrelativo = ()=>{
@@ -136,7 +137,12 @@ CalcularCorrelativo = ()=>{
 }
 
 CargarDocumentosFecha = ()=>{
+    let area_id = $("#Form_lstDigital #slct_area_id").val();
     var data={activo:1, tipo:'asignar', fecha: $("#listDocDigital #fechaDoc").val()};
+    if( area_id != '' ){
+        data.area_id = area_id;
+    }
+    console.log(data);
     docdigital.Cargar(HTMLCargar,camposG,data);
 }
 

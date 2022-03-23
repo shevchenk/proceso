@@ -26,6 +26,9 @@ class DocumentoDigital extends Base {
                             if ( Input::get('id') ) {
                                 $query->where('dd.id','=',Input::get('id'));
                             }
+                            elseif( Input::get('area_id') ){
+                                $query->where('dd.area_id' , '=', Input::get('area_id'));
+                            }
                             else{
                                 $usu_id=Auth::user()->id;
                                 $sql="  SELECT count(id) cant

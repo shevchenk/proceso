@@ -837,6 +837,8 @@ generarPreTramite = function(){
         msjG.mensaje("warning", 'Ingrese número del documento presentado',3000);
     }
     else{
+        $("#t_usuarios").dataTable().fnDestroy();
+        $("#t_referidos").dataTable().fnDestroy();
         datos=$("#FormCrearPreTramite").serialize().split("txt_").join("").split("slct_").join("");
         //.split("%5B%5D").join("[]").split("+").join(" ").split("%7C").join("|").split("&");
         /*data = '{';
