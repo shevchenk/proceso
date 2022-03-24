@@ -117,15 +117,16 @@ $(document).ready(function() {
     $("[data-toggle='offcanvas']").click();
     RolIdG='<?php echo Auth::user()->rol_id; ?>';
     UsuarioId='<?php echo Auth::user()->id; ?>';
+    ResponsableG='<?php echo Auth::user()->responsable_area; ?>';
 
     slctGlobal.listarSlct('lista/tipovizualizacion','slct_tipo_visualizacion','multiple',null,null);    
 
-    if( RolIdG==8 || RolIdG==9 ){
+    $("#btnAdd").addClass('hidden');
+    if( ResponsableG == 1 ){
         var data={estado_persona:1,solo_area:1};
         //slctGlobal.listarSlct('persona','cboPersona','simple',null,data);
         slctGlobal.listarSlct('persona','slct_persona','simple',null,data);
-    }else{
-        $("#btnAdd").addClass('hidden');
+        $("#btnAdd").removeClass('hidden');
     }
 
     Bandeja.verificarFueraTiempo();

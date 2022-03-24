@@ -731,7 +731,7 @@ class Reporte extends Eloquent
                         LEFT JOIN doc_digital_temporal dd ON re.doc_digital_id = dd.id $qExtra
                         WHERE re.estado=1 and FIND_IN_SET( re.tabla_relacion_id, '".$referido->tabla_relacion_id."' ) > 0
                         UNION
-                        SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,null as doc_digital_id
+                        SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,s.doc_digital_id
                         FROM sustentos s
                         INNER JOIN referidos re ON re.id=s.referido_id AND FIND_IN_SET( re.tabla_relacion_id, '".$referido->tabla_relacion_id."' ) > 0
                         INNER JOIN rutas_detalle rd ON rd.id=s.ruta_detalle_id

@@ -876,12 +876,11 @@ class Ruta extends Eloquent
         $referido=new Referido;
         $referido['ruta_id']=$ruta->id;
         $referido['tabla_relacion_id']=$tablaRelacion->id;
-        if($tablarelacion_id!=''){
-            $referido['tabla_relacion_id']=$tablarelacion_id;
-        }
+        
         if( Input::has('doc_digital_id2')){
             $referido['doc_digital_id']=Input::get('doc_digital_id2');
         }
+        
         $referido['tipo']=0;
         $referido['ruta_detalle_verbo_id']=0;
         $referido['referido']=$tablaRelacion->id_union;
@@ -889,6 +888,15 @@ class Ruta extends Eloquent
         $referido['usuario_referido']=$tablaRelacion->usuario_created_at;
         $referido['usuario_created_at']=Auth::user()->id;
         $referido->save();
+
+        if( trim($ruta_id) != '' ){
+            $referidoRelacion=new ReferidoRelacion;
+            $referidoRelacion['ruta_id']=$ruta->id;
+            $referidoRelacion['ruta_id_ref']=$ruta_id;
+            $referidoRelacion['estado']=1;
+            $referidoRelacion['usuario_created_at'] = Auth::user()->id;
+            $referidoRelacion->save();
+        }
         /**********************************************/
 
         $qrutaDetalle=DB::table('rutas_flujo_detalle')

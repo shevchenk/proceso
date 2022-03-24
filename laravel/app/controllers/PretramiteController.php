@@ -173,7 +173,6 @@ class PretramiteController extends BaseController {
 	{
 		//$array_data = json_decode(Input::get('info'));
 		$array_data = Input::all();
-
 		$clasificadorTramite = ClasificadorTramite::find($array_data['idclasitramite']);
 		$tipoTramite = TipoTramite::find($clasificadorTramite->tipo_tramite_id);
 
@@ -399,20 +398,26 @@ class PretramiteController extends BaseController {
 		        $ruta->save();
 		        
 		        /************Agregado de referidos*************/
-				if( !isset($array_data['tabla_relacion_id_ref'][0]) ){
-					$array_data['tabla_relacion_id_ref'][0] = $tablaRelacion->id;
-				}
-				for( $i = 0; $i < count($array_data['tabla_relacion_id_ref']); $i++ ){
-					$referido=new Referido;
-					$referido['ruta_id']=$ruta->id;
-					$referido['tabla_relacion_id']=$array_data['tabla_relacion_id_ref'][$i];
-					$referido['ruta_detalle_verbo_id']=0;
-					$referido['tipo']=0;
-					$referido['referido']=$tablaRelacion->id_union;
-					$referido['fecha_hora_referido']=$tablaRelacion->created_at;
-					$referido['usuario_referido']=$tablaRelacion->usuario_created_at;
-					$referido['usuario_created_at']=Auth::user()->id;
-					$referido->save();
+				$referido=new Referido;
+				$referido['ruta_id']=$ruta->id;
+				$referido['tabla_relacion_id']=$tablaRelacion->id;
+				$referido['ruta_detalle_verbo_id']=0;
+				$referido['tipo']=0;
+				$referido['referido']=$tablaRelacion->id_union;
+				$referido['fecha_hora_referido']=$tablaRelacion->created_at;
+				$referido['usuario_referido']=$tablaRelacion->usuario_created_at;
+				$referido['usuario_created_at']=Auth::user()->id;
+				$referido->save();
+
+				if( isset($array_data['ruta_id_ref'][0]) ){
+					for( $i = 0; $i < count($array_data['ruta_id_ref']); $i++ ){
+						$referidoRelacion=new ReferidoRelacion;
+						$referidoRelacion['ruta_id']=$ruta->id;
+						$referidoRelacion['ruta_id_ref']=$array_data['ruta_id_ref'][$i];
+						$referidoRelacion['estado']=1;
+						$referidoRelacion['usuario_created_at'] = Auth::user()->id;
+						$referidoRelacion->save();
+					}
 				}
 				
 		        /**********************************************/

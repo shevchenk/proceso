@@ -84,6 +84,10 @@ class DocumentoDigital extends Base {
                             }
                                 $query->where('dd.estado','=','1');
                             
+                            if( Input::get('area_id') ){
+                                $query->where('dd.area_id' , '=', Input::get('area_id'));
+                            }
+                            else{
                             $usu_id=Auth::user()->id;
                                 $query->whereRaw('dd.area_id IN (
                                         SELECT DISTINCT(a.id)
@@ -93,6 +97,7 @@ class DocumentoDigital extends Base {
                                         WHERE acp.estado=1
                                         AND cp.persona_id= '.$usu_id.'
                                     )');
+                            }
                                     
                             if( Input::has('fecha') ){
                                 $query->whereRaw('DATE(dd.created_at) = "'.Input::get('fecha').'"');

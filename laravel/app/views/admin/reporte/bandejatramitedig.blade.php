@@ -339,7 +339,7 @@ table>tbody>tr>td{
                                                         </div>
                                                         <div class="col-sm-8 motivoretorno">
                                                             <label class="control-label">Motivo del retorno:</label>
-                                                            <label class="form-control" id="motivo_retorno"></label>
+                                                            <label class="form-control alert-danger" id="motivo_retorno"></label>
                                                         </div>
 
                                                     </div>
