@@ -52,13 +52,15 @@ class ReporteTramiteController extends BaseController
         $rst=ReporteTramite::ExpedienteUnico(); 
         //$times = array();
         
-        foreach ($rst as $ind => $ndc){
+        /*foreach ($rst[1] as $ind => $ndc){
             //$this->addVideoLink($rst[$ind]->referido);
 
             if($ndc->doc_digital_id != null){
               $rst[$ind]->referido .= ' <a target="_blank" href="doc_digital/'.$ndc->doc_digital_id.'"><span class="btn btn-default btn-sm" title="Ver documento"><i class="fa fa-eye"></i></span></a> ';
             }
-        }
+        }*/
+
+        
 
         return Response::json(
             array(

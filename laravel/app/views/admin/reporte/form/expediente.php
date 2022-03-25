@@ -13,15 +13,15 @@
           <div class="row form-group">
               <div class="col-sm-12">
                   <div class="box-body table-responsive">
-                      <div class="container">
+                      <div class="container col-md-10 col-sm-offset-1">
                       <h2 class="text-center">Expediente Unico</h2>
                         <table id="tree-table" class="table table-hover table-bordered">
                           <thead>
                             <th>Documento</th>
-                            <th>Fecha</th>
-                            <th>Proceso</th>
-                            <th>Area</th>
-                            <th>Paso</th>
+                            <th style="min-width:100px;">Fecha</th>
+                            <th style="min-width:350px;">Proceso</th>
+                            <th style="min-width:150px;">Area</th>
+                            <th style="min-width:80px;">Paso</th>
                           </thead>
                           <tbody id="tb_tretable">
                           </tbody>

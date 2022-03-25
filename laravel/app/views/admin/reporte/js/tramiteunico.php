@@ -11,7 +11,7 @@
 
 $(document).ready(function(){
     $("[data-toggle='offcanvas']").click();
-        $("#txt_tramite").keypress(preventSubmit);
+    $("#txt_tramite").keypress(preventSubmit);
     var data = {estado:1};
     var ids = [];
 
@@ -22,6 +22,7 @@ $(document).ready(function(){
     $("#generar_1").click(function (){
         reportet();
     });
+    $("#txt_tramite").focus();
 });
 
 valida=function(nro){

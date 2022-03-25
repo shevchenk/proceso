@@ -105,38 +105,70 @@ class ReporteTramite extends Eloquent
     }
 
     public static function ExpedienteUnico(){
-        $referido=DB::table('referidos')
-                      ->select(DB::raw('GROUP_CONCAT( DISTINCT(tabla_relacion_id) ) as tabla_relacion_id'))
-                      ->where('ruta_id', '=', Input::get('ruta_id'))
-                      ->groupBy('ruta_id')
-                      ->first();
+        $r = array([],[],[]);
+        $ruta_id = Input::get('ruta_id');
+            
+        $sql = "SELECT re.ruta_id,re.ruta_detalle_id,re.referido,re.fecha_hora_referido fecha_hora,f.nombre proceso,a.nombre area,re.norden, 'r' tipo, re.doc_digital_id
+                FROM referidos re 
+                INNER JOIN referidos_relaciones rr ON rr.ruta_id = $ruta_id AND rr.ruta_id_ref = re.ruta_id AND rr.estado = 1
+                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN flujos f ON r.flujo_id=f.id 
+                LEFT JOIN rutas_detalle rd ON re.ruta_detalle_id=rd.id 
+                LEFT JOIN areas a ON rd.area_id=a.id  
+                WHERE re.estado=1 
+                UNION
+                SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,s.doc_digital_id
+                FROM sustentos s
+                INNER JOIN referidos re ON re.id=s.referido_id AND re.estado = 1
+                INNER JOIN referidos_relaciones rr ON rr.ruta_id = $ruta_id AND rr.ruta_id_ref = re.ruta_id AND rr.estado = 1
+                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN flujos f ON r.flujo_id=f.id
+                INNER JOIN rutas_detalle rd ON rd.id=s.ruta_detalle_id
+                INNER JOIN areas a ON rd.area_id=a.id  
+                WHERE s.estado = 1 
+                ORDER BY ruta_id,norden,tipo";
+        $r[0]=DB::select($sql);
+    
+        $sql = "SELECT re.ruta_id,re.ruta_detalle_id,re.referido,re.fecha_hora_referido fecha_hora,f.nombre proceso,a.nombre area,re.norden, 'r' tipo, re.doc_digital_id
+                FROM referidos re 
+                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN flujos f ON r.flujo_id=f.id 
+                LEFT JOIN rutas_detalle rd ON re.ruta_detalle_id=rd.id 
+                LEFT JOIN areas a ON rd.area_id=a.id  
+                WHERE re.estado=1 and re.ruta_id = $ruta_id
+                UNION
+                SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,s.doc_digital_id
+                FROM sustentos s
+                INNER JOIN referidos re ON re.id=s.referido_id AND re.ruta_id = $ruta_id
+                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN flujos f ON r.flujo_id=f.id
+                INNER JOIN rutas_detalle rd ON rd.id=s.ruta_detalle_id
+                INNER JOIN areas a ON rd.area_id=a.id  
+                WHERE s.estado = 1 and re.estado = 1
+                ORDER BY ruta_id,norden,tipo";
+        $r[1]=DB::select($sql);
+    
+        $sql = "SELECT re.ruta_id,re.ruta_detalle_id,re.referido,re.fecha_hora_referido fecha_hora,f.nombre proceso,a.nombre area,re.norden, 'r' tipo, re.doc_digital_id
+                FROM referidos re 
+                INNER JOIN referidos_relaciones rr ON rr.ruta_id_ref = $ruta_id AND rr.ruta_id = re.ruta_id AND rr.estado = 1
+                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN flujos f ON r.flujo_id=f.id 
+                LEFT JOIN rutas_detalle rd ON re.ruta_detalle_id=rd.id 
+                LEFT JOIN areas a ON rd.area_id=a.id  
+                WHERE re.estado=1 
+                UNION
+                SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,s.doc_digital_id
+                FROM sustentos s
+                INNER JOIN referidos re ON re.id=s.referido_id AND re.estado = 1
+                INNER JOIN referidos_relaciones rr ON rr.ruta_id_ref = $ruta_id AND rr.ruta_id = re.ruta_id AND rr.estado = 1
+                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN flujos f ON r.flujo_id=f.id
+                INNER JOIN rutas_detalle rd ON rd.id=s.ruta_detalle_id
+                INNER JOIN areas a ON rd.area_id=a.id  
+                WHERE s.estado = 1 
+                ORDER BY ruta_id,norden,tipo";
+        $r[2]=DB::select($sql);
         
-        if( isset($referido->tabla_relacion_id) ){
-            $data = [];
-            $sql = "SELECT re.ruta_id,re.ruta_detalle_id,re.referido,re.doc_digital_id,re.fecha_hora_referido fecha_hora,f.nombre proceso,a.nombre area,re.norden, 'r' tipo 
-                    FROM referidos re 
-                    INNER JOIN rutas r ON re.ruta_id=r.id 
-                    INNER JOIN flujos f ON r.flujo_id=f.id 
-                    LEFT JOIN rutas_detalle rd ON re.ruta_detalle_id=rd.id
-                    LEFT JOIN areas a ON rd.area_id=a.id  
-                    WHERE re.estado=1 and FIND_IN_SET( re.tabla_relacion_id, '".$referido->tabla_relacion_id."' ) > 0 
-                    UNION
-                    SELECT re.ruta_id,re.ruta_detalle_id,sustento,s.doc_digital_id,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo
-                    FROM sustentos s
-                    INNER JOIN referidos re ON re.id=s.referido_id AND FIND_IN_SET( re.tabla_relacion_id, '".$referido->tabla_relacion_id."' ) > 0 
-                    INNER JOIN rutas_detalle rd ON rd.id=s.ruta_detalle_id
-                    LEFT JOIN areas a ON rd.area_id=a.id  
-                    INNER JOIN rutas r ON re.ruta_id=r.id 
-                    INNER JOIN flujos f ON r.flujo_id=f.id
-                    WHERE s.estado = 1 and re.estado = 1
-                    ORDER BY ruta_id,norden,tipo";
-
-                    //die($sql);
-            $r=DB::select($sql);
-            return $r;
-        }
-        else{
-            return false;
-        }
+        return $r;
     }
 }

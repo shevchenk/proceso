@@ -121,7 +121,7 @@ tr.shown td.details-control {
 table>thead>tr>td,table>tfoot>tr>td{
     font-size: 12.5px;
 }
-table>tbody>tr>td{
+table.bandeja>tbody>tr>td{
     color: #00A65A;
 }
 
@@ -162,7 +162,7 @@ table>tbody>tr>td{
                             <div class="box-body table-responsive">
                             <!-- THE MESSAGES -->
                             <form name="form_filtros" id="form_filtros" method="POST" action="">
-                                <table id="t_reporte_ajax" class="table table-mailbox">
+                                <table id="t_reporte_ajax" class="table table-mailbox bandeja">
                                     <thead class="bg-info">
                                         <tr>
                                             <th>#</th>
