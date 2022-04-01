@@ -155,7 +155,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
 
     if(typeof(fn)!='undefined' && fn.col==7){
         var grupo='';
-        grupo+= '<span id="'+row.id+'" title="Asignación de Datos del Servicio" onClick="AsignarCampos(\''+row.id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn"><i class="glyphicon glyphicon-wrench"></i></span>';
+        grupo+= '<span id="'+row.id+'" title="Asignación de Datos del Servicio" onClick="AsignarCampos(\''+row.id+'\',\''+row.ruta_flujo_id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn"><i class="glyphicon glyphicon-wrench"></i></span>';
         return grupo;
     }
 

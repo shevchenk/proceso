@@ -89,6 +89,11 @@ class JoinClause {
 		return $this->on($first, $operator, $second, $boolean, true);
 	}
 
+	public function whereExp($column, $operator, $exp, $boolean = 'and')
+	{
+		return $this->on($column, $operator, new Expression($exp), $boolean, false);
+	}
+
 	/**
 	 * Add an "or on where" clause to the join.
 	 *

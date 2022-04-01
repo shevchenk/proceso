@@ -91,16 +91,38 @@ var Pois={
             success : function(obj) {
                 $(".overlay, .loading-img").remove();
                 if(obj.rst==1){
-                    evento(obj.data);
+                    evento(obj.data, obj.ruta_flujo_id);
                     msjG.mensaje('success',obj.msj,4000);
                 } else {
-                    var cont = 0;
-                    $.each(obj.msj, function(index, datos){
-                        cont++;
-                         if(cont==1){
-                            msjG.mensaje('warning',obj.msj,4000);
-                       }
-                    });
+                    msjG.mensaje('warning',obj.msj,4000);
+                }
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                msjG.mensaje('danger','<b>Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.',4000);
+            }
+        });
+
+    },
+    ListarCamposAreasSub:function(datos,evento){
+        var accion = "clasificadortramite/listarcamposareas";
+        
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay, .loading-img").remove();
+                if(obj.rst==1){
+                    evento(obj.data, obj.norden, obj.ruta_flujo_id);
+                    msjG.mensaje('success',obj.msj,4000);
+                } else {
+                    msjG.mensaje('warning',obj.msj,4000);
                 }
             },
             error: function(){
@@ -150,8 +172,10 @@ var Pois={
 
     },
     AsignarCampos:function(){
+        $("#form_campo_asignacion #ruta_flujo_id").attr("disabled","disabled");
         var datos = $("#form_campo_asignacion").serialize().split("txt_").join("").split("slct_").join("");
         var accion = "clasificadortramite/asignarcampos";
+        $("#form_campo_asignacion #ruta_flujo_id").removeAttr("disabled");
         
         $.ajax({
             url         : accion,
@@ -174,6 +198,33 @@ var Pois={
                             msjG.mensaje('warning',obj.msj,4000);
                        }
                     });
+                }
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                msjG.mensaje('danger','<b>Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.',4000);
+            }
+        });
+
+    },
+    AsignarCampo:function(datos){
+        var accion = "clasificadortramite/asignarcampo";
+        
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay, .loading-img").remove();
+                if(obj.rst==1){
+                    msjG.mensaje('success',obj.msj,4000);
+                } else {
+                    msjG.mensaje('warning',obj.msj,4000);
                 }
             },
             error: function(){

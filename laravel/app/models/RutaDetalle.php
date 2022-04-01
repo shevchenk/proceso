@@ -52,7 +52,7 @@ class RutaDetalle extends Eloquent
         $set=DB::statement('SET group_concat_max_len := @@max_allowed_packet');
         $query =
             'SELECT rd.archivado,rd.ruta_id,DATE_ADD(rd.fecha_inicio, INTERVAL 19 HOUR) as hora_fin_mayor,DATE_ADD(rd.fecha_inicio, INTERVAL 4 HOUR) as hora_fin_menor, NOW() as fecha_actual,rd.id, rd.dtiempo_final, r.flujo_id, 
-             rd.ruta_flujo_id as rd_ruta_flujo_id,
+             rd.ruta_flujo_id as rd_ruta_flujo_id, rd.ruta_flujo_id_dep,
             CONCAT(t.nombre," : ",rd.dtiempo) tiempo, rd.tiempo_id idtiempo,rd.motivo_edit motivo,
             rd.observacion,r.ruta_flujo_id, IFNULL(rd.persona_responsable_id,"") persona_responsable_id,
             IFNULL(CONCAT(p2.paterno," ",p2.materno,", ",p2.nombre),"") persona_responsable,

@@ -33,7 +33,7 @@ $(document).ready(function() {
     //////////////////////////////////////////////////////////////////
     $("#btn_close, .btn_close").click(Close);
     $(".btn_add_campo").click(AddCampo);
-    $(".btn_asig_campo").click(AsigCampo);
+    //$(".btn_asig_campo").click(AsigCampo);
     $("#slct_campo").change(CambioCampo); $(".sub_titulo").hide();
     $("#btn_RegistrarCampos").click(RegistrarCampos);
     $("#btn_AsignarCampos").click(AsignarFCampos);
@@ -304,7 +304,7 @@ CargarCampos=function(id,titulo,boton){
 
 };
 
-AsignarCampos=function(id,titulo,boton){
+AsignarCampos=function(id, ruta_flujo_id, titulo, boton){
     
     var tr = boton.parentNode.parentNode;
     var trs = tr.parentNode.children;
@@ -313,17 +313,26 @@ AsignarCampos=function(id,titulo,boton){
     tr.style.backgroundColor = "#9CD9DE";
     
     $("#form_campo_asignacion #id").val(id);
+    $("#form_campo_asignacion #ruta_flujo_id").val(ruta_flujo_id);
     $("#form_campo_asignacion #txt_titulo").text(titulo);
     $("#form_campo_asignacion .form-group").css("display","");
     $("#add_campo3").html(''); // Limpia los registros para cargar los nuevos 
-    Pois.ListarAreas(ListarAreasHTML);
-    Pois.ListarCampos(ListarCampos2HTML, 1);
+    //Pois.ListarAreas(ListarAreasHTML);
+    //Pois.ListarCampos(ListarCampos2HTML, 1);
     Pois.ListarCamposAreas(ListarCamposAreasHTML);
     $("#form_costo_personal .form-group, #form_actividad .form-group, #form_campo .form-group").css("display","none");
 
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+ListarCamposHTML = (result) => {
+    $.each(result,function(index,r){
+        check = false;
+        if( r.obligar == 1 ){ check = true }
+        AddCampo(r.id, r);
+    });
+}
+/*
 ListarCampos2HTML = (result) => {
     $("#slct_campos").html('');
     html = '';
@@ -343,21 +352,572 @@ ListarAreasHTML = (obj) => {
     $("#slct_areas").html(html);
     $("#slct_areas").multiselect('rebuild');
 }
+*/
+ListarCamposAreasHTML = (result, ruta_flujo_id) => {
+    $("#add_campo3").html('');// inicializando
+    //#75DDEC, #FFF3A2, #F58DD7
+    var cab = [
+        {  'color': 'alert-info' },
+        {  'color': 'alert-secondary'},
+        {  'color': 'alert-warning' }
+    ];
+    //TODO: Proceso///////////////////////////////////////////////////////////////////////
+    
+    var html ='';
+    var ruta_flujo_detalle_id = 0; var norden = 0; var id = 0;
+    var style = 'style="padding-left: #em;"';
+    var tab = 4;
+    var child = 0;
+    var parent = 0;
+    var clase = '';
+    var config = {
+        visualizar : {
+            valor : 0,
+            checked : '',
+            disabled : '',
+            funcion : 'ActivarCheck',
+            color : 'danger',
+        },
+        modificar : {
+            valor : 0,
+            checked : '',
+            disabled : '',
+            funcion : 'ActivarCheck',
+            color : 'danger',
+        },
+        disabled : 'disabled'
+    };
 
-ListarCamposHTML = (result) => {
-    $.each(result,function(index,r){
-        check = false;
-        if( r.obligar == 1 ){ check = true }
-        AddCampo(r.id, r);
+    var subproceso = '';
+    
+    $.each(result,function(index, r) {
+        config.visualizar.valor = '0';
+        config.visualizar.checked = '';
+        config.visualizar.funcion = 'ActivarCheck';
+        config.visualizar.color = 'danger';
+
+        config.modificar.valor = '0';
+        config.modificar.checked = '';
+        config.modificar.funcion = 'ActivarCheck';
+        config.modificar.color = 'danger';
+
+        config.disabled = 'disabled';
+
+        if( $.trim(r.id) != '' && r.estado == 1 ){
+            config.visualizar.valor = '1';
+            config.visualizar.checked = 'checked';
+            config.visualizar.funcion = 'InactivarCheck';
+            config.visualizar.color = 'success';
+            if( r.modificar == 1 ){
+                config.modificar.checked = 'checked';
+                config.modificar.funcion = 'InactivarCheck';
+                config.modificar.color = 'success';
+            }
+            config.modificar.valor = r.modificar;
+            config.disabled = '';
+        }
+
+        if(  r.ruta_flujo_detalle_id != ruta_flujo_detalle_id ){
+
+            if( subproceso != '' ){ //Antes de pasar al siguiente paso, cargamos los sub procesos
+                let sp = subproceso.split("^^");
+                for (let i = 0; i < sp.length; i++) {
+                    const spd = sp[i].split('^');
+                    
+                    clase = 'class="'+cab[2].color+' cursorZoom N'+ spd[1] + '-' + norden +'"';
+                    style_aux = style.replace("#", 2);
+                    html="<tr data-id='ID-"+ spd[1] + "-" + norden + "' "+clase+" ondblclick='ListarCamposSub(this, \""+spd[1]+"\",\""+norden+"\");'  data-parent='ID-"+ id +"' data-level='1'>";
+                    html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class='glyphicon glyphicon-chevron-right'></i><i class='fa fa-angle-double-right'></i>"+ spd[0] +"</td>";
+                    html+=    "<td>&nbsp;</td>";
+                    html+=    "<td>&nbsp;</td>";
+                    html+="</tr>";
+                    $("#add_campo3").append(html);
+                }
+            }
+
+            ruta_flujo_detalle_id =  r.ruta_flujo_detalle_id;
+            norden = r.norden;
+            id = ruta_flujo_id + "-" + norden;
+            clase = 'class="'+cab[0].color+'"';
+            child = 1;
+            
+            html="<tr data-id='ID-"+ id +"' "+clase+">";
+            html+=    "<td class='col-md-12' data-column=name>"+
+                            "<i class=''></i><i class='fa fa-angle-right'></i>"+norden+" | "+r.area+
+                      "</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+="</tr>";
+            $("#add_campo3").append(html);
+
+            subproceso = $.trim(r.sub);
+        }
+
+        
+        if( $.trim( r.tipo ) == 0 ){
+            $("#add_campo3 tr[data-id='ID-"+ id +"']").find("td:eq(0) i:eq(0)").addClass('glyphicon glyphicon-chevron-right').parent().addClass('cursorZoom');
+            
+            clase = 'class="'+cab[1].color+' campo'+ id +"-"+ r.ruta_flujo_campo_id +'"';
+            style_aux = style.replace("#", 2);
+            html="<tr data-id='ID-"+ id +"-"+ r.ruta_flujo_campo_id +"' "+clase+"  data-parent='ID-"+ id +"' data-level='1'>";
+            html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class=''></i><i class='fa fa-angle-double-right'></i>"+ r.campo +"</td>";
+            html+=    "<td>"+
+                            '<input '+ config.disabled +' type="hidden" class="visualizar" name="visualizar[]" value="'+ config.visualizar.valor +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="modificar" name="modificar[]" value="0">'+
+                            '<input '+ config.disabled +' type="hidden" class="area_id" name="area_id[]" value="'+ r.area_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="norden" name="norden[]" value="'+ norden +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_campo_id" name="ruta_flujo_campo_id[]" value="'+ r.ruta_flujo_campo_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_id" name="ruta_flujo_id[]" value="'+ ruta_flujo_id +'">'+
+                            "<label class='lbl_campo_visualizar btn alert-"+ config.visualizar.color +"'>"+
+                                "<input type='checkbox' onChange='"+ config.visualizar.funcion +"(this, \""+ id +"-"+ r.ruta_flujo_campo_id +"\", \"visualizar\")' autocomplete='off' "+ config.visualizar.checked +"> &nbsp;&nbsp; "+ "Visualizar" +
+                            "</label>"+
+                        "</td>";
+            html+=      "<td>&nbsp;</td>";
+            html+="</tr>";
+
+            $("#add_campo3").append(html);
+            parent = id +"-"+ r.ruta_flujo_campo_id;
+            child++;
+        }
+        else if( child == 1 && $.trim( r.tipo ) != '' ){
+            $("#add_campo3 tr[data-id='ID-"+ id +"']").find("td:eq(0) i:eq(0)").addClass('glyphicon glyphicon-chevron-right').parent().addClass('cursorZoom');
+
+            clase = 'class="'+cab[1].color+'"';
+            style_aux = style.replace("#", 2);
+            html="<tr data-id='ID-"+ id +"-"+ r.ruta_flujo_campo_id +"S"+ "' "+clase+"  data-parent='ID-"+ id +"' data-level='1'>";
+            html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class=''></i><i class='fa fa-angle-double-right'></i>"+ "Campos Sin Título" +"</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+="</tr>";
+
+            $("#add_campo3").append(html);
+            parent = id +"-"+ r.ruta_flujo_campo_id+"S";
+            
+            clase = 'class="campo'+ id +"-"+ r.ruta_flujo_campo_id +'"';
+            style_aux = style.replace("#", 4);
+            html="<tr data-id='ID-"+ id +"-"+ r.ruta_flujo_campo_id +"' "+clase+" data-parent='ID-"+ parent +"' data-level='2'>";
+            html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class=''></i><i class='fa fa-angle-double-right'></i>"+r.campo+"</td>";
+            html+=    "<td>"+
+                            '<input '+ config.disabled +' type="hidden" class="visualizar" name="visualizar[]" value="'+ config.visualizar.valor +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="modificar" name="modificar[]" value="'+ config.modificar.valor +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="area_id" name="area_id[]" value="'+ r.area_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="norden" name="norden[]" value="'+ norden +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_campo_id" name="ruta_flujo_campo_id[]" value="'+ r.ruta_flujo_campo_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_id" name="ruta_flujo_id[]" value="'+ ruta_flujo_id +'">'+
+                            "<label class='lbl_campo_visualizar btn alert-"+ config.visualizar.color +"'>"+
+                                "<input type='checkbox' onChange='"+ config.visualizar.funcion +"(this, \""+ id +"-"+ r.ruta_flujo_campo_id +"\", \"visualizar\")' autocomplete='off' "+ config.visualizar.checked +"> &nbsp;&nbsp; "+ "Visualizar" +
+                            "</label>"+
+                        "</td>";
+            html+=      "<td>"+
+                            "<label class='lbl_campo_modificar btn alert-"+ config.modificar.color +"'>"+
+                                "<input type='checkbox' onChange='"+ config.modificar.funcion +"(this, \""+ id +"-"+ r.ruta_flujo_campo_id +"\", \"modificar\")' autocomplete='off' "+ config.modificar.checked +"> &nbsp;&nbsp; "+ "Modificar" +
+                            "</label>"+
+                        "</td>";
+            html+="</tr>";
+
+            $("#add_campo3").append(html);
+            child++;
+        }
+        else if( $.trim( r.tipo ) != '' ){
+            if( !$("#add_campo3 tr[data-id='ID-"+ parent +"']").find("td:eq(0) i:eq(0)").hasClass('glyphicon glyphicon-chevron-right') ){
+                $("#add_campo3 tr[data-id='ID-"+ parent +"']").find("td:eq(0) i:eq(0)").addClass('glyphicon glyphicon-chevron-right').parent().addClass('cursorZoom');
+            }
+
+            clase = 'class="campo'+ id +"-"+ r.ruta_flujo_campo_id +'"';
+            style_aux = style.replace("#", 4);
+            html="<tr data-id='ID-"+ id +"-"+ r.ruta_flujo_campo_id +"' "+clase+" data-parent='ID-"+ parent +"' data-level='2'>";
+            html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class=''></i><i class='fa fa-angle-double-right'></i>"+r.campo+"</td>";
+            html+=    "<td>"+
+                            '<input '+ config.disabled +' type="hidden" class="visualizar" name="visualizar[]" value="'+ config.visualizar.valor +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="modificar" name="modificar[]" value="'+ config.modificar.valor +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="area_id" name="area_id[]" value="'+ r.area_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="norden" name="norden[]" value="'+ norden +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_campo_id" name="ruta_flujo_campo_id[]" value="'+ r.ruta_flujo_campo_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_id" name="ruta_flujo_id[]" value="'+ ruta_flujo_id +'">'+
+                            "<label class='lbl_campo_visualizar btn alert-"+ config.visualizar.color +"'>"+
+                                "<input type='checkbox' onChange='"+ config.visualizar.funcion +"(this, \""+ id +"-"+ r.ruta_flujo_campo_id +"\", \"visualizar\")' autocomplete='off' "+ config.visualizar.checked +"> &nbsp;&nbsp; "+ "Visualizar" +
+                            "</label>"+
+                        "</td>";
+            html+=      "<td>"+
+                            "<label class='lbl_campo_modificar btn alert-"+ config.modificar.color +"'>"+
+                                "<input type='checkbox' onChange='"+ config.modificar.funcion +"(this, \""+ id +"-"+ r.ruta_flujo_campo_id +"\", \"modificar\")' autocomplete='off' "+ config.modificar.checked +"> &nbsp;&nbsp; "+ "Modificar" +
+                            "</label>"+
+                        "</td>";
+            html+="</tr>";
+
+            $("#add_campo3").append(html);
+        }
+    });
+
+    if( subproceso != '' ){ //Antes de pasar al siguiente paso, cargamos los sub procesos
+        let sp = subproceso.split("^^");
+        for (let i = 0; i < sp.length; i++) {
+            const spd = sp[i].split('^');
+            
+            clase = 'class="'+cab[2].color+' cursorZoom N' + spd[1] + '-' + norden +'"';
+            style_aux = style.replace("#", 2);
+            html="<tr data-id='ID-"+ spd[1] + "-" + norden + "' "+clase+" ondblclick='ListarCamposSub(this, \""+spd[1]+"\",\""+norden+"\");'  data-parent='ID-"+ id +"' data-level='1'>";
+            html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class='glyphicon glyphicon-chevron-right'></i><i class='fa fa-angle-double-right'></i>"+ spd[0] +"</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+="</tr>";
+            $("#add_campo3").append(html);
+        }
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /*tree-table*/
+    $(function () {
+        var $table = $('#add_campo3'),
+        rows = $table.find('tr');
+
+        rows.each(function (index, row) {
+            var
+                $row = $(row),
+                level = $row.data('level'),
+                id = $row.data('id'),
+                $columnName = $row.find('td[data-column="name"]'),
+                children = $table.find('tr[data-parent="' + id + '"]');
+
+            if (children.length) {
+                var expander = $columnName.prepend('' +
+                    //'<span class="treegrid-expander glyphicon glyphicon-chevron-right"></span>' +
+                    '');
+
+                children.hide();
+
+                expander.on('click', function (e) {
+                    var $target = $(e.target);
+                    if ($target.find('i:eq(0)').hasClass('glyphicon glyphicon-chevron-right')) {
+                        $target.find('i:eq(0)')
+                            .removeClass('glyphicon glyphicon-chevron-right')
+                            .addClass('glyphicon glyphicon-chevron-down');
+
+                        children.show();
+                    } else {
+                        $target.find('i:eq(0)')
+                            .removeClass('glyphicon glyphicon-chevron-down')
+                            .addClass('glyphicon glyphicon-chevron-right');
+
+                        reverseHide($table, $row);
+                    }
+                });
+            }
+
+            $columnName.prepend('' +
+                '<span class="treegrid-indent" style="width:' + 15 * level + 'px"></span>' +
+                ''
+            );
+        });
+
+        reverseHide = function (table, element) {
+            var
+                $element = $(element),
+                id = $element.data('id'),
+                children = table.find('tr[data-parent="' + id + '"]');
+
+            if (children.length) {
+                children.each(function (i, e) {
+                    reverseHide(table, e);
+                });
+
+                $element.find('td:eq(0) i:eq(0).glyphicon-chevron-down')
+                    .removeClass('glyphicon glyphicon-chevron-down')
+                    .addClass('glyphicon glyphicon-chevron-right');
+
+                children.hide();
+            }
+        };
     });
 }
 
-ListarCamposAreasHTML = (result) => {
-    $.each(result,function(index,r){
-        AsigCampo(r);
+ListarCamposSub = (t, ruta_flujo_id, norden) => {
+    $(t).removeAttr('ondblclick');
+    var datos = { id: $("#form_campo_asignacion #id").val(), ruta_flujo_id: ruta_flujo_id, norden: norden };
+    Pois.ListarCamposAreasSub(datos, ListarCamposSubHTML);
+}
+
+ListarCamposSubHTML = (result, nordensub, ruta_flujo_id_sub) => {
+    var nordensub_aux = ruta_flujo_id_sub + "-" + nordensub.split(".").join("_");
+    $("#add_campo3 [data-parent^='ID-"+nordensub_aux+"']").remove();// inicializando
+    //#75DDEC, #FFF3A2, #F58DD7
+    var cab = [
+        {  'color': 'alert-info' },
+        {  'color': 'alert-secondary'},
+        {  'color': 'alert-warning' }
+    ];
+    //TODO: Proceso///////////////////////////////////////////////////////////////////////
+    
+    var html ='';
+    var ruta_flujo_detalle_id = 0; var norden = 0; var id = 0;
+    var style = 'style="padding-left: #em;"';
+    var tab = 4;
+    var child = 0;
+    var parent = 0;
+    var clase = '';
+    var config = {
+        visualizar : {
+            valor : 0,
+            checked : '',
+            disabled : '',
+            funcion : 'ActivarCheck',
+            color : 'danger',
+        },
+        modificar : {
+            valor : 0,
+            checked : '',
+            disabled : '',
+            funcion : 'ActivarCheck',
+            color : 'danger',
+        },
+        disabled : 'disabled'
+    };
+
+    var subproceso = '';
+    
+    $.each(result,function(index, r) {
+        config.visualizar.valor = '0';
+        config.visualizar.checked = '';
+        config.visualizar.funcion = 'ActivarCheck';
+        config.visualizar.color = 'danger';
+
+        config.modificar.valor = '0';
+        config.modificar.checked = '';
+        config.modificar.funcion = 'ActivarCheck';
+        config.modificar.color = 'danger';
+
+        config.disabled = 'disabled';
+
+        if( $.trim(r.id) != '' && r.estado == 1 ){
+            config.visualizar.valor = '1';
+            config.visualizar.checked = 'checked';
+            config.visualizar.funcion = 'InactivarCheck';
+            config.visualizar.color = 'success';
+            if( r.modificar == 1 ){
+                config.modificar.checked = 'checked';
+                config.modificar.funcion = 'InactivarCheck';
+                config.modificar.color = 'success';
+            }
+            config.modificar.valor = r.modificar;
+            config.disabled = '';
+        }
+
+        if(  r.ruta_flujo_detalle_id != ruta_flujo_detalle_id ){
+
+            if( subproceso != '' ){ //Antes de pasar al siguiente paso, cargamos los sub procesos
+                let sp = subproceso.split("^^");
+                for (let i = 0; i < sp.length; i++) {
+                    const spd = sp[i].split('^');
+                    
+                    clase = 'class="'+cab[2].color+' cursorZoom N'+spd[1]+'-'+norden.split(".").join("_")+' N'+nordensub_aux+' sub"';
+                    style_aux = style.replace("#", (2+ 2*norden.split(".").length));
+                    html="<tr data-id='ID-"+ spd[1] + "-" + norden.split(".").join("_") + "' "+clase+" ondblclick='ListarCamposSub(this, \""+spd[1]+"\",\""+norden+"\");'  data-parent='ID-"+ id +"' data-level='1'>";
+                    html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class='glyphicon glyphicon-chevron-right'></i><i class='fa fa-angle-double-right'></i>"+ spd[0] +"</td>";
+                    html+=    "<td>&nbsp;</td>";
+                    html+=    "<td>&nbsp;</td>";
+                    html+="</tr>";
+                    $("#add_campo3 tr.N"+nordensub_aux+":last").after(html);
+                }
+            }
+
+            ruta_flujo_detalle_id =  r.ruta_flujo_detalle_id;
+            norden = nordensub+'.'+('00'+r.norden).slice(-2);
+            id = ruta_flujo_id_sub + "-" + norden.split(".").join("_");
+            clase = 'class="'+cab[0].color+' N'+nordensub_aux+' sub"';
+            child = 1;
+            
+            style_aux = style.replace("#", (2+ 2*norden.split(".").length));
+            html="<tr data-id='ID-"+ id +"' "+clase+" data-parent='ID-"+ nordensub_aux +"' data-level='0'>";
+            html+=    "<td class='col-md-12' "+ style_aux +" data-column=name>"+
+                            "<i class=''></i><i class='fa fa-angle-right'></i>"+norden+" | "+r.area+
+                      "</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+="</tr>";
+            $("#add_campo3 tr.N"+nordensub_aux+":last").after(html);
+
+            subproceso = $.trim(r.sub);
+        }
+
+        
+        if( $.trim( r.tipo ) == 0 ){
+            $("#add_campo3 tr[data-id='ID-"+ id +"']").find("td:eq(0) i:eq(0)").addClass('glyphicon glyphicon-chevron-right').parent().addClass('cursorZoom');
+            
+            clase = 'class="'+cab[1].color+' campo'+ id +"-"+ r.ruta_flujo_campo_id +' N'+nordensub_aux+' sub"';
+            style_aux = style.replace("#", (4+ 2*norden.split(".").length));
+            html="<tr data-id='ID-"+ id +"-"+ r.ruta_flujo_campo_id +"' "+clase+"  data-parent='ID-"+ id +"' data-level='1'>";
+            html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class=''></i><i class='fa fa-angle-double-right'></i>"+ r.campo +"</td>";
+            html+=    "<td>"+
+                            '<input '+ config.disabled +' type="hidden" class="visualizar" name="visualizar[]" value="'+ config.visualizar.valor +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="modificar" name="modificar[]" value="0">'+
+                            '<input '+ config.disabled +' type="hidden" class="area_id" name="area_id[]" value="'+ r.area_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="norden" name="norden[]" value="'+ norden +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_campo_id" name="ruta_flujo_campo_id[]" value="'+ r.ruta_flujo_campo_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_id" name="ruta_flujo_id[]" value="'+ ruta_flujo_id_sub +'">'+
+                            "<label class='lbl_campo_visualizar btn alert-"+ config.visualizar.color +"'>"+
+                                "<input type='checkbox' onChange='"+ config.visualizar.funcion +"(this, \""+ id +"-"+ r.ruta_flujo_campo_id +"\", \"visualizar\")' autocomplete='off' "+ config.visualizar.checked +"> &nbsp;&nbsp; "+ "Visualizar" +
+                            "</label>"+
+                        "</td>";
+            html+=      "<td>&nbsp;</td>";
+            html+="</tr>";
+
+            $("#add_campo3 tr.N"+nordensub_aux+":last").after(html);
+            parent = id +"-"+ r.ruta_flujo_campo_id;
+            child++;
+        }
+        else if( child == 1 && $.trim( r.tipo ) != '' ){
+            $("#add_campo3 tr[data-id='ID-"+ id +"']").find("td:eq(0) i:eq(0)").addClass('glyphicon glyphicon-chevron-right').parent().addClass('cursorZoom');
+
+            clase = 'class="'+cab[1].color+' N'+nordensub_aux+' sub"';
+            style_aux = style.replace("#", (4+ 2*norden.split(".").length));
+            html="<tr data-id='ID-"+ id +"-"+ r.ruta_flujo_campo_id +"S"+ "' "+clase+"  data-parent='ID-"+ id +"' data-level='1'>";
+            html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class=''></i><i class='fa fa-angle-double-right'></i>"+ "Campos Sin Título" +"</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+="</tr>";
+
+            $("#add_campo3 tr.N"+nordensub_aux+":last").after(html);
+            parent = id +"-"+ r.ruta_flujo_campo_id+"S";
+            
+            clase = 'class="campo'+ id +"-"+ r.ruta_flujo_campo_id +' N'+nordensub_aux+' sub"';
+            style_aux = style.replace("#", (6+ 2*norden.split(".").length));
+            html="<tr data-id='ID-"+ id +"-"+ r.ruta_flujo_campo_id +"' "+clase+" data-parent='ID-"+ parent +"' data-level='2'>";
+            html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class=''></i><i class='fa fa-angle-double-right'></i>"+r.campo+"</td>";
+            html+=    "<td>"+
+                            '<input '+ config.disabled +' type="hidden" class="visualizar" name="visualizar[]" value="'+ config.visualizar.valor +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="modificar" name="modificar[]" value="'+ config.modificar.valor +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="area_id" name="area_id[]" value="'+ r.area_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="norden" name="norden[]" value="'+ norden +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_campo_id" name="ruta_flujo_campo_id[]" value="'+ r.ruta_flujo_campo_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_id" name="ruta_flujo_id[]" value="'+ ruta_flujo_id_sub +'">'+
+                            "<label class='lbl_campo_visualizar btn alert-"+ config.visualizar.color +"'>"+
+                                "<input type='checkbox' onChange='"+ config.visualizar.funcion +"(this, \""+ id +"-"+ r.ruta_flujo_campo_id +"\", \"visualizar\")' autocomplete='off' "+ config.visualizar.checked +"> &nbsp;&nbsp; "+ "Visualizar" +
+                            "</label>"+
+                        "</td>";
+            html+=      "<td>"+
+                            "<label class='lbl_campo_modificar btn alert-"+ config.modificar.color +"'>"+
+                                "<input type='checkbox' onChange='"+ config.modificar.funcion +"(this, \""+ id +"-"+ r.ruta_flujo_campo_id +"\", \"modificar\")' autocomplete='off' "+ config.modificar.checked +"> &nbsp;&nbsp; "+ "Modificar" +
+                            "</label>"+
+                        "</td>";
+            html+="</tr>";
+
+            $("#add_campo3 tr.N"+nordensub_aux+":last").after(html);
+            child++;
+        }
+        else if( $.trim( r.tipo ) != '' ){
+            if( !$("#add_campo3 tr[data-id='ID-"+ parent +"']").find("td:eq(0) i:eq(0)").hasClass('glyphicon glyphicon-chevron-right') ){
+                $("#add_campo3 tr[data-id='ID-"+ parent +"']").find("td:eq(0) i:eq(0)").addClass('glyphicon glyphicon-chevron-right').parent().addClass('cursorZoom');
+            }
+
+            clase = 'class="campo'+ id +"-"+ r.ruta_flujo_campo_id +' N'+nordensub_aux+' sub"';
+            style_aux = style.replace("#", (6+ 2*norden.split(".").length));
+            html="<tr data-id='ID-"+ id +"-"+ r.ruta_flujo_campo_id +"' "+clase+" data-parent='ID-"+ parent +"' data-level='2'>";
+            html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class=''></i><i class='fa fa-angle-double-right'></i>"+r.campo+"</td>";
+            html+=    "<td>"+
+                            '<input '+ config.disabled +' type="hidden" class="visualizar" name="visualizar[]" value="'+ config.visualizar.valor +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="modificar" name="modificar[]" value="'+ config.modificar.valor +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="area_id" name="area_id[]" value="'+ r.area_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="norden" name="norden[]" value="'+ norden +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_campo_id" name="ruta_flujo_campo_id[]" value="'+ r.ruta_flujo_campo_id +'">'+
+                            '<input '+ config.disabled +' type="hidden" class="ruta_flujo_id" name="ruta_flujo_id[]" value="'+ ruta_flujo_id_sub +'">'+
+                            "<label class='lbl_campo_visualizar btn alert-"+ config.visualizar.color +"'>"+
+                                "<input type='checkbox' onChange='"+ config.visualizar.funcion +"(this, \""+ id +"-"+ r.ruta_flujo_campo_id +"\", \"visualizar\")' autocomplete='off' "+ config.visualizar.checked +"> &nbsp;&nbsp; "+ "Visualizar" +
+                            "</label>"+
+                        "</td>";
+            html+=      "<td>"+
+                            "<label class='lbl_campo_modificar btn alert-"+ config.modificar.color +"'>"+
+                                "<input type='checkbox' onChange='"+ config.modificar.funcion +"(this, \""+ id +"-"+ r.ruta_flujo_campo_id +"\", \"modificar\")' autocomplete='off' "+ config.modificar.checked +"> &nbsp;&nbsp; "+ "Modificar" +
+                            "</label>"+
+                        "</td>";
+            html+="</tr>";
+
+            $("#add_campo3 tr.N"+nordensub_aux+":last").after(html);
+        }
+    });
+
+    if( subproceso != '' ){ //Antes de pasar al siguiente paso, cargamos los sub procesos
+        let sp = subproceso.split("^^");
+        for (let i = 0; i < sp.length; i++) {
+            const spd = sp[i].split('^');
+            
+            clase = 'class="'+cab[2].color+' cursorZoom N'+spd[1]+'-'+norden.split(".").join("_")+' N'+nordensub_aux+' sub"';
+            style_aux = style.replace("#", (2+ 2*norden.split(".").length));
+            html="<tr data-id='ID-"+ spd[1] + "-" + norden.split(".").join("_") + "' "+clase+" ondblclick='ListarCamposSub(this, \""+spd[1]+"\",\""+norden+"\");'  data-parent='ID-"+ id +"' data-level='1'>";
+            html+=    "<td class='col-md-12' "+ style_aux +" data-column=name><i class='glyphicon glyphicon-chevron-right'></i><i class='fa fa-angle-double-right'></i>"+ spd[0] +"</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+=    "<td>&nbsp;</td>";
+            html+="</tr>";
+            $("#add_campo3 tr.N"+nordensub_aux+":last").after(html);
+        }
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /*tree-table*/
+    $(function () {
+        var $table = $('#add_campo3'),
+        rows = $table.find("[data-parent^='ID-"+nordensub_aux+"'], [data-id='ID-"+nordensub_aux+"']");
+
+        rows.each(function (index, row) {
+            var
+                $row = $(row),
+                level = $row.data('level'),
+                id = $row.data('id'),
+                $columnName = $row.find('td[data-column="name"]'),
+                children = $table.find('tr[data-parent="' + id + '"]');
+
+            if (children.length) {
+                var expander = $columnName.prepend('' +
+                    //'<span class="treegrid-expander glyphicon glyphicon-chevron-right"></span>' +
+                    '');
+
+                children.hide();
+
+                expander.on('click', function (e) {
+                    var $target = $(e.target);
+                    if ($target.find('i:eq(0)').hasClass('glyphicon glyphicon-chevron-right')) {
+                        $target.find('i:eq(0)')
+                            .removeClass('glyphicon glyphicon-chevron-right')
+                            .addClass('glyphicon glyphicon-chevron-down');
+
+                        children.show();
+                    } else {
+                        $target.find('i:eq(0)')
+                            .removeClass('glyphicon glyphicon-chevron-down')
+                            .addClass('glyphicon glyphicon-chevron-right');
+
+                        reverseHide($table, $row);
+                    }
+                });
+            }
+
+            $columnName.prepend('' +
+                '<span class="treegrid-indent" style="width:' + 15 * level + 'px"></span>' +
+                ''
+            );
+        });
+
+        reverseHide = function (table, element) {
+            var
+                $element = $(element),
+                id = $element.data('id'),
+                children = table.find('tr[data-parent="' + id + '"]');
+
+            if (children.length) {
+                children.each(function (i, e) {
+                    reverseHide(table, e);
+                });
+
+                $element.find('td:eq(0) i:eq(0).glyphicon-chevron-down')
+                    .removeClass('glyphicon glyphicon-chevron-down')
+                    .addClass('glyphicon glyphicon-chevron-right');
+
+                children.hide();
+            }
+        };
     });
 }
 
+/*
 AsigCampo = (result) => {
     areas = $("#slct_areas").val();
     campos = $("#slct_campos").val();
@@ -409,6 +969,7 @@ AsigCampo = (result) => {
     }
 
 }
+*/
 
 AddCampo = ( id, r ) => {
     campo = $.trim($("#txt_campo").val());
@@ -599,18 +1160,78 @@ CambiaCampo = (val, id) => {
     }
 }
 
-ActivarCheck = (t, id) => {
+ActivarCheck = (t, id, tipo) => {
+    if( typeof(tipo) == 'undefined' ){ 
+        tipo = 'x'; 
+        $(t).attr("onChange", "InactivarCheck(this, '"+ id +"')");
+    }
+    else{
+        $(t).attr("onChange", "InactivarCheck(this, '"+ id +"', '"+ tipo +"')");
+        if( tipo == 'visualizar' ){
+            $(".campo"+ id +" .visualizar, .campo"+ id +" .modificar, .campo"+ id +" .area_id, .campo"+ id +" .norden, .campo"+ id +" .ruta_flujo_campo_id, .campo"+ id +" .ruta_flujo_id").removeAttr('disabled');
+        }
+        else{
+            if( $(".campo"+ id +" .visualizar").val() == 0 ){
+                //$(".campo"+ id +" .lbl_campo_visualizar input[type=checkbox]").click();
+                $(".campo"+ id +" .lbl_campo_visualizar input[type=checkbox]").attr('onChange',"InactivarCheck(this, '"+ id +"', 'visualizar')");
+                $(".campo"+ id +" .lbl_campo_visualizar input[type=checkbox]").prop('checked',true);
+                $(".campo" + id+" .lbl_campo_visualizar").removeClass("alert-danger").addClass("alert-success");
+                $(".campo"+ id +" .visualizar").val(1);
+            }
+        }
+    }
     //var label = $(t).parent('label');
-    $(".campo" + id+" .lbl_campo").removeClass("alert-info").addClass("alert-danger");
-    $(".campo" + id+" .txt_obligar, .campo"+ id +" .modificar").val(1);
-    $(t).attr("onChange", "InactivarCheck(this,"+ id +")");
+    $(".campo" + id+" .lbl_campo, .campo" + id+" .lbl_campo_"+tipo).removeClass("alert-danger").addClass("alert-success");
+    $(".campo" + id+" .txt_obligar, .campo"+ id +" ."+tipo).val(1);
+
+    if( tipo != 'x' ){ //Solo si existe tipo
+        var datos = {
+            clasificador_tramite_id: $("#form_campo_asignacion #id").val(),
+            visualizar: $(".campo"+ id +" .visualizar").val(),
+            modificar: $(".campo"+ id +" .modificar").val(),
+            area_id: $(".campo"+ id +" .area_id").val(),
+            norden: $(".campo"+ id +" .norden").val(),
+            ruta_flujo_campo_id: $(".campo"+ id +" .ruta_flujo_campo_id").val(),
+            ruta_flujo_id: $(".campo"+ id +" .ruta_flujo_id").val()
+        };
+        Pois.AsignarCampo(datos);
+    }
 }
 
-InactivarCheck = (t, id) => {
+InactivarCheck = (t, id, tipo) => {
+    if( typeof(tipo) == 'undefined' ){ 
+        tipo = 'x'; 
+        $(t).attr("onChange", "ActivarCheck(this, '"+ id +"')");
+    }
+    else{
+        $(t).attr("onChange", "ActivarCheck(this, '"+ id +"', '"+ tipo +"')");
+        if( tipo == 'visualizar' ){
+            $(".campo"+ id +" .visualizar, .campo"+ id +" .modificar, .campo"+ id +" .area_id, .campo"+ id +" .norden, .campo"+ id +" .ruta_flujo_campo_id, .campo"+ id +" .ruta_flujo_id").attr('disabled','disabled');
+            if( $(".campo"+ id +" .modificar").val() == 1 ){
+                //$(".campo"+ id +" .lbl_campo_modificar input[type=checkbox]").click();
+                $(".campo"+ id +" .lbl_campo_modificar input[type=checkbox]").attr('onChange',"ActivarCheck(this, '"+ id +"', 'modificar')");
+                $(".campo"+ id +" .lbl_campo_modificar input[type=checkbox]").prop('checked',false);
+                $(".campo" + id+" .lbl_campo_modificar").removeClass("alert-success").addClass("alert-danger");
+                $(".campo"+ id +" .modificar").val(0);
+            }
+        }
+    }
     //var label = $(t).parent('label');
-    $(".campo" + id+" .lbl_campo").removeClass("alert-danger").addClass("alert-info");
-    $(".campo" + id+" .txt_obligar, .campo"+ id +" .modificar").val(0);
-    $(t).attr("onChange", "ActivarCheck(this, "+ id +")");
+    $(".campo" + id+" .lbl_campo, .campo" + id+" .lbl_campo_"+tipo).removeClass("alert-success").addClass("alert-danger");
+    $(".campo" + id+" .txt_obligar, .campo"+ id +" ."+tipo).val(0);
+
+    if( tipo != 'x' ){ //Solo si existe tipo
+        var datos = {
+            clasificador_tramite_id: $("#form_campo_asignacion #id").val(),
+            visualizar: $(".campo"+ id +" .visualizar").val(),
+            modificar: $(".campo"+ id +" .modificar").val(),
+            area_id: $(".campo"+ id +" .area_id").val(),
+            norden: $(".campo"+ id +" .norden").val(),
+            ruta_flujo_campo_id: $(".campo"+ id +" .ruta_flujo_campo_id").val(),
+            ruta_flujo_id: $(".campo"+ id +" .ruta_flujo_id").val()
+        };
+        Pois.AsignarCampo(datos);
+    }
 }
 
 CambioCampo = () => {
@@ -774,7 +1395,7 @@ validaEstratPei = function(){
 
 
 Close=function(){
-    $("#form_costo_personal .form-group, #form_campo .form-group").css("display","none");
+    $("#form_costo_personal .form-group, #form_campo .form-group, #form_campo_asignacion .form-group").css("display","none");
 }
 
 

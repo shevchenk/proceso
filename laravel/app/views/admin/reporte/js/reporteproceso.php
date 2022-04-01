@@ -108,7 +108,7 @@
             todayBtn: false
         });
 
-        slctGlobal.listarSlct('area', 'slct_area_id', 'multiple', null, {estado: 1, personal: 1});
+        slctGlobal.listarSlct('area', 'slct_area_id', 'multiple', null, {estado: 1, areapersona: 1});
 
         $("#generar").click(function () {
             var area_id = $('#slct_area_id').val();

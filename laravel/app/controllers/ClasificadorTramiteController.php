@@ -81,12 +81,23 @@ class ClasificadorTramiteController extends \BaseController
             $a      = new RutaFlujoCampoArea;
             $lista = $a->Listarcamposareas();
 
+            $r =    array(
+                        'rst'   => 1,
+                        'msj'   => 'Campos y Áreas listados',
+                        'data' => $lista
+                    );
+            $r['ruta_flujo_id'] = Input::get('ruta_flujo_id');
+            if( Input::has('norden') ){
+                $r['norden'] = Input::get('norden');
+            }
+
+            if( count($lista) == 0 ){
+                $r['rst'] = 2;
+                $r['msj'] = 'Falta diseñar y configurar Datos del Servicio';
+            }
+
             return Response::json(
-                array(
-                    'rst'   => 1,
-                    'msj'   => 'Campos y Áreas listados',
-                    'data' => $lista
-                )
+                $r
             );
         }
     }
@@ -109,6 +120,11 @@ class ClasificadorTramiteController extends \BaseController
 
     public function postAsignarcampos()
     {
+        ini_set('memory_limit', '512M');
+        ini_set('post_max_size', '64M');
+        //ini_set('upload_max_filesize', '64M');
+        ini_set('max_execution_time',300);
+
         if ( Request::ajax() ) {
             $a      = new RutaFlujoCampoArea;
             $a->Asignarcampos();
@@ -117,6 +133,21 @@ class ClasificadorTramiteController extends \BaseController
                 array(
                     'rst'   => 1,
                     'msj'   => 'Campos asignados y/o actualizados',
+                )
+            );
+        }
+    }
+
+    public function postAsignarcampo()
+    {
+        if ( Request::ajax() ) {
+            $a      = new RutaFlujoCampoArea;
+            $a->Asignarcampo();
+
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'msj'   => 'Campo asignado y/o actualizados',
                 )
             );
         }

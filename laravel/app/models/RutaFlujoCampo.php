@@ -67,6 +67,14 @@ class RutaFlujoCampo extends \Eloquent {
                 if( isset( $r['area_id'] ) ){
                     $join->where('rfca.area_id', '=', $r['area_id']);
                 }
+
+                if( isset( $r['norden'] ) ){
+                    $join->where('rfca.norden', '=', $r['norden']);
+                }
+
+                if ( isset( $r['ruta_flujo_id2'] ) ) {
+                    $join->where('rfca.ruta_flujo_id','=', $r['ruta_flujo_id2']);
+                }
                 $join->where('rfca.estado', '=', '1');
             })
             ->leftJoin('rutas_campos AS rc', function($join) use($r) {

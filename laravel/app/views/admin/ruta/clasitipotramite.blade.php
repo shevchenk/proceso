@@ -13,6 +13,7 @@
 @include( 'admin.js.slct_global' )
 <!--    @include( 'admin.ruta.js.ruta_ajax' )-->
 @include( 'admin.ruta.js.clasitipotramite' )
+@include( 'admin.ruta.css.clasitipotramite' )
 @include( 'admin.ruta.js.clasitipotramite_ajax' )
 @include( 'admin.mantenimiento.js.clasificadortramite' )
 @include( 'admin.mantenimiento.js.clasificadortramite_ajax' )
@@ -241,6 +242,7 @@
 
                 <form id="form_campo_asignacion" name="form_campo_asignacion" method="POST" action="">
                     <input class="form-control mant" type="hidden" name="id" id="id">
+                    <input class="form-control mant" type="hidden" name="ruta_flujo_id" id="ruta_flujo_id">
                     <div class="form-group" style="display: none">
                         <div class="box-header table-responsive">
                             <div class="col-xs-12">
@@ -252,47 +254,36 @@
                         </div>
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-sm-3">
-                                    <label class="form-label">Áreas:</label>
-                                    <select id='slct_areas' class='form-control' multiple></select>
-                                </div>
-
-                                <div class="col-sm-3">
-                                    <label class="form-label">Campos:</label>
-                                    <select id='slct_campos' class='form-control' multiple></select>
-                                </div>
-                                
                                 <div class="col-sm-4">
                                     <br>
-                                    <a class="btn btn-primary btn_asig_campo">
-                                       <i class="fa fa-plus fa-lg"></i>&nbsp;Asignar
-                                    </a>
                                     <a class="btn btn-warning btn-sm btn_close">
                                         <i class="fa fa-remove fa-lg"></i>&nbsp;Cerrar
                                     </a>
                                 </div>
                             </div>
                             <br><hr>
-                            <div class="row table-responsive">
+                            <div class="row table-responsive col-md-6 col-md-offset-2">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">Área</th>
-                                            <th class="text-center">Campo</th>
-                                            <th class="text-center">Modificar</th>
+                                            <th class="text-center">Paso | Área / Campo</th>
+                                            <th class="text-center" style="min-width:120px;">Visible</th>
+                                            <th class="text-center" style="min-width:120px;">Modificar</th>
                                         </tr>
                                     </thead>
                                     <tbody id="add_campo3"></tbody>
                                 </table>
                             </div>
                             <br><hr>
+                            <!--
                             <div class="row">
                                 <div class="col-sm-2">
                                     <a class="btn btn-success" id="btn_AsignarCampos">
                                        <i class="fa fa-save fa-lg"></i>&nbsp;Asignar Campos
                                     </a>
-                                </div>
+                                </div> 
                             </div>
+                            -->
 
                         </div><!-- /.box-body -->
                     </div>
