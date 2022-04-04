@@ -507,12 +507,6 @@ class RutaDetalleController extends \BaseController
             if ( Input::get('observacion') ) { 
                 //************************Archivado: Trámite que fue finalizado en cualquier de sus pasos//
                 //***********************Finalizado: Trámite que finaiizó correctamentte y no hay mas pasos******************//
-                if(Input::get('archivado')==2 && Input::has('archivado')){
-                    $rd['archivado']=2;
-                }
-                if( Input::get('finalizado')==2){
-                    $rd['archivado']=2;
-                }
                 $hoy = date('Y-m-d H:i:s');
                 $rd['dtiempo_final']= $hoy;
                 $rd['tipo_respuesta_id']= 1;
@@ -527,19 +521,44 @@ class RutaDetalleController extends \BaseController
                 $rd['usuario_updated_at']= Auth::user()->id;
                 $rd->save();
 
-                if($rd['archivado']==2){
-                        DB::table('rutas_detalle AS rd')
-                        ->where('rd.ruta_id', '=', $rd->ruta_id)
-                        ->whereRaw('dtiempo_final is null')
-                        ->whereRaw('fecha_inicio is null')
-                        ->where('rd.condicion', '=', '0')
-                        ->where('rd.estado', '=', '1')
-                        ->orderBy('rd.norden','ASC')
-                        ->update(array(
-                            'condicion' => 6,
-                            'usuario_updated_at' => Auth::user()->id
-                                )
-                        );
+                if($rd['archivado']==1 OR Input::get('finalizado')==2){ //Finalización
+                    DB::table('rutas_detalle AS rd')
+                    ->where('rd.ruta_id', '=', $rd->ruta_id)
+                    ->whereRaw('dtiempo_final is null')
+                    ->whereRaw('fecha_inicio is null')
+                    ->where('rd.condicion', '=', '0')
+                    ->where('rd.estado', '=', '1')
+                    ->orderBy('rd.norden','ASC')
+                    ->update(array(
+                        'condicion' => 6,
+                        'usuario_updated_at' => Auth::user()->id
+                            )
+                    );
+                }
+                elseif( $rd['archivado']==2 ){ //Anulación
+                    $r['estado']=0;
+                    $r['usuario_updated_at']=Auth::user()->id;
+                    $r->save();
+
+                    $tr=TablaRelacion::find($r->tabla_relacion_id);
+                    $tr['estado']=0;
+                    $tr['usuario_updated_at']=Auth::user()->id;
+                    $tr->save();
+
+                    if( isset($tr->tramite_id) AND trim($tr->tramite_id) != '' ){
+                        $tra = Tramite::find($tr->tramite_id);
+                        $tra->estado = 0;
+                        $tra->usuario_updated_at = Auth::user()->id;
+                        $tra->save();
+
+                        if( isset($tra->pretramite_id) AND trim($tra->pretramite_id) != ''){
+                            $ptra = Pretramite::find($tra->pretramite_id);
+                            $ptra->estado_atencion = 2;
+                            $ptra->observacion = $ptra->observacion." <b>( Trámite anulado por proceso )</b>";
+                            $ptra->usuario_updated_at = Auth::user()->id;
+                            $ptra->save();
+                        }
+                    }
                 }
                 else{
                     $parametros=array(

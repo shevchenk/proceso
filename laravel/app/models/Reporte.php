@@ -276,7 +276,7 @@ class Reporte extends Eloquent
                 LEFT JOIN tramites tm ON tm.id = tr.tramite_id
                 LEFT JOIN personas ptm ON ptm.id = tm.persona_id 
                 LEFT JOIN empresas etm ON etm.id = tm.empresa_id 
-                LEFT JOIN areas atm ON atm.id = tm.area_id
+                LEFT JOIN areas atm ON atm.id = tm.area_id_sol
                 LEFT JOIN tipo_solicitante tstm ON tstm.id = tm.tipo_solicitante_id
                 WHERE r.estado=1 
                 AND rd.fecha_inicio<=CURRENT_TIMESTAMP()
@@ -393,7 +393,7 @@ class Reporte extends Eloquent
                 LEFT JOIN tramites tm ON tm.id = tr.tramite_id
                 LEFT JOIN personas ptm ON ptm.id = tm.persona_id 
                 LEFT JOIN empresas etm ON etm.id = tm.empresa_id 
-                LEFT JOIN areas atm ON atm.id = tm.area_id
+                LEFT JOIN areas atm ON atm.id = tm.area_id_sol
                 LEFT JOIN tipo_solicitante tstm ON tstm.id = tm.tipo_solicitante_id
                 ".$array['left']."
                 WHERE r.estado=1 

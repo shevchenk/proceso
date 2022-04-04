@@ -75,6 +75,19 @@ class ClasificadorTramiteController extends \BaseController
         }
     }
 
+    public function postActualizarrutadetalle()
+    {
+        if ( Request::ajax() ) {
+            RutaFlujoDetalle::FinalizarAnular();
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'msj'   => 'Evento actualizado!'
+                )
+            );
+        }
+    }
+
     public function postListarcamposareas()
     {
         if ( Request::ajax() ) {

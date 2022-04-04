@@ -382,14 +382,15 @@ mostrarDetalleHTML=function(datos){
     }
     // --
     //***************************Mostrar archivado**********************************/
-    if(datos.archivado==1){
+    /*if(datos.archivado==1){
         $(".sectionarchivado").css("display","");
         slctGlobalHtml('slct_archivado','simple');
         
     }else{
-        $(".sectionarchivado").css("display","none");
-        $('#slct_archivado').multiselect('destroy');
     }
+    */
+    $(".sectionarchivado").css("display","none");
+    $('#slct_archivado').multiselect('destroy');
 
     $(".motivoretorno").hide();
     $("#motivo_retorno").text('');

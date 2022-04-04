@@ -983,7 +983,7 @@ class ReporteController extends BaseController
                 LEFT JOIN tramites tm ON tm.id = tr.tramite_id
                 LEFT JOIN personas ptm ON ptm.id = tm.persona_id 
                 LEFT JOIN empresas etm ON etm.id = tm.empresa_id 
-                LEFT JOIN areas atm ON atm.id = tm.area_id
+                LEFT JOIN areas atm ON atm.id = tm.area_id_sol
                 LEFT JOIN tipo_solicitante tstm ON tstm.id = tm.tipo_solicitante_id
                 LEFT JOIN tipos_respuesta rsp ON rd.tipo_respuesta_id=rsp.id
                 LEFT JOIN tipos_respuesta_detalle rspd ON rd.tipo_respuesta_detalle_id=rspd.id

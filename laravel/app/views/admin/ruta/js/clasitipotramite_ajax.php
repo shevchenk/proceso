@@ -75,8 +75,11 @@ var Pois={
         });
 
     },
-    ListarCamposAreas:function(evento){
-        var datos = $("#form_campo_asignacion").serialize().split("txt_").join("").split("slct_").join("");
+    ListarCamposAreas:function(evento, datos){
+        if( typeof(datos) == 'undefined' ){
+            datos = $("#form_campo_asignacion").serialize().split("txt_").join("").split("slct_").join("");
+        }
+        console.log(datos);
         var accion = "clasificadortramite/listarcamposareas";
         
         $.ajax({
@@ -91,7 +94,12 @@ var Pois={
             success : function(obj) {
                 $(".overlay, .loading-img").remove();
                 if(obj.rst==1){
-                    evento(obj.data, obj.ruta_flujo_id);
+                    if( typeof(datos.sub) == 'undefined' ){
+                        evento(obj.data, obj.ruta_flujo_id);
+                    }
+                    else{
+                        evento(obj.data, obj.norden, obj.ruta_flujo_id);
+                    }
                     msjG.mensaje('success',obj.msj,4000);
                 } else {
                     msjG.mensaje('warning',obj.msj,4000);
@@ -476,6 +484,33 @@ var Pois={
                 msjG.mensaje('danger','<b>Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.',4000);
             }
         });
+    },
+    ActualizarRutaDetalle:function(datos){
+        var accion = "clasificadortramite/actualizarrutadetalle";
+        
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay, .loading-img").remove();
+                if(obj.rst==1){
+                    msjG.mensaje('success',obj.msj,4000);
+                } else {
+                    msjG.mensaje('warning',obj.msj,4000);
+                }
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                msjG.mensaje('danger','<b>Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.',4000);
+            }
+        });
+
     },
 };
 </script>

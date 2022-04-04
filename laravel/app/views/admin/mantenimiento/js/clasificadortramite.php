@@ -27,6 +27,7 @@ $(document).ready(function() {
                 e          :'1|  |#DCE6F1',
                 f          :'1|  |#DCE6F1',
                 g          :'1|  |#DCE6F1',
+                h          :'1|  |#DCE6F1',
              };
 
     var resG1=dataTableG.CargarCab(idG1);
@@ -161,11 +162,17 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
 
     if(typeof(fn)!='undefined' && fn.col==8){
         var grupo='';
-        grupo+= '<span id="'+row.id+'" title="Requisitos" onClick="CargarCostoPersonal(\''+row.id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i></span>';
+        grupo+= '<span id="'+row.id+'" title="(Finalizar / Anular) Proceso" onClick="FinalizarAnular(\''+row.id+'\',\''+row.ruta_flujo_id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="fa fa-cog"></i></span>';
         return grupo;
     }
 
     if(typeof(fn)!='undefined' && fn.col==9){
+        var grupo='';
+        grupo+= '<span id="'+row.id+'" title="Requisitos" onClick="CargarCostoPersonal(\''+row.id+'\',\''+row.nombre+'\',this)" data-estado="'+row.estado+'" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i></span>';
+        return grupo;
+    }
+
+    if(typeof(fn)!='undefined' && fn.col==10){
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" onClick="activarEF('+row.id+')" data-estado="'+row.estado_final+'" class="btn btn-danger">Pendiente</span>';
         if(row.estado_final==1){
@@ -174,7 +181,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         return estadohtml;
     }
 
-    if(typeof(fn)!='undefined' && fn.col==10){
+    if(typeof(fn)!='undefined' && fn.col==11){
         var estadohtml='<a class="form-control btn btn-primary" onclick="BtnEditar(this,'+row.id+')"><i class="fa fa-lg fa-edit"></i></a>';
         return estadohtml;
     }

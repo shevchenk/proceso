@@ -89,71 +89,71 @@ class RutaFlujoCampoArea extends \Eloquent {
         $r = Request::all();
         $r['estado'] = 1;
         
-        /*$campos=
-            DB::table('rutas_flujo_campos_areas')
-            ->select('id', 'area_id', 'ruta_flujo_campo_id', 'modificar')
-            ->where( 
-                function($query) use( $r ){
-                    $id = $r['id'];
-                    if ( isset( $r['estado'] ) ) {
-                        $query->where('estado','=','1');
-                    }
-
-                    $query->where('clasificador_tramite_id', '=', $id);
-                }
-            )
-            ->orderBy('area_id', 'ruta_flujo_campo_id')
-            ->get();
-        
-        $sql = "SELECT rfd.area_id, rfd.norden, rfd.archivado, rfd.detalle, GROUP_CONCAT(rfdm.ruta_flujo_id2) sub, rfc.id ruta_flujo_campo_id, rfc.campo, rfc.orden, rfc.tipo,
-                rfca.id, IFNULL(rfca.estado,0) estado, rfca.modificar
-                FROM rutas_flujo_detalle rfd 
-                LEFT JOIN rutas_flujo_detalle_micro rfdm ON rfdm.ruta_flujo_id = rfd.ruta_flujo_id AND rfdm.norden = rfd.norden AND rfdm.estado = 1
-                INNER JOIN rutas_flujo_campos rfc ON rfc.ruta_flujo_id = rfd.ruta_flujo_id AND rfc.clasificador_tramite_id = 428 AND rfc.estado = 1
-                LEFT JOIN rutas_flujo_campos_areas rfca ON rfca.ruta_flujo_campo_id = rfc.id AND rfca.clasificador_tramite_id = 428 AND rfca.area_id = rfd.area_id 
-                -- AND rfca.norden = rfd.norden
-                WHERE rfd.estado = 1
-                GROUP BY rfd.id, rfc.id 
-                ORDER BY rfd.norden, rfc.orden";*/
-        $campos = DB::table('rutas_flujo_detalle AS rfd')
-                    ->join('areas AS a', function($join){
-                        $join->on('a.id', '=', 'rfd.area_id');
-                    })
-                    ->leftJoin('rutas_flujo_detalle_micro AS rfdm', function($join){
-                        $join->on('rfdm.ruta_flujo_id', '=', 'rfd.ruta_flujo_id')
-                        ->on('rfdm.norden', '=', 'rfd.norden')
-                        ->where('rfdm.estado', '=', '1');
-                    })
-                    ->leftJoin('rutas_flujo AS rf', function($join){
-                        $join->on('rf.id', '=', 'rfdm.ruta_flujo_id2');
-                    })
-                    ->leftJoin('flujos AS f', function($join){
-                        $join->on('f.id', '=', 'rf.flujo_id');
-                    })
-                    ->join('rutas_flujo_campos AS rfc', function($join) use($r){
-                        $join->where('rfc.clasificador_tramite_id', '=', $r['id'])
-                        ->where('rfc.estado', '=', '1');
-                    })
-                    ->leftJoin('rutas_flujo_campos_areas AS rfca', function($join) use($r){
-                        $join->on('rfca.ruta_flujo_campo_id', '=', 'rfc.id')
-                        ->on('rfca.area_id', '=', 'rfd.area_id')
-                        ->where('rfca.ruta_flujo_id', '=', $r['ruta_flujo_id'])
-                        ->where('rfca.clasificador_tramite_id', '=', $r['id']);
-                        if( !Input::has('norden') ){
-                            $join->on('rfca.norden', '=', 'rfd.norden');
-                        }
-                        else{
-                            $join->whereExp("rfca.norden", "=", "CONCAT( '".$r['norden'].".',LPAD(rfd.norden, 2, '0') )");
-                        }
-                    })
-                    ->select('rfd.id AS ruta_flujo_detalle_id', 'rfd.area_id', 'a.nombre AS area', 'rfd.norden', 'rfd.archivado', 'rfd.detalle', 
-                    DB::raw('GROUP_CONCAT( f.nombre, "^", rfdm.ruta_flujo_id2 SEPARATOR "^^") AS sub'), 'rfc.id AS ruta_flujo_campo_id', 
-                    'rfc.campo', 'rfc.orden', 'rfc.tipo', 'rfca.id', DB::raw('IFNULL(rfca.estado,0) AS estado'), 'rfca.modificar')
-                    ->where('rfd.estado', '=', '1')
-                    ->where('rfd.ruta_flujo_id', '=', $r['ruta_flujo_id'])
-                    ->groupBy('rfd.id', 'rfc.id')
-                    ->orderByRaw('rfd.norden ASC, rfc.orden ASC')
-                    ->get();
+        if( Input::has('soloareas') ){
+            $campos = DB::table('rutas_flujo_detalle AS rfd')
+                        ->join('areas AS a', function($join){
+                            $join->on('a.id', '=', 'rfd.area_id');
+                        })
+                        ->leftJoin('rutas_flujo_detalle_micro AS rfdm', function($join){
+                            $join->on('rfdm.ruta_flujo_id', '=', 'rfd.ruta_flujo_id')
+                            ->on('rfdm.norden', '=', 'rfd.norden')
+                            ->where('rfdm.estado', '=', '1');
+                        })
+                        ->leftJoin('rutas_flujo AS rf', function($join){
+                            $join->on('rf.id', '=', 'rfdm.ruta_flujo_id2');
+                        })
+                        ->leftJoin('flujos AS f', function($join){
+                            $join->on('f.id', '=', 'rf.flujo_id');
+                        })
+                        ->select('rfd.id AS ruta_flujo_detalle_id', 'rfd.area_id', 'a.nombre AS area', 'rfd.norden', 'rfd.archivado', 'rfd.detalle', 
+                        DB::raw('GROUP_CONCAT( f.nombre, "^", rfdm.ruta_flujo_id2 SEPARATOR "^^") AS sub'))
+                        ->where('rfd.estado', '=', '1')
+                        ->where('rfd.ruta_flujo_id', '=', $r['ruta_flujo_id'])
+                        ->groupBy('rfd.id')
+                        ->orderByRaw('rfd.norden ASC')
+                        ->get();
+        }
+        else{
+            $campos = DB::table('rutas_flujo_detalle AS rfd')
+                        ->join('areas AS a', function($join){
+                            $join->on('a.id', '=', 'rfd.area_id');
+                        })
+                        ->leftJoin('rutas_flujo_detalle_micro AS rfdm', function($join){
+                            $join->on('rfdm.ruta_flujo_id', '=', 'rfd.ruta_flujo_id')
+                            ->on('rfdm.norden', '=', 'rfd.norden')
+                            ->where('rfdm.estado', '=', '1');
+                        })
+                        ->leftJoin('rutas_flujo AS rf', function($join){
+                            $join->on('rf.id', '=', 'rfdm.ruta_flujo_id2');
+                        })
+                        ->leftJoin('flujos AS f', function($join){
+                            $join->on('f.id', '=', 'rf.flujo_id');
+                        })
+                        ->join('rutas_flujo_campos AS rfc', function($join) use($r){
+                            $join->where('rfc.clasificador_tramite_id', '=', $r['id'])
+                            ->where('rfc.estado', '=', '1');
+                        })
+                        ->leftJoin('rutas_flujo_campos_areas AS rfca', function($join) use($r){
+                            $join->on('rfca.ruta_flujo_campo_id', '=', 'rfc.id')
+                            ->on('rfca.area_id', '=', 'rfd.area_id')
+                            ->where('rfca.ruta_flujo_id', '=', $r['ruta_flujo_id'])
+                            ->where('rfca.clasificador_tramite_id', '=', $r['id']);
+                            if( !Input::has('norden') ){
+                                $join->on('rfca.norden', '=', 'rfd.norden');
+                            }
+                            else{
+                                $join->whereExp("rfca.norden", "=", "CONCAT( '".$r['norden'].".',LPAD(rfd.norden, 2, '0') )");
+                            }
+                        })
+                        ->select('rfd.id AS ruta_flujo_detalle_id', 'rfd.area_id', 'a.nombre AS area', 'rfd.norden', 'rfd.archivado', 'rfd.detalle', 
+                        DB::raw('GROUP_CONCAT( f.nombre, "^", rfdm.ruta_flujo_id2 SEPARATOR "^^") AS sub'), 'rfc.id AS ruta_flujo_campo_id', 
+                        'rfc.campo', 'rfc.orden', 'rfc.tipo', 'rfca.id', DB::raw('IFNULL(rfca.estado,0) AS estado'), 'rfca.modificar')
+                        ->where('rfd.estado', '=', '1')
+                        ->where('rfd.ruta_flujo_id', '=', $r['ruta_flujo_id'])
+                        ->groupBy('rfd.id', 'rfc.id')
+                        ->orderByRaw('rfd.norden ASC, rfc.orden ASC')
+                        ->get();
+        }
                 
         return $campos;
     }
