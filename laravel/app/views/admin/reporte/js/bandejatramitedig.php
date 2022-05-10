@@ -561,11 +561,21 @@ mostrarDetalleHTML=function(datos){
                                 d_foto.substring((cant_foto-3), cant_foto) == 'gif' ||
                                 d_foto.substring((cant_foto-4), cant_foto) == 'jpeg' )
                                 foto = d_foto;
+                            else if ( d_foto.substring((cant_foto-3), cant_foto) == 'xls' || d_foto.substring((cant_foto-4), cant_foto) == 'xlsx' )
+                                foto = 'Config/excel.jpg';
+                            else if ( d_foto.substring((cant_foto-3), cant_foto) == 'pdf' )
+                                foto = 'Config/pdf.jpg';
+                            else if ( d_foto.substring((cant_foto-3), cant_foto) == 'doc' || d_foto.substring((cant_foto-4), cant_foto) == 'docx' )
+                                foto = 'Config/word.png';
+                            else if ( d_foto.substring((cant_foto-3), cant_foto) == 'ppt' || d_foto.substring((cant_foto-4), cant_foto) == 'pptx' )
+                                foto = 'Config/ppt.png';
+                            else if ( d_foto.substring((cant_foto-3), cant_foto) == 'txt' )
+                                foto = 'Config/txt.jpg';
                             else
-                                foto = 'img/admin/ruta_detalle/marca_doc.jpg';
+                                foto = 'Config/default.png';
 
                             html_pd += '<div class="col-md-1" id="ad'+index+'" style="padding-left: 0px; padding-right: 10px;">'+
-                                            '<a href="'+d_foto+'" target="_blank"><img src="'+foto+'" alt=""  border="0" class="img-responsive foto_desmonte"></a>';
+                                            '<a href="'+d_foto+'" target="_blank"><img src="'+foto+'" alt=""  border="0" class="img-responsive foto_desmonte" style="height: 120px !important;"></a>';
                             
                             if($('#txt_orden').val() == data.norden)
                                 html_pd += '<div class="text-center"><button type="button" id="'+index+'" onclick="eliminarArchivoDes(this.id, \''+foto+'\')" class="btn btn-danger btn-xs"><span class="fa fa-trash fa-lg" aria-hidden="true"></span> Eliminar</button></div>';
@@ -573,7 +583,7 @@ mostrarDetalleHTML=function(datos){
                             html_pd += '</div>';
                         }
                     });
-                    $("#d_ver_fotos").html(html_pd);                        
+                    $("#d_ver_fotos").html(html_pd);
                 }
             });
             //$("#d_ver_fotos").html(html_pd);       
@@ -1032,11 +1042,6 @@ guardarTodo=function(){
         alerta = true;
     }
 
-    if( $("#btn_siguiente_rd").is(':visible') && $('#form_ruta_detalle #slct_micro option').length > 1 && alerta == false ){
-        msjG.mensaje("warning","Eliga 1 sub proceso y click en Activar Sub Proceso",5000);
-        alerta = true;
-    }
-
     $("#t_detalle_verbo input[type='checkbox']").each(
         function( index ) { 
             if ( $(this).is(':checked') && alerta==false ) {
@@ -1128,8 +1133,13 @@ guardarTodo=function(){
         var ultimo=Validar.VerificarUltimopaso({ruta_id:$('#ruta_id').val()});
         if(ultimo.rst==1){$("#form_ruta_detalle #txt_finalizado").val(2);}
         else{$("#form_ruta_detalle #txt_finalizado").val(0);}
+
+        var msj = 'Por favor confirmar para actualizar su información';
+        if( $("#btn_siguiente_rd").is(':visible') && $('#form_ruta_detalle #slct_micro option').length > 1 && alerta == false ){
+           msj= "Tiene sub proceso sin seleccionar!, desea continuar de todas formas para actualizar su información?";
+        }
         
-        sweetalertG.confirm("¿Desea Continuar?", ultimo.msj+"Por favor confirmar para actualizar su información", function(){
+        sweetalertG.confirm("¿Desea Continuar?", ultimo.msj+msj, function(){
             if(validacheck==0 || $("#slct_tipo_respuesta").val()!=''){
                 $('#slct_tipo_visualizacion').multiselect('deselectAll');
                 $('#slct_tipo_visualizacion').multiselect('refresh');
@@ -1143,8 +1153,7 @@ guardarTodo=function(){
 }
 
 // ARCHIVOS PROCESO DESMONTE
-guardarArhivoDesmonte = function(){    
-
+guardarArhivoDesmonte = function(){
     var datos=$("#form_ruta_detalle").serialize().split("txt_").join("").split("slct_").join("").split("_modal").join("");
     Validar.guardarArhivoDesmonte(mostrarDetallle, $("#form_ruta_detalle>#ruta_detalle_id").val(), datos); 
     $("#tb_darchivo").html(''); 

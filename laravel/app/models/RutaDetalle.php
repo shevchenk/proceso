@@ -416,7 +416,7 @@ class RutaDetalle extends Eloquent
     {
         $sql =" SELECT rd.archivo, rd.norden
                     FROM rutas_detalle rd  ";
-        $sql .=" WHERE rd.estado=1 AND rd.archivo!='' ".
+        $sql .=" WHERE rd.estado=1 AND rd.archivo!='' AND rd.condicion = 0 ".
                 $array['ruta_id'].
                 $array['norden'];
         $sql .=" GROUP BY rd.norden

@@ -344,7 +344,7 @@ class TramiteController extends BaseController {
 							if( Input::has('responsable') AND trim(Input::get('responsable'))!='' ){
 								$tablaRelacion['responsable']=Input::get('responsable');
 							}
-							$tablaRelacion['sumilla']=Input::get('sumilla');
+							$tablaRelacion['sumilla']=$tramite->observacion;
 
 							$tablaRelacion['persona_autoriza_id']=Input::get('id_autoriza');
 							$tablaRelacion['persona_responsable_id']=Input::get('id_responsable');
@@ -456,15 +456,18 @@ class TramiteController extends BaseController {
 								/*if($rd->norden==1 or $rd->norden==2 or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){*/
 								if($rd->norden==1 or ($rd->norden==2 AND $activarsegundo==1) or ($rd->norden>1 and $validaactivar==0 and $rd->estado_ruta==2) ){	
 									//if($rd->norden==1 && $rd->area_id == 3){ //If solo para mesa de partes la condicional de ($rd->norden==2 AND $activarsegundo==1) fue agregado tb
-									if($rd->norden==1 && $areaG->mesa_parte == 1){ //If solo para mesa de partes la condicional de ($rd->norden==2 AND $activarsegundo==1) fue agregado tb
+									if( $rd->norden==1 ){ // && $areaG->mesa_parte == 1 || If solo para mesa de partes la condicional de ($rd->norden==2 AND $activarsegundo==1) fue agregado tb
 										$rutaDetalle['dtiempo_final']=date("Y-m-d H:i:s");
 										$rutaDetalle['tipo_respuesta_id']=1;
 										$rutaDetalle['tipo_respuesta_detalle_id']=1;
 										$rutaDetalle['observacion']="";
-										$rutaDetalle['usuario_updated_at']=Auth::user()->id;
-										$rutaDetalle['updated_at']=date("Y-m-d H:i:s");
 										$activarsegundo=1;
 									}
+									elseif($rd->norden==2 && $activarsegundo==1){ 
+										$rutaDetalle['ruta_detalle_id_ant']=$ruta_detalle_id_aux;
+									}
+									$rutaDetalle['updated_at']=date("Y-m-d H:i:s");
+									$rutaDetalle['usuario_updated_at']=Auth::user()->id;
 									$rutaDetalle['fecha_inicio']=date("Y-m-d H:i:s");
 								}
 								else{
@@ -472,6 +475,7 @@ class TramiteController extends BaseController {
 								}
 								$rutaDetalle['usuario_created_at']= Auth::user()->id;
 								$rutaDetalle->save();
+								$ruta_detalle_id_aux =$rutaDetalle->id;
 								/**************CARTA DESGLOSE*********************************/
 								$cartaDesglose=array();
 								if( Input::has('carta_id') ){
@@ -587,10 +591,10 @@ class TramiteController extends BaseController {
 													$rutaDetalleVerbo->save();
 
 													//if($rd->norden==1 && $rd->area_id == 3){ // If solo por el tema de mesa de partes
-													if($rd->norden==1 && $areaG->mesa_parte == 1){ // If solo por el tema de mesa de partes
+													if( $rd->norden==1 ){ // && $areaG->mesa_parte == 1 || If solo por el tema de mesa de partes
 														if( $rdv->verbo_id == 1 ){
 															$documentoG = Documento::where('area_id', $areaG->id)->first();
-															$DocDigitalAuto = $this->DocDigitalAuto( $pretramite->ruta_archivo, $areaG->id, $documentoG->id );
+															$DocDigitalAuto = $this->DocDigitalAuto( $pretramite->ruta_archivo, $areaG->id, $rdv->documento_id );
 															$rutaDetalleVerbo['documento']= $DocDigitalAuto->titulo;
 															$rutaDetalleVerbo['doc_digital_id']= $DocDigitalAuto->id;
 

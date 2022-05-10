@@ -15,10 +15,12 @@ $(document).ready(function() {
     */
     var datos={estado:1};
     slctGlobal.listarSlct('tipotramite','slct_tipo_tramite','simple',null,datos);
+    data = {estado:1, tipo:'Ingreso', solicitante: 'Interno'};
+    slctGlobal.listarSlct('documento','slct_documento_id','simple',null,data); 
     slctGlobalHtml('slct_estado_clasificador, #slct_unidad_documentaria','simple');
     var idG1={  tipo_tramite        :'3|TIpoTramite|#DCE6F1', //#DCE6F1
                 nombre        :'onBlur|Nombre|#DCE6F1', //#DCE6F1
-                unidoc :'4|Unidad documentaria|#DCE6F1||unidad_documentaria', //#DCE6F1
+                documento :'3|Documento|#DCE6F1', //#DCE6F1
                 estado        :'2|Estado|#DCE6F1', //#DCE6F1
                 a          :'1|  |#DCE6F1',
                 b          :'1|  |#DCE6F1',

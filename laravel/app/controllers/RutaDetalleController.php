@@ -298,6 +298,7 @@ class RutaDetalleController extends \BaseController
             
             $rd_ant = RutaDetalle::find(Input::get('ruta_detalle_id'));
             $motivo_retorno = Input::get('motivo');
+            
             if(Input::has('ruta_detalle_id') and  $rd_ant->ruta_detalle_id_ant){
                 /*creating new norden to actual rd */
                 DB::beginTransaction();
@@ -376,7 +377,7 @@ class RutaDetalleController extends \BaseController
                 $rst=1;
                  DB::commit();
             }else{
-                $msj='No se logró retornar,Comunicarse con la Gerencia de Modernización';
+                $msj='No se logró retornar. No cuenta con el identificador del paso anterior';
                 $rst=2;
             }
             return Response::json(array(
@@ -521,21 +522,7 @@ class RutaDetalleController extends \BaseController
                 $rd['usuario_updated_at']= Auth::user()->id;
                 $rd->save();
 
-                if($rd['archivado']==1 OR Input::get('finalizado')==2){ //Finalización
-                    DB::table('rutas_detalle AS rd')
-                    ->where('rd.ruta_id', '=', $rd->ruta_id)
-                    ->whereRaw('dtiempo_final is null')
-                    ->whereRaw('fecha_inicio is null')
-                    ->where('rd.condicion', '=', '0')
-                    ->where('rd.estado', '=', '1')
-                    ->orderBy('rd.norden','ASC')
-                    ->update(array(
-                        'condicion' => 6,
-                        'usuario_updated_at' => Auth::user()->id
-                            )
-                    );
-                }
-                elseif( $rd['archivado']==2 ){ //Anulación
+                if( $rd['archivado']==2 ){ //Anulación
                     $r['estado']=0;
                     $r['usuario_updated_at']=Auth::user()->id;
                     $r->save();
@@ -559,6 +546,20 @@ class RutaDetalleController extends \BaseController
                             $ptra->save();
                         }
                     }
+                }
+                elseif($rd['archivado']==1 OR Input::get('finalizado')==2){ //Finalización
+                    DB::table('rutas_detalle AS rd')
+                    ->where('rd.ruta_id', '=', $rd->ruta_id)
+                    ->whereRaw('dtiempo_final is null')
+                    ->whereRaw('fecha_inicio is null')
+                    ->where('rd.condicion', '=', '0')
+                    ->where('rd.estado', '=', '1')
+                    ->orderBy('rd.norden','ASC')
+                    ->update(array(
+                        'condicion' => 6,
+                        'usuario_updated_at' => Auth::user()->id
+                            )
+                    );
                 }
                 else{
                     $parametros=array(

@@ -176,6 +176,11 @@ $(document).ready(function() {
     });
 });
 
+eventoSlctGlobalSimple=function(slct,valores){
+    if( slct=="slct_tipo_respuesta" ){
+    }
+}
+
 ValidarDoc = ()=> {
     valor = $("#cbo_tipodoc option:selected").attr('data-val');
     $(".tipo_documento").hide();

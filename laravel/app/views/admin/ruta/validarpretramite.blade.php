@@ -409,7 +409,7 @@ td, th{
                             <div class="col-sm-12 observacion format">
                               <div class="row form-group">
                                 <div class="col-sm-8">
-                                  <label style="color:red">OBSERVACIONES (*)</label>
+                                  <label style="color:red">SUMILLA (*)</label>
                                   <textarea class="form-control" id="txt_observaciones" name="txt_observaciones" rows="4"></textarea>
                                 </div>
                                 <div class="col-md-4">
