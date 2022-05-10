@@ -384,7 +384,7 @@ poblarDetalle = function(data){
 
             masterG.SelectImagen(result.ruta_archivo,"#pdf_img","#pdf_href");
 
-            var data = {area_id: area_id_GVP, ruta_flujo_id: result.ruta_flujo_id, ruta_id: 0}
+            var data = {area_id: area_id_GVP, ruta_flujo_id: result.ruta_flujo_id, ruta_id: 0, norden: 1}
             Bandeja.mostrarCampos(data,mostrarCamposHTML);
         }else{
             document.querySelector('.content-body').classList.add('hidden');

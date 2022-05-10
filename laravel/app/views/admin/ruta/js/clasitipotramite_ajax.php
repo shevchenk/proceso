@@ -76,12 +76,16 @@ var Pois={
 
     },
     ListarCamposAreas:function(evento, datos){
+        var valida = 0;
         if( typeof(datos) == 'undefined' ){
             datos = $("#form_campo_asignacion").serialize().split("txt_").join("").split("slct_").join("");
         }
-        console.log(datos);
+        else{
+            if(datos.sub == 1){
+                valida = 1;
+            }
+        }
         var accion = "clasificadortramite/listarcamposareas";
-        
         $.ajax({
             url         : accion,
             type        : 'POST',
@@ -94,7 +98,7 @@ var Pois={
             success : function(obj) {
                 $(".overlay, .loading-img").remove();
                 if(obj.rst==1){
-                    if( typeof(datos.sub) == 'undefined' ){
+                    if( valida == 0 ){
                         evento(obj.data, obj.ruta_flujo_id);
                     }
                     else{
