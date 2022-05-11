@@ -68,6 +68,14 @@ class DocumentoController extends \BaseController
                 }
             }
 
+            $valida = strpos($_SERVER['HTTP_REFERER'], 'unidaddocumentaria');
+            if( $valida !== false ){
+                $array['where'].=" AND doc.solicitante='Interno'";
+            }
+            else{
+                $array['where'].=" AND doc.solicitante!='Interno'";
+            }
+
 
             $array['order']=" ORDER BY doc.nombre ";
 
