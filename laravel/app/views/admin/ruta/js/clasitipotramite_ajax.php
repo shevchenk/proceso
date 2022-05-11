@@ -74,7 +74,7 @@ var Pois={
             }
         });
 
-    },
+    }, 
     ListarCamposAreas:function(evento, datos){
         var valida = 0;
         if( typeof(datos) == 'undefined' ){

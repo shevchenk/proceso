@@ -24,10 +24,7 @@
           <div class="form-group">
             <label class="control-label">Unidad Documentaria:
             </label>
-            <select class="form-control" name="slct_unidad_documentaria" id="slct_unidad_documentaria">
-                <option value=''>Seleccione</option>
-                <option value='EX'>EXPEDIENTE</option>
-                <option value='DS'>DOCUMENTO SIMPLE</option>
+            <select class="form-control" name="slct_documento_id" id="slct_documento_id">
             </select>
           </div>
           <div class="form-group">

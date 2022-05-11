@@ -128,7 +128,7 @@ $(document).ready(function() {
         $("#cbo_tipotramite, #cbo_tipodoc").multiselect('destroy');
         data = {estado:1, tipo:'Salida', solicitante: solicitante};
         slctGlobal.listarSlct('tipotramite','cbo_tipotramite','simple',null,data);
-        data = {estado:1, tipo:'Ingreso', solicitante: solicitante};
+        data = {estado:1, tipo:'Ingreso', solicitante: 'cliente'};
         slctGlobal.listarSlct('documento','cbo_tipodoc','simple',null,data);
 
     });
@@ -192,6 +192,10 @@ CargarPreTramites = function(){
     Bandeja.MostrarPreTramites(data,HTMLPreTramite);
 }
 */
+
+eventoSlctGlobalSimple=function(slct,valores){
+    
+}
 
 ValidarDoc = ()=> {
     valor = $("#cbo_tipodoc option:selected").attr('data-val');

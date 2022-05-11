@@ -182,15 +182,29 @@ class TramiteController extends BaseController {
 			
 				if( $pretramite->estado_atencion == 1 ){
 					$clasificadorTramite = ClasificadorTramite::find($data['txt_ctramite']);
-					if( $clasificadorTramite->unidad_documentaria == '' ){
+					if( $clasificadorTramite->documento_id == '' ){
 						DB::rollback();
 						return  array(
 							'rst'=>2,
-							'msj'=>'El servicio configurado no cuenta con unidad documentaria asignada',
+							'msj'=>'El servicio configurado no cuenta con documento asignado',
 						);
 					}
-					$codigo = Pretramite::Correlativo($clasificadorTramite->unidad_documentaria);
+					$codigo = Pretramite::Correlativo($clasificadorTramite->documento_id);
+					$documento = DB::table('documentos')
+								->select('nombre', 'nemonico')
+								->where('id',$clasificadorTramite->documento_id)
+								->first();
 					//$codigo->correlativo = '000075'; //para probar correlativo
+					$titulo = $codigo->correlativo;
+					$buscar = array('@@@@@@','@@@@@','@@@@','@@@','@@','@','####','##');
+					$reemplazar = array( str_pad( $titulo, 6, "0", STR_PAD_LEFT ), str_pad( $titulo, 5, "0", STR_PAD_LEFT ),
+						str_pad( $titulo, 4, "0", STR_PAD_LEFT ), str_pad( $titulo, 3, "0", STR_PAD_LEFT ),
+						str_pad( $titulo, 2, "0", STR_PAD_LEFT ), str_pad( $titulo, 1, "0", STR_PAD_LEFT ),
+						date("Y"), date("y")
+					);
+					$titulofinal = str_replace( $buscar, $reemplazar, $documento->nemonico );
+					/*******************************************************************************/
+					$pretramite->titulo = $titulofinal;
 					$pretramite->correlativo = $codigo->correlativo;
 					$pretramite->año = date("Y");
 					
@@ -208,7 +222,14 @@ class TramiteController extends BaseController {
 							if(count($d)>1){
 								$cantidad=true;
 								$pretramite->correlativo++;
-								$codigo->correlativo=str_pad($pretramite->correlativo,6,"0",STR_PAD_LEFT);
+								$titulo = $pretramite->correlativo;
+								$reemplazar = array( str_pad( $titulo, 6, "0", STR_PAD_LEFT ), str_pad( $titulo, 5, "0", STR_PAD_LEFT ),
+									str_pad( $titulo, 4, "0", STR_PAD_LEFT ), str_pad( $titulo, 3, "0", STR_PAD_LEFT ),
+									str_pad( $titulo, 2, "0", STR_PAD_LEFT ), str_pad( $titulo, 1, "0", STR_PAD_LEFT ),
+									date("Y"), date("y")
+								);
+								$titulofinal = str_replace( $buscar, $reemplazar, $documento->nemonico );
+								$pretramite->titulo = $titulofinal;
 							}
 							else{
 								$conteo=$conteoMax+1;
@@ -226,7 +247,7 @@ class TramiteController extends BaseController {
 								'rst'=>2,
 								'msj'=>'Problemas al generar el correlativo, comuniquese con el área de TI',
 								'clasi' => $clasificadorTramite,
-								'codigo' => $codigo
+								'codigo' => $titulo
 							);
 					}
 
@@ -267,7 +288,7 @@ class TramiteController extends BaseController {
 						$anexo['usuario_created_at'] = Auth::user()->id;
 						$anexo->save();
 						//$codigo = str_pad($tramite->id, 7, "0", STR_PAD_LEFT).'-'.date('Y'); //cod
-						$codigo= $clasificadorTramite->unidad_documentaria.'-'.$codigo->correlativo.'-'.date('Y');
+						//$codigo= $clasificadorTramite->unidad_documentaria.'-'.$codigo->correlativo.'-'.date('Y');
 						/*get ruta flujo*/
 						/* $sql="SELECT flujo_id
 								FROM areas_internas
@@ -287,7 +308,7 @@ class TramiteController extends BaseController {
 								'rutas as r',
 								'tr.id','=','r.tabla_relacion_id'
 							)
-							->where('tr.id_union', '=', $codigo)
+							->where('tr.id_union', '=', $pretramite->titulo)
 							->where('r.ruta_flujo_id', '=', $ruta_flujo_id)
 							->where('tr.estado', '=', '1')
 							->where('r.estado', '=', '1')
@@ -306,7 +327,7 @@ class TramiteController extends BaseController {
 							$tablaRelacion=new TablaRelacion;
 							$tablaRelacion['software_id']=1;
 
-							$tablaRelacion['id_union']=$codigo;
+							$tablaRelacion['id_union']=$pretramite->titulo;
 							
 							$tablaRelacion['fecha_tramite']= $tramite->fecha_tramite; //Input::get('fecha_tramite');
 							$tablaRelacion['tipo_persona']=$tramite->tipo_solicitante_id;

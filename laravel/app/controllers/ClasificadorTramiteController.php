@@ -287,7 +287,7 @@ class ClasificadorTramiteController extends \BaseController
             $clasificadortramite = new ClasificadorTramite;
             $clasificadortramite->nombre_clasificador_tramite = Input::get('nombre');
             $clasificadortramite->tipo_tramite_id = Input::get('tipo_tramite');
-            $clasificadortramite->unidad_documentaria = Input::get('unidad_documentaria');
+            $clasificadortramite->documento_id = Input::get('documento_id');
             //$clasificadortramite->area = Input::get('area');
             $clasificadortramite->estado = Input::get('estado_clasificador');
             $clasificadortramite->usuario_created_at = Auth::user()->id;
@@ -327,7 +327,7 @@ class ClasificadorTramiteController extends \BaseController
             $clasificadortramite = ClasificadorTramite::find($clasificadortramiteId);
             $clasificadortramite->nombre_clasificador_tramite = Input::get('nombre');
             $clasificadortramite->tipo_tramite_id = Input::get('tipo_tramite');
-            $clasificadortramite->unidad_documentaria = Input::get('unidad_documentaria');
+            $clasificadortramite->documento_id = Input::get('documento_id');
             $clasificadortramite->estado = Input::get('estado_clasificador');
             $clasificadortramite->usuario_updated_at = Auth::user()->id;
             $clasificadortramite->save();

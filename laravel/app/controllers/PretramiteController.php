@@ -122,6 +122,8 @@ class PretramiteController extends BaseController {
 					)
 				);
 			}
+
+			$clasificadorTramite = ClasificadorTramite::find($array_data->idclasitramite);
 			
 			$pretramite = new Pretramite;
 
@@ -141,6 +143,7 @@ class PretramiteController extends BaseController {
 	        $pretramite['local_id'] = $array_data->local;
 	        $pretramite['fecha_pretramite'] = date('Y-m-d H:i:s');
 			$pretramite['usuario_created_at'] = Auth::user()->id;
+			$pretramite['documento_id'] = $clasificadorTramite->documento_id; // Se asigna el documento interno a generar.
 			$pretramite->save();
 			
 			if( trim($array_data->pdf_archivo)!='' ){
@@ -193,7 +196,21 @@ class PretramiteController extends BaseController {
 		DB::beginTransaction();
 		
 		$pretramite = new Pretramite;
-        $codigo = Pretramite::Correlativo($clasificadorTramite->unidad_documentaria);        //var_dump($codigo);exit();      
+		$codigo = Pretramite::Correlativo($clasificadorTramite->documento_id);
+		$documento = DB::table('documentos')
+					->select('nombre', 'nemonico')
+					->where('id',$clasificadorTramite->documento_id)
+					->first();
+		
+		$titulo = $codigo->correlativo;
+		$buscar = array('@@@@@@','@@@@@','@@@@','@@@','@@','@','####','##');
+		$reemplazar = array( str_pad( $titulo, 6, "0", STR_PAD_LEFT ), str_pad( $titulo, 5, "0", STR_PAD_LEFT ),
+			str_pad( $titulo, 4, "0", STR_PAD_LEFT ), str_pad( $titulo, 3, "0", STR_PAD_LEFT ),
+			str_pad( $titulo, 2, "0", STR_PAD_LEFT ), str_pad( $titulo, 1, "0", STR_PAD_LEFT ),
+			date("Y"), date("y")
+		);
+		$titulofinal = str_replace( $buscar, $reemplazar, $documento->nemonico );
+        
         $pretramite['clasificador_tramite_id'] = $array_data['idclasitramite'];
 
         if($tipoTramite->solicitante != 'Interno' ){
@@ -209,8 +226,10 @@ class PretramiteController extends BaseController {
 			$pretramite['area_id_sol'] =  $array_data['areas'];
 		}
 
+		$pretramite['titulo'] = $titulofinal;
         $pretramite['correlativo'] = $codigo->correlativo;
 		$pretramite->año = date("Y");
+
         $pretramite['tipo_solicitante_id'] = $array_data['cbo_tiposolicitante'];
         $pretramite['tipo_documento_id'] = $array_data['cbo_tipodoc'];
         //$pretramite['tipo_tramite_id'] = $array_data['cbo_tipodocumento'];
@@ -221,7 +240,7 @@ class PretramiteController extends BaseController {
         $pretramite['estado_atencion'] = 1;
         $pretramite['fecha_pretramite'] = date('Y-m-d H:i:s');
         $pretramite['usuario_created_at'] = Auth::user()->id;
-
+		$pretramite['documento_id'] = $clasificadorTramite->documento_id;
 
 		$cantidad=true;
 		$conteo=0;
@@ -236,7 +255,14 @@ class PretramiteController extends BaseController {
 				if(count($d)>1){
 					$cantidad=true;
 					$pretramite->correlativo++;
-					$codigo->correlativo=str_pad($pretramite->correlativo,6,"0",STR_PAD_LEFT);
+					$titulo = $pretramite->correlativo;
+					$reemplazar = array( str_pad( $titulo, 6, "0", STR_PAD_LEFT ), str_pad( $titulo, 5, "0", STR_PAD_LEFT ),
+						str_pad( $titulo, 4, "0", STR_PAD_LEFT ), str_pad( $titulo, 3, "0", STR_PAD_LEFT ),
+						str_pad( $titulo, 2, "0", STR_PAD_LEFT ), str_pad( $titulo, 1, "0", STR_PAD_LEFT ),
+						date("Y"), date("y")
+					);
+					$titulofinal = str_replace( $buscar, $reemplazar, $documento->nemonico );
+					$pretramite->titulo = $titulofinal;
 				}
 				else{
 					$conteo=$conteoMax+1;
@@ -328,7 +354,7 @@ class PretramiteController extends BaseController {
                     'rutas as r',
                     'tr.id','=','r.tabla_relacion_id'
                 )
-                ->where('tr.id_union', '=', $codigo)
+                ->where('tr.id_union', '=', $pretramite->titulo)
                 ->where('r.ruta_flujo_id', '=', $ruta_flujo_id)
                 ->where('tr.estado', '=', '1')
                 ->where('r.estado', '=', '1')
@@ -345,7 +371,7 @@ class PretramiteController extends BaseController {
 		        $tablaRelacion=new TablaRelacion;
 		        $tablaRelacion['software_id']=1;
                 $tablaRelacion['tramite_id']=$tramite->id;
-		        $tablaRelacion['id_union']=$codigo;
+		        $tablaRelacion['id_union']=$pretramite->titulo;
 		        
 		        $tablaRelacion['fecha_tramite']= $tramite->fecha_tramite; //Input::get('fecha_tramite');
 		        $tablaRelacion['tipo_persona']=$tramite->tipo_solicitante_id;

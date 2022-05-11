@@ -20,7 +20,7 @@ $(document).ready(function() {
     slctGlobalHtml('slct_estado_clasificador, #slct_unidad_documentaria','simple');
     var idG1={  tipo_tramite        :'3|TIpoTramite|#DCE6F1', //#DCE6F1
                 nombre        :'onBlur|Nombre|#DCE6F1', //#DCE6F1
-                documento :'3|Documento|#DCE6F1', //#DCE6F1
+                documento  :'3|Documento|#DCE6F1', //#DCE6F1
                 estado        :'2|Estado|#DCE6F1', //#DCE6F1
                 a          :'1|  |#DCE6F1',
                 b          :'1|  |#DCE6F1',
@@ -58,14 +58,14 @@ $(document).ready(function() {
             $('#form_clasificadortramites_modal #slct_estado_clasificador').val(1);
             $('#form_clasificadortramites_modal #txt_nombre').focus();
             $('#form_clasificadortramites_modal #slct_tipo_tramite').val('' );
-            $('#form_clasificadortramites_modal #slct_unidad_documentaria').val('' );
+            $('#form_clasificadortramites_modal #slct_documento_id').val('' );
         } else {
             modal.find('.modal-footer .btn-primary').text('Actualizar');
             modal.find('.modal-footer .btn-primary').attr('onClick','Editar();');
 
             $('#form_clasificadortramites_modal #txt_nombre').val( ClasificadorTramitesG.nombre );
             $('#form_clasificadortramites_modal #slct_tipo_tramite').val( ClasificadorTramitesG.tipo_tramite );
-            $('#form_clasificadortramites_modal #slct_unidad_documentaria').val( ClasificadorTramitesG.unidad_documentaria );
+            $('#form_clasificadortramites_modal #slct_documento_id').val( ClasificadorTramitesG.documento_id );
 
             $('#form_clasificadortramites_modal #slct_estado_clasificador').val( ClasificadorTramitesG.estado );
             $("#form_clasificadortramites_modal").append("<input type='hidden' value='"+ClasificadorTramitesG.id+"' name='id'>");
@@ -90,7 +90,7 @@ BtnEditar=function(btn,id){
     ClasificadorTramitesG.id=id;
     ClasificadorTramitesG.nombre=$(tr).find("td:eq(1)").text();
     ClasificadorTramitesG.tipo_tramite=$(tr).find("td:eq(0) input[name='txt_tipo_tramite']").val();
-    ClasificadorTramitesG.unidad_documentaria=$(tr).find("td:eq(2) input[name='txt_unidad_documentaria']").val();
+    ClasificadorTramitesG.documento_id=$(tr).find("td:eq(2) input[name='txt_documento_id']").val();
     ClasificadorTramitesG.estado=$(tr).find("td:eq(3)>span").attr("data-estado");
     $("#BtnEditar_clasificador").click();
 };
@@ -126,7 +126,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
     }
 
     if(typeof(fn)!='undefined' && fn.col==2){
-        return row.unidoc+"<input type='hidden'name='txt_unidad_documentaria' value='"+row.unidad_documentaria+"'>";
+        return row.documento+"<input type='hidden'name='txt_documento_id' value='"+row.documento_id+"'>";
     }
 
     if(typeof(fn)!='undefined' && fn.col==3){
