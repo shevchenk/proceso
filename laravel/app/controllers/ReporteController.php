@@ -925,8 +925,12 @@ class ReporteController extends BaseController
         }
 
         if ( Input::has('proceso') ) {
+            $estado = "";
+            if( Input::has('estado') AND Input::get('estado') == 1 ){
+                $estado = " AND rfc.estado = 1 ";
+            }
             $datos = " GROUP_CONCAT(rfc.campo, '|', IFNULL(rc.campo_valor,'') ORDER BY rfc.orden SEPARATOR '**') ";
-            $left = "   LEFT JOIN rutas_flujo_campos rfc ON rfc.ruta_flujo_id = r.ruta_flujo_id AND rfc.estado = 1 AND rfc.tipo != 0
+            $left = "   LEFT JOIN rutas_flujo_campos rfc ON rfc.ruta_flujo_id = r.ruta_flujo_id AND rfc.tipo != 0 ".$estado."
                         LEFT JOIN rutas_campos rc ON rc.ruta_id = r.id AND rfc.id = rc.ruta_flujo_campo_id AND rc.estado = 1";
             $wher_3.=" AND r.flujo_id = '".Input::get('proceso')."' ";
         }

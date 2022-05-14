@@ -346,6 +346,7 @@ class RutaDetalleController extends \BaseController
                         $rdetalle['ruta_detalle_id_ant']=$rd->ruta_detalle_id_ant;
                         $rdetalle['archivo']=$rd->archivo;
                     }
+                    $rdetalle['archivado']=$rd->archivado;
                     $rdetalle['estado_ruta'] = 1;
                     $rdetalle['created_at'] =  date("Y-m-d H:i:s");  
                     $rdetalle['usuario_created_at'] = Auth::user()->id;

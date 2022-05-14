@@ -87,7 +87,7 @@ class RutaFlujoCampo extends \Eloquent {
             ->select('rfc.id', 'rfc.campo', 'rfc.col', 'rfc.obligar', 'rfc.capacidad', 'rfc.tipo', 'rfc.lista', 'rfca.modificar', 'rc.campo_valor', 'rc.id AS ruta_campo_id')
             ->where( 
                 function($query) use( $r ){
-                    if ( isset( $r['estado'] ) ) {
+                    if ( isset( $r['estado'] ) AND $r['estado'] == 1 ) {
                         $query->where('rfc.estado','=','1');
                     }
 

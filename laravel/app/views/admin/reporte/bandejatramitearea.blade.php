@@ -93,7 +93,7 @@
                             <!-- THE MESSAGES -->
                             <form name="form_filtros" id="form_filtros" method="POST" action="">
                              <div class="col-md-12">
-                                <div class="col-md-4 col-sm-4 text-center" style="">
+                                <div class="col-md-3 col-sm-3 text-center" style="">
                                     <label class="control-label">Área</label>
                                     <select name="slct_areas" id="slct_areas" onChange="ListarProcesosArea();" >
                                     </select>
@@ -108,7 +108,18 @@
                                 {{-- <span class="btn btn-success btn-md" id="btnexport" name="btnexport"><i class="glyphicon glyphicon-download-alt"></i> Export</span> --}}
                                 <a class='btn btn-success btn-md' id="btnexport" name="btnexport" href='' target=""><i class="glyphicon glyphicon-download-alt"></i> Export</i></a>
                                 {{-- <input type="button" class="form-control btn btn-primary" id="generar" name="generar" value="mostrar"> --}}
-                            </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="control-label">Visualizar: </label>
+                                    <div class="radio-custom radio-primary">
+                                        <input type="radio" id="rdb1" name="rdb_estado" value="1" checked>
+                                        <label for="rdb1">Campos Vigentes</label>
+                                    </div>
+                                    <div class="radio-custom radio-primary">
+                                        <input type="radio" id="rdb2" name="rdb_estado" value="2">
+                                        <label for="rdb2">Campos Historicos</label>
+                                    </div>
+                                </div>
                             </div>
                                 <br><br>
                                 

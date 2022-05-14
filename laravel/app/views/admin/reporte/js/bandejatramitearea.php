@@ -53,12 +53,12 @@ $(document).ready(function() {
         proceso = $('#slct_procesos').val();
         if (area!=="") {
             $(this).attr('target','_blank');
-            
+            estado = '&estado='+$("input[name='rdb_estado']:checked").val();
             if( proceso != '' ){
-                $(this).attr('href','reportef/exportbandejatramite'+'?area_id='+area+'&flujo_id='+proceso);
+                $(this).attr('href','reportef/exportbandejatramite'+'?area_id='+area+'&flujo_id='+proceso + estado);
             }
             else{
-                $(this).attr('href','reportef/exportbandejatramite'+'?area_id='+area);
+                $(this).attr('href','reportef/exportbandejatramite'+'?area_id='+area + estado);
             }
         } 
         else {
@@ -215,7 +215,7 @@ mostrarDetalleHTML=function(datos){
     //$('#slct_tipo_respuesta,#slct_tipo_respuesta_detalle').attr('disabled',"true");
     slctGlobal.listarSlct('tiporespuesta','slct_tipo_respuesta','simple',ids,data,0,'#slct_tipo_respuesta_detalle','TR');
     slctGlobal.listarSlct('tiporespuestadetalle','slct_tipo_respuesta_detalle','simple',ids,data,1);
-    var data = {ruta_flujo_id: datos.ruta_flujo_id, ruta_id: datos.ruta_id}
+    var data = {ruta_flujo_id: datos.ruta_flujo_id, ruta_id: datos.ruta_id, estado: $("input[name='rdb_estado']:checked").val()}
     Validar.mostrarCampos(data,mostrarCamposHTML);
     $("#form_ruta_detalle [data-target='#expedienteModal']").attr("data-id",datos.id_tr);
 

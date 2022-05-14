@@ -574,8 +574,12 @@ class ReporteFinalController extends BaseController
         $array['datos']="''";
         $array['left'] = "";
         if ( Input::has('flujo_id') AND Input::get('flujo_id') != '' ) {
+            $estado = "";
+            if( Input::has('estado') AND Input::get('estado') == 1 ){
+                $estado = " AND rfc.estado = 1 ";
+            }
             $array['datos'] = " GROUP_CONCAT(rfc.campo, '|', IFNULL(rc.campo_valor,'') ORDER BY rfc.orden SEPARATOR '**') ";
-            $array['left'] = "   LEFT JOIN rutas_flujo_campos rfc ON rfc.ruta_flujo_id = r.ruta_flujo_id AND rfc.estado = 1 AND rfc.tipo != 0
+            $array['left'] = "   LEFT JOIN rutas_flujo_campos rfc ON rfc.ruta_flujo_id = r.ruta_flujo_id AND rfc.tipo != 0 ".$estado."
                         LEFT JOIN rutas_campos rc ON rc.ruta_id = r.id AND rfc.id = rc.ruta_flujo_campo_id AND rc.estado = 1";
             $array['w'].=" AND r.flujo_id = '".Input::get('flujo_id')."' ";
         }

@@ -108,6 +108,18 @@
                             <a class='btn btn-success btn-md' id="btnexport" name="btnexport" href='#'><i class="glyphicon glyphicon-download-alt"></i> Export</i></a>
                         </div>
 
+                        <div class="col-md-4">
+                            <label class="control-label">Visualizar: </label>
+                            <div class="radio-custom radio-primary">
+                                <input type="radio" id="rdb1" name="rdb_estado" value="1" checked>
+                                <label for="rdb1">Campos Vigentes</label>
+                            </div>
+                            <div class="radio-custom radio-primary">
+                                <input type="radio" id="rdb2" name="rdb_estado" value="2">
+                                <label for="rdb2">Campos Historicos</label>
+                            </div>
+                        </div>
+
                     </div><!-- /.row -->
                     <div class='row'>
                         <div class="col-md-4 col-sm-4 text-center" style="">
