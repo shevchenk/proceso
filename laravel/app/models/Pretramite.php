@@ -68,6 +68,10 @@ class Pretramite extends Eloquent {
     }
 
     public static function getTramites(){
+        $hoy = "";
+        if( Input::has('hoy') ){
+            $hoy = " AND DATE(pt.fecha_tramite) = CURDATE() ";
+        }
         $sql = "select pt.id as idtramite,CONCAT_WS(' ',p.nombre,p.paterno,p.materno) as usuario,e.razon_social as empresa,
                 ts.nombre solicitante,tt.nombre_tipo_tramite tipotramite,d.nombre tipodoc,ct.nombre_clasificador_tramite as tramite,
                 pt.fecha_tramite fecha  
@@ -79,7 +83,7 @@ class Pretramite extends Eloquent {
                 INNER JOIN tipo_solicitante ts on ts.id=pt.tipo_solicitante_id 
                 INNER JOIN documentos d on d.id=pt.tipo_documento_id 
                 WHERE pt.estado = 1 AND pt.usuario_created_at=".Auth::user()->id.
-                " ORDER BY pt.id DESC 
+                " ".$hoy." ORDER BY pt.id DESC 
                 LIMIT 0,10";
         $r= DB::select($sql);
         return $r;      

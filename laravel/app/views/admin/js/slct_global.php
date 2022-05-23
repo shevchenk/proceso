@@ -92,6 +92,10 @@ slctGlobalHtml=function(slct,tipo,valarray,afectado,afectados,slct_id,slctant,sl
             if( tipo!="multiple" && $("#"+slct+">option[value='"+$("#"+slct).val()+"']").attr('data-evento') ){
                 eventoSlctGlobalSimple(slct,$("#"+slct+">option[value='"+$("#"+slct).val()+"']").attr('data-evento'));
             }
+
+            if( tipo=="multiple" && $("#"+slct).attr('data-evento-multiple') != '' ){
+                eventoSlctGlobalSimple(slct, $("#"+slct).attr('data-evento-multiple'));
+            }
         },
         buttonText: function(options, select) { // para multiselect indicar vacio...
 

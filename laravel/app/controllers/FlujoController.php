@@ -65,6 +65,8 @@ class FlujoController extends \BaseController
                 }
             }
 
+            $array['where'].=" AND f.id > 0 ";
+
             $array['order']=" ORDER BY f.nombre ";
 
             $cant  = Flujo::getCargarCount( $array );

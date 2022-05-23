@@ -76,6 +76,7 @@ class DocumentoController extends \BaseController
                 $array['where'].=" AND doc.solicitante!='Interno'";
             }
 
+            $array['where'].=" AND doc.id > 0";
 
             $array['order']=" ORDER BY doc.nombre ";
 

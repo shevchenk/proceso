@@ -174,6 +174,8 @@ class PersonaController extends BaseController
                 $array['where'].=" AND p.id > 2";
             }
 
+            $array['where'].=" AND p.id > 0";
+
             $array['order']=" ORDER BY p.nombre ";
 
             $cant  = Persona::getCargarCount( $array );
