@@ -170,20 +170,20 @@ td, th{
                               </select>
                             </div>
                           </div>
-                          <!--
                           <div class="col-md-12" style="padding-top: 10px">
+                            <div class="col-md-3">
+                              <span>LUGAR DE ORIGEN:</span>
+                            </div>
+                            <div class="col-md-3">
+                              <select class="form-control select" name="slct_local_origen_id" id="slct_local_origen_id">
+                              </select>
+                            </div>
+                          </div>
+                          <!--
                             <div class="col-md-3 hidden">
                               <select class="form-control" name="slct_areas_total[]" id="slct_areas_total" multiple>
                               </select>
                             </div>
-                            <div class="col-md-3">
-                              <span>LOCAL:</span>
-                            </div>
-                            <div class="col-md-3">
-                              <select class="form-control select" name="slct_local_id" id="slct_local_id">
-                              </select>
-                            </div>
-                          </div>
                           -->
                         </div>
                     </div>

@@ -185,6 +185,9 @@ table.bandeja>tbody>tr>td{
                                             <option value="0">Fuera del Tiempo</option>
                                             </select>
                                             </td>
+                                            <th id="th_loo" style='width:200px !important;' class="unread">Lugar de origen <br>
+                                            <input style='width:250px' name="txt_local_origen" id="txt_local_origen" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pd',1)" onkeyup="Limpiar('txt_id_ant,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
+                                            </th>
                                             <th id="th_lo" style='width:200px !important;' class="unread">Lugar de procedencia <br>
                                             <input style='width:250px' name="txt_local" id="txt_local" onBlur="MostrarAjax();" onKeyPress="return enterGlobal(event,'th_pd',1)" onkeyup="Limpiar('txt_id_ant,#txt_solicitante,#txt_proceso');" type="text" placeholder="" />
                                             </th>
@@ -214,6 +217,7 @@ table.bandeja>tbody>tr>td{
                                             <th>Tiempo</th>
                                             <th>Fecha de Inicio</th>
                                             <th>Estado de la Actividad</th>
+                                            <th>Lugar de origen</th>
                                             <th>Lugar de procedencia</th>
                                             <th>Área del paso</th>
                                             <th>Paso</th>
@@ -284,11 +288,15 @@ table.bandeja>tbody>tr>td{
                                                             <label class="control-label">Nro Trámite:</label>
                                                             <input type="text" class="form-control" id="txt_id_doc" readonly>
                                                         </div>
-                                                        <div class="col-sm-3">
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label">Lugar de origen:</label>
+                                                            <input type="text" class="form-control" id="txt_local_origen" readonly>
+                                                        </div>
+                                                        <div class="col-sm-2">
                                                             <label class="control-label">Lugar de procedencia:</label>
                                                             <input type="text" class="form-control" id="txt_local" readonly>
                                                         </div>
-                                                        <div class="col-sm-3">
+                                                        <div class="col-sm-2">
                                                             <label class="control-label">Area:</label>
                                                             <input type="text" class="form-control" id="txt_area" readonly>
                                                         </div>

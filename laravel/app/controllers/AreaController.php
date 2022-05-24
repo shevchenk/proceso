@@ -321,6 +321,12 @@ class AreaController extends \BaseController
             $areas->nombre = Input::get('nombre');
             $areas->nemonico = Input::get('nemonico');
             $areas->estado = Input::get('estado');
+
+            if( Input::has('locales_id') AND count( Input::get('locales_id') ) > 0 ){
+                $locales_id = implode(",", Input::get('locales_id'));
+                $areas->locales_id = $locales_id;
+            }
+
             $areas->usuario_created_at = Auth::user()->id;
             $areas->save();
 
@@ -370,8 +376,15 @@ class AreaController extends \BaseController
             $areas->nombre = Input::get('nombre');
             $areas->nemonico = Input::get('nemonico');
             $areas->estado = Input::get('estado');
+
+            if( Input::has('locales_id') AND count( Input::get('locales_id') ) > 0 ){
+                $locales_id = implode(",", Input::get('locales_id'));
+                $areas->locales_id = $locales_id;
+            }
+            
             $areas->usuario_updated_at = Auth::user()->id;
             $areas->save();
+
             if (Input::get('estado') == 0) {
                 DB::table('area_cargo_persona')
                     ->where('area_id','=',$areaId)

@@ -141,6 +141,7 @@ class PretramiteController extends BaseController {
 	        $pretramite['nro_folios'] = $array_data->numfolio;
 	        $pretramite['area_id'] = $array_data->idarea;
 	        $pretramite['local_id'] = $array_data->local;
+	        $pretramite['local_origen_id'] = $array_data->local;
 	        $pretramite['fecha_pretramite'] = date('Y-m-d H:i:s');
 			$pretramite['usuario_created_at'] = Auth::user()->id;
 			$pretramite['documento_id'] = $clasificadorTramite->documento_id; // Se asigna el documento interno a generar.
@@ -237,6 +238,7 @@ class PretramiteController extends BaseController {
         $pretramite['nro_folios'] = $array_data['numfolio'];
         $pretramite['area_id'] = $array_data['idarea'];
         $pretramite['local_id'] = $array_data['local'];
+        $pretramite['local_origen_id'] = $array_data['local'];
         $pretramite['estado_atencion'] = 1;
         $pretramite['fecha_pretramite'] = date('Y-m-d H:i:s');
         $pretramite['usuario_created_at'] = Auth::user()->id;
@@ -302,6 +304,7 @@ class PretramiteController extends BaseController {
             
             $tramite['area_id'] = $array_data['idarea'];
             $tramite['local_id'] = $pretramite->local_id;
+            $tramite['local_origen_id'] = $pretramite->local_origen_id;
 	        $tramite['clasificador_tramite_id'] = $pretramite->clasificador_tramite_id;
 	        $tramite['tipo_solicitante_id'] = $pretramite->tipo_solicitante_id;
 	        $tramite['tipo_documento_id'] = $pretramite->tipo_documento_id;
@@ -420,6 +423,7 @@ class PretramiteController extends BaseController {
 		        $ruta['persona_id']=$rutaFlujo->persona_id;
 		        $ruta['area_id']=$rutaFlujo->area_id;
 		        $ruta['local_id']=$tramite->local_id;
+		        $ruta['local_origen_id']=$tramite->local_origen_id;
 		        $ruta['usuario_created_at']= Auth::user()->id;
 		        $ruta->save();
 		        
@@ -571,6 +575,7 @@ class PretramiteController extends BaseController {
 			$pretramite['clasificador_tramite_id'] = 0;
 
 			$pretramite['area_id_sol'] =  $array_data['areas'];
+			$pretramite['local_origen_id'] =  $array_data['local_origen_id'];
 			$pretramite['titulo'] = $titulofinal;
 			$pretramite['correlativo'] = $codigo->correlativo;
 			$pretramite->año = date("Y");
@@ -647,6 +652,7 @@ class PretramiteController extends BaseController {
 				$tramite = new Tramite;
 				$tramite['pretramite_id'] = $pretramite->id;
 				$tramite['area_id_sol'] = $pretramite->area_id_sol;
+				$tramite['local_origen_id'] = $pretramite->local_origen_id;
 				
 				$tramite['area_id'] = $pretramite->area_id;
 				$tramite['local_id'] = $pretramite->local_id;
@@ -719,6 +725,7 @@ class PretramiteController extends BaseController {
 					$ruta['persona_id']=$rutaFlujo->persona_id;
 					$ruta['area_id']=$tramite->area_id_sol;
 					$ruta['local_id']=$tramite->local_id;
+					$ruta['local_origen_id']=$tramite->local_origen_id;
 					$ruta['usuario_created_at']= Auth::user()->id;
 					$ruta->save();
 					

@@ -27,6 +27,10 @@
             <input type="text" class="form-control" placeholder="Ingrese Id Int." name="txt_nemonico" id="txt_nemonico">
           </div>
           <div class="form-group">
+            <label class="control-label">Lugar de origen</label>
+            <select class="form-control" name="slct_locales_id[]" id="slct_locales_id" multiple></select>
+          </div>
+          <div class="form-group">
             <label class="control-label">Estado:
             </label>
             <select class="form-control" name="slct_estado" id="slct_estado">

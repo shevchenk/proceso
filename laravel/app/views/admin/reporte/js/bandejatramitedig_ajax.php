@@ -187,26 +187,31 @@ var Bandeja={
                     },
                     {
                         "targets": 8,
+                        "data": "local_origen",
+                        "name": "local_origen"
+                    },
+                    {
+                        "targets": 9,
                         "data": "local",
                         "name": "local"
                     },
                     {
-                        "targets": 9,
+                        "targets": 10,
                         "data": "area",
                         "name": "area"
                     },
                     {
-                        "targets": 10,
+                        "targets": 11,
                         "data": "norden",
                         "name": "norden"
                     },
                     {
-                        "targets": 11,
+                        "targets": 12,
                         "data": "proceso",
                         "name": "proceso"
                     },
                     {
-                        "targets": 12,
+                        "targets": 13,
                         "data": "persona",
                         "name": "persona"
                     }

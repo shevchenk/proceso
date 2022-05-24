@@ -19,7 +19,7 @@ $(document).ready(function() {
     slctGlobal.listarSlct('documento','slct_documento_id','simple',null,data);*/
     /*inicializate selects*/
     
-    //slctGlobal.listarSlctFuncion('local','listarlocales','slct_local_id','simple',UsuarioLocalId,{estado:1, usuario_local:1});
+    slctGlobal.listarSlctFuncion('local','listarlocales','slct_local_origen_id','simple',UsuarioLocalId,{estado:1, usuario_local:1});
     
     /*end inicializate selects*/
     data = {estado:1};
@@ -154,7 +154,7 @@ cargarTabla = function(){
 }
 
 CargarLocalArea = (t, i)=>{
-    slctGlobal.listarSlctFuncion('local','listarlocales','select_local_destino'+i,'multiple',null,{estado:1});
+    slctGlobal.listarSlctFuncion('local','listarlocales','select_local_destino'+i,'multiple',null,{estado:1, area_local_id: t.value});
 }
 
 eventoSlctGlobalSimple=function(slct,valores){
@@ -256,10 +256,16 @@ EliminarTr = (t, idname) =>{
 
 generarPreTramite = function(){
     if($("#slct_areas").val()==''){
-        msjG.mensaje("warning", 'Selecciona Área de inicio',3000);
+        msjG.mensaje("warning", 'Selecciona Área de origen',3000);
+    }
+    else if($("#slct_local_origen_id").val()==''){
+        msjG.mensaje("warning", 'Selecciona Local de origen',3000);
     }
     else if( $("#txt_numareas").val()=='' && !$("#chk_todasareas").is(':checked') ){
         msjG.mensaje("warning", 'Ingrese número de áreas a comunicar',3000);
+    }
+    else if( $("#txt_observacion").val()=='' ){
+        msjG.mensaje("warning", 'Ingrese la sumilla',3000);
     }
     else{
         //$("#t_usuarios").dataTable().fnDestroy();
@@ -267,7 +273,7 @@ generarPreTramite = function(){
         let index = 1;
         $("#tb_numareas").find("select").each( function(){
             if( alerta == false && $.trim( $(this).val() ) == '' ){
-                msjG.mensaje("warning", 'Seleccione el área a comunicar',3000);
+                msjG.mensaje("warning", 'Seleccione el área y su lugar de procedencia a comunicar',3000);
                 $(this).focus();
                 alerta = true;
             }

@@ -252,7 +252,7 @@ class TramiteController extends BaseController {
 					}
 
 					$tramite = new Tramite;
-					   $tramite['pretramite_id'] = $data['txt_pretramiteid'];
+					$tramite['pretramite_id'] = $data['txt_pretramiteid'];
 					$tramite['persona_id'] = $data['txt_personaid'];
 	
 					if($data['txt_empresaid']){
@@ -261,6 +261,7 @@ class TramiteController extends BaseController {
 	
 					$tramite['area_id'] = $data['txt_area'];
 					$tramite['local_id'] = $data['txt_local'];
+					$tramite['local_origen_id'] = $data['txt_local'];
 					$tramite['clasificador_tramite_id'] = $data['txt_ctramite'];
 					$tramite['tipo_solicitante_id'] = $data['txt_tsolicitante'];
 					$tramite['tipo_documento_id'] = $data['txt_tdocumento'];
@@ -383,6 +384,7 @@ class TramiteController extends BaseController {
 							$ruta['persona_id']=$rutaFlujo->persona_id;
 							$ruta['area_id']=$rutaFlujo->area_id;
 							$ruta['local_id'] = $tramite->local_id;
+							$ruta['local_origen_id'] = $tramite->local_origen_id;
 							$ruta['usuario_created_at']= Auth::user()->id;
 							$ruta->save();
 

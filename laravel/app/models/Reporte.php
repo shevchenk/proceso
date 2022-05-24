@@ -261,7 +261,7 @@ class Reporte extends Eloquent
                 IF( 
                     IFNULL(rd.fecha_proyectada,CURRENT_TIMESTAMP())>=CURRENT_TIMESTAMP(),'Dentro del Tiempo','Fuera del Tiempo'
                 ) tiempo_final_n,
-                rf.alerta, l.local, a.nombre AS area
+                rf.alerta, l.local, a.nombre AS area, lo.local local_origen
                 FROM rutas r
                 INNER JOIN rutas_detalle rd ON rd.ruta_id=r.id AND rd.estado=1 AND rd.condicion=0
                 INNER JOIN areas a ON a.id = rd.area_id 
@@ -273,6 +273,7 @@ class Reporte extends Eloquent
                 ".$array['referido']." JOIN referidos re ON re.ruta_detalle_id=rd.ruta_detalle_id_ant and re.estado=1
                 ".$array['referido']." JOIN personas pre ON pre.id = re.usuario_referido 
                 LEFT JOIN locales l ON l.id = r.local_id
+                LEFT JOIN locales lo ON lo.id = r.local_origen_id
                 LEFT JOIN tramites tm ON tm.id = tr.tramite_id
                 LEFT JOIN personas ptm ON ptm.id = tm.persona_id 
                 LEFT JOIN empresas etm ON etm.id = tm.empresa_id 
@@ -377,7 +378,7 @@ class Reporte extends Eloquent
                         )
                     )>=CURRENT_TIMESTAMP(),'Dentro del Tiempo','Fuera del Tiempo'
                 ) tiempo_final_n,
-                a.nombre AS area, l.local,
+                a.nombre AS area, l.local, lo.local local_origen,
                 CONCAT(ptr.paterno, ' ', ptr.materno, ',', ptr.nombre) res_id_union,
                 ".$array['datos']." AS datos
                 FROM rutas r
@@ -390,6 +391,7 @@ class Reporte extends Eloquent
                 ".$array['referido']." JOIN referidos re ON re.ruta_detalle_id=rd.ruta_detalle_id_ant and re.estado=1
                 LEFT JOIN personas p1 ON p1.id=rd.persona_responsable_id
                 LEFT JOIN locales l ON l.id = r.local_id
+                LEFT JOIN locales lo ON lo.id = r.local_origen_id
                 LEFT JOIN tramites tm ON tm.id = tr.tramite_id
                 LEFT JOIN personas ptm ON ptm.id = tm.persona_id 
                 LEFT JOIN empresas etm ON etm.id = tm.empresa_id 

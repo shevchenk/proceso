@@ -40,6 +40,11 @@ class Local extends Base
                             $locales = Auth::user()->local_id;
                             $query->whereRaw('FIND_IN_SET(id , "'.$locales.'") > 0 ');
                         }
+                        if ( Input::has('area_local_id') ) {
+                            $area = AREA::find(Input::get('area_local_id'));
+                            $locales = $area->locales_id;
+                            $query->whereRaw('FIND_IN_SET(id , "'.$locales.'") > 0 ');
+                        }
                         
                     }
                 )

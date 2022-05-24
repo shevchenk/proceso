@@ -973,7 +973,7 @@ class ReporteController extends BaseController
                 '1' AS id,
                 IFNULL(tr.ruc,'') AS ruc,
                 IFNULL(tr.sumilla,'') AS sumilla,
-                a.nombre AS area, l.local,
+                a.nombre AS area, l.local, lo.local local_origen,
                 CONCAT(ptr.paterno, ' ', ptr.materno, ',', ptr.nombre) res_id_union,
                 $datos AS datos
                 FROM rutas_detalle rd
@@ -984,6 +984,7 @@ class ReporteController extends BaseController
                 JOIN flujos f ON r.flujo_id=f.id
                 JOIN tiempos t ON rd.tiempo_id=t.id
                 LEFT JOIN locales l ON l.id = r.local_id
+                LEFT JOIN locales lo ON lo.id = r.local_origen_id
                 LEFT JOIN tramites tm ON tm.id = tr.tramite_id
                 LEFT JOIN personas ptm ON ptm.id = tm.persona_id 
                 LEFT JOIN empresas etm ON etm.id = tm.empresa_id 
@@ -1065,14 +1066,15 @@ class ReporteController extends BaseController
                           ->setCellValue($head[4].'3', 'FEC FIN PASO')
                           ->setCellValue($head[5].'3', 'PASO')
                           ->setCellValue($head[6].'3', 'AREA DEL PASO')
-                          ->setCellValue($head[7].'3', 'LUGAR DE PROCEDENCIA')
-                          ->setCellValue($head[8].'3', 'TIEMPO')
-                          ->setCellValue($head[9].'3', 'RESPONSABLE PDI')
-                          ->setCellValue($head[10].'3', 'NOMBRE DEL PROCESO')
-                          ->setCellValue($head[11].'3', 'OBSERVACION')
-                          ->setCellValue($head[12].'3', 'TIPO SOLICITANTE')
-                          ->setCellValue($head[13].'3', 'DNI/RUC')
-                          ->setCellValue($head[14].'3', 'SOLICITANTE')
+                          ->setCellValue($head[7].'3', 'LUGAR DE ORIGEN')
+                          ->setCellValue($head[8].'3', 'LUGAR DE PROCEDENCIA')
+                          ->setCellValue($head[9].'3', 'TIEMPO')
+                          ->setCellValue($head[10].'3', 'RESPONSABLE PDI')
+                          ->setCellValue($head[11].'3', 'NOMBRE DEL PROCESO')
+                          ->setCellValue($head[12].'3', 'OBSERVACION')
+                          ->setCellValue($head[13].'3', 'TIPO SOLICITANTE')
+                          ->setCellValue($head[14].'3', 'DNI/RUC')
+                          ->setCellValue($head[15].'3', 'SOLICITANTE')
                     ->mergeCells('A1:M1')
                     ->setCellValue('A1', 'LISTADO CONCLUIDOS POR AREA Y PROCESO')
                     ->getStyle('A1:M1')->getFont()->setSize(18);
@@ -1092,11 +1094,12 @@ class ReporteController extends BaseController
               $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('M')->setAutoSize(true);
               $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('N')->setAutoSize(true);
               $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('O')->setAutoSize(true);
+              $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('P')->setAutoSize(true);
               /*end head*/
               /*body*/
               
               $cabecera=array();
-              $max = 14;
+              $max = 15;
               $ini = 4;
               if($result){
                 foreach ($result as $key => $value) {
@@ -1109,14 +1112,15 @@ class ReporteController extends BaseController
                                 ->setCellValue( $head[4] . $ini, $value->dtiempo_final)
                                 ->setCellValue( $head[5] . $ini, $value->norden)
                                 ->setCellValue( $head[6] . $ini, $value->area)
-                                ->setCellValue( $head[7] . $ini, trim($value->local))
-                                ->setCellValue( $head[8] . $ini, $value->tiempo)
-                                ->setCellValue( $head[9] . $ini, $value->res_id_union)
-                                ->setCellValue( $head[10] . $ini, $value->nombre)
-                                ->setCellValue( $head[11] . $ini, $value->observacion)
-                                ->setCellValue( $head[12] . $ini, $value->tipo_solicitante)
-                                ->setCellValue( $head[13] . $ini, $value->id_solicitante)
-                                ->setCellValue( $head[14] . $ini, $value->solicitante)
+                                ->setCellValue( $head[7] . $ini, trim($value->local_origen))
+                                ->setCellValue( $head[8] . $ini, trim($value->local))
+                                ->setCellValue( $head[9] . $ini, $value->tiempo)
+                                ->setCellValue( $head[10] . $ini, $value->res_id_union)
+                                ->setCellValue( $head[11] . $ini, $value->nombre)
+                                ->setCellValue( $head[12] . $ini, $value->observacion)
+                                ->setCellValue( $head[13] . $ini, $value->tipo_solicitante)
+                                ->setCellValue( $head[14] . $ini, $value->id_solicitante)
+                                ->setCellValue( $head[15] . $ini, $value->solicitante)
                                 ;
                     $cabecera = explode("**", $value->datos);
                     if( trim( $cabecera[0] ) != '' ){
@@ -1132,7 +1136,7 @@ class ReporteController extends BaseController
     
                         }
     
-                        $max_aux = 14 + count($cabecera);
+                        $max_aux = 15 + count($cabecera);
                         if( $max < $max_aux ){
                             $max = $max_aux;
                         }

@@ -2,7 +2,7 @@
 var cabeceraG=[]; // Cabecera del Datatable
 var columnDefsG=[]; // Columnas de la BD del datatable
 var targetsG=-1; // Posiciones de las columnas del datatable
-var AreasG={id:0,nombre:"",nemonico:"",imagen:0,imagenc:0,imagenp:0,estado:1}; // Datos Globales
+var AreasG={id:0,nombre:"",nemonico:"", locales_id: "",imagen:0,imagenc:0,imagenp:0,estado:1}; // Datos Globales
 $(document).ready(function() {  
     /*  1: Onblur ,Onchange y para número es a travez de una función 1: 
         2: Descripción de cabecera
@@ -12,6 +12,7 @@ $(document).ready(function() {
     slctGlobalHtml('slct_estado','simple');
     var idG={   nombre        :'onBlur|Nombre Area|#DCE6F1', //#DCE6F1
                 nemonico      :'3|Nemonico Area|#DCE6F1', //#DCE6F1
+                locales       :'1|Lugar(es) Origen|#DCE6F1', //#DCE6F1
                 estado        :'2|Estado|#DCE6F1', //#DCE6F1
              };
 
@@ -24,6 +25,8 @@ $(document).ready(function() {
     columnDefsG=resG[0]; // registra la colunmna adiciona con boton
     targetsG=resG[1]; // registra el contador actualizado
     MostrarAjax('areas');
+
+    slctGlobal.listarSlctFuncion('local','listarlocales','slct_locales_id','multiple',null,{estado:1});
 
 
     $('#areaModal').on('show.bs.modal', function (event) {
@@ -42,8 +45,9 @@ $(document).ready(function() {
             modal.find('.modal-footer .btn-primary').text('Guardar');
             modal.find('.modal-footer .btn-primary').attr('onClick','Agregar();');
             $('#form_areas_modal #slct_estado').val(1); 
+            $('#form_areas_modal #slct_locales_id').val('');
             $('#form_areas_modal #txt_nombre').focus();
-             $('#form_areas_modal #txt_nemonico').focus();
+            $('#form_areas_modal #txt_nemonico').focus();
         }
         else{
 //            var imagen='a'+AreasG.id'.png';
@@ -68,6 +72,7 @@ $(document).ready(function() {
             $('#form_areas_modal #txt_nombre').val( AreasG.nombre );
             $('#form_areas_modal #txt_nemonico').val( AreasG.nemonico );
             $('#form_areas_modal #slct_estado').val( AreasG.estado );
+            $('#form_areas_modal #slct_locales_id').val(AreasG.locales_id.split(","));
             $("#form_areas_modal").append("<input type='hidden' value='"+AreasG.id+"' name='id'>");
             $("#upload_id").val(AreasG.id);
             $("#upload_idc").val(AreasG.id);
@@ -98,18 +103,24 @@ $(document).ready(function() {
     });
 });
 
+eventoSlctGlobalSimple=function(slct,valores){
+    if( slsct = "slct_locales_id" ){
+        //console.log(slct, $("#"+slct).val());
+    }
+}
+
 BtnEditar=function(btn,id){
     var tr = btn.parentNode.parentNode; // Intocable
     AreasG.id=id;
     AreasG.nombre=$(tr).find("td:eq(0)").text();
-    AreasG.nemonico=$(tr).find("td:eq(0)").text();
+    AreasG.nemonico=$(tr).find("td:eq(1)").text();
     AreasG.imagen=$(tr).find("td:eq(1) input[name='txt_imagen']").val();
     AreasG.imagenc=$(tr).find("td:eq(1) input[name='txt_imagenc']").val();
     AreasG.imagenp=$(tr).find("td:eq(1) input[name='txt_imagenp']").val();
-    AreasG.estado=$(tr).find("td:eq(2)>span").attr("data-estado");
+    AreasG.locales_id=$(tr).find("td:eq(2) input").val();
+    AreasG.estado=$(tr).find("td:eq(3)>span").attr("data-estado");
     $("#BtnEditar").click();
 };
-
 
 MostrarAjax=function(t){
     if( t=="areas" ){
@@ -127,6 +138,9 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
         return row.nemonico+"<input type='hidden' name='txt_imagen' value='"+row.imagen+"'><input type='hidden' name='txt_imagenc' value='"+row.imagenc+"'><input type='hidden' name='txt_imagenp' value='"+row.imagenp+"'>";
     }
     if(typeof(fn)!='undefined' && fn.col==2){
+        return $.trim(row.locales)+"<input type='hidden' name='txt_locales_id' value='"+row.locales_id+"'>";
+    }
+    if(typeof(fn)!='undefined' && fn.col==3){
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" onClick="activar('+row.id+')" data-estado="'+row.estado+'" class="btn btn-danger">Inactivo</span>';
         if(row.estado==1){

@@ -184,6 +184,10 @@ class ReporteFinalController extends BaseController
           $array['w'].=" AND l.local LIKE '%".Input::get('local')."%' ";
         }
 
+        if( Input::has('local_origen') AND Input::get('local_origen')!='' ){
+          $array['w'].=" AND lo.local LIKE '%".Input::get('local_origen')."%' ";
+        }
+
         if( Input::has('norden') AND Input::get('norden')!='' ){
           $array['w'].=" AND rd.norden = '".Input::get('norden')."' ";
         }
@@ -654,13 +658,14 @@ class ReporteFinalController extends BaseController
                         ->setCellValue($head[7].'3', 'ESTADO DEL PASO')
                         ->setCellValue($head[8].'3', 'PASO')
                         ->setCellValue($head[9].'3', 'AREA DEL PASO')
-                        ->setCellValue($head[10].'3', 'LUGAR DE PROCEDENCIA')
-                        ->setCellValue($head[11].'3', 'FEC INI TRAMITE')
-                        ->setCellValue($head[12].'3', 'RESPONSABLE PDI')
-                        ->setCellValue($head[13].'3', 'NOMBRE DEL PROCESO')
-                        ->setCellValue($head[14].'3', 'TIPO SOLICITANTE')
-                        ->setCellValue($head[15].'3', 'DNI/RUC')
-                        ->setCellValue($head[16].'3', 'SOLICITANTE')
+                        ->setCellValue($head[10].'3', 'LUGAR DE ORIGEN')
+                        ->setCellValue($head[11].'3', 'LUGAR DE PROCEDENCIA')
+                        ->setCellValue($head[12].'3', 'FEC INI TRAMITE')
+                        ->setCellValue($head[13].'3', 'RESPONSABLE PDI')
+                        ->setCellValue($head[14].'3', 'NOMBRE DEL PROCESO')
+                        ->setCellValue($head[15].'3', 'TIPO SOLICITANTE')
+                        ->setCellValue($head[16].'3', 'DNI/RUC')
+                        ->setCellValue($head[17].'3', 'SOLICITANTE')
                    
                   ->mergeCells('A1:K1')
                   ->setCellValue('A1', 'TRÁMITES INCONCLUSOS POR ÁREA Y PROCESO')
@@ -683,10 +688,11 @@ class ReporteFinalController extends BaseController
             $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('O')->setAutoSize(true);
             $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('P')->setAutoSize(true);
             $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('Q')->setAutoSize(true);
+            $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('R')->setAutoSize(true);
          
             /*end head*/
             $cabecera=array();
-            $max = 16;
+            $max = 17;
             /*body*/
             if( count($result)>0 AND isset($result[0]->fecha_inicio) AND $result[0]->fecha_inicio != '' ){
               foreach ($result as $key => $value) {
@@ -702,13 +708,14 @@ class ReporteFinalController extends BaseController
                               ->setCellValueExplicit($head[7] . ($key + 4), $value->tiempo_final_n)
                               ->setCellValue($head[8] . ($key + 4), $value->norden)
                               ->setCellValue($head[9] . ($key + 4), $value->area)
-                              ->setCellValue($head[10] . ($key + 4), trim($value->local))
-                              ->setCellValue($head[11] . ($key + 4), $value->fecha_inicio)
-                              ->setCellValue($head[12] . ($key + 4), $value->res_id_union)
-                              ->setCellValue($head[13] . ($key + 4), $value->proceso)
-                              ->setCellValue($head[14] . ($key + 4), $value->tipo_solicitante)
-                              ->setCellValue($head[15] . ($key + 4), $value->id_solicitante)
-                              ->setCellValue($head[16] . ($key + 4), $value->persona)
+                              ->setCellValue($head[10] . ($key + 4), trim($value->local_origen))
+                              ->setCellValue($head[11] . ($key + 4), trim($value->local))
+                              ->setCellValue($head[12] . ($key + 4), $value->fecha_inicio)
+                              ->setCellValue($head[13] . ($key + 4), $value->res_id_union)
+                              ->setCellValue($head[14] . ($key + 4), $value->proceso)
+                              ->setCellValue($head[15] . ($key + 4), $value->tipo_solicitante)
+                              ->setCellValue($head[16] . ($key + 4), $value->id_solicitante)
+                              ->setCellValue($head[17] . ($key + 4), $value->persona)
                               ;
 
                 $cabecera = explode("**", $value->datos);
@@ -726,7 +733,7 @@ class ReporteFinalController extends BaseController
 
                   }
 
-                  $max_aux = 16 + count($cabecera);
+                  $max_aux = 17 + count($cabecera);
                   if( $max < $max_aux ){
                       $max = $max_aux;
                   }

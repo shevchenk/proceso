@@ -145,6 +145,8 @@ slctGlobalHtml=function(slct,tipo,valarray,afectado,afectados,slct_id,slctant,sl
             }
     }
     $("li.multiselect-all").removeAttr("data-select");
+
+    $("#"+slct).multiselect('rebuild');
 };
 
 filtroSlct=function(slct,tipo,slct_id,afectados,slctant,slctant_id,select,valarray){

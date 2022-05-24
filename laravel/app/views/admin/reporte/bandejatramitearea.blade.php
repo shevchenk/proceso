@@ -236,7 +236,11 @@
                                                             <input type="text" class="form-control" id="txt_flujo" readonly>
                                                         </div>
                                                         <div class="col-sm-2">
-                                                            <label class="control-label">Local:</label>
+                                                            <label class="control-label">Lugar de origen:</label>
+                                                            <input type="text" class="form-control" id="txt_local_origen" readonly>
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <label class="control-label">Lugar de procedencia:</label>
                                                             <input type="text" class="form-control" id="txt_local" readonly>
                                                         </div>
                                                         <div class="col-sm-2">
@@ -247,12 +251,12 @@
                                                             <label class="control-label">Paso:</label>
                                                             <input type="text" class="form-control" id="txt_orden" readonly>
                                                         </div>
+                                                    </div>
+                                                    <div class="col-sm-12">
                                                         <div class="col-sm-2">
                                                             <label class="control-label">Fecha Inicio:</label>
                                                             <input type="text" class="form-control" id="txt_fecha_inicio" readonly>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-sm-12">
                                                         <div class="col-sm-3">
                                                             <label class="control-label">Tiempo asignado al paso:</label>
                                                             <input type="text" class="form-control" id="txt_tiempo" readonly>
