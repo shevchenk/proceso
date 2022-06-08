@@ -1127,10 +1127,10 @@ class ReporteController extends BaseController
                         for( $i = 0; $i < count($cabecera); $i++ ){
                             $cabeceradet = explode("|", $cabecera[$i]);
                             if( trim($cabeceradet[0]) != '' ){
-                                $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(15+$i)])->setAutoSize(true);
-                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(15+$i)].'3', $cabeceradet[0]);
+                                $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(16+$i)])->setAutoSize(true);
+                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(16+$i)].'3', $cabeceradet[0]);
                                 if( isset($cabeceradet[1]) ){
-                                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(15+$i)] . $ini, $cabeceradet[1]);
+                                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(16+$i)] . $ini, $cabeceradet[1]);
                                 }
                             }
     

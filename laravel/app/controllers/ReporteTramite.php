@@ -28,6 +28,44 @@ class ReporteTramite extends Eloquent
         return $r;
     }
 
+    public static function TramiteAnulado( $array )
+    {
+        $sql =" SELECT tr.id_union AS tramite,
+                r.id, r.ruta_flujo_id, tr.sumilla as sumilla,
+                f.nombre proceso,
+                IFNULL(r.fecha_inicio,'') AS fecha_inicio,
+                IFNULL(tstm.nombre,'') AS tipo_solicitante,
+                IFNULL(
+                    CASE
+                        WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN atm.nombre
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN CONCAT(ptm.paterno,' ',ptm.materno,' ',ptm.nombre)
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.razon_social
+                        ELSE (SELECT nombre FROM areas WHERE id = tr.area_id)
+                    END
+                , '') AS persona, 
+                l.local, lo.local local_origen,
+                CONCAT(ptma.paterno,' ',ptma.materno,' ',ptma.nombre) responsable_anulacion, tm.updated_at fecha_anulacion
+                FROM tablas_relacion tr 
+                INNER JOIN rutas r ON tr.id=r.tabla_relacion_id AND r.estado=0 
+                INNER JOIN referidos re ON re.ruta_id = r.id
+                INNER JOIN rutas_detalle rd ON rd.ruta_id=r.id AND rd.estado=1
+                INNER JOIN flujos f ON f.id=r.flujo_id
+                LEFT JOIN tramites tm ON tm.id = tr.tramite_id
+                LEFT JOIN locales l ON l.id = r.local_id
+                LEFT JOIN locales lo ON lo.id = r.local_origen_id
+                LEFT JOIN personas ptm ON ptm.id = tm.persona_id 
+                LEFT JOIN empresas etm ON etm.id = tm.empresa_id 
+                LEFT JOIN areas atm ON atm.id = tm.area_id_sol
+                LEFT JOIN tipo_solicitante tstm ON tstm.id = tm.tipo_solicitante_id
+                LEFT JOIN personas ptma ON ptma.id = tm.usuario_updated_at
+                WHERE tr.estado=0".
+                $array['where'].
+                " GROUP BY r.id ".$array['having'];
+
+        $r= DB::select($sql);
+        return $r;
+    }
+
     public static function TramiteDetalle( $array )
     {
         $sql="  SELECT rd.id, rd.ruta_id,

@@ -8,6 +8,7 @@ class ReporteTramiteController extends BaseController
       $array=array();
       $fecha='';
       $array['where']='';
+      $array['having']='';
       
       if( Input::has('tramite') AND Input::get('tramite')!='' ){
         $tramite=explode(" ",trim(Input::get('tramite')));
@@ -15,10 +16,41 @@ class ReporteTramiteController extends BaseController
           $array['where'].=" AND re.referido LIKE '%".$tramite[$i]."%' ";
         }
       }
+
+      if( Input::has('anulado') AND Input::has('solicitante_anu') AND Input::get('solicitante_anu')!='' ){
+        $solicitante_anu=explode(" ",trim(Input::get('solicitante_anu')));
+        for($i=0; $i<count($solicitante_anu); $i++){
+            if( $i == 0 ){
+                $array['having'].=" HAVING persona LIKE '%".$solicitante_anu[$i]."%' ";
+            }
+            else{
+                $array['having'].=" AND persona LIKE '%".$solicitante_anu[$i]."%' ";
+            }
+        }
+      }
+
+      if( Input::has('anulado') AND Input::has('fecha_anu') AND Input::get('fecha_anu')!= '' ){
+        $fecha_anu = explode(" - ", trim(Input::get('fecha_anu')));
+        $array['where'].= " AND DATE(tm.updated_at) BETWEEN '".$fecha_anu[0]."' AND '".$fecha_anu[1]."' ";
+      }
+
+      if( Input::has('anulado') AND Input::has('fecha_inicio_anu') AND Input::get('fecha_inicio_anu')!= '' ){
+        $fecha_inicio_anu = explode(" - ", trim(Input::get('fecha_inicio_anu')));
+        $array['where'].= " AND DATE(r.fecha_inicio) BETWEEN '".$fecha_inicio_anu[0]."' AND '".$fecha_inicio_anu[1]."' ";
+      }
+
+      if( Input::has('anulado') AND Input::has('local_anu') AND Input::get('local_anu')!= '' ){
+        $local_anu = implode(",", Input::get('local_anu'));
+        $array['where'].= " AND FIND_IN_SET(r.local_id, '".$local_anu."') > 0 ";
+      }
       
 
-
-      $r = ReporteTramite::TramiteUnico( $array );
+      if( !Input::has('anulado') ){
+          $r = ReporteTramite::TramiteUnico( $array );
+      }
+      else{
+        $r = ReporteTramite::TramiteAnulado( $array );
+      }
 
 
       return Response::json(

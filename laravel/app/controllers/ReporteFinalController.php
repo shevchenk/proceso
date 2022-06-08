@@ -724,10 +724,10 @@ class ReporteFinalController extends BaseController
                   for( $i = 0; $i < count($cabecera); $i++ ){
                       $cabeceradet = explode("|", $cabecera[$i]);
                       if( trim($cabeceradet[0]) != '' ){
-                          $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(17+$i)])->setAutoSize(true);
-                          $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(17+$i)].'3', $cabeceradet[0]);
+                          $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($head[(18+$i)])->setAutoSize(true);
+                          $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(18+$i)].'3', $cabeceradet[0]);
                           if( isset($cabeceradet[1]) ){
-                              $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(17+$i)] . ($key + 4), $cabeceradet[1]);
+                              $objPHPExcel->setActiveSheetIndex(0)->setCellValue($head[(18+$i)] . ($key + 4), $cabeceradet[1]);
                           }
                       }
 

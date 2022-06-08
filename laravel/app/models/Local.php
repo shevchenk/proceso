@@ -32,7 +32,7 @@ class Local extends Base
         $local=DB::table('locales')
                 ->select('id','local AS nombre','estado')
                 ->where( 
-                    function($query){
+                    function($query) {
                         if ( Input::get('estado') ) {
                             $query->where('estado','=','1');
                         }
@@ -41,7 +41,7 @@ class Local extends Base
                             $query->whereRaw('FIND_IN_SET(id , "'.$locales.'") > 0 ');
                         }
                         if ( Input::has('area_local_id') ) {
-                            $area = AREA::find(Input::get('area_local_id'));
+                            $area = Area::find(Input::get('area_local_id'));
                             $locales = $area->locales_id;
                             $query->whereRaw('FIND_IN_SET(id , "'.$locales.'") > 0 ');
                         }
