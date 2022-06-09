@@ -72,8 +72,8 @@ class ReporteTramite extends Eloquent
                 LEFT JOIN empresas etm ON etm.id = tm.empresa_id 
                 LEFT JOIN areas atm ON atm.id = tm.area_id_sol
                 LEFT JOIN tipo_solicitante tstm ON tstm.id = tm.tipo_solicitante_id
-                LEFT JOIN personas ptma ON ptma.id = tm.usuario_updated_at
-                WHERE tr.estado=0".
+                LEFT JOIN personas ptma ON ptma.id = tm.usuario_updated_at 
+                WHERE tr.estado=0 AND ptma.id > 2 ".
                 $array['where'].
                 " GROUP BY r.id ".$array['having'];
 
@@ -136,9 +136,8 @@ class ReporteTramite extends Eloquent
                     ORDER BY v.orden ASC
                 SEPARATOR '|'),'') AS ordenv,
                 rd.archivo
-
                 FROM rutas AS r 
-                INNER JOIN rutas_detalle AS rd ON r.id = rd.ruta_id AND rd.estado = 1
+                INNER JOIN rutas_detalle AS rd ON r.id = rd.ruta_id 
                 INNER JOIN rutas_detalle_verbo AS v ON rd.id = v.ruta_detalle_id AND v.estado=1
                 INNER JOIN areas AS a ON rd.area_id = a.id 
                 INNER JOIN tiempos AS t ON rd.tiempo_id = t.id 
@@ -147,8 +146,7 @@ class ReporteTramite extends Eloquent
                 LEFT JOIN documentos as d ON v.documento_id=d.id
                 LEFT JOIN personas as p ON v.usuario_updated_at=p.id
                 LEFT JOIN personas as p1 ON rd.usuario_retorno=p1.id
-
-                WHERE r.estado = 1".
+                WHERE rd.estado = 1".
                 $array['where']."
                 GROUP BY rd.id";
 
@@ -161,20 +159,20 @@ class ReporteTramite extends Eloquent
         $r = array([],[],[]);
         $ruta_id = Input::get('ruta_id');
             
-        $sql = "SELECT re.ruta_id,re.ruta_detalle_id,re.referido,re.fecha_hora_referido fecha_hora,f.nombre proceso,a.nombre area,re.norden, 'r' tipo, re.doc_digital_id
+        $sql = "SELECT re.ruta_id,re.ruta_detalle_id,re.referido,re.fecha_hora_referido fecha_hora,f.nombre proceso,a.nombre area,re.norden, 'r' tipo, re.doc_digital_id, rd.archivo
                 FROM referidos re 
                 INNER JOIN referidos_relaciones rr ON rr.ruta_id = $ruta_id AND rr.ruta_id_ref = re.ruta_id AND rr.estado = 1
-                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN rutas r ON re.ruta_id=r.id 
                 INNER JOIN flujos f ON r.flujo_id=f.id 
                 LEFT JOIN rutas_detalle rd ON re.ruta_detalle_id=rd.id 
                 LEFT JOIN areas a ON rd.area_id=a.id  
                 WHERE re.estado=1 
                 UNION
-                SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,s.doc_digital_id
+                SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,s.doc_digital_id, rd.archivo
                 FROM sustentos s
                 INNER JOIN referidos re ON re.id=s.referido_id AND re.estado = 1
                 INNER JOIN referidos_relaciones rr ON rr.ruta_id = $ruta_id AND rr.ruta_id_ref = re.ruta_id AND rr.estado = 1
-                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN rutas r ON re.ruta_id=r.id 
                 INNER JOIN flujos f ON r.flujo_id=f.id
                 INNER JOIN rutas_detalle rd ON rd.id=s.ruta_detalle_id
                 INNER JOIN areas a ON rd.area_id=a.id  
@@ -182,18 +180,18 @@ class ReporteTramite extends Eloquent
                 ORDER BY ruta_id,norden,tipo";
         $r[0]=DB::select($sql);
     
-        $sql = "SELECT re.ruta_id,re.ruta_detalle_id,re.referido,re.fecha_hora_referido fecha_hora,f.nombre proceso,a.nombre area,re.norden, 'r' tipo, re.doc_digital_id
+        $sql = "SELECT re.ruta_id,re.ruta_detalle_id,re.referido,re.fecha_hora_referido fecha_hora,f.nombre proceso,a.nombre area,re.norden, 'r' tipo, re.doc_digital_id, rd.archivo
                 FROM referidos re 
-                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN rutas r ON re.ruta_id=r.id 
                 INNER JOIN flujos f ON r.flujo_id=f.id 
                 LEFT JOIN rutas_detalle rd ON re.ruta_detalle_id=rd.id 
                 LEFT JOIN areas a ON rd.area_id=a.id  
                 WHERE re.estado=1 and re.ruta_id = $ruta_id
                 UNION
-                SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,s.doc_digital_id
+                SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,s.doc_digital_id, rd.archivo
                 FROM sustentos s
                 INNER JOIN referidos re ON re.id=s.referido_id AND re.ruta_id = $ruta_id
-                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN rutas r ON re.ruta_id=r.id 
                 INNER JOIN flujos f ON r.flujo_id=f.id
                 INNER JOIN rutas_detalle rd ON rd.id=s.ruta_detalle_id
                 INNER JOIN areas a ON rd.area_id=a.id  
@@ -201,20 +199,20 @@ class ReporteTramite extends Eloquent
                 ORDER BY ruta_id,norden,tipo";
         $r[1]=DB::select($sql);
     
-        $sql = "SELECT re.ruta_id,re.ruta_detalle_id,re.referido,re.fecha_hora_referido fecha_hora,f.nombre proceso,a.nombre area,re.norden, 'r' tipo, re.doc_digital_id
+        $sql = "SELECT re.ruta_id,re.ruta_detalle_id,re.referido,re.fecha_hora_referido fecha_hora,f.nombre proceso,a.nombre area,re.norden, 'r' tipo, re.doc_digital_id, rd.archivo
                 FROM referidos re 
                 INNER JOIN referidos_relaciones rr ON rr.ruta_id_ref = $ruta_id AND rr.ruta_id = re.ruta_id AND rr.estado = 1
-                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN rutas r ON re.ruta_id=r.id 
                 INNER JOIN flujos f ON r.flujo_id=f.id 
                 LEFT JOIN rutas_detalle rd ON re.ruta_detalle_id=rd.id 
                 LEFT JOIN areas a ON rd.area_id=a.id  
                 WHERE re.estado=1 
                 UNION
-                SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,s.doc_digital_id
+                SELECT re.ruta_id,re.ruta_detalle_id,sustento,fecha_hora_sustento fecha_hora,f.nombre proceso,a.nombre area,rd.norden,'s' tipo,s.doc_digital_id, rd.archivo
                 FROM sustentos s
                 INNER JOIN referidos re ON re.id=s.referido_id AND re.estado = 1
                 INNER JOIN referidos_relaciones rr ON rr.ruta_id_ref = $ruta_id AND rr.ruta_id = re.ruta_id AND rr.estado = 1
-                INNER JOIN rutas r ON re.ruta_id=r.id AND r.estado = 1
+                INNER JOIN rutas r ON re.ruta_id=r.id 
                 INNER JOIN flujos f ON r.flujo_id=f.id
                 INNER JOIN rutas_detalle rd ON rd.id=s.ruta_detalle_id
                 INNER JOIN areas a ON rd.area_id=a.id  

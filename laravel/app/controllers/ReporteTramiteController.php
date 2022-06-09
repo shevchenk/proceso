@@ -77,10 +77,17 @@ class ReporteTramiteController extends BaseController
       $array['where']='';
 
       if( Input::has('ruta_id') AND Input::get('ruta_id')!='' ){
-        $array['where']=" AND r.id=".Input::get('ruta_id')." ";
+        $array['where'].=" AND r.id=".Input::get('ruta_id')." ";
       }
 
+      if( !Input::has('anulado') ){
+        $array['where'].=" AND r.estado=1 ";
+      }
+      else{
+        $array['where'].=" AND r.estado=0 ";
+      }
       $r = ReporteTramite::TramiteDetalle( $array );
+      
       return Response::json(
           array(
               'rst'=>1,
@@ -90,6 +97,15 @@ class ReporteTramiteController extends BaseController
     }
 
     public function postExpedienteunico(){
+      $array=array();
+      $array['where']='';
+      
+      if( !Input::has('anulado') ){
+        $array['where'].=" AND r.estado=1 ";
+      }
+      else{
+        $array['where'].=" AND r.estado=0 ";
+      }
 
         $rst=ReporteTramite::ExpedienteUnico(); 
         //$times = array();
