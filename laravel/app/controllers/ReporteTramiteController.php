@@ -17,7 +17,7 @@ class ReporteTramiteController extends BaseController
         }
       }
 
-      if( Input::has('anulado') AND Input::has('solicitante_anu') AND Input::get('solicitante_anu')!='' ){
+      if( Input::has('solicitante_anu') AND Input::get('solicitante_anu')!='' ){
         $solicitante_anu=explode(" ",trim(Input::get('solicitante_anu')));
         for($i=0; $i<count($solicitante_anu); $i++){
             if( $i == 0 ){
@@ -29,17 +29,27 @@ class ReporteTramiteController extends BaseController
         }
       }
 
+      if( Input::has('estado_anu') AND Input::get('estado_anu')!='' ){
+          $estado_anu = trim(Input::get('estado_anu'));
+          if( $array['having'] == '' ){
+              $array['having'].=" HAVING estado = '".$estado_anu."' ";
+          }
+          else{
+              $array['having'].=" AND estado = '".$estado_anu."' ";
+          }
+      }
+
       if( Input::has('anulado') AND Input::has('fecha_anu') AND Input::get('fecha_anu')!= '' ){
         $fecha_anu = explode(" - ", trim(Input::get('fecha_anu')));
         $array['where'].= " AND DATE(tm.updated_at) BETWEEN '".$fecha_anu[0]."' AND '".$fecha_anu[1]."' ";
       }
 
-      if( Input::has('anulado') AND Input::has('fecha_inicio_anu') AND Input::get('fecha_inicio_anu')!= '' ){
+      if( Input::has('fecha_inicio_anu') AND Input::get('fecha_inicio_anu')!= '' ){
         $fecha_inicio_anu = explode(" - ", trim(Input::get('fecha_inicio_anu')));
         $array['where'].= " AND DATE(r.fecha_inicio) BETWEEN '".$fecha_inicio_anu[0]."' AND '".$fecha_inicio_anu[1]."' ";
       }
 
-      if( Input::has('anulado') AND Input::has('local_anu') AND Input::get('local_anu')!= '' ){
+      if( Input::has('local_anu') AND Input::get('local_anu')!= '' ){
         $local_anu = implode(",", Input::get('local_anu'));
         $array['where'].= " AND FIND_IN_SET(r.local_id, '".$local_anu."') > 0 ";
       }

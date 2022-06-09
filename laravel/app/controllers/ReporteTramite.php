@@ -13,16 +13,31 @@ class ReporteTramite extends Eloquent
                                                 AND MAX( rd.alerta_tipo ) > 1, 'Trunco', 'Concluido'
                                 )
                 ) estado,
-                f.nombre proceso,
+                IFNULL(
+                    CASE
+                        WHEN tm.id IS NOT NULL AND tstm.id = 0 THEN atm.nombre
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 0 THEN CONCAT(ptm.paterno,' ',ptm.materno,' ',ptm.nombre)
+                        WHEN tm.id IS NOT NULL AND tstm.pide_empresa = 1 THEN etm.razon_social
+                        ELSE (SELECT nombre FROM areas WHERE id = tr.area_id)
+                    END
+                , '') AS persona, 
+                l.local, f.nombre proceso,
                 IFNULL(r.fecha_inicio,'') AS fecha_inicio
                 FROM referidos re 
                 INNER JOIN rutas r ON r.id=re.ruta_id AND r.estado=1
                 INNER JOIN tablas_relacion tr ON tr.id=r.tabla_relacion_id AND tr.estado=1
                 INNER JOIN rutas_detalle rd ON rd.ruta_id=r.id AND rd.estado=1
                 INNER JOIN flujos f ON f.id=r.flujo_id
+                LEFT JOIN tramites tm ON tm.id = tr.tramite_id
+                LEFT JOIN locales l ON l.id = r.local_id
+                LEFT JOIN locales lo ON lo.id = r.local_origen_id
+                LEFT JOIN personas ptm ON ptm.id = tm.persona_id 
+                LEFT JOIN empresas etm ON etm.id = tm.empresa_id 
+                LEFT JOIN areas atm ON atm.id = tm.area_id_sol
+                LEFT JOIN tipo_solicitante tstm ON tstm.id = tm.tipo_solicitante_id
                 WHERE re.estado=1".
                 $array['where'].
-                "GROUP BY r.id";
+                " GROUP BY r.id ".$array['having'];
 
         $r= DB::select($sql);
         return $r;
