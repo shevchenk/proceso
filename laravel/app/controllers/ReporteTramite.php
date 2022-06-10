@@ -222,4 +222,60 @@ class ReporteTramite extends Eloquent
         
         return $r;
     }
+
+    public static function ValidaSolicitudes( $array )
+    {
+        $sql = "SELECT ts.nombre tipo_solicitante,
+                IFNULL(
+                    CASE
+                        WHEN ts.pide_empresa = 0 THEN CONCAT(p.paterno,' ',p.materno,' ',p.nombre)
+                        WHEN ts.pide_empresa = 1 THEN e.razon_social
+                        ELSE (SELECT nombre FROM areas WHERE id = pt.area_id)
+                    END
+                , '') AS solicitante,
+                tt.nombre_tipo_tramite tipo_tramite, d.nombre documento, l.local,
+                ct.nombre_clasificador_tramite as servicio, pt.fecha_pretramite fecha, pt.ruta_archivo,
+                (   SELECT GROUP_CONCAT('<b>', tr_aux.id_union, ' </b><br>' ,tr_aux.fecha_tramite) 
+                    FROM tablas_relacion tr_aux
+                    INNER JOIN tramites t_aux ON t_aux.id = tr_aux.tramite_id AND t_aux.estado = 1 
+                    WHERE t_aux.persona_id = pt.persona_id 
+                    AND tr_aux.estado = 1
+                ) expediente,
+                IF(pt.estado_atencion = 0, 'Pendiente',
+                    IF(pt.estado_atencion = 1, 'Aprobado', 'Desaprobado')
+                ) estado, pt.updated_at, pt.observacion, tr.id_union tramite, DATE(t.fecha_tramite) AS fecha_tramite
+                FROM pretramites pt 
+                INNER JOIN personas p on p.id=pt.persona_id 
+                INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id
+                INNER JOIN tipo_tramite tt on tt.id=ct.tipo_tramite_id 
+                INNER JOIN tipo_solicitante ts on ts.id=pt.tipo_solicitante_id 
+                INNER JOIN documentos d on d.id=pt.tipo_documento_id 
+                LEFT JOIN locales l ON l.id = pt.local_id
+                LEFT JOIN empresas e on e.id=pt.empresa_id 
+                LEFT JOIN tramites t ON t.pretramite_id=pt.id AND t.estado = 1 
+                LEFT JOIN tablas_relacion tr ON tr.tramite_id=t.id AND tr.estado = 1 
+                WHERE pt.estado = 1 ".
+                $array['where']." GROUP BY pt.id ".$array['having']."
+                ORDER BY pt.fecha_pretramite DESC";
+
+		$r= DB::select($sql);
+        return $r; 
+    }
+
+    public static function ValidaSolicitudesProduccion( $array )
+    {
+        $sql = "SELECT l.local, COUNT(DISTINCT(pt.id)) solicitudes, 
+                COUNT( DISTINCT(  IF(pt.estado_atencion = 0, pt.id, NULL) ) ) pendientes,
+                COUNT( DISTINCT(  IF(pt.estado_atencion = 1, pt.id, NULL) ) ) aprobados,
+                COUNT( DISTINCT(  IF(pt.estado_atencion = 2, pt.id, NULL) ) ) desaprobados
+                FROM pretramites pt 
+                LEFT JOIN locales l ON l.id = pt.local_id
+                LEFT JOIN tramites t ON t.pretramite_id=pt.id AND t.estado = 1 
+                WHERE pt.estado = 1 ".
+                $array['where']." GROUP BY pt.local_id ".$array['having']."
+                ORDER BY pt.fecha_pretramite DESC";
+
+		$r= DB::select($sql);
+        return $r; 
+    }
 }
