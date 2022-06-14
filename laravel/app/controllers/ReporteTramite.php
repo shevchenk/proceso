@@ -235,10 +235,12 @@ class ReporteTramite extends Eloquent
                 , '') AS solicitante,
                 tt.nombre_tipo_tramite tipo_tramite, d.nombre documento, l.local,
                 ct.nombre_clasificador_tramite as servicio, pt.fecha_pretramite fecha, pt.ruta_archivo,
-                (   SELECT GROUP_CONCAT('<b>', tr_aux.id_union, ' </b><br>' ,tr_aux.fecha_tramite) 
+                (   SELECT GROUP_CONCAT('<b>', tr_aux.id_union, '</b> => ' ,tr_aux.fecha_tramite, '<br>', f_aux.nombre SEPARATOR '<hr>') 
                     FROM tablas_relacion tr_aux
                     INNER JOIN tramites t_aux ON t_aux.id = tr_aux.tramite_id AND t_aux.estado = 1 
-                    WHERE t_aux.persona_id = pt.persona_id 
+                    INNER JOIN rutas r_aux ON r_aux.tabla_relacion_id = tr_aux.id AND r_aux.estado = 1
+                    INNER JOIN flujos f_aux ON f_aux.id = r_aux.flujo_id
+                    WHERE t_aux.persona_id = pt.persona_id AND pt.persona_id != 0
                     AND tr_aux.estado = 1
                 ) expediente,
                 IF(pt.estado_atencion = 0, 'Pendiente',
@@ -257,7 +259,8 @@ class ReporteTramite extends Eloquent
                 WHERE pt.estado = 1 ".
                 $array['where']." GROUP BY pt.id ".$array['having']."
                 ORDER BY pt.fecha_pretramite DESC";
-
+        
+        $set=DB::statement('SET group_concat_max_len := @@max_allowed_packet');
 		$r= DB::select($sql);
         return $r; 
     }
@@ -275,6 +278,82 @@ class ReporteTramite extends Eloquent
                 $array['where']." GROUP BY pt.local_id ".$array['having']."
                 ORDER BY pt.fecha_pretramite DESC";
 
+		$r= DB::select($sql);
+        return $r; 
+    }
+
+    public static function ProduccionExpedientes( $array )
+    {
+        $sql = "SELECT l.local, a.nombre area, d.nombre documento, f.nombre proceso
+                , COUNT(DISTINCT(rdv.id)) docs, COUNT(DISTINCT(r.id)) tramites
+                FROM rutas r 
+                INNER JOIN rutas_detalle rd ON rd.ruta_id = r.id AND rd.estado = 1
+                INNER JOIN rutas_detalle_verbo rdv ON rdv.ruta_detalle_id = rd.id AND rdv.estado = 1 AND rdv.verbo_id = 1 AND rdv.finalizo = 1
+                INNER JOIN flujos f ON r.flujo_id=f.id 
+                INNER JOIN areas a ON rd.area_id=a.id  
+                INNER JOIN locales l ON l.id = r.local_id
+                INNER JOIN documentos d ON d.id = rdv.documento_id 
+                WHERE r.estado=1 ".$array['where']."
+                GROUP BY l.id, a.id, d.id, f.id
+                ORDER BY local, area, documento, proceso";
+        
+        $set=DB::statement('SET group_concat_max_len := @@max_allowed_packet');
+		$r= DB::select($sql);
+        return $r; 
+    }
+
+    public static function ProduccionExpedientesLocal( $array )
+    {
+        $sql1 = "SELECT l.local
+                , COUNT(DISTINCT(rdv.id)) docs
+                FROM rutas r 
+                INNER JOIN rutas_detalle rd ON rd.ruta_id = r.id AND rd.estado = 1
+                INNER JOIN rutas_detalle_verbo rdv ON rdv.ruta_detalle_id = rd.id AND rdv.estado = 1 AND rdv.verbo_id = 1 AND rdv.finalizo = 1
+                INNER JOIN flujos f ON r.flujo_id=f.id 
+                INNER JOIN areas a ON rd.area_id=a.id  
+                INNER JOIN locales l ON l.id = r.local_id
+                INNER JOIN documentos d ON d.id = rdv.documento_id 
+                WHERE r.estado=1 ".$array['where']."
+                GROUP BY l.id
+                ORDER BY local";
+        
+        $sql2 = "SELECT a.nombre area
+                , COUNT(DISTINCT(rdv.id)) docs
+                FROM rutas r 
+                INNER JOIN rutas_detalle rd ON rd.ruta_id = r.id AND rd.estado = 1
+                INNER JOIN rutas_detalle_verbo rdv ON rdv.ruta_detalle_id = rd.id AND rdv.estado = 1 AND rdv.verbo_id = 1 AND rdv.finalizo = 1
+                INNER JOIN flujos f ON r.flujo_id=f.id 
+                INNER JOIN areas a ON rd.area_id=a.id  
+                INNER JOIN locales l ON l.id = r.local_id
+                INNER JOIN documentos d ON d.id = rdv.documento_id 
+                WHERE r.estado=1 ".$array['where']."
+                GROUP BY a.id
+                ORDER BY area";
+        
+        $set=DB::statement('SET group_concat_max_len := @@max_allowed_packet');
+		$r[0]= DB::select($sql1);
+		$r[1]= DB::select($sql2);
+        return $r; 
+    }
+
+    public static function ProduccionExpedientesEstado( $array )
+    {
+        $sql = "SELECT l.local
+                , COUNT(DISTINCT(r.id)) tramites
+                , COUNT( DISTINCT(IF(r.estado = 0, r.id, NULL)) ) anulados
+                , COUNT( DISTINCT(IF(r.estado = 1 AND rd.dtiempo_final IS NULL, r.id, NULL)) ) procesos
+                FROM rutas r 
+                INNER JOIN rutas_detalle rd ON rd.ruta_id = r.id
+                INNER JOIN rutas_detalle_verbo rdv ON rdv.ruta_detalle_id = rd.id AND rdv.estado = 1
+                INNER JOIN flujos f ON r.flujo_id=f.id 
+                INNER JOIN areas a ON rd.area_id=a.id  
+                INNER JOIN locales l ON l.id = r.local_id
+                LEFT JOIN documentos d ON d.id = rdv.documento_id 
+                WHERE rd.estado = 1 ".$array['where']."
+                GROUP BY l.id
+                ORDER BY local";
+        
+        $set=DB::statement('SET group_concat_max_len := @@max_allowed_packet');
 		$r= DB::select($sql);
         return $r; 
     }

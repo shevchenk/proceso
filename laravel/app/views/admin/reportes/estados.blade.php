@@ -26,14 +26,14 @@
     <section class="content-header">
         <h1 style="text-align: center; font-size: 35px; color:#646464 ">
             
-            Vista de Trámites
+            REPORTE DE SOLICITUDES DE USUARIOS
             
             <small> </small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
             <li><a href="#">Reporte</a></li>
-            <li class="active">Vista de trámites</li>
+            <li class="active">REPORTE DE SOLICITUDES DE USUARIOS</li>
         </ol>
     </section>
 

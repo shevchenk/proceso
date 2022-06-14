@@ -338,8 +338,8 @@ class ReporteTramiteController extends BaseController
       $cabecera=array();
       $max = 12;
       $ini = 4;
-      $array_buscar = array('<b>','</b>','<br>',',');
-      $array_reemplazar = array('','','=>',' | ');
+      $array_buscar = array('<b>','</b>','<br>','<hr>');
+      $array_reemplazar = array('','',' => ','|');
       if($result){
         foreach ($result as $key => $value) {
           $archivo = "NO";
@@ -541,6 +541,510 @@ class ReporteTramiteController extends BaseController
       $objPHPExcel->getActiveSheet()->getStyle('A1:M1')->applyFromArray($styleAlignment);
       // Rename worksheet
       $objPHPExcel->getActiveSheet()->setTitle('Valida - Producción');
+      // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+      $objPHPExcel->setActiveSheetIndex(0);
+      // Redirect output to a client’s web browser (Excel5)
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename="reportebca.xls"'); // file name of excel
+      header('Cache-Control: max-age=0');
+      // If you're serving to IE 9, then the following may be needed
+      header('Cache-Control: max-age=1');
+      // If you're serving to IE over SSL, then the following may be needed
+      header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+      header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+      header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+      header ('Pragma: public'); // HTTP/1.0
+      $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+      $objWriter->save('php://output');
+      exit;
+      /* end export*/
+    }
+
+    public function postProduccionexpedientes()
+    {
+      $array=array();
+      $array['where']='';
+      $array['having']='';
+      
+      if( Input::has('flujo') AND Input::get('flujo')!= '' ){
+        $flujo = implode(",", Input::get('flujo'));
+        $array['where'].= " AND FIND_IN_SET(r.flujo_id, '".$flujo."') > 0 ";
+      }
+
+      if( Input::has('fecha_documento') AND Input::get('fecha_documento')!= '' ){
+        $fecha_documento = explode(" - ", trim(Input::get('fecha_documento')));
+        $array['where'].= " AND DATE(rdv.updated_at) BETWEEN '".$fecha_documento[0]."' AND '".$fecha_documento[1]."' ";
+      }
+
+      if( Input::has('local') AND Input::get('local')!= '' ){
+        $local = implode(",", Input::get('local'));
+        $array['where'].= " AND FIND_IN_SET(r.local_id, '".$local."') > 0 ";
+      }
+
+      if( Input::has('area') AND Input::get('area')!= '' ){
+        $area = implode(",", Input::get('area'));
+        $array['where'].= " AND FIND_IN_SET(rd.area_id, '".$area."') > 0 ";
+      }
+
+      if( Input::has('documento') AND Input::get('documento')!= '' ){
+        $documento = implode(",", Input::get('documento'));
+        $array['where'].= " AND FIND_IN_SET(rdv.documento_id, '".$documento."') > 0 ";
+      }
+
+      $r = ReporteTramite::ProduccionExpedientes( $array );
+
+      return Response::json(
+          array(
+              'rst'=>1,
+              'datos'=>$r
+          )
+      );
+    }
+
+    public function getExportproduccionexpedientes()
+    {
+      $array=array();
+      $array['where']='';
+      $array['having']='';
+      
+      if( Input::has('flujo') AND Input::get('flujo')!= '' ){
+        $flujo = implode(",", Input::get('flujo'));
+        $array['where'].= " AND FIND_IN_SET(r.flujo_id, '".$flujo."') > 0 ";
+      }
+
+      if( Input::has('fecha_documento') AND Input::get('fecha_documento')!= '' ){
+        $fecha_documento = explode(" - ", trim(Input::get('fecha_documento')));
+        $array['where'].= " AND DATE(rdv.updated_at) BETWEEN '".$fecha_documento[0]."' AND '".$fecha_documento[1]."' ";
+      }
+
+      if( Input::has('local') AND Input::get('local')!= '' ){
+        $local = implode(",", Input::get('local'));
+        $array['where'].= " AND FIND_IN_SET(r.local_id, '".$local."') > 0 ";
+      }
+
+      if( Input::has('area') AND Input::get('area')!= '' ){
+        $area = implode(",", Input::get('area'));
+        $array['where'].= " AND FIND_IN_SET(rd.area_id, '".$area."') > 0 ";
+      }
+
+      if( Input::has('documento') AND Input::get('documento')!= '' ){
+        $documento = implode(",", Input::get('documento'));
+        $array['where'].= " AND FIND_IN_SET(rdv.documento_id, '".$documento."') > 0 ";
+      }
+
+      $result = ReporteTramite::ProduccionExpedientes( $array );
+
+      /*style*/
+      $styleThinBlackBorderAllborders = array(
+          'borders' => array(
+              'allborders' => array(
+                  'style' => PHPExcel_Style_Border::BORDER_THIN,
+                  'color' => array('argb' => 'FF000000'),
+              ),
+          ),
+          'font'    => array(
+              'bold'      => true
+          ),
+          'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+          )
+      );
+      $styleThinAllborders = array(
+        'borders' => array(
+            'allborders' => array(
+                'style' => PHPExcel_Style_Border::BORDER_THIN,
+                'color' => array('argb' => 'FF000000'),
+            ),
+        )
+      );
+      $styleAlignmentBold= array(
+          'font'    => array(
+              'bold'      => true
+          ),
+          'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+          ),
+      );
+      $styleAlignment= array(
+          'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+          ),
+      );
+      /*end style*/
+
+      /*export*/
+      /* instanciar phpExcel!*/              
+      $objPHPExcel = new PHPExcel();
+
+      /*configure*/
+      $objPHPExcel->getProperties()->setCreator("Sistemas")
+          ->setSubject("-");
+
+      $objPHPExcel->getDefaultStyle()->getFont()->setName('Bookman Old Style');
+      $objPHPExcel->getDefaultStyle()->getFont()->setSize(8);
+      /*end configure*/
+
+      /*head*/
+      $head=array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ');
+      $objPHPExcel->setActiveSheetIndex(0)
+                  ->setCellValue($head[0].'3', 'Lugar de procedencia')
+                  ->setCellValue($head[1].'3', 'Área')
+                  ->setCellValue($head[2].'3', 'Documento')
+                  ->setCellValue($head[3].'3', 'Proceso')
+                  ->setCellValue($head[4].'3', 'Nro Documentos')
+                  ->setCellValue($head[5].'3', 'Nro Trámites')
+
+                  ->mergeCells('A1:G1')
+                  ->setCellValue('A1', 'REPORTE DE PRODUCCIÓN DE GESTIÓN DE EXPEDIENTES')
+                  ->getStyle('A1:G1')->getFont()->setSize(18);
+
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('A')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('B')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('C')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('D')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('E')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('F')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('G')->setAutoSize(true);
+      /*end head*/
+      /*body*/
+              
+      $cabecera=array();
+      $max = 5;
+      $ini = 4;
+      if($result){
+        foreach ($result as $key => $value) {
+          $objPHPExcel->setActiveSheetIndex(0)
+                      ->setCellValue( $head[0] . $ini, $value->local)
+                      ->setCellValue( $head[1] . $ini, $value->area)
+                      ->setCellValue( $head[2] . $ini, $value->documento)
+                      ->setCellValue( $head[3] . $ini, $value->proceso)
+                      ->setCellValue( $head[4] . $ini, $value->docs)
+                      ->setCellValue( $head[5] . $ini, $value->tramites)
+          ;
+          $ini++;
+        }
+      }
+      /*end body*/
+      $objPHPExcel->getActiveSheet()->getStyle('A3:'.$head[$max].'3')->applyFromArray($styleThinBlackBorderAllborders);
+      $objPHPExcel->getActiveSheet()->getStyle('A4:'.$head[$max].($ini-1))->applyFromArray($styleThinAllborders);
+      
+      $objPHPExcel->getActiveSheet()->getStyle('A1:G1')->applyFromArray($styleAlignment);
+      // Rename worksheet
+      $objPHPExcel->getActiveSheet()->setTitle('Valida');
+      // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+      $objPHPExcel->setActiveSheetIndex(0);
+      // Redirect output to a client’s web browser (Excel5)
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename="reportebca.xls"'); // file name of excel
+      header('Cache-Control: max-age=0');
+      // If you're serving to IE 9, then the following may be needed
+      header('Cache-Control: max-age=1');
+      // If you're serving to IE over SSL, then the following may be needed
+      header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+      header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+      header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+      header ('Pragma: public'); // HTTP/1.0
+      $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+      $objWriter->save('php://output');
+      exit;
+      /* end export*/
+    }
+
+    public function getExportproduccionexpedienteslocal()
+    {
+      $array=array();
+      $array['where']='';
+      $array['having']='';
+      
+      if( Input::has('flujo') AND Input::get('flujo')!= '' ){
+        $flujo = implode(",", Input::get('flujo'));
+        $array['where'].= " AND FIND_IN_SET(r.flujo_id, '".$flujo."') > 0 ";
+      }
+
+      if( Input::has('fecha_documento') AND Input::get('fecha_documento')!= '' ){
+        $fecha_documento = explode(" - ", trim(Input::get('fecha_documento')));
+        $array['where'].= " AND DATE(rdv.updated_at) BETWEEN '".$fecha_documento[0]."' AND '".$fecha_documento[1]."' ";
+      }
+
+      if( Input::has('local') AND Input::get('local')!= '' ){
+        $local = implode(",", Input::get('local'));
+        $array['where'].= " AND FIND_IN_SET(r.local_id, '".$local."') > 0 ";
+      }
+
+      if( Input::has('area') AND Input::get('area')!= '' ){
+        $area = implode(",", Input::get('area'));
+        $array['where'].= " AND FIND_IN_SET(rd.area_id, '".$area."') > 0 ";
+      }
+
+      if( Input::has('documento') AND Input::get('documento')!= '' ){
+        $documento = implode(",", Input::get('documento'));
+        $array['where'].= " AND FIND_IN_SET(rdv.documento_id, '".$documento."') > 0 ";
+      }
+
+      $result = ReporteTramite::ProduccionExpedientesLocal( $array );
+
+      /*style*/
+      $styleThinBlackBorderAllborders = array(
+          'borders' => array(
+              'allborders' => array(
+                  'style' => PHPExcel_Style_Border::BORDER_THIN,
+                  'color' => array('argb' => 'FF000000'),
+              ),
+          ),
+          'font'    => array(
+              'bold'      => true
+          ),
+          'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+          )
+      );
+      $styleThinAllborders = array(
+        'borders' => array(
+            'allborders' => array(
+                'style' => PHPExcel_Style_Border::BORDER_THIN,
+                'color' => array('argb' => 'FF000000'),
+            ),
+        )
+      );
+      $styleAlignmentBold= array(
+          'font'    => array(
+              'bold'      => true
+          ),
+          'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+          ),
+      );
+      $styleAlignment= array(
+          'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+          ),
+      );
+      /*end style*/
+
+      /*export*/
+      /* instanciar phpExcel!*/              
+      $objPHPExcel = new PHPExcel();
+
+      /*configure*/
+      $objPHPExcel->getProperties()->setCreator("Sistemas")
+          ->setSubject("-");
+
+      $objPHPExcel->getDefaultStyle()->getFont()->setName('Bookman Old Style');
+      $objPHPExcel->getDefaultStyle()->getFont()->setSize(8);
+      /*end configure*/
+
+      /*head*/
+      $head=array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ');
+      $objPHPExcel->setActiveSheetIndex(0)
+                  ->setCellValue($head[0].'3', 'Lugar de procedencia')
+                  ->setCellValue($head[1].'3', 'Nro Documentos')
+                  ->mergeCells('A1:C1')
+                  ->setCellValue('A1', 'TOTAL POR LOCAL')
+
+                  ->setCellValue($head[4].'3', 'Área')
+                  ->setCellValue($head[5].'3', 'Nro Documentos')
+                  ->mergeCells('E1:G1')
+                  ->setCellValue('E1', 'TOTAL POR ÁREA')
+                  ->getStyle('A1:G1')->getFont()->setSize(18);
+
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('A')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('B')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('C')->setAutoSize(true);
+
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('E')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('F')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('G')->setAutoSize(true);
+      /*end head*/
+      /*body*/
+              
+      if($result){
+        $max = 1;
+        $ini = 4;
+        foreach ($result[0] as $key => $value) {
+          $objPHPExcel->setActiveSheetIndex(0)
+                      ->setCellValue( $head[0] . $ini, $value->local)
+                      ->setCellValue( $head[1] . $ini, $value->docs)
+          ;
+          $ini++;
+        }
+
+        $objPHPExcel->getActiveSheet()->getStyle('A3:'.$head[$max].'3')->applyFromArray($styleThinBlackBorderAllborders);
+        $objPHPExcel->getActiveSheet()->getStyle('A4:'.$head[$max].($ini-1))->applyFromArray($styleThinAllborders);
+
+        $max = 5;
+        $ini = 4;
+        foreach ($result[1] as $key => $value) {
+          $objPHPExcel->setActiveSheetIndex(0)
+                      ->setCellValue( $head[4] . $ini, $value->area)
+                      ->setCellValue( $head[5] . $ini, $value->docs)
+          ;
+          $ini++;
+        }
+
+        $objPHPExcel->getActiveSheet()->getStyle('E3:'.$head[$max].'3')->applyFromArray($styleThinBlackBorderAllborders);
+        $objPHPExcel->getActiveSheet()->getStyle('E4:'.$head[$max].($ini-1))->applyFromArray($styleThinAllborders);
+      }
+      /*end body*/
+      
+      
+      $objPHPExcel->getActiveSheet()->getStyle('A1:G1')->applyFromArray($styleAlignment);
+      // Rename worksheet
+      $objPHPExcel->getActiveSheet()->setTitle('Totales Local - Área');
+      // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+      $objPHPExcel->setActiveSheetIndex(0);
+      // Redirect output to a client’s web browser (Excel5)
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename="reportebca.xls"'); // file name of excel
+      header('Cache-Control: max-age=0');
+      // If you're serving to IE 9, then the following may be needed
+      header('Cache-Control: max-age=1');
+      // If you're serving to IE over SSL, then the following may be needed
+      header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+      header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+      header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+      header ('Pragma: public'); // HTTP/1.0
+      $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+      $objWriter->save('php://output');
+      exit;
+      /* end export*/
+    }
+
+    public function getExportproduccionexpedientesestado()
+    {
+      $array=array();
+      $array['where']='';
+      $array['having']='';
+      
+      if( Input::has('flujo') AND Input::get('flujo')!= '' ){
+        $flujo = implode(",", Input::get('flujo'));
+        $array['where'].= " AND FIND_IN_SET(r.flujo_id, '".$flujo."') > 0 ";
+      }
+
+      if( Input::has('fecha_documento') AND Input::get('fecha_documento')!= '' ){
+        $fecha_documento = explode(" - ", trim(Input::get('fecha_documento')));
+        $array['where'].= " AND DATE(rdv.updated_at) BETWEEN '".$fecha_documento[0]."' AND '".$fecha_documento[1]."' ";
+      }
+
+      if( Input::has('local') AND Input::get('local')!= '' ){
+        $local = implode(",", Input::get('local'));
+        $array['where'].= " AND FIND_IN_SET(r.local_id, '".$local."') > 0 ";
+      }
+
+      if( Input::has('area') AND Input::get('area')!= '' ){
+        $area = implode(",", Input::get('area'));
+        $array['where'].= " AND FIND_IN_SET(rd.area_id, '".$area."') > 0 ";
+      }
+
+      if( Input::has('documento') AND Input::get('documento')!= '' ){
+        $documento = implode(",", Input::get('documento'));
+        $array['where'].= " AND FIND_IN_SET(rdv.documento_id, '".$documento."') > 0 ";
+      }
+
+      $result = ReporteTramite::ProduccionExpedientesEstado( $array );
+
+      /*style*/
+      $styleThinBlackBorderAllborders = array(
+          'borders' => array(
+              'allborders' => array(
+                  'style' => PHPExcel_Style_Border::BORDER_THIN,
+                  'color' => array('argb' => 'FF000000'),
+              ),
+          ),
+          'font'    => array(
+              'bold'      => true
+          ),
+          'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+          )
+      );
+      $styleThinAllborders = array(
+        'borders' => array(
+            'allborders' => array(
+                'style' => PHPExcel_Style_Border::BORDER_THIN,
+                'color' => array('argb' => 'FF000000'),
+            ),
+        )
+      );
+      $styleAlignmentBold= array(
+          'font'    => array(
+              'bold'      => true
+          ),
+          'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+          ),
+      );
+      $styleAlignment= array(
+          'alignment' => array(
+              'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+              'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+          ),
+      );
+      /*end style*/
+
+      /*export*/
+      /* instanciar phpExcel!*/              
+      $objPHPExcel = new PHPExcel();
+
+      /*configure*/
+      $objPHPExcel->getProperties()->setCreator("Sistemas")
+          ->setSubject("-");
+
+      $objPHPExcel->getDefaultStyle()->getFont()->setName('Bookman Old Style');
+      $objPHPExcel->getDefaultStyle()->getFont()->setSize(8);
+      /*end configure*/
+
+      /*head*/
+      $head=array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ');
+      $objPHPExcel->setActiveSheetIndex(0)
+                  ->setCellValue($head[0].'3', 'Lugar de procedencia')
+                  ->setCellValue($head[1].'3', 'Nro Expedientes')
+                  ->setCellValue($head[2].'3', 'Anulados')
+                  ->setCellValue($head[3].'3', 'En Proceso')
+                  ->setCellValue($head[4].'3', 'Concluidos')
+                  ->mergeCells('A1:E1')
+                  ->setCellValue('A1', 'TOTAL PRODUCCIÓN POR ESTADOS')
+                  ->getStyle('A1:E1')->getFont()->setSize(18);
+
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('A')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('B')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('C')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('D')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('E')->setAutoSize(true);
+      $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('F')->setAutoSize(true);
+      /*end head*/
+      /*body*/
+              
+      if($result){
+        $max = 4;
+        $ini = 4;
+        foreach ($result as $key => $value) {
+          $objPHPExcel->setActiveSheetIndex(0)
+                      ->setCellValue( $head[0] . $ini, $value->local)
+                      ->setCellValue( $head[1] . $ini, $value->tramites)
+                      ->setCellValue( $head[2] . $ini, $value->anulados)
+                      ->setCellValue( $head[3] . $ini, $value->procesos)
+                      ->setCellValue( $head[4] . $ini, ($value->tramites - $value->anulados - $value->procesos))
+          ;
+          $ini++;
+        }
+
+        $objPHPExcel->getActiveSheet()->getStyle('A3:'.$head[$max].'3')->applyFromArray($styleThinBlackBorderAllborders);
+        $objPHPExcel->getActiveSheet()->getStyle('A4:'.$head[$max].($ini-1))->applyFromArray($styleThinAllborders);
+      }
+      /*end body*/
+      
+      
+      $objPHPExcel->getActiveSheet()->getStyle('A1:E1')->applyFromArray($styleAlignment);
+      // Rename worksheet
+      $objPHPExcel->getActiveSheet()->setTitle('Producción Estados');
       // Set active sheet index to the first sheet, so Excel opens this as the first sheet
       $objPHPExcel->setActiveSheetIndex(0);
       // Redirect output to a client’s web browser (Excel5)
