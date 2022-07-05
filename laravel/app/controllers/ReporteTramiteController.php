@@ -396,25 +396,6 @@ class ReporteTramiteController extends BaseController
       $array=array();
       $array['where']='';
       $array['having']='';
-      
-      /*if( Input::has('tramite') AND Input::get('tramite')!='' ){
-        $tramite=explode(" ",trim(Input::get('tramite')));
-        for($i=0; $i<count($tramite); $i++){
-          $array['where'].=" AND tr.id_union LIKE '%".$tramite[$i]."%' ";
-        }
-      }
-
-      if( Input::has('solicitante') AND Input::get('solicitante')!='' ){
-        $solicitante=explode(" ",trim(Input::get('solicitante')));
-        for($i=0; $i<count($solicitante); $i++){
-            if( $i == 0 ){
-                $array['having'].=" HAVING solicitante LIKE '%".$solicitante[$i]."%' ";
-            }
-            else{
-                $array['having'].=" AND solicitante LIKE '%".$solicitante[$i]."%' ";
-            }
-        }
-      }*/
 
       if( Input::has('estado') AND Input::get('estado')!= '' ){
         $estado = implode(",", Input::get('estado'));
@@ -474,7 +455,7 @@ class ReporteTramiteController extends BaseController
       );
       /*end style*/
 
-      /*export*/
+      /*export*/      
       /* instanciar phpExcel!*/              
       $objPHPExcel = new PHPExcel();
 
@@ -506,7 +487,6 @@ class ReporteTramiteController extends BaseController
       $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('E')->setAutoSize(true);
       /*end head*/
       /*body*/
-
       $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue( 'A3', 'Fechas')
                     ->setCellValue( 'B3', trim(Input::get('fecha_estado')))
@@ -541,7 +521,27 @@ class ReporteTramiteController extends BaseController
       $objPHPExcel->getActiveSheet()->getStyle('A1:M1')->applyFromArray($styleAlignment);
       // Rename worksheet
       $objPHPExcel->getActiveSheet()->setTitle('Valida - Producción');
+
+      /*************Config Validate */
+      $configs = "AREA-1,AREA-2,AREA-3,AREA-4,AREA-5,AREA-6";
+
+      /*$objPHPExcel->setActiveSheetIndex(0);
+      $objPHPExcel->getActiveSheet()->setCellValue('H5', "SELECT ITEM");*/  
+      /*$objValidation = $objPHPExcel->getActiveSheet()->getCell('O5')->getDataValidation();
+      $objValidation->setType( \PHPExcel_Cell_DataValidation::TYPE_LIST );
+      $objValidation->setErrorStyle( \PHPExcel_Cell_DataValidation::STYLE_INFORMATION );
+      $objValidation->setAllowBlank( false );
+      $objValidation->setShowInputMessage( true );
+      $objValidation->setShowErrorMessage( true );
+      $objValidation->setShowDropDown( true );
+      $objValidation->setErrorTitle( 'Input error' );
+      $objValidation->setError( 'Value is not in list.' );
+      $objValidation->setPromptTitle( 'Pick from list' );
+      $objValidation->setPrompt( 'Please pick a value from the drop-down list.' );
+      $objValidation->setFormula1( 'php' ); //note this!
+      unset($objValidation);*/
       // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+      //dd($objValidation);
       $objPHPExcel->setActiveSheetIndex(0);
       // Redirect output to a client’s web browser (Excel5)
       header('Content-Type: application/vnd.ms-excel');

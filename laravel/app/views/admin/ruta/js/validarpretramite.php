@@ -19,6 +19,34 @@ $(document).ready(function() {
         $(".rowArea").addClass('hidden');
     });
 
+    $("#btn_agregar").click( ()=>{
+        let html = '';
+        const now = new Date();
+        let id = now.getTime();
+        html =  '<tr class="'+id+'">'+
+                    "<td class='input-group'>"+
+                        '<input type="text" readonly class="form-control" id="pdf_nombre'+id+'"  name="pdf_nombre[]" value="" readonly="">'+
+                        '<input type="text" style="display: none;" id="pdf_archivo'+id+'" name="pdf_archivo[]">'+
+                        '<div class="input-group-btn">'+
+                        '<label class="btn btn-warning btn-flat">'+
+                            '<i class="fa fa-file-pdf-o fa-lg" style="margin-left:5px;"></i>'+
+                            '<i class="fa fa-file-excel-o fa-lg" style="margin-left:5px;"></i>'+
+                            '<i class="fa fa-file-image-o fa-lg" style="margin-left:5px;"></i>'+
+                            '<i class="fa fa-file-powerpoint-o fa-lg" style="margin-left:5px;"></i>'+
+                            '<input type="file" style="display: none;" onchange="masterG.onImagen(event,\'#pdf_nombre'+id+'\',\'#pdf_archivo'+id+'\',\'#pdf_img'+id+'\');">'+
+                        '</label>'+
+                        '</div>'+
+                    '</td>'+
+                    "<td>"+
+                        '<a><img id="pdf_img'+id+'" class="img-circle" style="height: 80px;width: 140px;border-radius: 8px;border: 1px solid grey;margin-top: 5px;padding: 8px"></a>'+
+                    '</td>'+
+                    '<td><a class="btn btn-danger btn-lg" onClick="EliminarArchivo('+id+');">'+
+                        '<i class="fa fa-trash fa-lg"></i>'+
+                    '</a></td>'+
+                "</tr>";
+        $("#tb_archivos").append(html);
+    });
+
     function readURLI(input, tipo) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -241,6 +269,10 @@ $(document).ready(function() {
                 });*/
                 /* end validanting info*/
 });
+
+EliminarArchivo = (t)=>{
+    $('tr.'+t).remove();
+}
 
 ListarPreTramites = ()=>{
     var estados = $("#slct_estado_tramite").val();

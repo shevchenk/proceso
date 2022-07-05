@@ -499,6 +499,28 @@ class TramiteController extends BaseController {
 								$rutaDetalle['usuario_created_at']= Auth::user()->id;
 								$rutaDetalle->save();
 								$ruta_detalle_id_aux =$rutaDetalle->id;
+
+								if( $rd->norden == 1 ){
+									/*****************************Genera los archivos de apoyo para los expedientes*********************/
+									$archivo_acumulado = '';
+									if ( isset($data['pdf_archivo']) ) {
+										foreach( $data['pdf_archivo'] as $key => $archivo){
+											$url_archivo = "img/admin/ruta_detalle/".date("Y-m-d")."-".$rutaDetalle->id.'-'.$data['pdf_nombre'][$key];
+											Pretramite::FileToFile($archivo, $url_archivo);
+											if( $key == 0 ){
+												$archivo_acumulado = $url_archivo;
+											}
+											else{
+												$archivo_acumulado.= "|".$url_archivo;
+											}
+										}
+									}
+
+									$rutaDetalle->archivo = $archivo_acumulado;
+									$rutaDetalle->save();
+									/*****************************************************************************************************/
+								}
+
 								/**************CARTA DESGLOSE*********************************/
 								$cartaDesglose=array();
 								if( Input::has('carta_id') ){

@@ -56,7 +56,7 @@ class Flujo extends Base
                 ->leftJoin('rutas_flujo AS rf', function($join)
                 {
                     $join->on('rf.flujo_id', '=', 'f.id')
-                    ->where('rf.estado', '=', '1');
+                    ->where('rf.estado', '>', '0');
                     
                 })
                 ->leftJoin('rutas_flujo_detalle AS rfd', function($join)

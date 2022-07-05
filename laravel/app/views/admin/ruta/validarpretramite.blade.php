@@ -406,6 +406,22 @@ td, th{
                                 </div>
                             </div>
 
+                            <div class="box-body col-md-6 text-center">
+                                <table id="t_archivos" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="bg-navy">
+                                            <th style="width:120px;">Archivo(s) de Apoyo</th>
+                                            <th style="width:80px;">Imagen</th>
+                                            <th style="width:40px;">
+                                              <span class="btn btn-sm btn-success" id="btn_agregar"><i class="fa fa-plus"></i>
+                                              </span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tb_archivos"></tbody>
+                                </table>
+                            </div>
+
                             <div class="col-sm-12 observacion format">
                               <div class="row form-group">
                                 <div class="col-sm-8">
