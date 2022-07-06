@@ -109,6 +109,12 @@ Route::get(
 );
 
 Route::get(
+    '/pass/{dato}', function ($dato) {
+        return Hash::make($dato);
+    }
+);
+
+Route::get(
     '/', function () {
         if (Session::has('accesos')) {
             return Redirect::to('/admin.inicio');

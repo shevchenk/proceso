@@ -4,6 +4,7 @@ use Illuminate\Auth\UserTrait;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
+//use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Persona extends Base implements UserInterface, RemindableInterface {
 
@@ -1010,4 +1011,76 @@ class Persona extends Base implements UserInterface, RemindableInterface {
         return $oData;
     }
 
+    public static function Masivo()
+    {
+        if( trim(Input::get('alumno_archivo'))!='' ){
+            $url = "Upload/Alumnos/".Input::get('alumno');
+            Files::FileToFile(Input::get('alumno_archivo'), $url);
+
+            $spreadsheet = PHPExcel_IOFactory::load($url);
+            $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+            $retorno = array();
+            foreach ($sheetData as $key => $value) {
+                //if( is_numeric($value['F']) ){
+                    if( $value['A'] == 'paterno' )  continue; 
+                    $error = false;
+                    $alumno = Persona::where('dni',$value['D'])->first();
+                    if( isset($alumno->id) ){
+                        $error = true;
+                        array_push( $retorno, array($key, $value['A'],$value['B'],$value['C'], $value['D'], $value['D'],'DNI Ya existe') );
+                    }
+
+                    if ( !filter_var($value['E'], FILTER_VALIDATE_EMAIL) ) {
+                        $error = true;
+                        array_push( $retorno, array($key, $value['A'],$value['B'],$value['C'], $value['D'], $value['E'],'Email inválido') );
+                    }
+
+                    if( !is_numeric($value['F']) ){
+                        $error = true;
+                        array_push( $retorno, array($key, $value['A'],$value['B'],$value['C'], $value['D'], $value['F'],'Celular inválido, no es número') );
+                    }
+
+                    if( !is_numeric($value['G']) ){
+                        $error = true;
+                        array_push( $retorno, array($key, $value['A'],$value['B'],$value['C'], $value['D'], $value['G'],'Teléfono inválido, no es número') );
+                    }
+
+                    if( trim($value['I']) != '' ){
+                        $fecha = explode("-", str_replace("/", "-", $value['I']) );
+                        if( !isset($fecha[1]) || !isset($fecha[2]) || !checkdate($fecha[1], $fecha[0], $fecha[2]) ){
+                            $error = true;
+                            array_push( $retorno, array($key, $value['A'],$value['B'],$value['C'], $value['D'], $value['I'],'Fecha de nacimiento inválido, no cumple con el formato 31/12/2021') );
+                        }
+                    }                    
+
+                    if( !isset($alumno->id) AND $error == false){
+                        $alumno = new Persona;
+                        $alumno->paterno = $value['A'];
+                        $alumno->materno = $value['B'];
+                        $alumno->nombre = $value['C'];
+                        $alumno->dni = $value['D'];
+                        $alumno->password = $value['D'];
+                        $alumno->email = $value['E'];
+                        $alumno->celular = $value['F'];
+                        $alumno->telefono = $value['G'];
+                        $alumno->direccion = $value['H'];
+                        $alumno->fecha_nacimiento = $value['I'];
+                        $alumno->estado = 1;
+                        $alumno->usuario_created_at = Auth::user()->id;
+                        $alumno->save();
+
+                        $alumnoCargo = new CargoPersona;
+                        $alumnoCargo->cargo_id = 2;
+                        $alumnoCargo->persona_id = $alumno->id;
+                        $alumnoCargo->fecha_ingreso = date('Y-m-d');
+                        $alumnoCargo->estado = 1;
+                        $alumnoCargo->usuario_created_at = Auth::user()->id;
+                        $alumnoCargo->save();
+                    }
+                    //dd($value);
+                //}
+            }
+            return $retorno;
+        }
+    }
 }

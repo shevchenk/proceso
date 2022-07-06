@@ -1031,4 +1031,15 @@ class PersonaController extends BaseController
         return $status;
 
     }
+
+    public function postMasivo()
+    {
+        if ( Request::ajax() ) {
+            $datos = Persona::Masivo();
+            $return['rst']  = 1;
+            $return['msj']  = 'Se proceso correctamente';
+            $return['datos'] = $datos;
+            return Response::json($return);
+        }
+    }
 }
