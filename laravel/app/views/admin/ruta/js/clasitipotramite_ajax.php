@@ -145,7 +145,7 @@ var Pois={
 
     },
     RegistrarCampos:function(){
-        var datos = $("#form_campo").serialize().split("txt_").join("").split("slct_").join("");
+        var datos = $("#form_campo").serializeObject();
         var accion = "clasificadortramite/registrarcampos";
         
         $.ajax({
@@ -153,7 +153,7 @@ var Pois={
             type        : 'POST',
             cache       : false,
             dataType    : 'json',
-            data        : datos,
+            data        : {datos: JSON.stringify(datos)},
             beforeSend : function() {
                 $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
             },

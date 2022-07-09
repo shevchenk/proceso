@@ -117,6 +117,11 @@ class ClasificadorTramiteController extends \BaseController
 
     public function postRegistrarcampos()
     {
+        ini_set('max_input_vars',5000);
+        ini_set('memory_limit', '512M');
+        ini_set('post_max_size', '128M');
+        ini_set('upload_max_filesize', '128M');
+        ini_set('max_execution_time',300);
         if ( Request::ajax() ) {
             $a      = new RutaFlujoCampo;
             $lista = $a->Registrarcampos();

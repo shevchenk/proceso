@@ -15,7 +15,7 @@
     <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Mantenimiento de Cargos
+                Carga masiva de alumnos
                 <small> </small>
             </h1>
             <ol class="breadcrumb">

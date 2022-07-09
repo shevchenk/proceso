@@ -24,8 +24,8 @@ $(document).ready(function(){
     var data = {estado:1};
     var ids = [];
 
-    slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','multiple',UsuarioLocalId,{estado:1, usuario_local:1});
-    slctGlobal.listarSlctFuncion('area','listara','slct_area','multiple',null,{estado:1, areapersona:1});
+    slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','multiple',null,{estado:1});
+    slctGlobal.listarSlctFuncion('area','listara','slct_area','multiple',null,{estado:1});
     slctGlobal.listarSlctFuncion('flujo','listar','slct_flujo','multiple',null,{estado:1});
     slctGlobal.listarSlctFuncion('documento','listar','slct_documento','multiple',null,{estado:1});
 

@@ -25,7 +25,7 @@ $(document).ready(function(){
     var ids = [];
 
     slctGlobalHtml('slct_estado','multiple');
-    slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','multiple',UsuarioLocalId,{estado:1, usuario_local:1});
+    slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','multiple',null,{estado:1});
 
     slctGlobal.listarSlct2('rol','slct_rol_modal',data);
     slctGlobal.listarSlct2('verbo','slct_verbo_modal',data);

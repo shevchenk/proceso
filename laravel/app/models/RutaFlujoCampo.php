@@ -5,6 +5,7 @@ class RutaFlujoCampo extends \Eloquent {
 
     public function Registrarcampos(){
         $r = Request::all();
+        $r = (array) json_decode( $r['datos'] );
         $id = $r['id'];
         $clasificadorTramite = ClasificadorTramite::find( $id );
         $lista = array();
@@ -14,6 +15,7 @@ class RutaFlujoCampo extends \Eloquent {
         if( isset($r['campo_id']) ){
             $recorrido = count($r['campo_id']);
         }
+
 
         DB::beginTransaction();
             $sql = "UPDATE rutas_flujo_campos SET estado = 0, updated_at = now(), usuario_updated_at = ".Auth::user()->id." WHERE clasificador_tramite_id = ".$id;
