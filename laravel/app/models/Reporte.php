@@ -326,6 +326,11 @@ class Reporte extends Eloquent
         if( !isset($array['datos']) ) { $array['datos'] = "''"; }
         if( !isset($array['left']) ) { $array['left'] = ""; }
         
+        ini_set('memory_limit', '512M');
+        ini_set('post_max_size', '64M');
+        ini_set('upload_max_filesize', '64M');
+        ini_set('max_execution_time',300);
+        $set=DB::statement('SET group_concat_max_len := @@max_allowed_packet');
         $sql="  SELECT
                 CONCAT_WS(' ',p1.paterno,p1.materno,p1.nombre)as responsable,
                 tr.id_union,
