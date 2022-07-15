@@ -19,7 +19,8 @@ var PersonasG={
         vista_doc:"",
         doc_privados:"",
         estado:1,
-        nivel: 1
+        nivel: 1,
+        nivel_proceso: 1,
         };
 
 $(document).ready(function() {  
@@ -81,7 +82,7 @@ $(document).ready(function() {
             modal.find('.modal-footer .btn-primary').text('Guardar');
             modal.find('.modal-footer .btn-primary').attr('onClick','Agregar();');
             $('#form_personas_modal #txt_nombre').focus();
-            $('#form_personas_modal #slct_nivel').val( 1 );
+            $('#form_personas_modal #slct_nivel, #form_personas_modal #slct_nivel_proceso').val( 1 );
             slctGlobal.listarSlct('area','slct_area','simple',null,datos);
             slctGlobal.listarSlct('rol','slct_rol','simple',null,datos);
             slctGlobal.listarSlctFuncion('local','listarlocales','slct_local','multiple',null,datos);
@@ -107,6 +108,7 @@ $(document).ready(function() {
             $('#form_personas_modal #slct_doc_privados').val( PersonasG.doc_privados );
             $('#form_personas_modal #slct_responsable_area').val( PersonasG.responsable_area );
             $('#form_personas_modal #slct_nivel').val( PersonasG.nivel );
+            $('#form_personas_modal #slct_nivel_proceso').val( PersonasG.nivel_proceso );
             $('#form_personas_modal #txt_telefono').val( PersonasG.telefono );
             $('#form_personas_modal #txt_celular').val( PersonasG.celular );
             $('#form_personas_modal #txt_direccion').val( PersonasG.direccion );
@@ -160,6 +162,7 @@ BtnEditar=function(btn,id){
     PersonasG.fecha_nacimiento=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('fecha_nacimiento'); 
     PersonasG.responsable_area=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('responsable_area');
     PersonasG.nivel=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('nivel');
+    PersonasG.nivel_proceso=$(tr).find("td:eq(4) input[name='txt_sexo']").attr('nivel_proceso');
       //PersonasG.password=$(tr).find("td:eq(6) input[name='txt_password']").val();
     PersonasG.telefono=$(tr).find("td:eq(7) input[name='txt_area']").attr('telefono');
     PersonasG.celular=$(tr).find("td:eq(7) input[name='txt_area']").attr('celular');
@@ -192,7 +195,7 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
     
     if(typeof(fn)!='undefined' && fn.col==4){
         //se envia de manera ocultada la fecha de nacimiento en el txt_sexo
-        return row.sexo+"<input type='hidden'name='txt_sexo' nivel='"+row.nivel+"' fecha_nacimiento='"+row.fecha_nacimiento+"' responsable_area='"+row.responsable_area+"' value='"+row.sexo_id+"'>";
+        return row.sexo+"<input type='hidden'name='txt_sexo' nivel_proceso='"+row.nivel_proceso+"' nivel='"+row.nivel+"' fecha_nacimiento='"+row.fecha_nacimiento+"' responsable_area='"+row.responsable_area+"' value='"+row.sexo_id+"'>";
     }
 
 
@@ -358,7 +361,7 @@ validaPersonas=function(){
         alert("Seleccione Rol");
         r=false;
     }
-    else if( $("#form_personas_modal #slct_local").val()=='' ){
+    else if( $.trim($("#form_personas_modal #slct_local").val())=='' ){
         alert("Seleccione Lugar de procedencia");
         r=false;
     }

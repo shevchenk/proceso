@@ -178,7 +178,7 @@ class Persona extends Base implements UserInterface, RemindableInterface {
         $sSql = " SELECT p.id ,a.id area_id,r.id rol_id, p.doc_privados, p.paterno, p.materno, p.nombre,p.dni,p.sexo sexo_id,p.fecha_nacimiento,
 
                                 a.nombre area,r.nombre rol, p.telefono, p.celular, p.direccion, p.local_id, l.local,
-                                p.estado,p.email, p.email_mdi, p.password, p.responsable_area, p.nivel,
+                                p.estado,p.email, p.email_mdi, p.password, p.responsable_area, p.nivel, p.nivel_proceso,
                                 CASE p.sexo
                                 WHEN 'M' THEN 'Masculino'
                                 WHEN 'F' THEN 'Femenino'
@@ -1067,6 +1067,7 @@ class Persona extends Base implements UserInterface, RemindableInterface {
                         $alumno->fecha_nacimiento = $value['I'];
                         $alumno->estado = 1;
                         $alumno->usuario_created_at = Auth::user()->id;
+                        $alumno->verified = true;
                         $alumno->save();
 
                         $alumnoCargo = new CargoPersona;

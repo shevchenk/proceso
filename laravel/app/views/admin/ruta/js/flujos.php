@@ -30,14 +30,14 @@ $(document).ready(function() {
     slctGlobal.listarSlctFuncion('area','listara','slct_area_id','simple',null,data);
    
    
-    slctGlobalHtml('slct_estado','simple');
+    slctGlobalHtml('slct_estado, #slct_nivel_proceso','simple');
 
     var idG={   nombre       :'onBlur|Nombre|#DCE6F1', //#DCE6F1
                 categoria    :'3|Categoria|#DCE6F1', 
                 area         :'3|Área|#DCE6F1',      
-                tipo_flujo   :'3|Tipo Flujo|#DCE6F1',           
-                estado       :'2|Estado|#DCE6F1', //#DCE6F1
-               
+                tipo_flujo   :'3|Tipo Flujo|#DCE6F1',     
+                nivel_proceso :'3|Nivel Proceso|#DCE6F1',
+                estado       :'2|Estado|#DCE6F1', //#DCE6F1  
              };
 
     var resG=dataTableG.CargarCab(idG);
@@ -80,7 +80,7 @@ $(document).ready(function() {
             modal.find('.modal-footer .btn-primary').attr('onClick','Agregar();');
 
             //ver porque no pide categoria
-            $('#form_flujos_modal #slct_estado').val(1); 
+            $('#form_flujos_modal #slct_estado, #form_flujos_modal #slct_nivel_proceso').val(1); 
             //$('#form_flujos_modal #slct_tipo_flujo').val('');
 
             Flujos.ObtenerRolUser();
@@ -97,6 +97,7 @@ $(document).ready(function() {
             $('#form_flujos_modal #slct_categoria_id').val( FlujosG.categoria );   
             $('#form_flujos_modal #slct_area_id').val( FlujosG.area );                   
             $('#form_flujos_modal #slct_tipo_flujo').val( FlujosG.tipo_flujo ); 
+            $('#form_flujos_modal #slct_nivel_proceso').val( FlujosG.nivel_proceso ); 
             $('#form_flujos_modal #slct_estado').val( FlujosG.estado );
             $("#form_flujos_modal").append("<input type='hidden' value='"+FlujosG.id+"' name='id'>");
  
@@ -122,8 +123,9 @@ BtnEditar=function(btn,id){
     FlujosG.categoria=$(tr).find("td:eq(1) input[name='txt_categoria']").val(); 
     FlujosG.area=$(tr).find("td:eq(2) input[name='txt_area']").val();   
     FlujosG.tipo_flujo=$(tr).find("td:eq(3) input[name='txt_tipo_flujo']").val();
+    FlujosG.nivel_proceso=$(tr).find("td:eq(4) input[name='txt_nivel_proceso']").val();   
       
-    FlujosG.estado=$(tr).find("td:eq(4)>span").attr("data-estado");
+    FlujosG.estado=$(tr).find("td:eq(5)>span").attr("data-estado");
     $("#BtnEditar").click();
 };
 
@@ -149,8 +151,12 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
     else if(typeof(fn)!='undefined' && fn.col==3){
         return row.tipo_flujo+"<input type='hidden'name='txt_tipo_flujo' value='"+row.tipo_flujo_id+"'>";
     }
-    
+
     else if(typeof(fn)!='undefined' && fn.col==4){
+        return row.nivel_proceso+"<input type='hidden'name='txt_nivel_proceso' value='"+row.nivel_proceso+"'>";
+    }
+    
+    else if(typeof(fn)!='undefined' && fn.col==5){
         var estadohtml='';
         estadohtml='<span id="'+row.id+'" o data-estado="'+row.estado+'" class="">Inactivo</span>';
        if(row.estado==1){

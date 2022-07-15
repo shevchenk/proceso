@@ -377,7 +377,7 @@ mostrarDetalleHTML=function(datos){
     }
 
     $("#RetornarP").show();
-    if( datos.norden*1 == 1 ){
+    if( datos.norden*1 == 1 || datos.estado_ruta == 2 ){
         $("#RetornarP").hide();
     }
     // --

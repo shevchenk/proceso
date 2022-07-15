@@ -291,7 +291,7 @@ class Flujo extends Base
     {
         $usuario = Auth::user()->id;
         $sSql=" SELECT f.id,f.area_id,f.categoria_id,f.nombre,f.estado,
-                c.nombre categoria,a.nombre area, f.tipo_flujo tipo_flujo_id,
+                c.nombre categoria,a.nombre area, f.tipo_flujo tipo_flujo_id, f.nivel_proceso,
                 CASE f.tipo_flujo
                 WHEN 1 THEN 'Trámite'
                 WHEN 2 THEN 'Orden de Trabajo'

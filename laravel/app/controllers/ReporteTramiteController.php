@@ -9,6 +9,7 @@ class ReporteTramiteController extends BaseController
       $fecha='';
       $array['where']='';
       $array['having']='';
+      $array['nivel_proceso'] = Auth::user()->nivel_proceso;
       
       if( Input::has('tramite') AND Input::get('tramite')!='' ){
         $tramite=explode(" ",trim(Input::get('tramite')));
@@ -53,6 +54,8 @@ class ReporteTramiteController extends BaseController
         $local_anu = implode(",", Input::get('local_anu'));
         $array['where'].= " AND FIND_IN_SET(r.local_id, '".$local_anu."') > 0 ";
       }
+
+      $array['where'].= " AND f.nivel_proceso <= ".$array['nivel_proceso']." ";
       
 
       if( !Input::has('anulado') ){
@@ -158,6 +161,7 @@ class ReporteTramiteController extends BaseController
       $array=array();
       $array['where']='';
       $array['having']='';
+      $array['nivel_proceso'] = Auth::user()->nivel_proceso;
       
       if( Input::has('tramite') AND Input::get('tramite')!='' ){
         $tramite=explode(" ",trim(Input::get('tramite')));
@@ -192,6 +196,8 @@ class ReporteTramiteController extends BaseController
         $local = implode(",", Input::get('local'));
         $array['where'].= " AND FIND_IN_SET(pt.local_id, '".$local."') > 0 ";
       }
+
+      $array['where'].= " AND f.nivel_proceso <= ".$array['nivel_proceso']." ";
 
       $r = ReporteTramite::ValidaSolicitudes( $array );
 
@@ -242,6 +248,8 @@ class ReporteTramiteController extends BaseController
         $local = implode(",", Input::get('local'));
         $array['where'].= " AND FIND_IN_SET(pt.local_id, '".$local."') > 0 ";
       }
+
+      $array['where'].= " AND f.nivel_proceso <= ".Auth::user()->nivel_proceso." ";
 
       $result = ReporteTramite::ValidaSolicitudes( $array );
 
@@ -565,6 +573,7 @@ class ReporteTramiteController extends BaseController
       $array=array();
       $array['where']='';
       $array['having']='';
+      $array['nivel_proceso'] = Auth::user()->nivel_proceso;
       
       if( Input::has('flujo') AND Input::get('flujo')!= '' ){
         $flujo = implode(",", Input::get('flujo'));
@@ -590,6 +599,8 @@ class ReporteTramiteController extends BaseController
         $documento = implode(",", Input::get('documento'));
         $array['where'].= " AND FIND_IN_SET(rdv.documento_id, '".$documento."') > 0 ";
       }
+
+      $array['where'].= " AND f.nivel_proceso <= ".$array['nivel_proceso']." ";
 
       $r = ReporteTramite::ProduccionExpedientes( $array );
 
@@ -631,6 +642,8 @@ class ReporteTramiteController extends BaseController
         $documento = implode(",", Input::get('documento'));
         $array['where'].= " AND FIND_IN_SET(rdv.documento_id, '".$documento."') > 0 ";
       }
+
+      $array['where'].= " AND f.nivel_proceso <= ".Auth::user()->nivel_proceso." ";
 
       $result = ReporteTramite::ProduccionExpedientes( $array );
 
@@ -783,6 +796,8 @@ class ReporteTramiteController extends BaseController
         $documento = implode(",", Input::get('documento'));
         $array['where'].= " AND FIND_IN_SET(rdv.documento_id, '".$documento."') > 0 ";
       }
+      
+      $array['where'].= " AND f.nivel_proceso <= ".Auth::user()->nivel_proceso." ";
 
       $result = ReporteTramite::ProduccionExpedientesLocal( $array );
 
@@ -945,6 +960,8 @@ class ReporteTramiteController extends BaseController
         $documento = implode(",", Input::get('documento'));
         $array['where'].= " AND FIND_IN_SET(rdv.documento_id, '".$documento."') > 0 ";
       }
+
+      $array['where'].= " AND f.nivel_proceso <= ".Auth::user()->nivel_proceso." ";
 
       $result = ReporteTramite::ProduccionExpedientesEstado( $array );
 

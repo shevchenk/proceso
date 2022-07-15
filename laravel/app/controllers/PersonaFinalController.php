@@ -84,6 +84,8 @@ class PersonaFinalController extends BaseController
                 $persona['fecha_nacimiento'] = Input::get('fecha_nacimiento');
             if (Input::has('nivel'))
                 $persona['nivel'] = Input::get('nivel');
+            if (Input::has('nivel_proceso'))
+                $persona['nivel_proceso'] = Input::get('nivel_proceso');
             
             $local = trim( implode( ",", Input::get('local') ) );
             $persona['local_id'] = $local;
@@ -288,6 +290,8 @@ class PersonaFinalController extends BaseController
                 $persona['fecha_nacimiento'] = Input::get('fecha_nacimiento');
             if (Input::has('nivel'))
                 $persona['nivel'] = Input::get('nivel');
+            if (Input::has('nivel_proceso'))
+                $persona['nivel_proceso'] = Input::get('nivel_proceso');
 
             $persona['responsable_area'] = Input::get('responsable_area');
             $persona['modalidad'] = Input::get('modalidad');

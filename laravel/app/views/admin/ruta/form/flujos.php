@@ -21,7 +21,7 @@
           <div class="form-group">
               <label class="control-label">Categoria:</label>
                 <div id="div_categoria_user" >
-                  Cargando...                  
+                                    
                 </div>
                 
                 <div id="div_categoria_master" style="display: none;">
@@ -38,6 +38,17 @@
               <label class="control-label">Area del Proceso:</label>
               <select class="form-control" name="slct_area_id" id="slct_area_id">
               <option value="">.::Seleccione::.</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label class="control-label">Nivel del Proceso:</label>
+              <select class="form-control" name="slct_nivel_proceso" id="slct_nivel_proceso">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
               </select>
           </div>
 

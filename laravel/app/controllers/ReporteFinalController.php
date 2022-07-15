@@ -140,6 +140,7 @@ class ReporteFinalController extends BaseController
       $array=array();
       $array['usuario']=Auth::user()->id;
       $array['local_id']=Auth::user()->local_id;
+      $array['nivel_proceso']=Auth::user()->nivel_proceso;
       $array['limit']='';$array['order']='';
       $array['referido']=' LEFT ';
       $array['w']='';
@@ -265,6 +266,7 @@ class ReporteFinalController extends BaseController
         }
 
         $array['w'].=" AND ( r.local_id = '0' OR FIND_IN_SET(r.local_id , '".$array['local_id']."') > 0 ) ";
+        $array['w'].=" AND f.nivel_proceso <= ".$array['nivel_proceso']." ";
 
       //$cant= Reporte::BandejaTramiteCount( $array );
       $r = Reporte::BandejaTramite( $array );
@@ -454,6 +456,8 @@ class ReporteFinalController extends BaseController
           $array['w'].=" AND DATE(rd.fecha_inicio) BETWEEN '".$fecha_inicio[0]."' AND '".$fecha_inicio[1]."' ";
         }
 
+        $array['w'].=" AND f.nivel_proceso <= ".Auth::user()->nivel_proceso." ";
+
       $cant= Reporte::BandejaTramiteAreaCount( $array );
       $r = Reporte::BandejaTramiteArea( $array );
 
@@ -587,6 +591,8 @@ class ReporteFinalController extends BaseController
                         LEFT JOIN rutas_campos rc ON rc.ruta_id = r.id AND rfc.id = rc.ruta_flujo_campo_id AND rc.estado = 1";
             $array['w'].=" AND r.flujo_id = '".Input::get('flujo_id')."' ";
         }
+
+      $array['w'].=" AND f.nivel_proceso <= ".Auth::user()->nivel_proceso." ";
   
       $result = Reporte::BandejaTramiteArea( $array );
 

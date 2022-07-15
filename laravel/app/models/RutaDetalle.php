@@ -57,7 +57,7 @@ class RutaDetalle extends Eloquent
             rd.observacion,r.ruta_flujo_id, IFNULL(rd.persona_responsable_id,"") persona_responsable_id,
             IFNULL(CONCAT(p2.paterno," ",p2.materno,", ",p2.nombre),"") persona_responsable,
             a.id area_id, a.nombre AS area,f.nombre AS flujo,
-            tr.id_union AS id_doc,tr.id id_tr,
+            tr.id_union AS id_doc,tr.id id_tr, rd.estado_ruta,
             rd.norden, IFNULL(rd.fecha_inicio,"") AS fecha_inicio, tr.tramite_id, rd.ruta_detalle_id_ant,
                 (SELECT GROUP_CONCAT(CONCAT(pre.paterno," ",pre.materno,", ",pre.nombre)," => ", are.nombre ," => ",rdre.motivo_retorno SEPARATOR " | ") 
                 FROM rutas_detalle rdre

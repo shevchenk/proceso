@@ -249,6 +249,8 @@ class ReporteTramite extends Eloquent
                 FROM pretramites pt 
                 INNER JOIN personas p on p.id=pt.persona_id 
                 INNER JOIN clasificador_tramite ct on ct.id=pt.clasificador_tramite_id
+                INNER JOIN rutas_flujo rf on rf.id=ct.ruta_flujo_id
+                INNER JOIN flujos f on f.id=rf.flujo_id
                 INNER JOIN tipo_tramite tt on tt.id=ct.tipo_tramite_id 
                 INNER JOIN tipo_solicitante ts on ts.id=pt.tipo_solicitante_id 
                 INNER JOIN documentos d on d.id=pt.tipo_documento_id 

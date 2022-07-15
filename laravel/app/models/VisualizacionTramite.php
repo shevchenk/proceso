@@ -181,6 +181,8 @@ class VisualizacionTramite extends Eloquent
             $flujo_id = " AND r.flujo_id ='". $input['procesos']."' ";
         }
         
+        $flujo_id.= " AND f.nivel_proceso <= ".Auth::user()->nivel_proceso." ";
+
         $where = $wher_1.$wher_2.$area_id.$flujo_id;
 
         //$personaId=Auth::user()->id;

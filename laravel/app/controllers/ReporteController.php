@@ -940,7 +940,9 @@ class ReporteController extends BaseController
             $wher_3.=" AND r.flujo_id = '".Input::get('proceso')."' ";
         }
 
-          $where = $wher_1.$wher_2.$wher_3;
+        $wher_3.= " AND f.nivel_proceso <= ".Auth::user()->nivel_proceso." ";
+
+        $where = $wher_1.$wher_2.$wher_3;
 
           $sql = "SELECT
                 IFNULL(tr.id_union,'') AS id_union,

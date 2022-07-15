@@ -219,6 +219,18 @@
                       <option value='5'>5</option>
                   </select>
                 </div>
+
+                <div class="col-sm-4">
+                  <label class="control-label">Nivel de Proceso:
+                  </label>
+                  <select class="form-control" name="slct_nivel_proceso" id="slct_nivel_proceso">
+                      <option value='1' selected>1</option>
+                      <option value='2'>2</option>
+                      <option value='3'>3</option>
+                      <option value='4'>4</option>
+                      <option value='5'>5</option>
+                  </select>
+                </div>
               </div>
               <div class="col-sm-12">
                 <div class="col-sm-6">
