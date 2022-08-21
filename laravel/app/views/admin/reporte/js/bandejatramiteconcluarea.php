@@ -145,12 +145,12 @@ $(document).ready(function() {
                 
         if($('#txt_fecha').val() == '' && $('#txt_fecha_ini').val() == '')
         {
-            swal("Mensaje", "Por favor seleccione al menos una Fecha!");
+            msjG2.alert('info', "Por favor seleccione al menos una Fecha!", 3000);
             event.preventDefault();
         }
         else if($("#slct_areas").val() == '')
         {
-            swal("Mensaje", "Por favor seleccione Area!");
+            msjG2.alert('info', "Por favor seleccione Area!", 3000);
             event.preventDefault();
         }
         else
@@ -160,12 +160,7 @@ $(document).ready(function() {
             var area = $("#slct_areas").val();
             var proceso = '';
 
-            swal({   
-                    title: "Reporte de Concluidos",   
-                    text: "Por favor espere mientras carga el Reporte...",   
-                    timer: 4000,   
-                    showConfirmButton: false 
-            });
+            msjG2.alert('info', 'Por favor espere mientras carga el Reporte...', 4000);
             //$(this).attr('href','reportepersonal/exportreportepersonal'+'?fecha_ini='+fecha_ini+'&fecha_fin='+fecha_fin+area);
             estado = '&estado='+$("input[name='rdb_estado']:checked").val();
             if( $("#slct_procesos").val() != '' ){
@@ -195,12 +190,12 @@ ListarProcesosArea  = ( )=>{
 ActualizarBandeja=function(){
     if($('#txt_fecha').val() == '' && $('#txt_fecha_ini').val() == '')
     {
-        swal("Mensaje", "Por favor seleccione al menos una Fecha!");
+        msjG2.alert('info', "Por favor seleccione al menos una Fecha!", 3000);
         return false;
     }
     else if($("#slct_areas").val() == '')
     {
-        swal("Mensaje", "Por favor seleccione Area!");
+        msjG2.alert('info', "Por favor seleccione Area!", 3000);
         return false;
     }else{
         var datos=$("#form_concluido").serialize().split("txt_").join("").split("slct_").join("");

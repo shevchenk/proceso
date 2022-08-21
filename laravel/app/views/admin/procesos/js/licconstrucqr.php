@@ -34,10 +34,10 @@ $(document).ready(function() {
         $("#div-insert-bus").hide();
         if($('#cbo_tipobus').val() == 1 && $('#txt_dni').val() == '') {
             $('#txt_dni').focus();
-            swal("Mensaje", "Ingrese DNI para su busqueda!");
+            msjG2.alert('info', "Ingrese DNI para su busqueda!", 3000);
         } else if($('#cbo_tipobus').val() == 2 && $('#txt_nombres').val() == '') {
             $('#txt_nombres').focus();
-            swal("Mensaje", "Ingrese Nombres y/o Apellidos para su busqueda!");
+            msjG2.alert('info', "Ingrese Nombres y/o Apellidos para su busqueda!", 3000);
         } else {
             $('#btnbuscar_user').attr('disabled', true).text('Carg...');
             data = {tipobus: $('#cbo_tipobus').val(), dni:$('#txt_dni').val(), nombres:$('#txt_nombres').val()}
@@ -54,10 +54,10 @@ $(document).ready(function() {
     $('#btnsave_data').click(function() {
         if($('#form_data #txt_dni').val() == '') {
             $('#form_data #txt_dni').focus();
-            swal("Mensaje", "Ingrese número DNI!");
+            msjG2.alert('info', "Ingrese número DNI!", 3000);
         } else if($('#form_data #txt_nombre').val() == '' && $('#form_data #txt_paterno').val() == '' && $('#form_data #txt_materno').val() == '') {
             $('#form_data #txt_nombre').focus();
-            swal("Mensaje", "Ingrese Nombres y Apellidos!");
+            msjG2.alert('info', "Ingrese Nombres y Apellidos!", 3000);
         } else {
             $('#form_data #btnsave_data').attr('disabled', true).text('...');            
             data = {dni:$('#form_data #txt_dni').val(), 
@@ -94,52 +94,52 @@ validaCampos = function(){
 
     if( $("#txt_expediente").val()=='' ){
         $("#txt_expediente").focus();
-        swal("Mensaje", "Ingrese Expediente!");
+        msjG2.alert('info', "Ingrese Expediente!", 3000);
         r=false;
     }    
     else if( $("#fecha_vence").val()=='' ){
         $("#fecha_vence").focus();
-        swal("Mensaje", "Ingrese la Fecha Vencimiento!");
+        msjG2.alert('info', "Ingrese la Fecha Vencimiento!", 3000);
         r=false;
     }
     else if( $("#txt_licencia_edifica").val()=='' ){
         $("#txt_licencia_edifica").focus();
-        swal("Mensaje", "Ingrese Licencia de Edificación!");
+        msjG2.alert('info', "Ingrese Licencia de Edificación!", 3000);
         r=false;
     }
     else if( $("#txt_modalidad").val()=='' ){
         $("#txt_modalidad").focus();
-        swal("Mensaje", "Ingrese Modalidad!");
+        msjG2.alert('info', "Ingrese Modalidad!", 3000);
         r=false;
     }
     else if( $("#txt_uso").val()=='' ){
         $("#txt_uso").focus();
-        swal("Mensaje", "Ingrese Uso!");
+        msjG2.alert('info', "Ingrese Uso!", 3000);
         r=false;
     }
     else if( $("#txt_zonifica").val()=='' ){
         $("#txt_zonifica").focus();
-        swal("Mensaje", "Ingrese Zonificación!");
+        msjG2.alert('info', "Ingrese Zonificación!", 3000);
         r=false;
     }
     else if( $("#txt_altura").val()=='' ){
         $("#txt_altura").focus();
-        swal("Mensaje", "Ingrese Altura!");
+        msjG2.alert('info', "Ingrese Altura!", 3000);
         r=false;
     }
     else if( $("#txt_propietario").val()=='' ){
         $("#txt_propietario").focus();
-        swal("Mensaje", "Ingrese Propietario!");
+        msjG2.alert('info', "Ingrese Propietario!", 3000);
         r=false;
     }
     else if( $("#txt_dir_urbaniza").val()=='' ){
         $("#txt_altura").focus();
-        swal("Mensaje", "Ingrese Dirección!");
+        msjG2.alert('info', "Ingrese Dirección!", 3000);
         r=false;
     }
     else if( $("#txt_area_terreno").val()=='' ){
         $("#txt_area_terreno").focus();
-        swal("Mensaje", "Ingrese Area Terreno!");
+        msjG2.alert('info', "Ingrese Area Terreno!", 3000);
         r=false;
     }
     return r;

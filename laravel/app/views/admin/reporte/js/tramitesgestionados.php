@@ -224,7 +224,7 @@ $(document).ready(function() {
         }
         else
         {
-            swal("Mensaje", "Por favor ingrese las fechas de busqueda!");
+            msjG2.alert('info', "Por favor ingrese las fechas de busqueda!", 4000);
         }
     });
 
@@ -301,7 +301,7 @@ var datos = response.datos;
 
     if(datos === 'not_data'){
         $("#tb_produccion").html("");
-        swal("Reporte", "Error en el proceso de carga, vuelva a ejecutar el Reporte!", "error");
+        msjG2.alert('warning', "Error en el proceso de carga, vuelva a ejecutar el Reporte!", 3000);
         return false;
     }
 

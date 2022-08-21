@@ -39,12 +39,7 @@ $(document).ready(function(){
 
 exportar = () =>{
     if( valida(1) ){
-        swal({   
-            title: "Reporte de Validación - Datos",   
-            text: "Por favor espere mientras carga el Reporte...",   
-            timer: 4000,   
-            showConfirmButton: false 
-        });
+        msjG2.alert('info', "Por favor espere mientras carga el Reporte...", 4000);
         var datos=$("#form_tramiteunico").serialize().split("txt_").join("").split("slct_").join("");
         window.location = 'reportetramite/exportvalidasolicitudes'+'?'+datos;
     }
@@ -52,12 +47,7 @@ exportar = () =>{
 
 exportar2 = () =>{
     if( valida(2) ){
-        swal({   
-            title: "Reporte de Validación - Producción",   
-            text: "Por favor espere mientras carga el Reporte...",   
-            timer: 4000,   
-            showConfirmButton: false 
-        });
+        msjG2.alert('info', "Por favor espere mientras carga el Reporte...", 4000);
         var datos=$("#form_tramiteunico").serialize().split("txt_").join("").split("slct_").join("");
         window.location = 'reportetramite/exportvalidasolicitudesproduccion'+'?'+datos;
     }
@@ -136,7 +126,7 @@ HTMLreportet=function(datos){
             "<td>"+data.tramite+"</td>";
             
             if( $.trim(data.tramite)!='' ){
-                btn = '<a class="btn btn-default btn-lg" target="_blank" href="https://mitramite.isamtramites.pe/?tramite='+$.trim(data.tramite)+'&fecha='+$.trim(data.fecha_tramite)+'"><i class="fa fa-eye"></i></a>';
+                btn = '<a class="btn btn-default btn-lg" target="_blank" href="https://mitramitecampus2.inturtramites.pe/?tramite='+$.trim(data.tramite)+'&fecha='+$.trim(data.fecha_tramite)+'"><i class="fa fa-eye"></i></a>';
             }
         html+='<td>'+btn+'</td>';
         html+="</tr>";

@@ -35,7 +35,7 @@ $(document).ready(function() {
         /*}
         else
         {
-            swal("Mensaje", "Por favor ingrese las fechas de busqueda!");
+            msjG2.alert('info', "Por favor ingrese las fechas de busqueda!", 3000);
         }*/
     });
 
@@ -50,7 +50,7 @@ $(document).ready(function() {
         }
         else
         {
-            swal("Mensaje", "Por favor ingrese las fechas de busqueda!");
+            msjG2.alert('info', "Por favor ingrese las fechas de busqueda!", 3000);
         }
     });
 
@@ -75,17 +75,12 @@ $(document).ready(function() {
             else
                 area = '';
 
-            swal({   
-                    title: "Reporte de Personal",   
-                    text: "Por favor espere mientras carga el Reporte...",   
-                    timer: 5000,   
-                    showConfirmButton: false 
-            });
+            msjG2.alert('info', 'Por favor espere mientras carga el Reporte...', 4000);
             //$(this).attr('href','reportepersonal/exportreportepersonal'+'?fecha_ini='+fecha_ini+'&fecha_fin='+fecha_fin+area);
             window.location = 'reportepersonal/exportreportepersonal'+'?fecha_ini='+fecha_ini+'&fecha_fin='+fecha_fin+area;
 
         }else{
-            swal("Mensaje", "Por favor ingrese las fechas de busqueda!");
+            msjG2.alert('info', "Por favor ingrese las fechas de busqueda!", 3000);
             event.preventDefault();
         }
     });
@@ -102,7 +97,7 @@ HTMLMostrarReporte=function(datos){
 
     if(datos === 'not_data'){
         $("#tb_ordenest").html("");
-        swal("Reporte", "Error en el proceso de carga, vuelva a ejecutar el Reporte!", "error");
+        msjG2.alert('warning', "Error en el proceso de carga, vuelva a ejecutar el Reporte!", 3000);
         return false;
     }
 
@@ -146,7 +141,7 @@ HTMLMostrarReportePapeleta=function(datos){
 
     if(datos === 'not_data'){
         $("#tb_papeletas").html("");
-        swal("Reporte", "Error en el proceso de carga, vuelva a ejecutar el Reporte!", "error");
+        msjG2.alert('warning', "Error en el proceso de carga, vuelva a ejecutar el Reporte!", 3000);
         return false;
     }
 

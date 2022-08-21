@@ -13,7 +13,7 @@ var Accion={
             success : function(obj) {
                 $(".overlay,.loading-img").remove();
                 if(obj.rst==1){
-                    swal("Mensaje", "Se ejecutó satisfactoriamente!")
+                    msjG2.alert('success', 'Se ejecutó satisfactoriamente!', 3000);
                     //mostrarHTML(obj.data);
                 }
             },

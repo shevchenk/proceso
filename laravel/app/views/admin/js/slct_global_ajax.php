@@ -695,12 +695,13 @@ var masterG ={
         console.log(files[0].name);
     },
 }
-
+/*
 var sweetalertG = {
     confirm: function (titulo, descripcion, consulta) {
       swal({
           title: titulo,
           text: descripcion,
+          type: 'warning',
           showCancelButton: true,
           confirmButtonText: "Continuar",
           closeOnConfirm: true
@@ -718,6 +719,105 @@ var sweetalertG = {
       },
       consulta
       );
+    }
+}*/
+
+let msjIntervalG='';
+const msjG2 ={
+    //TODO: icons: success, error, warning, info, question
+    alert: (icon, title, time)=> {
+        btn=icon;
+        if( icon=='error' ){ btn='danger'; }
+        
+        Swal.fire({
+          icon: icon,
+          title: title,
+          showConfirmButton: true,
+          timer: time,
+          showClass: {
+            popup: 'animated fadeInDown slow'
+          },
+          hideClass: {
+            popup: 'animated fadeOutUp slow'
+          },
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn btn-lg btn-'+btn,
+          },
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        });
+    },
+    question: (title, question, fn)=> {
+        Swal.fire({
+          icon: 'question',
+          title: title,
+          html: question,
+          showClass: {
+            popup: 'animated fadeInDown slow'
+          },
+          hideClass: {
+            popup: 'animated fadeOutUp slow'
+          },
+          showCancelButton: true,
+          confirmButtonText: 'SI',
+          cancelButtonText: 'NO',
+          reverseButtons: true,
+          customClass: {
+            confirmButton: 'btn btn-lg btn-success mg-15',
+            cancelButton: 'btn btn-lg btn-danger'
+          },
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          buttonsStyling: false,
+        }).then((result) => {
+            if (result.value) {
+              fn();
+            }
+        });
+    },
+    alertfn: (icon, title, time, fn)=> {
+      Swal.fire({
+        icon: icon,
+        title: title,
+        html: 'Cerrando en <b>2000</b> milisegundo(s).',
+        timer: time,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        showClass: {
+          popup: 'animated fadeInDown slow'
+        },
+        hideClass: {
+          popup: 'animated fadeOutUp slow'
+        },
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading()
+          msjIntervalG = setInterval(() => {
+            const content = Swal.getHtmlContainer()
+            console.log('hola');
+            if (content) {
+              const b = content.querySelector('b')
+              if (b) {
+                b.textContent = Swal.getTimerLeft()
+              }
+            }
+          }, 100)
+        },
+        didDestroy: () => {
+          clearInterval(msjIntervalG)
+        }
+      }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+          fn();
+        }
+      })
     }
 }
 

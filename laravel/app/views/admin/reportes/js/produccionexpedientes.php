@@ -42,12 +42,7 @@ $(document).ready(function(){
 
 exportar = () =>{
     if( valida(1) ){
-        swal({   
-            title: "Reporte de Producción - Datos",   
-            text: "Por favor espere mientras carga el Reporte...",   
-            timer: 4000,   
-            showConfirmButton: false 
-        });
+        msjG2.alert('info', "Por favor espere mientras carga el Reporte...", 4000);
         var datos=$("#form_tramiteunico").serialize().split("txt_").join("").split("slct_").join("");
         window.location = 'reportetramite/exportproduccionexpedientes'+'?'+datos;
     }
@@ -55,12 +50,7 @@ exportar = () =>{
 
 exportar2 = () =>{
     if( valida(2) ){
-        swal({   
-            title: "Reporte de Producción - Totales",   
-            text: "Por favor espere mientras carga el Reporte...",   
-            timer: 4000,   
-            showConfirmButton: false 
-        });
+        msjG2.alert('info', "Por favor espere mientras carga el Reporte...", 4000);
         var datos=$("#form_tramiteunico").serialize().split("txt_").join("").split("slct_").join("");
         window.location = 'reportetramite/exportproduccionexpedienteslocal'+'?'+datos;
     }
@@ -68,12 +58,7 @@ exportar2 = () =>{
 
 exportar3 = () =>{
     if( valida(2) ){
-        swal({   
-            title: "Reporte de Producción - Estados",   
-            text: "Por favor espere mientras carga el Reporte...",   
-            timer: 4000,   
-            showConfirmButton: false 
-        });
+        msjG2.alert('info', "Por favor espere mientras carga el Reporte...", 4000);
         var datos=$("#form_tramiteunico").serialize().split("txt_").join("").split("slct_").join("");
         window.location = 'reportetramite/exportproduccionexpedientesestado'+'?'+datos;
     }

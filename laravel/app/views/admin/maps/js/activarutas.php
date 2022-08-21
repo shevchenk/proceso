@@ -32,7 +32,7 @@ $(document).ready(function() {
         }
         else
         {
-            swal("Mensaje", "Por favor ingrese las fechas de busqueda!");
+            msjG2.alert('info', 'Por favor ingrese las fechas de busqueda!', 3000);
         }
     });
 
@@ -57,17 +57,12 @@ $(document).ready(function() {
             else
                 area = '';
 
-            swal({   
-                    title: "Reporte de Personal",   
-                    text: "Por favor espere mientras carga el Reporte...",   
-                    timer: 5000,   
-                    showConfirmButton: false 
-            });
+            msjG2.alert('info', 'Por favor espere mientras carga el Reporte...', 5000);
             //$(this).attr('href','reportepersonal/exportreportepersonal'+'?fecha_ini='+fecha_ini+'&fecha_fin='+fecha_fin+area);
             window.location = 'reportepersonal/exportreportepersonal'+'?fecha_ini='+fecha_ini+'&fecha_fin='+fecha_fin+area;
 
         }else{
-            swal("Mensaje", "Por favor ingrese las fechas de busqueda!");
+            msjG2.alert('info', 'Por favor ingrese las fechas de busqueda!', 3000);
             event.preventDefault();
         }
     });
@@ -169,7 +164,7 @@ guardarDesmonte=function(ruta_id, ruta_detalle_id, carga_incidencia_id, fecha_in
     //alert($("#txt_fecha_programada"+ruta_detalle_id).val());
     var fecha_programada = $("#txt_fecha_programada"+ruta_detalle_id).val();
     if(fecha_programada == '') {
-        swal("Mensaje", "Por favor ingrese la fecha Programada!");
+        msjG2.alert('info', 'Por favor ingrese la fecha Programada!', 3000);
     } else {
         var dataG={ ruta_id : ruta_id, 
                     ruta_detalle_id : ruta_detalle_id,
@@ -186,7 +181,7 @@ guardarDesmonte=function(ruta_id, ruta_detalle_id, carga_incidencia_id, fecha_in
 modificarDesmonte=function(id, ruta_id, ruta_detalle_id, carga_incidencia_id, fecha_inicio){
     var fecha_programada = $("#txt_fecha_programada"+ruta_detalle_id).val();
     if(fecha_programada == '') {
-        swal("Mensaje", "Por favor ingrese la fecha Programada!");
+        msjG2.alert('info', 'Por favor ingrese la fecha Programada!', 3000);
     } else {
         var dataG={ id : id,
                     ruta_id : ruta_id, 

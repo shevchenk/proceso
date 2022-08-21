@@ -346,8 +346,10 @@ table.bandeja>tbody>tr>td{
                                                             <textarea type="text" class="form-control" id="txt_sumilla" readonly></textarea>
                                                         </div>
                                                         <div class="col-sm-8 motivoretorno">
-                                                            <label class="control-label">Motivo del retorno:</label>
-                                                            <label class="form-control alert-danger" id="motivo_retorno"></label>
+                                                            <table class="table table-bordered table-striped">
+                                                                <thead class="alert-danger" ><th class="text-center">Motivo del retorno</th></thead>
+                                                                <tbody id="motivo_retorno"></tbody>
+                                                            </table>
                                                         </div>
 
                                                     </div>

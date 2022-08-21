@@ -34,7 +34,7 @@ $(document).ready(function() {
         }
         else
         {
-            swal("Mensaje", "Por favor ingrese las fechas de busqueda!");
+            msjG2.alert('info', 'Por favor ingrese las fechas de busqueda!', 3000);
         }
     });
     

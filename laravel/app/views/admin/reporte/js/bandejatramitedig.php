@@ -396,7 +396,7 @@ mostrarDetalleHTML=function(datos){
     $("#motivo_retorno").text('');
     if( $.trim(datos.motivo_retorno) != '' ){
         $(".motivoretorno").show();
-        $("#motivo_retorno").html("<ul><li>"+datos.motivo_retorno.split("|").join("</li></li>")+"</li></ul>");
+        $("#motivo_retorno").html("<tr><td>"+datos.motivo_retorno.split(" | ").join("</td></tr><tr><td>")+"</td></tr>");
     }
 
     //--
@@ -1106,7 +1106,7 @@ guardarTodo=function(){
     else if ( $("#slct_tipo_respuesta_detalle").val()=='' && validacheck==0 && alerta==false ) {
         alert("Seleccione Detalle Tipo Respuesta");
     }*/
-    else if ( $("#txt_observacion").val()=='' && validacheck==0 && alerta==false ) {
+    else if ( $.trim( $("#txt_observacion").val() )=='' && validacheck==0 && alerta==false ) {
         alert("Ingrese Descripción de la Actividad");
     }
     /*else if ( $("#slct_tipo_respuesta").val()!='' && validacheck==1 && alerta==false 
@@ -1137,10 +1137,10 @@ guardarTodo=function(){
 
         var msj = 'Por favor confirmar para actualizar su información';
         if( $("#btn_siguiente_rd").is(':visible') && $('#form_ruta_detalle #slct_micro option').length > 1 && alerta == false ){
-           msj= "Tiene sub proceso sin seleccionar!, desea continuar de todas formas para actualizar su información?";
+           msj= "<h4><b style='color:red;'>Tiene sub proceso sin seleccionar!</b></h4>, desea continuar de todas formas para actualizar su información?";
         }
-        
-        sweetalertG.confirm("¿Desea Continuar?", ultimo.msj+msj, function(){
+
+        msjG2.question('¿Desea Continuar?', ultimo.msj+msj, function(){
             if(validacheck==0 || $("#slct_tipo_respuesta").val()!=''){
                 $('#slct_tipo_visualizacion').multiselect('deselectAll');
                 $('#slct_tipo_visualizacion').multiselect('refresh');
@@ -1150,6 +1150,16 @@ guardarTodo=function(){
                 Validar.guardarValidacion(mostrarDetallle,$("#form_ruta_detalle>#ruta_detalle_id").val() );
             }
         });
+        /*sweetalertG.confirm("¿Desea Continuar?", ultimo.msj+msj, function(){
+            if(validacheck==0 || $("#slct_tipo_respuesta").val()!=''){
+                $('#slct_tipo_visualizacion').multiselect('deselectAll');
+                $('#slct_tipo_visualizacion').multiselect('refresh');
+                Validar.guardarValidacion();
+            }
+            else{
+                Validar.guardarValidacion(mostrarDetallle,$("#form_ruta_detalle>#ruta_detalle_id").val() );
+            }
+        });*/
     }
 }
 
@@ -1161,17 +1171,14 @@ guardarArhivoDesmonte = function(){
 }
 
 eliminarArchivoDes = function(id, foto){    
-    sweetalertG.confirm("¿Estás seguro?", "Confirme la eliminación de archivo.", function(){                     
-       /*
-       var archivos = '';
-       $("#d_ver_fotos a").each(function(){
-            archivos += $(this).attr('href')+'|';
-        });
-       */
-       //alert(foto);
+    msjG2.question('¿Estás seguro?', 'Confirme la eliminación de archivo.', function(){
+       Validar.eliminarArchivoDes($("#form_ruta_detalle>#ruta_detalle_id").val(), foto);
+       $("#ad"+id).remove(); 
+    });
+    /*sweetalertG.confirm("¿Estás seguro?", "Confirme la eliminación de archivo.", function(){
        Validar.eliminarArchivoDes($("#form_ruta_detalle>#ruta_detalle_id").val(), foto);
        $("#ad"+id).remove();
-    });    
+    });*/    
 }
 // --
 
@@ -1781,12 +1788,16 @@ pintarAreasG=function(permiso){
 // Nuevos procesos para boton Tramites
 asignarTramitePaso = function(ruta_id){
     if($('#form_ruta_detalle #slct_micro').val()!=''){
-      sweetalertG.confirm("Confirmación!", "Desea Agregar el Sub Proceso Seleccionado?", function(){
-        var data={ruta_id:ruta_id,ruta_detalle_micro_id:$('#form_ruta_detalle #slct_micro').val()};
-        Bandeja.AdicionarMicroProceso(data);
-    });
+        msjG2.question('Confirmación!', 'Desea Agregar el Sub Proceso Seleccionado?', function(){
+            var data={ruta_id:ruta_id,ruta_detalle_micro_id:$('#form_ruta_detalle #slct_micro').val()};
+            Bandeja.AdicionarMicroProceso(data);
+        });
+      /*sweetalertG.confirm("Confirmación!", "Desea Agregar el Sub Proceso Seleccionado?", function(){
+            var data={ruta_id:ruta_id,ruta_detalle_micro_id:$('#form_ruta_detalle #slct_micro').val()};
+            Bandeja.AdicionarMicroProceso(data);
+        });*/
     }else{
-        swal("Mensaje", "Seleccione Sub Proceso");
+        msjG2.alert('info', 'Seleccione Sub Proceso', 3000);
     }
 }
 // --

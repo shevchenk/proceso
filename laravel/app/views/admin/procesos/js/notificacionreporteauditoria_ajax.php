@@ -14,7 +14,7 @@ var Accion={
                 $(".overlay,.loading-img").remove();
                 //console.log(obj.data);
                 if(obj.rst==1){
-                    swal("Mensaje", "Se envió el correo satisfactoriamente!")
+                    msjG2.alert('success', 'Se envió el correo satisfactoriamente!', 3000);
                     //mostrarHTML(obj.data);
                 }
             },

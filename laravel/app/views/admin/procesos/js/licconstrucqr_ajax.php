@@ -36,7 +36,7 @@ var Data = {
                     Data.CargarDatos(activarTabla);
 
                 } else {
-                    swal("Mensaje!", "Debe ingresar el Expediente!", "error")
+                    msjG2.alert('info', 'Debe ingresar el Expediente!', 3000);
                 }
             },
             error: function(){
@@ -117,7 +117,7 @@ var Data = {
                    $('#txt_administrado').val(obj.nombres);
 
                 } else {
-                    swal("Mensaje!", "Debe ingresar el DNI!", "error")
+                    msjG2.alert('info', 'Debe ingresar el DNI!', 3000);
                 }
             },
             error: function(){

@@ -17,7 +17,7 @@
 		@show
 		<title>
 			@section('titulo')
-				ISAM
+				INTUR CAMPUS 2
 			@show
 		</title>
 
@@ -29,7 +29,9 @@
             {{ HTML::script('lib/jquery-ui-1.11.2/jquery-ui.min.js') }}
             {{ HTML::script('lib/bootstrap-3.3.1/js/bootstrap.min.js') }}
             {{ HTML::style('lib/perfect-scrollbar/perfect-scrollbar.css') }}
-            {{ Html::style('lib/sweetalert-master/dist/sweetalert.css') }}
+            <!-- {{ Html::style('lib/sweetalert-master/dist/sweetalert.css') }} -->
+            <!-- SWEET-ALERT CSS -->
+            {{ Html::style('lib/sweet-alert/sweetalert2.min.css') }}
 
             <?php echo HTML::style('lib/bootstrap-3.3.1/css/ionicons.min.css'); ?>
             {{ HTML::style('lib/datatables-1.10.4/media/css/dataTables.bootstrap.css') }}
@@ -39,8 +41,10 @@
             {{ HTML::script('lib/datatables-1.10.4/media/js/dataTables.bootstrap.js') }}
             {{ HTML::script('js/utils.js') }}
             {{ HTML::script('lib/perfect-scrollbar/perfect-scrollbar.js') }}
-            {{ Html::script('lib/sweetalert-master/dist/sweetalert.min.js') }}
-            
+            <!-- {{ Html::script('lib/sweetalert-master/dist/sweetalert.min.js') }} -->
+            <!-- SWEET-ALERT JS -->
+            {{ Html::script('lib/sweet-alert/sweetalert2.min.js') }}
+
             {{ Html::script('lib/sortable/sortable.min.js') }}
             {{ Html::script('lib/sortable/jquery-sortable.js') }}
             
@@ -58,6 +62,11 @@
         -->
 
 	</head>	
+    <style>
+        .mg-15{
+            margin: 0 0 0 15px;
+        }
+    </style>
 
     <body class="skin-blue">
     <div id="msj" class="msjAlert"> </div>

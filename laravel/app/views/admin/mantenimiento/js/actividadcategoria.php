@@ -124,7 +124,7 @@ validaRols = function(){
         r=false;
     }
     else if( $("#form_rols_modal #txt_nombre").val()=='' ){
-        swal("Mensaje", "Ingrese Nombre de la Categoria Actividad!");
+        msjG2.alert('info', 'Ingrese Nombre de la Categoria Actividad!', 3000);
         r=false;
     }
     return r;
