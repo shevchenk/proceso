@@ -57,8 +57,25 @@ class Ruta extends Eloquent
                                             ->whereNull('dtiempo_final')
                                             ->first();
                             $rd->ruta_flujo_id=$rdm->ruta_flujo_id;
+
+                            $hoy = date('Y-m-d H:i:s');
+                            $rd->dtiempo_final = $hoy;
+                            $rd->tipo_respuesta_id = 1;
+                            $rd->tipo_respuesta_detalle_id = 1;
+                            $rd->observacion = 'Se activó SUB PROCESO';
+                            $rd->alerta = 0;
+                            $rd->alerta_tipo = 0;
                             $rd->save();
-                            
+
+                            $rdvf = DB::table('rutas_detalle_verbo')
+                                    ->where('ruta_detalle_id', '=', $rd->id)
+                                    ->update([
+                                        'usuario_updated_at' => Auth::user()->id,
+                                        'updated_at' => $hoy,
+                                        'observacion' => 'Se activó SUB PROCESO',
+                                        'finalizo' => 1,
+                                    ]);
+
                             $rf= RutaFlujo::find($rd->ruta_flujo_id);
                             
                             $rutaflujodetalle = DB::table('rutas_flujo_detalle')
@@ -66,6 +83,8 @@ class Ruta extends Eloquent
                                     ->where('estado', '=', '1')
                                     ->orderBy('norden', 'ASC')
                                     ->get();
+                            
+                            $terminodato = 0;
                             foreach ($rutaflujodetalle as $rfd) {
                                 $cero='';
                                 if($rfd->norden<10){
@@ -82,6 +101,25 @@ class Ruta extends Eloquent
                                 $rutaDetalle['norden'] = $rd->norden.'.'.$cero.$rfd->norden;
                                 $rutaDetalle['estado_ruta'] = $rfd->estado_ruta;
                                 $rutaDetalle['usuario_created_at'] = Auth::user()->id;
+
+                                if( $rfd->norden * 1 == 1 ){
+                                    $rutaDetalle['fecha_inicio']= $hoy ;
+                                        $sql="SELECT CalcularFechaFinal( '".$hoy."', (".$rfd->dtiempo."*1440), ".$rfd->area_id." ) fproy";
+                                        $fproy= DB::select($sql);
+                                    $rutaDetalle['fecha_proyectada']=$fproy[0]->fproy;
+                                    $rutaDetalle['ruta_detalle_id_ant']=$rd->id;
+                                }
+                                elseif( $terminodato==0 AND $rfd->norden * 1 > 1 AND $rfd->estado_ruta == 2 ){
+                                    $rutaDetalle['fecha_inicio']= $hoy ;
+                                        $sql="SELECT CalcularFechaFinal( '".$hoy."', (".$rfd->dtiempo."*1440), ".$rfd->area_id." ) fproy";
+                                        $fproy= DB::select($sql);
+                                    $rutaDetalle['fecha_proyectada']=$fproy[0]->fproy;
+                                    $rutaDetalle['ruta_detalle_id_ant']=$rd->id;
+                                }
+                                else{
+                                    $terminodato++; 
+                                }
+
                                 $rutaDetalle->save();
 
                                 $qrutaDetalleVerbo = DB::table('rutas_flujo_detalle_verbo')

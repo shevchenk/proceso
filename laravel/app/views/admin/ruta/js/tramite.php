@@ -219,7 +219,8 @@ anularTramite=function(id,trid, valor){
     var datos={ruta_id:id,tabla_relacion_id:trid}
     Validar.ActualizarTramite(datos);
     }*/
-    sweetalertG.confirm("Confirmación!", "Esta apunto de anular el tramite:"+$("#td_tra_"+trid).text()+";Si anula, será eliminado.", function(){
+
+    msjG2.question('Confirmación!', 'Esta apunto de anular el tramite:"+$("#td_tra_"+trid).text()+";Si anula, será eliminado.', function(){
         var datos={ruta_id:id,tabla_relacion_id:trid};
         Validar.ActualizarTramite(datos, valor);
     });

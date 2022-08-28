@@ -13,7 +13,9 @@ var Bandeja={
             success : function(obj) {
                 $(".overlay,.loading-img").remove();
                 if(obj.rst==1){
-                   mostrarDetallle($("#form_ruta_detalle>#ruta_detalle_id").val(),$('#ruta_id').val());
+                   //mostrarDetallle($("#form_ruta_detalle>#ruta_detalle_id").val(),$('#ruta_id').val());
+                    Close();
+                    Bandeja.MostrarAjax();
                     msjG.mensaje("success",obj.msj,3000);
                 }
             },

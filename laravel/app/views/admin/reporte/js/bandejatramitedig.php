@@ -1137,7 +1137,7 @@ guardarTodo=function(){
 
         var msj = 'Por favor confirmar para actualizar su información';
         if( $("#btn_siguiente_rd").is(':visible') && $('#form_ruta_detalle #slct_micro option').length > 1 && alerta == false ){
-           msj= "<h4><b style='color:red;'>Tiene sub proceso sin seleccionar!</b></h4>, desea continuar de todas formas para actualizar su información?";
+           msj= "<h1><b style='background-color:red; color:white;'>TIENE SUB PROCESO SIN SELECCIONAR!!!</b></h1>, desea continuar de todas formas para actualizar su información?";
         }
 
         msjG2.question('¿Desea Continuar?', ultimo.msj+msj, function(){

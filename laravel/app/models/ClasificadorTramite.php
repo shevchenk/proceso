@@ -18,7 +18,7 @@ class ClasificadorTramite extends Base
         $sSql=" SELECT ct.ruta_flujo_id,ct.id,tt.id tipo_tramite_id, ct.nombre_clasificador_tramite as nombre, ct.estado,tt.nombre_tipo_tramite tipo_tramite,
                     ct.estado_final, 
                     IF( ct.unidad_documentaria = 'EX', 'EXPEDIENTE', IF( ct.unidad_documentaria = 'DS', 'DOCUMENTO SIMPLE', '' ) ) unidoc, ct.unidad_documentaria,
-                    ct.documento_id, d.nombre documento
+                    ct.documento_id, d.nombre documento, ct.valida_pendiente
                     FROM clasificador_tramite ct
                     LEFT JOIN tipo_tramite tt ON tt.id=ct.tipo_tramite_id
                     LEFT JOIN documentos d ON d.id = ct.documento_id

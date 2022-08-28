@@ -28,6 +28,14 @@
             </select>
           </div>
           <div class="form-group">
+            <label class="control-label">Valida trámite pendiente:
+            </label>
+            <select class="form-control" name="slct_valida_pendiente" id="slct_valida_pendiente">
+                <option value='0'>NO</option>
+                <option value='1' selected>SI</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label class="control-label">Estado:
             </label>
             <select class="form-control" name="slct_estado_clasificador" id="slct_estado_clasificador">

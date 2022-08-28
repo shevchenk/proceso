@@ -6,6 +6,7 @@ var ClasificadorTramitesG={
         id:0,
         nombre:"",
         tipo_tramite:"",
+        valida_pendiente: 1,
         estado:1
         }; // Datos Globales
 $(document).ready(function() {
@@ -17,7 +18,7 @@ $(document).ready(function() {
     slctGlobal.listarSlct('tipotramite','slct_tipo_tramite','simple',null,datos);
     data = {estado:1, tipo:'Ingreso', solicitante: 'Interno'};
     slctGlobal.listarSlct('documento','slct_documento_id','simple',null,data); 
-    slctGlobalHtml('slct_estado_clasificador, #slct_unidad_documentaria','simple');
+    slctGlobalHtml('slct_estado_clasificador, #slct_unidad_documentaria, #slct_valida_pendiente','simple');
     var idG1={  tipo_tramite        :'3|TIpoTramite|#DCE6F1', //#DCE6F1
                 nombre        :'onBlur|Nombre|#DCE6F1', //#DCE6F1
                 documento  :'3|Documento|#DCE6F1', //#DCE6F1
@@ -59,6 +60,7 @@ $(document).ready(function() {
             $('#form_clasificadortramites_modal #txt_nombre').focus();
             $('#form_clasificadortramites_modal #slct_tipo_tramite').val('' );
             $('#form_clasificadortramites_modal #slct_documento_id').val('' );
+            $('#form_clasificadortramites_modal #slct_valida_pendiente').val(1);
         } else {
             modal.find('.modal-footer .btn-primary').text('Actualizar');
             modal.find('.modal-footer .btn-primary').attr('onClick','Editar();');
@@ -66,6 +68,7 @@ $(document).ready(function() {
             $('#form_clasificadortramites_modal #txt_nombre').val( ClasificadorTramitesG.nombre );
             $('#form_clasificadortramites_modal #slct_tipo_tramite').val( ClasificadorTramitesG.tipo_tramite );
             $('#form_clasificadortramites_modal #slct_documento_id').val( ClasificadorTramitesG.documento_id );
+            $('#form_clasificadortramites_modal #slct_valida_pendiente').val( ClasificadorTramitesG.valida_pendiente );
 
             $('#form_clasificadortramites_modal #slct_estado_clasificador').val( ClasificadorTramitesG.estado );
             $("#form_clasificadortramites_modal").append("<input type='hidden' value='"+ClasificadorTramitesG.id+"' name='id'>");
@@ -91,6 +94,7 @@ BtnEditar=function(btn,id){
     ClasificadorTramitesG.nombre=$(tr).find("td:eq(1)").text();
     ClasificadorTramitesG.tipo_tramite=$(tr).find("td:eq(0) input[name='txt_tipo_tramite']").val();
     ClasificadorTramitesG.documento_id=$(tr).find("td:eq(2) input[name='txt_documento_id']").val();
+    ClasificadorTramitesG.valida_pendiente=$(tr).find("td .valida_pendiente").val();
     ClasificadorTramitesG.estado=$(tr).find("td:eq(3)>span").attr("data-estado");
     $("#BtnEditar_clasificador").click();
 };
@@ -176,9 +180,10 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
 
     if(typeof(fn)!='undefined' && fn.col==10){
         var estadohtml='';
-        estadohtml='<span id="'+row.id+'" onClick="activarEF('+row.id+')" data-estado="'+row.estado_final+'" class="btn btn-danger">Pendiente</span>';
+        var pendiente = '<input type="hidden" class="valida_pendiente" name="valida_pendiente" value="'+row.valida_pendiente+'">';
+        estadohtml='<span id="'+row.id+'" onClick="activarEF('+row.id+')" data-estado="'+row.estado_final+'" class="btn btn-danger">Pendiente</span>'+pendiente;
         if(row.estado_final==1){
-            estadohtml='<span id="'+row.id+'" onClick="desactivarEF('+row.id+')" data-estado="'+row.estado_final+'" class="btn btn-success">Producción</span>';
+            estadohtml='<span id="'+row.id+'" onClick="desactivarEF('+row.id+')" data-estado="'+row.estado_final+'" class="btn btn-success">Producción</span>'+pendiente;
         }
         return estadohtml;
     }

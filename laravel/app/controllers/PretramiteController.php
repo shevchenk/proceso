@@ -109,12 +109,14 @@ class PretramiteController extends BaseController {
 		if ( Request::ajax() ) {
 			$array_data = json_decode(Input::get('info'));
 			$persona_id = Auth::user()->id;
+			$clasificadorTramite = ClasificadorTramite::find($array_data->idclasitramite);
+			
 			$valida = 	Pretramite::where('persona_id', $persona_id)
 						->where('clasificador_tramite_id', $array_data->idclasitramite)
 						->where('estado_atencion', 0)
 						->first();
 
-			if( isset($valida->id) ){
+			if( isset($valida->id) AND $clasificadorTramite->valida_pendiente == 1 ){
 				return Response::json(
 					array(
 					'rst'=>2,
@@ -122,8 +124,6 @@ class PretramiteController extends BaseController {
 					)
 				);
 			}
-
-			$clasificadorTramite = ClasificadorTramite::find($array_data->idclasitramite);
 			
 			$pretramite = new Pretramite;
 

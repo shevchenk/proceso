@@ -2,6 +2,16 @@
 class RutaDetalleController extends \BaseController
 {
 
+    protected $_errorController;
+    /**
+     * Valida sesion activa
+     */
+    public function __construct(ErrorController $ErrorController)
+    {
+        $this->beforeFilter('auth');
+        $this->_errorController = $ErrorController;
+    }
+    
     public function postCargarrd()
     {
         if ( Request::ajax() ) {
@@ -505,8 +515,14 @@ class RutaDetalleController extends \BaseController
                 }
             }
 
+            $rdvV = DB::table('rutas_detalle_verbo')
+                    ->where('ruta_detalle_id', '=', $rd->id)
+                    ->where('finalizo', 0)
+                    ->where('estado', 1)
+                    ->first();
+
             $datos=array();
-            if ( Input::get('observacion') ) { 
+            if ( !isset($rdvV->id) AND Input::has('observacion') AND trim(Input::get('observacion')) != '' ) { 
                 //************************Archivado: Trámite que fue finalizado en cualquier de sus pasos//
                 //***********************Finalizado: Trámite que finaiizó correctamentte y no hay mas pasos******************//
                 $hoy = date('Y-m-d H:i:s');
