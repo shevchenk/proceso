@@ -212,7 +212,8 @@ HTMLPreTramite = function(data){
         var html =''; var archivo = '';
         $.each(data,function(index, el) {
             color = ''; archivo = '';
-            obs = $.trim(el.observacion);
+            //obs = $.trim(el.observacion);
+            obs = ''; // Solo se visualizará la obs de error
                 if( el.estado_atencion == 1 ){
                     color = 'alert-success';
                 }
