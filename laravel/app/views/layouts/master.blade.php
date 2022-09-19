@@ -9,8 +9,8 @@
 		<meta name="author" content="Jorge Salcedo (Shevchenko)">
 		@show
 		
-		<link rel="apple-touch-icon" href="img/isam.ico">
-        <link rel="shortcut icon" href="img/isam.ico">
+		<link rel="apple-touch-icon" href="img/intur.ico">
+        <link rel="shortcut icon" href="img/intur.ico">
 
 		@section('descripcion')
 		<meta name="description" content="">

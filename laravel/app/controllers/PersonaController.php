@@ -269,7 +269,7 @@ class PersonaController extends BaseController
                 'materno' => $required.'|'.$regex,
                 'email' => 'required|email|unique:personas,email',
                 'password'      => 'required|min:6',
-                'dni'      => 'required|numeric|min:8|unique:personas,dni',
+                'dni'      => 'required|min:8|unique:personas,dni',
             );
 
             $mensaje= array(
@@ -436,7 +436,7 @@ class PersonaController extends BaseController
                 'paterno' => $required.'|'.$regex,
                 'materno' => $required.'|'.$regex,
                 'email' => 'required|email|unique:personas,email,'.Input::get('id'),
-                'dni'      => 'required|numeric|min:8|unique:personas,dni,'.Input::get('id'),
+                'dni'      => 'required|min:8|unique:personas,dni,'.Input::get('id'),
                 //'password'      => 'required|min:6',
             );
 

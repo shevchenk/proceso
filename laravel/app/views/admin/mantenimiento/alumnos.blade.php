@@ -69,29 +69,31 @@
                         </form>
                     </div>
 
-                    <div class="col-lg-6 col-md-12">
+                    <div class="col-lg-12 col-md-12">
                         <form id="AlumnoCargaForm" autocomplete="off">
                         <div class="panel panel-info panel-line">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Resultados con errores</h3>
                             </div>
                             <div class="panel-body row">
-                                <table id="tableResultado" class="table table-bordered table-warning">
-                                    <thead>
-                                        <tr>
-                                            <th>Fila</th>
-                                            <th>Paterno</th>
-                                            <th>Materno</th>
-                                            <th>Nombre</th>
-                                            <th>DNI</th>
-                                            <th>Campo Error</th>
-                                            <th>Mensaje Error</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                <div class="table-responsive">
+                                    <table id="tableResultado" class="table table-bordered table-warning">
+                                        <thead>
+                                            <tr>
+                                                <th>Fila</th>
+                                                <th>Paterno</th>
+                                                <th>Materno</th>
+                                                <th>Nombre</th>
+                                                <th>DNI</th>
+                                                <th>Campo Error</th>
+                                                <th>Mensaje Error</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                    </tbody>
-                                </table>                            
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                         </form>

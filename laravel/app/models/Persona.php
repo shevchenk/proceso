@@ -1013,6 +1013,8 @@ class Persona extends Base implements UserInterface, RemindableInterface {
 
     public static function Masivo()
     {
+        ini_set("max_execution_time", 300);
+        ini_set('memory_limit','512M');
         if( trim(Input::get('alumno_archivo'))!='' ){
             $url = "Upload/Alumnos/".Input::get('alumno');
             Files::FileToFile(Input::get('alumno_archivo'), $url);
@@ -1027,7 +1029,7 @@ class Persona extends Base implements UserInterface, RemindableInterface {
                     $alumno = Persona::where('dni',$value['D'])->first();
                     if( isset($alumno->id) ){
                         $error = true;
-                        array_push( $retorno, array($key, $value['A'],$value['B'],$value['C'], $value['D'], $value['D'],'DNI Ya existe') );
+                        //array_push( $retorno, array($key, $value['A'],$value['B'],$value['C'], $value['D'], $value['D'],'DNI Ya existe') );
                     }
 
                     if ( !filter_var($value['E'], FILTER_VALIDATE_EMAIL) ) {
@@ -1035,9 +1037,19 @@ class Persona extends Base implements UserInterface, RemindableInterface {
                         array_push( $retorno, array($key, $value['A'],$value['B'],$value['C'], $value['D'], $value['E'],'Email inválido') );
                     }
 
+                    $value['F'] = trim( str_replace(" ","", $value['F']) );
+                    if( trim($value['F']) == '' ){
+                        $value['F'] = 0;
+                    }
+
                     if( !is_numeric($value['F']) ){
                         $error = true;
                         array_push( $retorno, array($key, $value['A'],$value['B'],$value['C'], $value['D'], $value['F'],'Celular inválido, no es número') );
+                    }
+
+                    $value['G'] = trim( str_replace(" ","", $value['G']) );
+                    if( trim($value['G']) == '' ){
+                        $value['G'] = 0;
                     }
 
                     if( !is_numeric($value['G']) ){
@@ -1055,9 +1067,9 @@ class Persona extends Base implements UserInterface, RemindableInterface {
 
                     if( !isset($alumno->id) AND $error == false){
                         $alumno = new Persona;
-                        $alumno->paterno = $value['A'];
-                        $alumno->materno = $value['B'];
-                        $alumno->nombre = $value['C'];
+                        $alumno->paterno = trim($value['A']);
+                        $alumno->materno = trim($value['B']);
+                        $alumno->nombre = trim($value['C']);
                         $alumno->dni = $value['D'];
                         $alumno->password = $value['D'];
                         $alumno->email = $value['E'];

@@ -45,8 +45,8 @@ class Flujo extends Base
         $flujo=DB::table('flujos AS f')
                 ->join('areas AS a', function($join)
                 {
-                    $join->on('a.id', '=', 'f.area_id')
-                    ->where('a.estado', '=', '1');
+                    $join->on('a.id', '=', 'f.area_id');
+                    //->where('a.estado', '=', '1');
                     
                 })
                 ->leftJoin(
@@ -134,6 +134,7 @@ class Flujo extends Base
                         }
                     }
                 )
+                ->orWhere('f.id', 0)
                 ->groupBy('f.id')
                 ->orderBy('f.nombre')
                 ->get();

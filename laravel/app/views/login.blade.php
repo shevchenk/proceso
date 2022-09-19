@@ -6,14 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">       
         <meta name="author" content="Jorge Salcedo (Shevchenko)">
         
-        <link rel="apple-touch-icon" href="img/isam.ico">
-        <link rel="shortcut icon" href="img/isam.ico">
+        <link rel="apple-touch-icon" href="img/intur.ico">
+        <link rel="shortcut icon" href="img/intur.ico">
         <meta name="description" content="">
         <title> 
             ISAM
         </title>
         <meta name="token" id="token" value="{{ csrf_token() }}">
-        {{ HTML::style('css/login/login.css?v05') }}
+        {{ HTML::style('css/login/login.css?v06') }}
         {{ HTML::style('lib/font-awesome-4.2.0/css/font-awesome.min.css') }}
         {{ HTML::style('lib/bootstrap-3.3.1/css/bootstrap.min.css') }}
         {{ HTML::script('lib/jquery-2.1.3.min.js') }}
@@ -27,7 +27,7 @@
     <body  bgcolor="#FFF" onkeyup="return validaEnter(event,'btnIniciar');">
         <div id="mainWrap">
             <div id="loggit">
-                <img src="img/isam.png" class="logoPersonaje" style="background: white;border: 5px solid white;">
+                <img src="img/intur.png" class="logoPersonaje" style="background: white;border: 5px solid white;">
                 {{-- {{ HTML::image('img/mindependencia.jpg', 'a picture', array('class' => 'logoPersonaje','class' => 'img-circle')) }} --}}
                 <h3 id="mensaje_msj"  class="label-success">
                 <?= Session::get('msj'); ?>         
