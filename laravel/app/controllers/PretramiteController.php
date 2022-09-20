@@ -502,12 +502,17 @@ class PretramiteController extends BaseController {
 			}
 		} //end if registry was succesfully
 		DB::commit();
-		return Response::json(
-            array(
-            'rst'=>1,
-            'msj'=>'Registro realizado correctamente',
-            )
-        );
+		if( isset($array_data['apiproceso']) ){
+			return $pretramite->titulo;
+		}
+		else{
+			return Response::json(
+				array(
+				'rst'=>1,
+				'msj'=>'Registro realizado correctamente',
+				)
+			);
+		}
 	}
 
 	public function postCreateservicioarea()

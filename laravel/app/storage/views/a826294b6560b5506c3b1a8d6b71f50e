@@ -6,14 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">       
         <meta name="author" content="Jorge Salcedo (Shevchenko)">
         
-        <link rel="apple-touch-icon" href="img/isam.ico">
-        <link rel="shortcut icon" href="img/isam.ico">
+        <link rel="apple-touch-icon" href="img/intur.ico">
+        <link rel="shortcut icon" href="img/intur.ico">
         <meta name="description" content="">
         <title> 
             ISAM
         </title>
         <meta name="token" id="token" value="<?php echo csrf_token(); ?>">
-        <?php echo HTML::style('css/login/login.css?v05'); ?>
+        <?php echo HTML::style('css/login/login.css?v06'); ?>
 
         <?php echo HTML::style('lib/font-awesome-4.2.0/css/font-awesome.min.css'); ?>
 
@@ -35,7 +35,7 @@
     <body  bgcolor="#FFF" onkeyup="return validaEnter(event,'btnIniciar');">
         <div id="mainWrap">
             <div id="loggit">
-                <img src="img/isam.png" class="logoPersonaje" style="background: white;border: 5px solid white;">
+                <img src="img/intur.png" class="logoPersonaje" style="background: white;border: 5px solid white;">
                 <?php /* <?php echo HTML::image('img/mindependencia.jpg', 'a picture', array('class' => 'logoPersonaje','class' => 'img-circle')); ?> */ ?>
                 <h3 id="mensaje_msj"  class="label-success">
                 <?= Session::get('msj'); ?>         

@@ -2,6 +2,10 @@
 ini_set('memory_limit','128M');
 ini_set('set_time_limit', '300');
 ini_set('display_errors', true);
+
+Route::resource('api', 'Api\ApiController',
+                ['only' => ['index', 'store', 'show']]);
+
 Route::get(
     'email/{email}', function($email){
         $i=4;
