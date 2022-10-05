@@ -33,6 +33,7 @@ class RutaFlujoEvento extends \Eloquent {
         $rutaFlujoEvento = new RutaFlujoEvento;
         $rutaFlujoEvento->condicion_valida = $condicion_valida;
         $rutaFlujoEvento->url_evento = $r['url_evento'];
+        $rutaFlujoEvento->evento = $r['evento'];
         $rutaFlujoEvento->ruta_flujo_id = $r['ruta_flujo_id'];
         $rutaFlujoEvento->clasificador_tramite_id = $r['id'];
         $rutaFlujoEvento->usuario_created_at = Auth::user()->id;
@@ -45,7 +46,7 @@ class RutaFlujoEvento extends \Eloquent {
         
         $eventos=
             DB::table('rutas_flujo_eventos AS rfe')
-            ->select('rfe.id', 'rfe.url_evento', 'rfe.condicion_valida')
+            ->select('rfe.id', 'rfe.evento', 'rfe.url_evento', 'rfe.condicion_valida')
             ->where( 
                 function($query) use( $r ){
                     if ( isset( $r['estado'] ) AND $r['estado'] == 1 ) {

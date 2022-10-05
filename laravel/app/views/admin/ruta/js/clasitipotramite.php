@@ -1561,6 +1561,11 @@ AddCampoEvento = () => {
         disabled = 'disabled';
     }
 
+    if( id_campo == '' ){
+        msjG.mensaje('warning', "Seleccione el campo agregar" ,3000);
+        return false;
+    }
+
     if( $("#campo"+id_campo).length > 0 ){
         msjG.mensaje('warning', "El campo '"+$.trim(campo)+"' ya fue cargado" ,3000);
         return false;
@@ -1597,7 +1602,12 @@ GuardarEvento = () => {
     })
     if( $(".txt_url_evento").val() == '' && r == true){
         r = false;
-        msjG.mensaje('warning', "Ingrese URL del evento - API",4000);
+        msjG.mensaje('warning', "Ingrese URL del evento ó función",4000);
+    }
+
+    if( $(".txt_evento").val() == '' && r == true){
+        r = false;
+        msjG.mensaje('warning', "Ingrese nombre del evento",4000);
     }
     
     if( r == true && con > 0 ){
@@ -1612,7 +1622,7 @@ HTMLGuardarEvento = (obj) => {
     if(obj.rst==1){
         msjG.mensaje('success',obj.msj,4000);
         $("#add_campo5").html("");
-        $(".txt_url_evento").val('');
+        $(".txt_url_evento, .txt_evento").val('');
         $("#slct_campos_eventos").val('');
         Pois.ListarEventos(ListarEventosHTML);
     } else {
@@ -1624,7 +1634,8 @@ ListarEventosHTML = (result) => {
     let html = '';
     $("#eventos").html(html);
     $.each(  result.data , ( index, value) => {
-        html =  "<tr>"+
+        html =  "<tr id='evento_"+ value.id +"'>"+
+                    "<td>"+ value.evento +"</td>"+
                     "<td>"+ value.condicion_valida +"</td>"+
                     "<td>"+ value.url_evento +"</td>"+
                     "<td>"+
@@ -1636,15 +1647,19 @@ ListarEventosHTML = (result) => {
 }
 
 EliminarEvento = (t) => {
-    let btn = t.parentNode.parentNode; // Intocable
-    let btn2 = t.parentNode.parentNode.parentNode; // Intocable
-    $(btn).remove();
-    $("#add_campo5 select").removeAttr("disabled");
-    $("#add_campo5 tr:eq(0) td:eq(0) select").attr("disabled","disabled").val('');
+    let btn = t.parentNode.parentNode;
+    let btn2 = t.parentNode.parentNode.parentNode;
+    msjG2.question('Eventos', 'Esta seguro de eliminar la condición del campo '+ $.trim($(btn).find("td:eq(1)").text()), ()=>{
+        $(btn).remove();
+        $("#add_campo5 select").removeAttr("disabled");
+        $("#add_campo5 tr:eq(0) td:eq(0) select").attr("disabled","disabled").val('');
+    });
 }
 
 EliminarEventoF = (id) => {
-    Pois.EliminarEvento(HTMLGuardarEvento, id);
+    msjG2.question('Eventos', 'Esta seguro de eliminar el evento: '+ $("#evento_"+id+" td:eq(0)").text(), ()=>{
+        Pois.EliminarEvento(HTMLGuardarEvento, id);
+    });
 }
 
 /*

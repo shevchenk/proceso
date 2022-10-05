@@ -393,12 +393,19 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="3">
-                                        <input type="text" class="form-control txt_url_evento" name="txt_url_evento" placeholder="Ingrese URL del evento - API">
+                                        <label>Ingrese API(https:) ó Función(fn:controlador@funcion):</label>
+                                        <input type="text" class="form-control txt_url_evento" name="txt_url_evento" placeholder="Ingrese API(https:) ó Función(fn:controlador@funcion)">
                                     </td>
-                                    <td colspan="2" class="text-center">
-                                    <a class="btn btn-info btn_guardar_evento">
-                                        <i class="fa fa-save fa-lg"></i>&nbsp;Guardar
-                                    </a>
+                                    <td>
+                                        <label>Ingrese nombre del evento:</label>
+                                        <input type="text" class="form-control txt_evento" name="txt_evento" placeholder="Ingrese nombre del evento">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-right">
+                                        <a class="btn btn-info btn_guardar_evento">
+                                            <i class="fa fa-save fa-lg"></i>&nbsp;Guardar
+                                        </a>
                                     </td>
                                 </tr>
                             </tfoot>
@@ -408,9 +415,10 @@
                         <table class="table table-bordered">
                             <thead class="alert-danger">
                                 <tr>
-                                    <th colspan='3' class="text-center"><h4>Eventos Configurados</h4></th>
+                                    <th colspan='4' class="text-center"><h4>Eventos Configurados</h4></th>
                                 </tr>
                                 <tr>
+                                    <th class="text-center">Evento</th>
                                     <th class="text-center">Condición del Evento</th>
                                     <th class="text-center">Url del evento - Api</th>
                                     <th class="text-center">[]</th>
