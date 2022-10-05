@@ -34,6 +34,9 @@ $(document).ready(function() {
     //////////////////////////////////////////////////////////////////
     $("#btn_close, .btn_close").click(Close);
     $(".btn_add_campo").click(AddCampo);
+    $(".btn_campo_evento").click(AddCampoEvento);
+    $(".btn_guardar_evento").click(GuardarEvento);
+    
     //$(".btn_asig_campo").click(AsigCampo);
     $("#slct_campo").change(CambioCampo); $(".sub_titulo").hide();
     $("#btn_RegistrarCampos").click(RegistrarCampos);
@@ -339,6 +342,25 @@ FinalizarAnular=function(id, ruta_flujo_id, titulo, boton){
     $("#add_campo4").html(''); // Limpia los registros para cargar los nuevos 
     var datos = $("#form_fa").serialize().split("txt_").join("").split("slct_").join("");
     Pois.ListarCamposAreas(ListarAreasHTML, datos);
+    //$("#form_costo_personal .form-group, #form_actividad .form-group, #form_campo .form-group").css("display","none");
+};
+
+EventosServicio = (id, ruta_flujo_id, titulo, boton)=>{
+    var tr = boton.parentNode.parentNode;
+    var trs = tr.parentNode.children;
+    for(var i =0;i<trs.length;i++)
+        trs[i].style.backgroundColor="#f9f9f9";
+    tr.style.backgroundColor = "#9CD9DE";
+    
+    $(".FormG").hide();
+    $("#form_evento").show();
+    $("#form_evento #id").val(id);
+    $("#form_evento #ruta_flujo_id").val(ruta_flujo_id);
+    $("#form_evento #txt_titulo").text(titulo);
+    $("#add_campo4").html(''); // Limpia los registros para cargar los nuevos 
+    
+    Pois.ListarCampos(ListarCamposEventoHTML, 'evento');
+    Pois.ListarEventos(ListarEventosHTML);
     //$("#form_costo_personal .form-group, #form_actividad .form-group, #form_campo .form-group").css("display","none");
 };
 
@@ -1502,6 +1524,127 @@ ListarCamposSubHTML = (result, nordensub, ruta_flujo_id_sub) => {
             }
         };
     });
+}
+
+ListarCamposEventoHTML = (result) => {
+    let htmlSelect= '';
+    $("#slct_campos_eventos").html('<option value="">.::Seleccione::.</option>');
+    var style = 'style="padding-left: #em;"';
+    var config = {
+        disabled : 'disabled'
+    };
+    
+    $.each(result,function(index, r) {
+        style_aux = '';
+        if( $.trim( r.tipo ) == 0 ){
+            config.disabled = 'disabled';
+            r.campo = "* "+r.campo;
+        }
+        else{
+            config.disabled = '';
+            r.campo = "&nbsp;&nbsp;&nbsp;&nbsp;"+r.campo;
+        }
+        htmlSelect = '<option value="'+r.id+'" '+config.disabled+' '+style_aux+'>'+r.campo+'</option>';
+        $("#slct_campos_eventos").append(htmlSelect);
+    });
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+}
+
+AddCampoEvento = () => {
+    let html = '';
+    let campo = $("#slct_campos_eventos option:selected").text();
+    let id_campo = $("#slct_campos_eventos").val();
+    let condicion = $("#slct_condicion").html();
+    let anidado = $("#slct_anidado").html();
+    let disabled = '';
+    if( $(".campos_evento").length == 0 ){
+        disabled = 'disabled';
+    }
+
+    if( $("#campo"+id_campo).length > 0 ){
+        msjG.mensaje('warning', "El campo '"+$.trim(campo)+"' ya fue cargado" ,3000);
+        return false;
+    }
+    html =  "<tr class='campos_evento' id='campo"+ id_campo +"'>"+
+                "<td><select class='form-control' name='slct_anidado[]' "+ disabled +">"+ anidado +"</select></td>"+
+                "<td>"+ campo +"</td>"+
+                "<td><select class='form-control' name='slct_condicion[]'>"+ condicion +"</select></td>"+
+                "<td><input type='text' class='form-control' name='txt_valor_condicion[]' placerholder='Ingrese el valor de la condición' value=''></td>"+
+                "<td><input type='hidden' name='txt_id_campo[]' value='"+ id_campo +"'>"+
+                    "<a class='btn btn-danger' onclick='EliminarEvento(this)'><i class='fa fa-remove fa-lg'></i></a>"+
+                "</td>"+
+            "</tr>";
+    $("#add_campo5").append(html);
+}
+
+GuardarEvento = () => {
+    r = true;
+    con = 0;
+    $.each(  $("#add_campo5 tr") , ( index, value) => {
+        con++;
+        if( !$(value).find("select:eq(0)").is(":disabled") && $(value).find("select:eq(0)").val() == ''  && r == true){
+            r = false;
+            msjG.mensaje('warning', "Seleccione grupo lógico del campo '"+$.trim( $(value).find("td:eq(1)").text() )+"'" ,4000);
+        }
+        else if( $(value).find("select:eq(1)").val() == ''  && r == true){
+            r = false;
+            msjG.mensaje('warning', "Seleccione condición del campo '"+$.trim( $(value).find("td:eq(1)").text() )+"'" ,4000);
+        }
+        else if( $(value).find("td:eq(3) input").val() == ''  && r == true){
+            r = false;
+            msjG.mensaje('warning', "Ingrese valor de la condición del campo '"+$.trim( $(value).find("td:eq(1)").text() )+"'" ,4000);
+        }
+    })
+    if( $(".txt_url_evento").val() == '' && r == true){
+        r = false;
+        msjG.mensaje('warning', "Ingrese URL del evento - API",4000);
+    }
+    
+    if( r == true && con > 0 ){
+        Pois.GuardarEvento(HTMLGuardarEvento);
+    }
+    else if( r==true ){
+        msjG.mensaje('warning', "Ingrese almenos 1 campo con su condición",4000);
+    }
+}
+
+HTMLGuardarEvento = (obj) => {
+    if(obj.rst==1){
+        msjG.mensaje('success',obj.msj,4000);
+        $("#add_campo5").html("");
+        $(".txt_url_evento").val('');
+        $("#slct_campos_eventos").val('');
+        Pois.ListarEventos(ListarEventosHTML);
+    } else {
+        msjG.mensaje('warning',obj.msj,4000);
+    }
+}
+
+ListarEventosHTML = (result) => {
+    let html = '';
+    $("#eventos").html(html);
+    $.each(  result.data , ( index, value) => {
+        html =  "<tr>"+
+                    "<td>"+ value.condicion_valida +"</td>"+
+                    "<td>"+ value.url_evento +"</td>"+
+                    "<td>"+
+                        "<a class='btn btn-danger' onclick='EliminarEventoF("+value.id+")'><i class='fa fa-trash fa-lg'></i></a>"+
+                    "</td>"+
+                "</tr>";
+        $("#eventos").append(html);
+    });
+}
+
+EliminarEvento = (t) => {
+    let btn = t.parentNode.parentNode; // Intocable
+    let btn2 = t.parentNode.parentNode.parentNode; // Intocable
+    $(btn).remove();
+    $("#add_campo5 select").removeAttr("disabled");
+    $("#add_campo5 tr:eq(0) td:eq(0) select").attr("disabled","disabled").val('');
+}
+
+EliminarEventoF = (id) => {
+    Pois.EliminarEvento(HTMLGuardarEvento, id);
 }
 
 /*

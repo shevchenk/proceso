@@ -503,6 +503,15 @@ class PretramiteController extends BaseController {
 		} //end if registry was succesfully
 		DB::commit();
 		if( isset($array_data['apiproceso']) ){
+			foreach($array_data['campos'] as $index => $val ){
+				$rutaCampo = new RutaCampo;
+				$rutaCampo->ruta_id = $ruta->id;
+				$rutaCampo->ruta_flujo_campo_id = $index;
+				$rutaCampo->campo_valor = $val;
+				$rutaCampo->estado = 1;
+				$rutaCampo->usuario_created_at = Auth::user()->id;
+				$rutaCampo->save();
+			}
 			return $pretramite->titulo;
 		}
 		else{
@@ -600,6 +609,7 @@ class PretramiteController extends BaseController {
 			$cantidad=true;
 			$conteo=0;
 			$conteoMax=10;
+			//rutas_flujo, personas, flujos, documentos, clasificador_tramite => todas estas tablas con el valor "0"
 			
 			while ( $cantidad==true ) {
 				$cantidad=false;

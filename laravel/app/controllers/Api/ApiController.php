@@ -17,7 +17,6 @@ class ApiController extends \BaseController
         $keyvalidar = base64_encode(hash_hmac("sha256", $r['datos'].date("Ymd"), $_ENV['KEY'], true));
         $keyenviado = str_replace(" ","+", $r['key']);
         $datos = (array) json_decode($r['datos']);
-
         if( $keyenviado == $keyvalidar ){
             if($datos['opcion']=='IniciarProceso'){
                 $result = $this->IniciarProceso($datos);
@@ -81,11 +80,41 @@ class ApiController extends \BaseController
         $empresa['e2'] = array(
             'cbo_tiposolicitante' => 1,
             'cbo_tipotramite' => 1,
-            'idclasitramite' => 294, 
+            'idclasitramite' => 746, 
             'idarea' => 85, 
-            'local' => 2, 
-            'cbo_tipodoc' => 1,
+            'local' => 42, 
+            'cbo_tipodoc' => 492,
             'numfolio' => 1,
+            'campos' => array(
+                '2708' => $r['carrera'],
+                '2709' => $r['curso'],
+                '2710' => $r['modalidad'],
+                '2711' => $r['fecha_inicio'],
+                '2712' => $r['horario'],
+                '2713' => $r['frecuencia'],
+                '2714' => $r['local_estudios'],
+
+                '2716' => $r['nro_ins'],
+                '2717' => $r['tipo_ins'],
+                '2718' => $r['monto_ins'],
+
+                '2720' => $r['nro_mat'],
+                '2721' => $r['tipo_mat'],
+                '2722' => $r['monto_mat'],
+
+                '2724' => $r['nro_cur'],
+                '2725' => $r['tipo_cur'],
+                '2726' => $r['monto_cur'],
+                '2727' => $r['total_cur'],
+
+                '2729' => $r['nro_pro'],
+                '2730' => $r['tipo_pro'],
+                '2731' => $r['monto_pro'],
+
+                '2737' => $r['cajero'],
+                '2738' => $r['vendedor'],
+                '2739' => $r['responsable'],
+            ),
         );
 
         Input::merge([
@@ -106,6 +135,7 @@ class ApiController extends \BaseController
             'tipodoc' => 'S/N',
             'observacion' => 'Proceso automático',
             'apiproceso' => 1,
+            'campos' => $empresa[$r['empresa_id']]['campos'],
         ]);
         $pretramite = new \PretramiteController;
         $expediente = $pretramite->postCreateservicio();

@@ -38,7 +38,10 @@ var Pois={
     ListarCampos:function(evento, asignacion){
         var datos = $("#form_campo").serialize().split("txt_").join("").split("slct_").join("");
         
-        if( typeof(asignacion) != 'undefined' ){
+        if( typeof(asignacion) != 'undefined' && asignacion == 'evento' ){
+            var datos = $("#form_evento").serialize().split("txt_").join("").split("slct_").join("");
+        }
+        else if( typeof(asignacion) != 'undefined' ){
             var datos = $("#form_campo_asignacion").serialize().split("txt_").join("").split("slct_").join("");
         }
         var accion = "clasificadortramite/listarcampos";
@@ -515,6 +518,39 @@ var Pois={
             }
         });
 
+    },
+    GuardarEvento:function(evento){
+        let accion = "clasificadortramite/guardarevento";
+        let datos = $("#form_evento").serialize().split("txt_").join("").split("slct_").join("");
+        $.ajax({
+            url         : accion,
+            type        : 'POST',
+            cache       : false,
+            dataType    : 'json',
+            data        : datos,
+            beforeSend : function() {
+                $("body").append('<div class="overlay"></div><div class="loading-img"></div>');
+            },
+            success : function(obj) {
+                $(".overlay, .loading-img").remove();
+                evento(obj);
+            },
+            error: function(){
+                $(".overlay,.loading-img").remove();
+                msjG.mensaje('danger','<b>Ocurrio una interrupción en el proceso,Favor de intentar nuevamente.',4000);
+            }
+        });
+
+    },
+    ListarEventos:function(evento){
+        let url = "clasificadortramite/listareventos";
+        let data = $("#form_evento").serialize().split("txt_").join("").split("slct_").join("")+"&estado=1";
+        masterG.postAjax(url,data,evento);
+    },
+    EliminarEvento:function(evento, id){
+        let url = "clasificadortramite/eliminarevento";
+        let data = {ruta_flujo_evento_id: id};
+        masterG.postAjax(url,data,evento);
     },
 };
 </script>

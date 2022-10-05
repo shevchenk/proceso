@@ -44,7 +44,7 @@
         <div class="box-body table-responsive">
             <table id="t_clasificadortramites" class="table table-bordered table-hover">
                 <thead>
-                    <tr><th colspan="13" style="text-align:center;background-color:#A7C0DC;"><h2>Servicios al usuario</h2></th></tr>
+                    <tr><th colspan="14" style="text-align:center;background-color:#A7C0DC;"><h2>Servicios al usuario</h2></th></tr>
                     <tr></tr>
                 </thead>
                 <tbody>
@@ -324,6 +324,103 @@
                     </table>
                 </div>
                 <br><hr>
+
+            </div><!-- /.box-body -->
+        </div>
+    </form>
+
+    <form class="FormG" id="form_evento" name="form_evento" method="POST" action="">
+        <input class="form-control mant" type="hidden" name="id" id="id">
+        <input class="form-control mant" type="hidden" name="ruta_flujo_id" id="ruta_flujo_id">
+        <div class="form-group" >
+            <div class="box-header table-responsive">
+                <div class="col-xs-12">
+                    <h3>
+                        Configuración de Eventos  |
+                        <small>Nombre de Trámite:  <label type="text" id="txt_titulo"></label></small>
+                    </h3>                           
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <br>
+                        <a class="btn btn-warning btn-sm btn_close">
+                            <i class="fa fa-remove fa-lg"></i>&nbsp;Cerrar
+                        </a>
+                    </div>
+                </div>
+                <div class="row col-md-12">
+                    <br>
+                    <div class="col-md-6">
+                        <label>Campos creados:</label>
+                        <select id="slct_campos_eventos" class="form-control">
+                            <option value="">.::Seleccione::.</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <br>
+                        <a class="btn btn-success btn_campo_evento">
+                            <i class="fa fa-plus fa-lg"></i>&nbsp;Agregar
+                        </a>
+                    </div>
+                    <select id="slct_condicion" class="form-control hidden">
+                        <option value=''>.::Seleccione condición::.</option>
+                        <option value='='>"=" Igual</option>
+                        <option value='>='>">=" Mayor e Igual</option>
+                        <option value='<='>"<=" Menor e Igual</option>
+                        <option value='>'>">" Mayor</option>
+                        <option value='<'>"<" Menor</option>
+                        <option value='<>'>"<>" Diferente</option>
+                    </select>
+                    <select id="slct_anidado" class="form-control hidden">
+                        <option value=''>.::Seleccione condición::.</option>
+                        <option value='AND'>Y</option>
+                        <option value='OR'>O</option>
+                    </select>
+                    <div class="col-md-7 table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="alert-info">
+                                <tr>
+                                    <th class="text-center">Grupo Lógico</th>
+                                    <th class="text-center">Campo</th>
+                                    <th class="text-center">Condición</th>
+                                    <th class="text-center">Valor de la condición</th>
+                                    <th class="text-center">[]</th>
+                                </tr>
+                            </thead>
+                            <tbody id="add_campo5"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">
+                                        <input type="text" class="form-control txt_url_evento" name="txt_url_evento" placeholder="Ingrese URL del evento - API">
+                                    </td>
+                                    <td colspan="2" class="text-center">
+                                    <a class="btn btn-info btn_guardar_evento">
+                                        <i class="fa fa-save fa-lg"></i>&nbsp;Guardar
+                                    </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="col-md-7 table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="alert-danger">
+                                <tr>
+                                    <th colspan='3' class="text-center"><h4>Eventos Configurados</h4></th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Condición del Evento</th>
+                                    <th class="text-center">Url del evento - Api</th>
+                                    <th class="text-center">[]</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventos"></tbody>
+                        </table>
+                    </div>
+                </div>
+
 
             </div><!-- /.box-body -->
         </div>

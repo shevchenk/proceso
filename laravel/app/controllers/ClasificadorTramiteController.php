@@ -136,6 +136,52 @@ class ClasificadorTramiteController extends \BaseController
         }
     }
 
+    public function postGuardarevento()
+    {
+        if ( Request::ajax() ) {
+            $a      = new RutaFlujoEvento;
+            $a->Guardarevento();
+
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'msj'   => 'Evento registrado',
+                )
+            );
+        }
+    }
+
+    public function postListareventos()
+    {
+        if ( Request::ajax() ) {
+            $a       = new RutaFlujoEvento;
+            $eventos = $a->Listareventos();
+
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'data'  => $eventos,
+                    'msj'   => 'Eventos listados',
+                )
+            );
+        }
+    }
+
+    public function postEliminarevento()
+    {
+        if ( Request::ajax() ) {
+            $a       = new RutaFlujoEvento;
+            $a->Eliminarevento();
+
+            return Response::json(
+                array(
+                    'rst'   => 1,
+                    'msj'   => 'Evento eliminado, se volvió a cargar los eventos',
+                )
+            );
+        }
+    }
+
     public function postAsignarcampos()
     {
         ini_set('memory_limit', '512M');
@@ -398,7 +444,7 @@ class ClasificadorTramiteController extends \BaseController
         }
     }
     
-           public function postListarrequisito()
+    public function postListarrequisito()
     {
         if ( Request::ajax() ) {
             $array=array();
@@ -423,7 +469,7 @@ class ClasificadorTramiteController extends \BaseController
         }
     }
     
-        public function postCambiarestadorequisito()
+    public function postCambiarestadorequisito()
     {
 
         if ( Request::ajax() ) {
@@ -442,7 +488,8 @@ class ClasificadorTramiteController extends \BaseController
 
         }
     }
-            public function postCrearrequisito()
+    
+    public function postCrearrequisito()
     {
         if ( Request::ajax() ) {
             $regex = 'regex:/^([a-zA-Z1-9 .,ñÑÁÉÍÓÚáéíóú]{2,60})$/i';
@@ -489,7 +536,7 @@ class ClasificadorTramiteController extends \BaseController
      *
      * @return Response
      */
-   public function postEditarrequisito()
+    public function postEditarrequisito()
     {
         if ( Request::ajax() ) {
             $regex = 'regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú]{2,60})$/i';
@@ -534,7 +581,7 @@ class ClasificadorTramiteController extends \BaseController
         }
     }
     
-            public function postAgregarproceso()
+    public function postAgregarproceso()
     {
 
         if ( Request::ajax() ) {
