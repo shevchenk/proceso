@@ -86,6 +86,12 @@ class ApiController extends \BaseController
             'cbo_tipodoc' => 492,
             'numfolio' => 1,
             'campos' => array(
+                '2762' => $r['id'],
+                '2757' => $r['sexo'],
+                '2756' => $r['fecha_nacimiento'],
+                '2755' => $r['celular_alumno'],
+                '2754' => $r['email_alumno'],
+
                 '2708' => $r['carrera'],
                 '2709' => $r['curso'],
                 '2710' => $r['modalidad'],
@@ -93,6 +99,15 @@ class ApiController extends \BaseController
                 '2712' => $r['horario'],
                 '2713' => $r['frecuencia'],
                 '2714' => $r['local_estudios'],
+
+                '2741' => $r['inscripcion'],
+                '2742' => $r['matricula'],
+                '2743' => $r['cuotas'],
+                '2744' => $r['1c'],
+                '2745' => $r['2c'],
+                '2746' => $r['3c'],
+                '2748' => $r['adicional1'],
+                '2749' => $r['adicional2'],
 
                 '2716' => $r['nro_ins'],
                 '2717' => $r['tipo_ins'],
@@ -114,6 +129,69 @@ class ApiController extends \BaseController
                 '2737' => $r['cajero'],
                 '2738' => $r['vendedor'],
                 '2739' => $r['responsable'],
+                '2771' => $r['created_at'],
+                '2759' => $r['medio_captacion2'],
+                '2772' => $r['supervisor'],
+                '2773' => $r['updated_at'],
+            ),
+        );
+
+        $empresa['e42'] = array(
+            'cbo_tiposolicitante' => 1,
+            'cbo_tipotramite' => 1,
+            'idclasitramite' => 746, 
+            'idarea' => 85, 
+            'local' => 42, 
+            'cbo_tipodoc' => 492,
+            'numfolio' => 1,
+            'campos' => array(
+                '2762' => $r['id'],
+                '2757' => $r['sexo'],
+                '2756' => $r['fecha_nacimiento'],
+                '2755' => $r['celular_alumno'],
+                '2754' => $r['email_alumno'],
+
+                '2708' => $r['carrera'],
+                '2709' => $r['curso'],
+                '2710' => $r['modalidad'],
+                '2711' => $r['fecha_inicio'],
+                '2712' => $r['horario'],
+                '2713' => $r['frecuencia'],
+                '2714' => $r['local_estudios'],
+
+                '2741' => $r['inscripcion'],
+                '2742' => $r['matricula'],
+                '2743' => $r['cuotas'],
+                '2744' => $r['1c'],
+                '2745' => $r['2c'],
+                '2746' => $r['3c'],
+                '2748' => $r['adicional1'],
+                '2749' => $r['adicional2'],
+
+                '2716' => $r['nro_ins'],
+                '2717' => $r['tipo_ins'],
+                '2718' => $r['monto_ins'],
+
+                '2720' => $r['nro_mat'],
+                '2721' => $r['tipo_mat'],
+                '2722' => $r['monto_mat'],
+
+                '2724' => $r['nro_cur'],
+                '2725' => $r['tipo_cur'],
+                '2726' => $r['monto_cur'],
+                '2727' => $r['total_cur'],
+
+                '2729' => $r['nro_pro'],
+                '2730' => $r['tipo_pro'],
+                '2731' => $r['monto_pro'],
+
+                '2737' => $r['cajero'],
+                '2738' => $r['vendedor'],
+                '2739' => $r['responsable'],
+                '2771' => $r['created_at'],
+                '2759' => $r['medio_captacion2'],
+                '2772' => $r['supervisor'],
+                '2773' => $r['updated_at'],
             ),
         );
 
