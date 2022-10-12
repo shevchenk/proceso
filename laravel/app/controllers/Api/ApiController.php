@@ -106,8 +106,8 @@ class ApiController extends \BaseController
                 '2744' => $r['1c'],
                 '2745' => $r['2c'],
                 '2746' => $r['3c'],
-                '2748' => $r['adicional1'],
-                '2749' => $r['adicional2'],
+                '2748' => $r['adicional2'],
+                '2749' => $r['adicional1'],
 
                 '2716' => $r['nro_ins'],
                 '2717' => $r['tipo_ins'],
