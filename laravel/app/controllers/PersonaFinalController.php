@@ -416,7 +416,7 @@ class PersonaFinalController extends BaseController
     public function postCrearalumno()
     {
         //si la peticion es ajax
-        if ( Request::ajax() ) {
+        //if ( Request::ajax() ) {
             $regex='regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú]{2,60})$/i';
             $required='required';
             $reglas = array(
@@ -591,13 +591,18 @@ class PersonaFinalController extends BaseController
             }
             /************************************/
             DB::commit();
-            return Response::json(
-                array(
-                'rst'=>1,
-                'msj'=>'Registro realizado correctamente'.$personaId,
-                )
-            );
-        }
+            if( Input::has('apiproceso') ){
+                return $persona;
+            }
+            else{
+                return Response::json(
+                    array(
+                    'rst'=>1,
+                    'msj'=>'Registro realizado correctamente'.$personaId,
+                    )
+                );
+            }
+        //}
     }
 
     /**

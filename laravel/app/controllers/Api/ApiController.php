@@ -63,6 +63,7 @@ class ApiController extends \BaseController
         $result = array();
         $persona = \Persona::where('dni', $r['dni_responsable'])->first();
         $persona_alumno = \Persona::where('dni', $r['dni_alumno'])->first();
+        $local_estudios = \Local::where('local', $r['local_estudios'])->first();
         if( isset($persona->id) ){
             Auth::loginUsingId($persona->id);
         }
@@ -71,8 +72,38 @@ class ApiController extends \BaseController
             return $result;
         }
 
-        if( !isset($persona_alumno->id) ){
+        if( !isset($local_estudios->id) ){
             $result['rst'] = 3;
+            return $result;
+        }
+
+        if( !isset($persona_alumno->id) ){
+            Input::merge([
+                'telefono' => $r['telefono_alumno'],
+                'celular' => $r['celular_alumno'],
+                'email' => $r['email_alumno'],
+                'fecha_nacimiento' => $r['fecha_nacimiento'],
+                'direccion' => $r['direccion_alumno'],
+                'dni' => $r['dni_alumno'],
+                'sexo' => substr($r['sexo'],0,1),
+                'password' => $r['dni_alumno'],
+                'responsable_area' => "",
+                'local_id' => $local_estudios->id,
+                'modalidad' => 1,
+                'vista_doc' => 1,
+                'estado' => 1,
+                'paterno' => $r['paterno_alumno'],
+                'materno' => $r['materno_alumno'],
+                'nombre' => $r['nombre_alumno'],
+                'email_mdi' => null,
+                'doc_privados' => null,
+            ]);
+            $personaFinal = new \PersonaFinalController;
+            $persona_alumno = $personaFinal->postCrearalumno();
+        }
+        
+        if( !isset($persona_alumno->id) ){
+            $result['rst'] = 4;
             return $result;
         }
 
@@ -82,7 +113,7 @@ class ApiController extends \BaseController
             'cbo_tipotramite' => 1,
             'idclasitramite' => 746, 
             'idarea' => 85, 
-            'local' => 42, 
+            'local' => $local_estudios->id, 
             'cbo_tipodoc' => 492,
             'numfolio' => 1,
             'campos' => array(
@@ -141,7 +172,7 @@ class ApiController extends \BaseController
             'cbo_tipotramite' => 1,
             'idclasitramite' => 746, 
             'idarea' => 85, 
-            'local' => 42, 
+            'local' => $local_estudios->id, 
             'cbo_tipodoc' => 492,
             'numfolio' => 1,
             'campos' => array(
