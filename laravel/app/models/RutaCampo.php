@@ -11,6 +11,13 @@ class RutaCampo extends \Eloquent {
             'ruta_campo_id' => array()
         );
 
+        $eventos =  DB::table('rutas_flujo_eventos AS rfe')
+                    ->join('rutas AS r', 'r.ruta_flujo_id', '=', 'rfe.ruta_flujo_id')
+                    ->where('r.id', $r['ruta_id'])
+                    ->where('rfe.estado', 1)
+                    ->get();
+
+        dd($eventos, $eventos[0]->git);
         DB::beginTransaction();
             
         for ($i=0; $i < $recorrido; $i++) { 
