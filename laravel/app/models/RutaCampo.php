@@ -17,7 +17,7 @@ class RutaCampo extends \Eloquent {
                     ->where('rfe.estado', 1)
                     ->get();
 
-        dd($eventos, $eventos[0]->git);
+        dd($eventos, $eventos[0]);
         DB::beginTransaction();
             
         for ($i=0; $i < $recorrido; $i++) { 
