@@ -11,13 +11,6 @@ class RutaCampo extends \Eloquent {
             'ruta_campo_id' => array()
         );
 
-        $eventos =  DB::table('rutas_flujo_eventos AS rfe')
-                    ->join('rutas AS r', 'r.ruta_flujo_id', '=', 'rfe.ruta_flujo_id')
-                    ->where('r.id', $r['ruta_id'])
-                    ->where('rfe.estado', 1)
-                    ->get();
-
-        dd($eventos, $eventos[0]);
         DB::beginTransaction();
             
         for ($i=0; $i < $recorrido; $i++) { 
@@ -41,6 +34,58 @@ class RutaCampo extends \Eloquent {
             array_push( $lista['ruta_campo_id'], $RutaCampo->id );
         }
         DB::commit();
+
+
+        $eventos =  DB::table('rutas_flujo_eventos AS rfe')
+                    ->join('rutas AS r', 'r.ruta_flujo_id', '=', 'rfe.ruta_flujo_id')
+                    ->where('r.id', $r['ruta_id'])
+                    ->where('rfe.estado', 1)
+                    ->get();
+
+        foreach( $eventos as $key => $value ){
+            $valued = explode("^^", $value->condicion_valida);
+            $value->url_evento;
+            $cant = 0;
+            $aux = '';
+            $sql =  DB::table('rutas_campos')
+                    ->select(DB::raw('COUNT(id) AS cant'))
+                    ->where('ruta_id', $r['ruta_id'])
+                    ->where('estado', 1)
+                    ->where(
+                        function($query) use( $valued ){
+                            foreach( $valued as $k => $v ){
+                                $vd = explode("|", $v);
+                                $cant++;
+                                if($k == 0){
+                                    $query->where('ruta_flujo_campo_id', '=', substr($vd[1], 1))
+                                    ->where('campo_valor', $vd[2], $vd[3]);
+                                }
+                                else{
+                                    $query->orWhere('ruta_flujo_campo_id', '=', substr($vd[1], 1))
+                                    ->where('campo_valor', $vd[2], $vd[3]);
+                                }
+
+                                if( $vd[0] == 'OR' ){
+                                    $aux = $vd[3];
+                                }
+                            }
+                        }
+                    );
+            if( $aux != '' ){
+                // addselect MAX(FIND_IN_SET("",)) AS res                
+            }
+            $sql->groupBy('ruta_id')
+                ->get();   
+        }
+        
+
+        
+        /*$busqueda = array_search( "2705", array_column($datos, "codigo") );
+        $busqueda++;
+        while( isset($datos[$busqueda]) AND $datos[$busqueda]['operador'] != '' ){
+            $busqueda++;
+        }*/
+        dd($datos[$busqueda-1]);
 
         return $lista;
     }
