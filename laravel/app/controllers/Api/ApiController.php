@@ -21,6 +21,12 @@ class ApiController extends \BaseController
             if($datos['opcion']=='IniciarProceso'){
                 $result = $this->IniciarProceso($datos);
             }
+            elseif($datos['opcion']=='AprobarMatricula'){
+                $result = $this->AprobarMatricula($datos);
+            }
+            elseif($datos['opcion']=='AnularMatricula'){
+                $result = $this->AnularMatricula($datos);
+            }
             elseif($datos['opcion']=='Prueba'){
                 $result = array();
             }
@@ -253,6 +259,36 @@ class ApiController extends \BaseController
         $result['rst'] = 1;
         $result['expediente'] = $expediente;
         $result['fecha_expediente'] = date("Y-m-d");
+        return $result;
+    }
+
+    public function AprobarMatricula($r)
+    {
+        $datos = array(
+            "opcion" => $ruta[1],
+            "matricula_id" => 2762,
+            "ruta_id" => $r['ruta_id']
+        );
+        $datos = json_encode($datos);
+        $key = base64_encode(hash_hmac("sha256", $datos.date("Ymd"), $_ENV['KEY'], true));
+        
+        $parametros = array(
+            'key' => $key,
+            'datos' => $datos,
+        );
+        $url = $_ENV['URL_FC']."?".http_build_query($parametros);
+        $objArr = Menu::curl($url, $parametros);
+        if( isset($objArr->rst) AND $objArr->rst*1 == 1 ){ /*No realiza nada...*/ }
+        else{
+            $result['rst'] = 2;
+        }
+        $result['rst'] = 1;
+        return $result;
+    }
+
+    public function AnularMatricula($r)
+    {
+        $result['rst'] = 1;
         return $result;
     }
 }

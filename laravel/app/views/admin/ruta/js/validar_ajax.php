@@ -309,7 +309,10 @@ var Validar={
                 if(obj.rst==1){
                     msjG.mensaje("success",obj.msj,3000);
                     evento(obj.data);
-                }  
+                }
+                else{
+                    msjG.mensaje("warning",obj.msj,4000);
+                }
                 $(".overlay,.loading-img").remove();
             },
             error: function(){

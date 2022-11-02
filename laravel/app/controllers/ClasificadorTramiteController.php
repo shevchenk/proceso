@@ -65,13 +65,7 @@ class ClasificadorTramiteController extends \BaseController
             $a      = new RutaCampo;
             $lista = $a->Guardarrutacampos();
 
-            return Response::json(
-                array(
-                    'rst'   => 1,
-                    'msj'   => 'Campos guardados',
-                    'data' => $lista
-                )
-            );
+            return Response::json($lista);
         }
     }
 
