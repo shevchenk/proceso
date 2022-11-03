@@ -40,6 +40,7 @@ class RutaCampo extends \Eloquent {
                     ->where('r.id', $r['ruta_id'])
                     ->where('rfe.estado', 1)
                     ->get();
+        $anular = 0;
 
         foreach( $eventos as $key => $value ){
             $valued = explode("^^", $value->condicion_valida);
@@ -114,7 +115,11 @@ class RutaCampo extends \Eloquent {
                 );
                 $url = $_ENV['URL_PROCESO']."?".http_build_query($parametros);
                 $objArr = Menu::curl($url, $parametros);
-                if( isset($objArr->rst) AND $objArr->rst*1 == 1 ){ /*No realiza nada...*/ }
+                if( isset($objArr->rst) AND $objArr->rst*1 == 1 ){ 
+                    if( isset($objArr->anular) AND $objArr->anular == 1 ){
+                        $anular = 1;
+                    }
+                }
                 else{
                     DB::rollBack();
                     return array(
@@ -132,7 +137,8 @@ class RutaCampo extends \Eloquent {
         return array(
             'rst'   => 1,
             'msj'   => 'Campos guardados',
-            'data' => $lista
+            'data' => $lista,
+            'anular' => $anular,
         );
     }
 

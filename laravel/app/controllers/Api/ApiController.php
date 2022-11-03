@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use \Menu;
-use \Persona;
+
 class ApiController extends \BaseController
 {
     public function index()
@@ -278,7 +277,7 @@ class ApiController extends \BaseController
             'datos' => $datos,
         );
         $url = $_ENV['URL_FC']."?".http_build_query($parametros);
-        $objArr = Menu::curl($url, $parametros);
+        $objArr = \Menu::curl($url, $parametros);
         $result['rst'] = 1;
         if( isset($objArr->rst) AND $objArr->rst*1 == 1 ){ /*No realiza nada...*/ }
         else{
@@ -302,7 +301,7 @@ class ApiController extends \BaseController
             'datos' => $datos,
         );
         $url = $_ENV['URL_FC']."?".http_build_query($parametros);
-        $objArr = Menu::curl($url, $parametros);
+        $objArr = \Menu::curl($url, $parametros);
         $result['rst'] = 1;
         if( isset($objArr->rst) AND $objArr->rst*1 == 1 ){ /*No realiza nada...*/ }
         else{
@@ -310,29 +309,28 @@ class ApiController extends \BaseController
         }
 
         if( $result['rst'] == 1 ){
-            $persona = Persona::where('dni', $r['dni'])->first();
+            $persona = \Persona::where('dni', $r['dni'])->first();
             $ruta_id = $r['ruta_id'];
-            
             DB::beginTransaction();
             
-            $r=Ruta::find($ruta_id);
+            $r=\Ruta::find($ruta_id);
             $r['estado']=0;
             $r['usuario_updated_at']=$persona->id;
             $r->save();
 
-            $tr=TablaRelacion::find($r->tabla_relacion_id);
+            $tr=\TablaRelacion::find($r->tabla_relacion_id);
             $tr['estado']=0;
             $tr['usuario_updated_at']=$persona->id;
             $tr->save();
 
             if( isset($tr->tramite_id) AND trim($tr->tramite_id) != '' ){
-                $tra = Tramite::find($tr->tramite_id);
+                $tra = \Tramite::find($tr->tramite_id);
                 $tra->estado = 0;
                 $tra->usuario_updated_at = $persona->id;
                 $tra->save();
 
                 if( isset($tra->pretramite_id) AND trim($tra->pretramite_id) != ''){
-                    $ptra = Pretramite::find($tra->pretramite_id);
+                    $ptra = \Pretramite::find($tra->pretramite_id);
                     $ptra->estado_atencion = 2;
                     $ptra->observacion = $ptra->observacion." <b>( Trámite anulado por tesorería )</b>";
                     $ptra->usuario_updated_at = $persona->id;
@@ -341,6 +339,7 @@ class ApiController extends \BaseController
             }
 
             DB::commit();
+            $result['anular'] = 1;
         }
         return $result;
     }

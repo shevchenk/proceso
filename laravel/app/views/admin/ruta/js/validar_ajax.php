@@ -307,8 +307,15 @@ var Validar={
             },
             success : function(obj) {
                 if(obj.rst==1){
-                    msjG.mensaje("success",obj.msj,3000);
-                    evento(obj.data);
+                    if( $.trim(obj.anular) == 1 ){
+                        msjG.mensaje("success", "Trámite Anulado por API",4000);
+                        Close(1);
+                        Bandeja.MostrarAjax();
+                    }
+                    else{
+                        msjG.mensaje("success",obj.msj,3000);
+                        evento(obj.data);
+                    }
                 }
                 else{
                     msjG.mensaje("warning",obj.msj,4000);
