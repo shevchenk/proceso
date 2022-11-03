@@ -94,10 +94,16 @@ class RutaCampo extends \Eloquent {
             }
 
             if( isset($ruta[0]) AND isset($ruta[1]) AND $ruta[0] != '' AND $ruta[1] != '' ){ //Validación y ejecución de API
+                $RutaCampo = RutaCampo::where('ruta_id', $r['ruta_id'])->where('ruta_flujo_campo_id', 2762)->first();
+                $matricula_id = 0;
+                if( isset($RutaCampo->campo_valor) ){
+                    $matricula_id = $RutaCampo->campo_valor;
+                }
                 $datos = array(
                     "opcion" => $ruta[1],
-                    "matricula_id" => 2762,
-                    "ruta_id" => $r['ruta_id']
+                    "matricula_id" => $matricula_id,
+                    "ruta_id" => $r['ruta_id'],
+                    "dni" => Auth::user()->dni
                 );
                 $datos = json_encode($datos);
                 $key = base64_encode(hash_hmac("sha256", $datos.date("Ymd"), $_ENV['KEY'], true));
@@ -114,7 +120,8 @@ class RutaCampo extends \Eloquent {
                     return array(
                         'rst'   => 2,
                         'msj'   => 'No se pudo comletar, vuelva a intentarlo',
-                        'data' => $lista
+                        'data' => $lista,
+                        'obj' => $objArr
                     );
                 }
             }
