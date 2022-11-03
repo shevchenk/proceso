@@ -119,7 +119,7 @@ class RutaCampo extends \Eloquent {
                     DB::rollBack();
                     return array(
                         'rst'   => 2,
-                        'msj'   => 'No se pudo comletar, vuelva a intentarlo',
+                        'msj'   => 'No se pudo completar, vuelva a intentarlo',
                         'data' => $lista,
                         'obj' => $objArr
                     );
