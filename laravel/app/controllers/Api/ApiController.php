@@ -257,7 +257,14 @@ class ApiController extends \BaseController
             'observacion' => 'Proceso automático',
             'apiproceso' => 1,
             'campos' => $empresa[$r['empresa_id']]['campos'],
+            'archivo_ins' => $r['archivo_ins'],
+            'archivo_mat' => $r['archivo_mat'],
+            'archivo_pro' => $r['archivo_pro'],
+            'archivo_cur' => $r['archivo_cur'],
+            'url' => $r['url'],
+            'tipo_documento_id' => $r['tipo_documento_id']
         ]);
+        
         $pretramite = new \PretramiteController;
         $expediente = $pretramite->postCreateservicio();
         

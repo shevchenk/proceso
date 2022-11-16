@@ -244,6 +244,16 @@ class PretramiteController extends BaseController {
         $pretramite['usuario_created_at'] = Auth::user()->id;
 		$pretramite['documento_id'] = $clasificadorTramite->documento_id;
 
+		if( isset($array_data['archivo_ins']) AND trim($array_data['archivo_ins']) != '' ){
+			$pretramite['ruta_archivo'] = $array_data['url'].$array_data['archivo_ins'];
+		}
+		elseif( isset($array_data['archivo_mat']) AND trim($array_data['archivo_mat']) != '' ){
+			$pretramite['ruta_archivo'] = $array_data['url'].$array_data['archivo_mat'];
+		}
+		elseif( isset($array_data['archivo_pro']) AND trim($array_data['archivo_pro']) != '' ){
+			$pretramite['ruta_archivo'] = $array_data['url'].$array_data['archivo_pro'];
+		}
+
 		$cantidad=true;
 		$conteo=0;
 		$conteoMax=10;
@@ -499,6 +509,122 @@ class PretramiteController extends BaseController {
                         }
                     }
                 }
+
+				if( isset($array_data['apiproceso']) ){ //Solo si viene por API
+					$rutaDetalleVerbo = new RutaDetalleVerbo;
+					$rutaDetalleVerbo['ruta_detalle_id']= $rutaDetalle->id;
+					$rutaDetalleVerbo['nombre']= "Generar";
+					$rutaDetalleVerbo['condicion']= 0;
+					$rutaDetalleVerbo['rol_id']= 3;
+					$rutaDetalleVerbo['verbo_id']= 1;
+					$rutaDetalleVerbo['documento_id']= 0;
+					$rutaDetalleVerbo['orden']= 0;
+					$rutaDetalleVerbo['usuario_created_at']= Auth::user()->id;
+					$rutaDetalleVerbo->save();
+
+					$documento = DB::table('documentos')
+								->select('nombre', 'nemonico')
+								->where('id',$array_data['tipo_documento_id'])
+								->first();
+					
+					$sql = "SELECT IFNULL(MAX(dd.correlativo)+1,1) as correlativo
+							FROM doc_digital dd 
+							INNER JOIN plantilla_doc pd on dd.plantilla_doc_id=pd.id 
+							AND pd.tipo_documento_id=".$array_data['tipo_documento_id']." 
+							AND pd.area_id= ".$pretramite->area_id."
+							WHERE dd.estado=1 
+							AND YEAR(dd.created_at)=YEAR(CURDATE())";
+					$r= DB::select($sql);
+					$correlativo = (isset($r[0])) ? $r[0]->correlativo : $correlativo;
+
+					$buscar = array('@@@@@@','@@@@@','@@@@','@@@','@@','@','####','##');
+					$reemplazar = array( str_pad( $correlativo, 6, "0", STR_PAD_LEFT ), str_pad( $correlativo, 5, "0", STR_PAD_LEFT ),
+						str_pad( $correlativo, 4, "0", STR_PAD_LEFT ), str_pad( $correlativo, 3, "0", STR_PAD_LEFT ),
+						str_pad( $correlativo, 2, "0", STR_PAD_LEFT ), str_pad( $correlativo, 1, "0", STR_PAD_LEFT ),
+						date("Y"), date("y")
+					);
+					$titulofinal = str_replace( $buscar, $reemplazar, $documento->nemonico );
+
+					$DocDigitalAuto = $this->DocDigitalAuto( trim($pretramite->ruta_archivo), $pretramite->area_id, $array_data['tipo_documento_id'], $titulofinal, $correlativo, 'url' );
+					$rutaDetalleVerbo['documento']= $DocDigitalAuto->titulo;
+					$rutaDetalleVerbo['doc_digital_id']= $DocDigitalAuto->id;
+					$rutaDetalleVerbo['usuario_updated_at']= Auth::user()->id;
+					$rutaDetalleVerbo['finalizo']=1;
+					$rutaDetalleVerbo->save();
+
+					$referido=new Referido;
+					$referido['ruta_id']= $ruta->id;
+					$referido['ruta_detalle_id']= $rutaDetalle->id;
+					$referido['norden']= 0;
+					$referido['tabla_relacion_id']= $tablaRelacion->id;
+					$referido['doc_digital_id']= $DocDigitalAuto->id;
+					$referido['documento_id']= 0;
+					$referido['estado_ruta']= 1;
+					$referido['tipo']= 1;
+					$referido['ruta_detalle_verbo_id']= $rutaDetalleVerbo->id;
+					$referido['referido']= $pretramite->titulo;
+					$referido['fecha_hora_referido']= $rutaDetalleVerbo->created_at;
+					$referido['usuario_referido']= $rutaDetalleVerbo->usuario_created_at;
+					$referido['usuario_created_at']= $rutaDetalleVerbo->usuario_created_at;
+					$referido->save();
+
+					$archivos = $array_data['archivo_ins'].",".$array_data['archivo_mat'].",".$array_data['archivo_pro'].",".$array_data['archivo_cur'];
+					$darchivos = explode(",", $archivos);
+					for( $i = 0; $i < count($darchivos); $i++ ){
+						if( trim($darchivos[$i]) != '' ){
+							$rutaDetalleVerbo = new RutaDetalleVerbo;
+							$rutaDetalleVerbo['ruta_detalle_id']= $rutaDetalle->id;
+							$rutaDetalleVerbo['nombre']= "Generar";
+							$rutaDetalleVerbo['condicion']= 0;
+							$rutaDetalleVerbo['rol_id']= 3;
+							$rutaDetalleVerbo['verbo_id']= 1;
+							$rutaDetalleVerbo['documento_id']= 0;
+							$rutaDetalleVerbo['orden']= '0.'.($i+1);
+							$rutaDetalleVerbo['usuario_created_at']= Auth::user()->id;
+							$rutaDetalleVerbo->save();
+							
+							$año= date("Y");
+							$correlativo = 1;
+							/*$sql = "SELECT LPAD(id+1,6,'0') as correlativo,'$año' ano FROM doc_digital ORDER BY id DESC LIMIT 1";*/
+							$sql = "SELECT IFNULL(MAX(dd.correlativo)+1,1) as correlativo
+									FROM doc_digital dd 
+									INNER JOIN plantilla_doc pd on dd.plantilla_doc_id=pd.id 
+									AND pd.tipo_documento_id=".$array_data['tipo_documento_id']." 
+									AND pd.area_id= ".$pretramite->area_id."
+									WHERE dd.estado=1 
+									AND YEAR(dd.created_at)=YEAR(CURDATE())";
+							$r= DB::select($sql);
+							$correlativo = (isset($r[0])) ? $r[0]->correlativo : $correlativo;
+
+							$buscar = array('@@@@@@','@@@@@','@@@@','@@@','@@','@','####','##');
+							$reemplazar = array( str_pad( $correlativo, 6, "0", STR_PAD_LEFT ), str_pad( $correlativo, 5, "0", STR_PAD_LEFT ),
+								str_pad( $correlativo, 4, "0", STR_PAD_LEFT ), str_pad( $correlativo, 3, "0", STR_PAD_LEFT ),
+								str_pad( $correlativo, 2, "0", STR_PAD_LEFT ), str_pad( $correlativo, 1, "0", STR_PAD_LEFT ),
+								date("Y"), date("y")
+							);
+							$titulofinal = str_replace( $buscar, $reemplazar, $documento->nemonico );
+
+							$DocDigitalAuto = $this->DocDigitalAuto( $array_data['url'].$darchivos[$i], $pretramite->area_id, $array_data['tipo_documento_id'], $titulofinal, $correlativo, 'url' );
+							$rutaDetalleVerbo['documento']= $DocDigitalAuto->titulo;
+							$rutaDetalleVerbo['doc_digital_id']= $DocDigitalAuto->id;
+							$rutaDetalleVerbo['usuario_updated_at']= Auth::user()->id;
+							$rutaDetalleVerbo['finalizo']=1;
+							$rutaDetalleVerbo->save();
+
+							$sustento=new Sustento;
+							$sustento['referido_id']=$referido->id;
+							$sustento['ruta_detalle_id']=$rutaDetalle->id;
+							$sustento['ruta_detalle_verbo_id']=$rutaDetalleVerbo->id;
+							$sustento['documento_id']=$rutaDetalleVerbo->documento_id;
+							$sustento['sustento']=$rutaDetalleVerbo->documento;
+							$sustento['doc_digital_id']=$rutaDetalleVerbo->doc_digital_id; // JHOUBERT
+							$sustento['fecha_hora_sustento']=$rutaDetalleVerbo->updated_at;
+							$sustento['usuario_sustento']=$rutaDetalleVerbo->usuario_updated_at;
+							$sustento['usuario_created_at']=Auth::user()->id;
+							$sustento->save();
+						}
+					}
+				}
 			}
 		} //end if registry was succesfully
 		DB::commit();
@@ -906,7 +1032,7 @@ class PretramiteController extends BaseController {
         );
 	}
 
-	protected function DocDigitalAuto($url, $area_id, $tipo_documento_id, $titulofinal, $correlativo){
+	protected function DocDigitalAuto($url, $area_id, $tipo_documento_id, $titulofinal, $correlativo, $tipo = ''){
 		
 		$plantilla = DB::table('plantilla_doc')
 					->where('tipo_documento_id', $tipo_documento_id)
@@ -924,6 +1050,11 @@ class PretramiteController extends BaseController {
 			$plantilla->save();
 		}
 
+		$documento = DB::table('documentos')
+					->select('nombre', 'nemonico')
+					->where('id',$tipo_documento_id)
+					->first();
+
 		$DocDigital = new DocumentoDigital;
 		$DocDigital->titulo = $titulofinal;
 		$DocDigital->asunto = '';
@@ -934,10 +1065,51 @@ class PretramiteController extends BaseController {
 		$DocDigital->area_id = $area_id;
 		$DocDigital->envio_total = 0;
 		$DocDigital->tipo_envio = 1;
-		$DocDigital->doc_archivo= $url;
+		if( $tipo == 'url' ){
+			$DocDigital->doc_archivo= '';
+			$DocDigital->doc_url= $url;
+		}
+		else{
+			$DocDigital->doc_archivo= $url;
+			$DocDigital->doc_url= '';
+		}
+
 		$DocDigital->persona_id = Auth::user()->id; 
 		$DocDigital->usuario_created_at = Auth::user()->id;
-		$DocDigital->save();
+
+		$cantidad=true;
+		$conteo=0;
+		$conteoMax=10;
+		$correlativoinicial = $correlativo;
+		$correlativoaux=$correlativoinicial;
+		while ( $cantidad==true ) {
+			$cantidad=false;
+			try {
+				$DocDigital->save();
+			} catch (Exception $e) {
+				$d=explode("duplicate",strtolower($e));
+				if(count($d)>1){
+					$cantidad=true;
+					$DocDigital->correlativo++;
+					$correlativoaux=$DocDigital->correlativo;
+					$reemplazar = array( str_pad( $correlativoaux, 6, "0", STR_PAD_LEFT ), str_pad( $correlativoaux, 5, "0", STR_PAD_LEFT ),
+						str_pad( $correlativoaux, 4, "0", STR_PAD_LEFT ), str_pad( $correlativoaux, 3, "0", STR_PAD_LEFT ),
+						str_pad( $correlativoaux, 2, "0", STR_PAD_LEFT ), str_pad( $correlativoaux, 1, "0", STR_PAD_LEFT ),
+						date("Y"), date("y")
+					);
+					$DocDigital->titulo = str_replace( $buscar, $reemplazar, $documento->nemonico );
+					$DocDigital->correlativo = $correlativoaux*1;
+					$correlativoinicial = $correlativoaux;
+				}
+				else{
+					$conteo=$conteoMax+1;
+				}
+			}
+			$conteo++;
+			if($conteo==$conteoMax){
+				$cantidad=false;
+			}
+		}		
 		
 		if($DocDigital->id){
 			$DocHistorial = new DocumentoFechaH;
@@ -958,7 +1130,8 @@ class PretramiteController extends BaseController {
 						'area_id' => $area_id,
 						'envio_total' => 0,
 						'tipo_envio' => 1,
-						'doc_archivo' => $url,
+						'doc_archivo' => $DocDigital->doc_archivo,
+						'doc_url' => $DocDigital->doc_url,
 						'usuario_created_at' => Auth::user()->id,
 						'persona_id' => Auth::user()->id,
 						'created_at' => date('Y-m-d H:i:s')
