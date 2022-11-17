@@ -605,6 +605,39 @@ class PersonaFinalController extends BaseController
         //}
     }
 
+    public function postCrearpersona()
+    {
+        $persona = new Persona;
+        $persona['paterno'] = Input::get('paterno');
+        $persona['materno'] = Input::get('materno');
+        $persona['nombre'] = Input::get('nombre');
+        if (Input::get('email')<>'') 
+        $persona['email'] = Input::get('email');
+        $persona['email_mdi'] = Input::get('email_mdi');
+        $persona['celular'] = trim(Input::get('celular'));
+        $persona['telefono'] = trim(Input::get('telefono'));
+        $persona['direccion'] = trim(Input::get('direccion'));
+        $persona['dni'] = Input::get('dni');
+        $persona['sexo'] = Input::get('sexo');
+        $persona['password'] = Input::get('password');
+        $persona['doc_privados'] = Input::get('doc_privados');
+        if (Input::get('fecha_nacimiento')<>'') 
+        $persona['fecha_nacimiento'] = Input::get('fecha_nacimiento');
+        $persona['responsable_area'] = Input::get('responsable_area');
+        $persona['area_id'] = 10;
+        $persona['rol_id'] = 46;
+        $persona['local_id'] = Input::get('local');
+        $persona['modalidad'] = Input::get('modalidad');
+        $persona['vista_doc'] = Input::get('vista_doc');
+        $persona['estado'] = Input::get('estado');
+        $persona['usuario_created_at'] = Auth::user()->id;
+        $persona['verified'] = true;
+        $persona['token'] = null;
+        $persona->save();
+        
+        return $persona;
+    }
+
     /**
      * Update the specified resource in storage.
      * POST /persona/editar

@@ -111,7 +111,7 @@ class ApiController extends \BaseController
                 'doc_privados' => null,
             ]);
             $personaFinal = new \PersonaFinalController;
-            $persona_alumno = $personaFinal->postCrearalumno();
+            $persona_alumno = $personaFinal->postCrearpersona();
         }
         
         if( !isset($persona_alumno->id) ){
