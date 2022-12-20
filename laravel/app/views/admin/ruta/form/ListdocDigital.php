@@ -74,7 +74,7 @@
                             </div>
                             <div class="col-md-2">
                               <label>Correlativo:</label>
-                              <input type="text" maxlength="6" class="form-control txttittle" placeholder="Ingrese Titulo" name="txt_titulo" id="txt_titulo">
+                              <input type="text" maxlength="6" class="form-control txttittle" placeholder="Ingrese Titulo" readonly name="txt_titulo" id="txt_titulo">
                             </div>
                             <div class="col-md-2" style="display:none;">
                               <label>Nemónico:</label>
@@ -85,7 +85,7 @@
                           <div class="col-md-3">
                           <br>
                             <label>Fecha del documento:</label>
-                            <input type='text' id="txt_fecha_documento" name="txt_fecha_documento" value="<?php echo date("Y-m-d");?>" class='form-control' placeholder='YYYY-MM-DD'> 
+                            <input type='text' id="txt_fecha_documento" name="txt_fecha_documento" value="<?php echo date("Y-m-d");?>" readonly class='form-control' placeholder='YYYY-MM-DD'> 
                           </div>
                           <div class="col-md-4">
                           <br>
