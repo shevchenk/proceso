@@ -9,7 +9,7 @@ class RutaCampo extends \Eloquent {
         $recorrido = count($r['ruta_campo_id']);
         $lista = array(
             'ruta_flujo_campo_id' => array(),
-            'ruta_campo_id' => array()
+            'ruta_campo_id' => array(),
         );
 
         DB::beginTransaction();
@@ -45,13 +45,15 @@ class RutaCampo extends \Eloquent {
         foreach( $eventos as $key => $value ){
             $valued = explode("^^", $value->condicion_valida);
             $cant = 0;
+            $ruta_flujo_campo_id_aux = array();
+            $ruta_flujo_campo_id_sql = array();
             $aux = array();
             $sql =  DB::table('rutas_campos')
-                    ->select(DB::raw('COUNT(id) AS cant, GROUP_CONCAT(campo_valor) datos'))
+                    ->select(DB::raw('COUNT(id) AS cant, GROUP_CONCAT(campo_valor) datos, GROUP_CONCAT(DISTINCT(ruta_flujo_campo_id) ORDER BY ruta_flujo_campo_id) ruta_flujo_campo_id'))
                     ->where('ruta_id', $r['ruta_id'])
                     ->where('estado', 1)
                     ->where(
-                        function($query) use( $valued, $cant ){
+                        function($query) use( $valued, $cant, $ruta_flujo_campo_id_aux ){
                             foreach( $valued as $k => $v ){
                                 $vd = explode("|", $v);
 
@@ -63,7 +65,9 @@ class RutaCampo extends \Eloquent {
                                     $query->orWhere('ruta_flujo_campo_id', '=', substr($vd[1], 1))
                                     ->where('campo_valor', $vd[2], $vd[3]);
                                 }
-
+                                
+                                array_push( $ruta_flujo_campo_id_aux, substr($vd[1], 1) );
+                                
                                 if( $vd[0] == 'OR' ){
                                     array_push($aux, $vd[3]);
                                 }
@@ -71,14 +75,32 @@ class RutaCampo extends \Eloquent {
                                     $cant++;
                                 }
                             }
+                            
+                            Session::set('ruta_flujo_campo_id_aux', $ruta_flujo_campo_id_aux);
                         }
                     )
                     ->groupBy('ruta_id')
                     ->first();
-
+            
+            $ruta_flujo_campo_id_aux = Session::get('ruta_flujo_campo_id_aux');
+            sort($ruta_flujo_campo_id_aux);
+            if( isset($sql->ruta_flujo_campo_id) AND $sql->ruta_flujo_campo_id != '' ){
+                $ruta_flujo_campo_id_sql = explode(',', $sql->ruta_flujo_campo_id);
+            }
+            
+            $resultado = array_diff($ruta_flujo_campo_id_aux, $ruta_flujo_campo_id_sql); // validación de los campos según eventos
+            $resultado2 = array_intersect($ruta_flujo_campo_id_aux, $lista['ruta_flujo_campo_id']); // validacion de los cammpos enviados almenos 1
+            
+            /*if($key == 3){
+                dd($ruta_flujo_campo_id_aux, $ruta_flujo_campo_id_sql, $lista['ruta_flujo_campo_id'], $valued, $resultado, $resultado2);
+            }*/
             $ruta = array();
 
-            if( isset($sql->cant) AND isset($aux[0]) AND $aux[0]!='' ){
+            if( $resultado == [] AND count($resultado2) > 0  ){
+                $ruta = explode( "@", str_replace( "fn:", "", $value->url_evento) );
+            }
+
+            /*if( isset($sql->cant) AND isset($aux[0]) AND $aux[0]!='' ){
                 $ar = array();
                 if( $sql->cant > 0 ){
                     $ab = explode(",",$sql->datos);
@@ -92,10 +114,10 @@ class RutaCampo extends \Eloquent {
             }            
             if( isset($sql->cant) AND $sql->cant > 0 AND $cant <= $sql->cant ){
                     $ruta = explode( "@", str_replace( "fn:", "", $value->url_evento) );
-            }
+            }*/
 
             if( isset($ruta[0]) AND isset($ruta[1]) AND $ruta[0] != '' AND $ruta[1] != '' ){ //Validación y ejecución de API
-                $RutaCampo = RutaCampo::where('ruta_id', $r['ruta_id'])->where('ruta_flujo_campo_id', 2762)->first();
+                $RutaCampo = RutaCampo::where('ruta_id', $r['ruta_id'])->where('ruta_flujo_campo_id', $_ENV['IDSERVICIO'])->first();
                 $matricula_id = 0;
                 if( isset($RutaCampo->campo_valor) ){
                     $matricula_id = $RutaCampo->campo_valor;
@@ -113,6 +135,7 @@ class RutaCampo extends \Eloquent {
                     'key' => $key,
                     'datos' => $datos,
                 );
+                
                 $url = $_ENV['URL_PROCESO']."?".http_build_query($parametros);
                 $objArr = Menu::curl($url, $parametros);
                 if( isset($objArr->rst) AND $objArr->rst*1 == 1 ){ 
