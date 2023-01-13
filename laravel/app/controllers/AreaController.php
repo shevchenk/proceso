@@ -296,7 +296,7 @@ class AreaController extends \BaseController
     {
         //si la peticion es ajax
         if ( Request::ajax() ) {
-            $regex='regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú]{2,60})$/i';
+            $regex='regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú]{2,150})$/i';
             $required='required';
             $reglas = array(
                 'nombre' => $required.'|'.$regex,
@@ -349,7 +349,7 @@ class AreaController extends \BaseController
     public function postEditar()
     {
         if ( Request::ajax() ) {
-            $regex='regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú]{2,60})$/i';
+            $regex='regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú]{2,150})$/i';
             $required='required';
             $reglas = array(
                 'nombre' => $required.'|'.$regex,
