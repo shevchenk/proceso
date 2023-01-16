@@ -126,7 +126,7 @@ HTMLreportet=function(datos){
             "<td>"+data.tramite+"</td>";
             
             if( $.trim(data.tramite)!='' ){
-                btn = '<a class="btn btn-default btn-lg" target="_blank" href="https://mitramitecampus2.inturtramites.pe/?tramite='+$.trim(data.tramite)+'&fecha='+$.trim(data.fecha_tramite)+'"><i class="fa fa-eye"></i></a>';
+                btn = '<a class="btn btn-default btn-lg" target="_blank" href="'.$_ENV['URL_MITRAMITE'].'/?tramite='+$.trim(data.tramite)+'&fecha='+$.trim(data.fecha_tramite)+'"><i class="fa fa-eye"></i></a>';
             }
         html+='<td>'+btn+'</td>';
         html+="</tr>";
