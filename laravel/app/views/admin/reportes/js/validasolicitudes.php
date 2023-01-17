@@ -1,5 +1,5 @@
 <script type="text/javascript">
-
+var URL_TRAMITE = '<?php echo $_ENV['URL_MITRAMITE']; ?>';
     var preventSubmit = function(event) {
         if(event.keyCode == 13) {
             event.preventDefault();
@@ -126,7 +126,7 @@ HTMLreportet=function(datos){
             "<td>"+data.tramite+"</td>";
             
             if( $.trim(data.tramite)!='' ){
-                btn = '<a class="btn btn-default btn-lg" target="_blank" href="'.$_ENV['URL_MITRAMITE'].'/?tramite='+$.trim(data.tramite)+'&fecha='+$.trim(data.fecha_tramite)+'"><i class="fa fa-eye"></i></a>';
+                btn = '<a class="btn btn-default btn-lg" target="_blank" href="'+URL_TRAMITE+'/?tramite='+$.trim(data.tramite)+'&fecha='+$.trim(data.fecha_tramite)+'"><i class="fa fa-eye"></i></a>';
             }
         html+='<td>'+btn+'</td>';
         html+="</tr>";

@@ -1,5 +1,5 @@
 <script type="text/javascript">var posicionDetalleVerboG=0;
-
+var URL_TRAMITE = '<?php echo $_ENV['URL_MITRAMITE']; ?>';
 function imprimirTicket(url){
     parametrosPop="height=600,width=350,toolbar=No,location = No,scrollbars=yes,left=-15,top=800,status=No,resizable= No,fullscreen =No'";
     printTicket=window.open(url,'tTicket',parametrosPop);
@@ -248,7 +248,7 @@ HTMLPreTramite = function(data){
             html+=    "<td>"+$.trim(el.id_union)+"</td>";
             btn='';
             if( $.trim(el.id_union)!='' ){
-                btn = '<a class="btn btn-default btn-lg" target="_blank" href="'.$_ENV['URL_MITRAMITE'].'/?tramite='+$.trim(el.id_union)+'&fecha='+$.trim(el.fecha_tramite)+'"><i class="fa fa-eye"></i></a>';
+                btn = '<a class="btn btn-default btn-lg" target="_blank" href="'+URL_TRAMITE+'/?tramite='+$.trim(el.id_union)+'&fecha='+$.trim(el.fecha_tramite)+'"><i class="fa fa-eye"></i></a>';
             }
             html+=    '<td>'+btn+'</td>';
             //html+=    '<td><span class="btn btn-primary btn-sm" id-pretramite="'+el.pretramite+'" onclick="Detallepret(this)"><i class="glyphicon glyphicon-th-list"></i></span></td>';
