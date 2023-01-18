@@ -91,30 +91,11 @@ class RutaCampo extends \Eloquent {
             $resultado = array_diff($ruta_flujo_campo_id_aux, $ruta_flujo_campo_id_sql); // validación de los campos según eventos
             $resultado2 = array_intersect($ruta_flujo_campo_id_aux, $lista['ruta_flujo_campo_id']); // validacion de los cammpos enviados almenos 1
             
-            /*if($key == 3){
-                dd($ruta_flujo_campo_id_aux, $ruta_flujo_campo_id_sql, $lista['ruta_flujo_campo_id'], $valued, $resultado, $resultado2);
-            }*/
             $ruta = array();
 
             if( $resultado == [] AND count($resultado2) > 0  ){
                 $ruta = explode( "@", str_replace( "fn:", "", $value->url_evento) );
             }
-
-            /*if( isset($sql->cant) AND isset($aux[0]) AND $aux[0]!='' ){
-                $ar = array();
-                if( $sql->cant > 0 ){
-                    $ab = explode(",",$sql->datos);
-                    $ar = array_intersect($aux, $ab);
-                }
-                
-                if( isset($ar[0]) AND $ar[0] != '' ){
-                    $sql->cant = 0;
-                    $ruta = explode( "@", str_replace( "fn:", "", $value->url_evento) );
-                }
-            }            
-            if( isset($sql->cant) AND $sql->cant > 0 AND $cant <= $sql->cant ){
-                    $ruta = explode( "@", str_replace( "fn:", "", $value->url_evento) );
-            }*/
 
             if( isset($ruta[0]) AND isset($ruta[1]) AND $ruta[0] != '' AND $ruta[1] != '' ){ //Validación y ejecución de API
                 $RutaCampo = RutaCampo::where('ruta_id', $r['ruta_id'])->where('ruta_flujo_campo_id', $_ENV['IDSERVICIO'])->first();
@@ -128,18 +109,12 @@ class RutaCampo extends \Eloquent {
                     "ruta_id" => $r['ruta_id'],
                     "dni" => Auth::user()->dni
                 );
-                $datos = json_encode($datos);
-                $key = base64_encode(hash_hmac("sha256", $datos.date("Ymd"), $_ENV['KEY'], true));
-                
-                $parametros = array(
-                    'key' => $key,
-                    'datos' => $datos,
-                );
-                
-                $url = $_ENV['URL_PROCESO']."?".http_build_query($parametros);
-                $objArr = Menu::curl($url, $parametros);
-                if( isset($objArr->rst) AND $objArr->rst*1 == 1 ){ 
-                    if( isset($objArr->anular) AND $objArr->anular == 1 ){
+
+                $api = new Api\ApiController;
+                $objArr = $api->{$datos['opcion']}($datos);
+
+                if( isset($objArr['rst']) AND $objArr['rst']*1 == 1 ){ 
+                    if( isset($objArr['anular']) AND $objArr['anular'] == 1 ){
                         $anular = 1;
                     }
                 }

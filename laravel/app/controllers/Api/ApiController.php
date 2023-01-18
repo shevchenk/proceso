@@ -33,9 +33,6 @@ class ApiController extends \BaseController
             elseif($datos['opcion']=='CorregirMatricula'){
                 $result = $this->CorregirMatricula($datos);
             }
-            elseif($datos['opcion']=='Prueba'){
-                $result = array();
-            }
             else{
                 $result = array();
             }
@@ -120,7 +117,8 @@ class ApiController extends \BaseController
         }
 
         $empresa = array();
-        $empresa['e2'] = array(
+        $campos = explode(",", $_ENV['CAMPOS']);
+        $empresa = array(
             'cbo_tiposolicitante' => 1,
             'cbo_tipotramite' => 1,
             'idclasitramite' => 746, 
@@ -129,134 +127,75 @@ class ApiController extends \BaseController
             'cbo_tipodoc' => 492,
             'numfolio' => 1,
             'campos' => array(
-                '2954' => $r['id'],
-                '2956' => $r['sexo'],
-                '2957' => $r['fecha_nacimiento'],
-                '2958' => $r['celular_alumno'],
-                '2959' => $r['email_alumno'],
+                $campos[0] => $r['id'],
+                $campos[1] => $r['sexo'],
+                $campos[2] => $r['fecha_nacimiento'],
+                $campos[3] => $r['celular_alumno'],
+                $campos[4] => $r['email_alumno'],
 
-                '2961' => $r['carrera'],
-                '2962' => $r['curso'],
-                '2963' => $r['modalidad'],
-                '2964' => $r['fecha_inicio'],
-                '2965' => $r['horario'],
-                '2966' => $r['frecuencia'],
-                '2967' => $r['local_estudios'],
+                $campos[5] => $r['carrera'],
+                $campos[6] => $r['curso'],
+                $campos[7] => $r['modalidad'],
+                $campos[8] => $r['fecha_inicio'],
+                $campos[9] => $r['horario'],
+                $campos[10] => $r['frecuencia'],
+                $campos[11] => $r['local_estudios'],
 
-                '2969' => $r['inscripcion'],
-                '2970' => $r['matricula'],
-                '2971' => $r['cuotas'],
-                '2972' => $r['1c'],
-                '2973' => $r['2c'],
-                '2974' => $r['3c'],
-                '2976' => $r['adicional1'],
-                '2977' => $r['adicional2'],
+                $campos[12] => $r['inscripcion'],
+                $campos[13] => $r['matricula'],
+                $campos[14] => $r['cuotas'],
+                $campos[15] => $r['1c'],
+                $campos[16] => $r['2c'],
+                $campos[17] => $r['3c'],
+                $campos[18] => $r['adicional1'],
+                $campos[19] => $r['adicional2'],
 
-                '2979' => $r['nro_ins'],
-                '2980' => $r['tipo_ins'],
-                '2982' => $r['monto_ins'],
+                $campos[18] => $r['nro_ins'],
+                $campos[19] => $r['tipo_ins'],
+                $campos[20] => $r['monto_ins'],
 
-                '2984' => $r['nro_mat'],
-                '2985' => $r['tipo_mat'],
-                '2987' => $r['monto_mat'],
+                $campos[21] => $r['nro_mat'],
+                $campos[22] => $r['tipo_mat'],
+                $campos[23] => $r['monto_mat'],
 
-                '2989' => $r['nro_cur'],
-                '2990' => $r['tipo_cur'],
-                '2992' => $r['monto_cur'],
-                '2993' => $r['total_cur'],
+                $campos[24] => $r['nro_cur'],
+                $campos[25] => $r['tipo_cur'],
+                $campos[26] => $r['monto_cur'],
+                $campos[27] => $r['total_cur'],
 
-                '2995' => $r['nro_pro'],
-                '2996' => $r['tipo_pro'],
-                '2998' => $r['monto_pro'],
+                $campos[28] => $r['nro_pro'],
+                $campos[29] => $r['tipo_pro'],
+                $campos[30] => $r['monto_pro'],
 
-                '3002' => $r['cajero'],
-                '3001' => $r['vendedor'],
-                '3003' => $r['responsable'],
-                '3004' => $r['created_at'],
-                '3000' => $r['medio_captacion2'],
-                '3005' => $r['supervisor'],
-                '3006' => $r['updated_at'],
-            ),
-        );
-
-        $empresa['e42'] = array(
-            'cbo_tiposolicitante' => 1,
-            'cbo_tipotramite' => 1,
-            'idclasitramite' => 746, 
-            'idarea' => 85, 
-            'local' => $local_estudios->id, 
-            'cbo_tipodoc' => 492,
-            'numfolio' => 1,
-            'campos' => array(
-                '2954' => $r['id'],
-                '2956' => $r['sexo'],
-                '2957' => $r['fecha_nacimiento'],
-                '2958' => $r['celular_alumno'],
-                '2959' => $r['email_alumno'],
-
-                '2961' => $r['carrera'],
-                '2962' => $r['curso'],
-                '2963' => $r['modalidad'],
-                '2964' => $r['fecha_inicio'],
-                '2965' => $r['horario'],
-                '2966' => $r['frecuencia'],
-                '2967' => $r['local_estudios'],
-
-                '2969' => $r['inscripcion'],
-                '2970' => $r['matricula'],
-                '2971' => $r['cuotas'],
-                '2972' => $r['1c'],
-                '2973' => $r['2c'],
-                '2974' => $r['3c'],
-                '2976' => $r['adicional1'],
-                '2977' => $r['adicional2'],
-
-                '2979' => $r['nro_ins'],
-                '2980' => $r['tipo_ins'],
-                '2982' => $r['monto_ins'],
-
-                '2984' => $r['nro_mat'],
-                '2985' => $r['tipo_mat'],
-                '2987' => $r['monto_mat'],
-
-                '2989' => $r['nro_cur'],
-                '2990' => $r['tipo_cur'],
-                '2992' => $r['monto_cur'],
-                '2993' => $r['total_cur'],
-
-                '2995' => $r['nro_pro'],
-                '2996' => $r['tipo_pro'],
-                '2998' => $r['monto_pro'],
-
-                '3002' => $r['cajero'],
-                '3001' => $r['vendedor'],
-                '3003' => $r['responsable'],
-                '3004' => $r['created_at'],
-                '3000' => $r['medio_captacion2'],
-                '3005' => $r['supervisor'],
-                '3006' => $r['updated_at'],
+                $campos[31] => $r['cajero'],
+                $campos[32] => $r['vendedor'],
+                $campos[33] => $r['responsable'],
+                $campos[34] => $r['created_at'],
+                $campos[35] => $r['medio_captacion2'],
+                $campos[36] => $r['supervisor'],
+                $campos[37] => $r['updated_at'],
             ),
         );
 
         Input::merge([
             'areas' => 0,
-            'cbo_tiposolicitante' => $empresa[$r['empresa_id']]['cbo_tiposolicitante'],
-            'cbo_tipotramite' => $empresa[$r['empresa_id']]['cbo_tipotramite'], 
+            'cbo_tiposolicitante' => $empresa['cbo_tiposolicitante'],
+            'cbo_tipotramite' => $empresa['cbo_tipotramite'], 
             'empresa_id_sol' => array(0),
             'persona_id_sol' => array( $persona_alumno->id ),
             'telefono_sol' => array( $r['telefono_alumno'] ),
             'celular_sol' => array( $r['celular_alumno'] ),
             'email_sol' => array( $r['email_alumno'] ),
             'direccion_sol' => array( $r['direccion_alumno'] ),
-            'idclasitramite' => $empresa[$r['empresa_id']]['idclasitramite'], 
-            'idarea' => $empresa[$r['empresa_id']]['idarea'], 
-            'local' => $empresa[$r['empresa_id']]['local'], 
-            'cbo_tipodoc' => $empresa[$r['empresa_id']]['cbo_tipodoc'],
-            'numfolio' => $empresa[$r['empresa_id']]['numfolio'],
+            'idclasitramite' => $empresa['idclasitramite'], 
+            'idarea' => $empresa['idarea'], 
+            'local' => $empresa['local'], 
+            'cbo_tipodoc' => $empresa['cbo_tipodoc'],
+            'numfolio' => $empresa['numfolio'],
             'tipodoc' => 'S/N',
             'observacion' => 'Proceso automático',
             'apiproceso' => 1,
-            'campos' => $empresa[$r['empresa_id']]['campos'],
+            'campos' => $empresa['campos'],
             'archivo_ins' => $r['archivo_ins'],
             'archivo_mat' => $r['archivo_mat'],
             'archivo_pro' => $r['archivo_pro'],
@@ -314,14 +253,10 @@ class ApiController extends \BaseController
             'datos' => $datos,
         );
         $url = $_ENV['URL_FC']."?".http_build_query($parametros);
-        $objArr = \Menu::curl($url, $parametros);
+        $objArr = \Menu::curl($url);
         $result['rst'] = 1;
-        if( isset($objArr->rst) AND $objArr->rst*1 == 1 ){ /*No realiza nada...*/ }
-        else{
-            $result['rst'] = 2;
-        }
-
-        if( $result['rst'] == 1 ){
+        $result['anular'] = 0;
+        if( isset($objArr->rst) AND $objArr->rst*1 == 1 ){ 
             $persona = \Persona::where('dni', $r['dni'])->first();
             $ruta_id = $r['ruta_id'];
             DB::beginTransaction();
@@ -354,6 +289,10 @@ class ApiController extends \BaseController
             DB::commit();
             $result['anular'] = 1;
         }
+        else{
+            $result['rst'] = 2;
+        }
+
         return $result;
     }
 
@@ -396,7 +335,7 @@ class ApiController extends \BaseController
             'datos' => $datos,
         );
         $url = $_ENV['URL_FC']."?".http_build_query($parametros);
-        $objArr = \Menu::curl($url, $parametros);
+        $objArr = \Menu::curl($url);
         $result['rst'] = 1;
         if( isset($objArr->rst) AND $objArr->rst*1 == 1 ){ /*No realiza nada...*/ }
         else{

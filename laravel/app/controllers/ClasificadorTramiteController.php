@@ -311,7 +311,7 @@ class ClasificadorTramiteController extends \BaseController
     public function postCrear()
     {
         if ( Request::ajax() ) {
-            $regex = 'regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú]{2,60})$/i';
+            $regex = 'regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú()]{2,250})$/i';
             $required = 'required';
             $reglas = array(
                 'nombre' => $required,
@@ -352,7 +352,7 @@ class ClasificadorTramiteController extends \BaseController
    public function postEditar()
     {
         if ( Request::ajax() ) {
-            $regex = 'regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú]{2,60})$/i';
+            $regex = 'regex:/^([a-zA-Z .,ñÑÁÉÍÓÚáéíóú()]{2,250})$/i';
             $required = 'required';
             $reglas = array(
                 'nombre' => $required,
