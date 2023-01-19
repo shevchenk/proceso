@@ -628,7 +628,7 @@ class RutaDetalleController extends \BaseController
                                         //->where('rd.norden', '>', $rd->norden)
                                         ->where('rd.condicion', '=', '0')
                                         ->where('rd.estado', '=', '1')
-                                        ->orderBy('rd.norden','ASC')
+                                        ->orderBy( DB::raw('rd.norden*1'),'ASC')
                                         ->get();
                 
                     if( count($validaSiguiente)>0  and ( ($alerta==1 and $alertaTipo==1) or ($alerta==0 and $alertaTipo==0) ) ){
