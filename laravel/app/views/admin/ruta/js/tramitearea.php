@@ -132,7 +132,7 @@ cargarTabla = function(){
     $("#slct_areas_total").multiselect('selectAll',false);
     var cantidad = document.querySelector("#txt_numareas").value;
     $("#tb_numareas").html('');
-    if(cantidad>0 && cantidad<31){
+    if(cantidad>0 && cantidad<40){
         html = '';
                 
         for(var i=0 ; i<cantidad ; i++){
