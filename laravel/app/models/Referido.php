@@ -17,9 +17,12 @@ class Referido extends Base
     
      public static function getListarCount( $array )
     {
-        $sSql=" select COUNT(r.id) cant
-                from referidos r
-                where r.estado=1 AND r.referido!=''";
+        $sSql=" SELECT COUNT(r.id) cant
+                FROM (SELECT id, estado, referido, MIN(fecha_hora_referido) fecha_hora_referido
+                FROM referidos r
+                WHERE r.estado=1 AND r.referido!=''
+                GROUP BY r.referido) r
+                WHERE r.estado = 1 ";
         $sSql.= $array['where'];
         $oData = DB::select($sSql);
         return $oData[0]->cant;
@@ -27,10 +30,11 @@ class Referido extends Base
     
     public static function getListar( $array )
     {
-        $sSql=" select r.id,r.ruta_id,r.tabla_relacion_id,r.ruta_detalle_id,r.referido,r.fecha_hora_referido
-                from referidos r
-                where r.estado=1 AND r.referido!=''";
-        $sSql.= $array['where'].
+        $sSql=" SELECT MIN(r.id) id, MIN(r.ruta_id) ruta_id, MIN(r.tabla_relacion_id) tabla_relacion_id, MIN(r.ruta_detalle_id) ruta_detalle_id
+                ,r.referido, MIN(r.fecha_hora_referido) fecha_hora_referido
+                FROM referidos r
+                WHERE r.estado=1 AND r.referido!=''";
+        $sSql.= $array['where']." GROUP BY r.referido ".
                 $array['order'].
                 $array['limit'];
         
