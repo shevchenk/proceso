@@ -1,19 +1,24 @@
 <!DOCTYPE html>
+<!--{{ HTML::style('lib/daterangepicker/css/daterangepicker-bs3.css') }}
+{{ HTML::script('lib/daterangepicker/js/daterangepicker.js') }}
+{{ HTML::style('lib/daterangepicker/css/daterangepicker-bs3.css') }}
+{{ HTML::script('lib/momentjs/2.9.0/moment.min.js') }}
+{{ HTML::script('lib/daterangepicker/js/daterangepicker_single.js') }}
+-->
 @extends('layouts.master')  
 
 @section('includes')
     @parent
-    {{ HTML::style('lib/daterangepicker/css/daterangepicker-bs3.css') }}
     {{ HTML::style('lib/bootstrap-multiselect/dist/css/bootstrap-multiselect.css') }}
     {{ HTML::style('lib/jquery-bootstrap-validator/bootstrapValidator.min.css') }}
     
-    {{ HTML::script('lib/daterangepicker/js/daterangepicker.js') }}
     {{ HTML::script('lib/bootstrap-multiselect/dist/js/bootstrap-multiselect.js') }}
     {{ HTML::script('lib/jquery-bootstrap-validator/bootstrapValidator.min.js') }}
 
-    {{ HTML::style('lib/daterangepicker/css/daterangepicker-bs3.css') }}
-    {{ HTML::script('lib/momentjs/2.9.0/moment.min.js') }}
-    {{ HTML::script('lib/daterangepicker/js/daterangepicker_single.js') }}
+
+    {{ HTML::style('lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}  
+    {{ HTML::script('lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}
+    {{ HTML::script('lib/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.es.js') }}
 
     {{ HTML::script('lib/jquery.validate.js') }}
     <script src='lib/recaptcha/api.js'></script>
@@ -23,6 +28,9 @@
     @include( 'admin.ruta.generar.masivo.js.comunicacion_ajax' )
     @include( 'admin.ruta.generar.masivo.js.comunicacion' )
     @include( 'admin.ruta.js.ruta_ajax' )
+
+    @include( 'admin.ruta.js.nuevodocdigital_ajax' )
+    @include( 'admin.ruta.js.nuevodocdigital' )
 @stop
 <!-- Right side column. Contains the navbar and content of the page -->
 @section('contenido')
@@ -362,6 +370,7 @@ td, th{
 @stop
 @section('formulario')
   @include( 'admin.ruta.generar.masivo.form.referente' )
+  @include( 'admin.ruta.form.ListdocDigital' )
 @stop
 <?php 
 /*
