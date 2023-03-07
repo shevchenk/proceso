@@ -153,8 +153,8 @@ class ImageMerge implements ImageMergeInterface
      */
     private function calculateCenter()
     {
-        $this->centerY = ($this->sourceImageHeight / 2) - ($this->postMergeImageHeight / 2);
-        $this->centerX = ($this->sourceImageWidth / 2) - ($this->postMergeImageHeight / 2);
+        $this->centerY = ($this->sourceImageHeight / 2) + ($this->postMergeImageHeight / 2);
+        $this->centerX = ($this->sourceImageWidth / 2) + ($this->postMergeImageHeight / 2);
     }
 
     /**

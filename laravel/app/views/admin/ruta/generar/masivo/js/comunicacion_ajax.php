@@ -156,7 +156,7 @@ var Bandeja={
     },
     GuardarPreTramite:function(data){
         $.ajax({
-            url         : 'pretramite/createservicioarea',
+            url         : 'pretramite/createservicioareadig',
             type        : 'POST',
             cache       : false,
             dataType    : 'json',

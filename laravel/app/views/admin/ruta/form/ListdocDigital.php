@@ -106,7 +106,7 @@
                             <tbody>
                               <tr>
                                 <td style="vertical-align:middle; text-aling:center;" id="td_documento"></td>
-                                <td><img id="img_qr" style="height: 80px;width: 140px;border-radius: 8px;border: 1px solid grey;margin-top: 5px;padding: 8px" /></td>
+                                <td><img id="img_qr" style="border-radius: 8px;border: 1px solid grey;margin-top: 5px;" /></td>
                                 <td>
                                   <input type="text" readonly="" class="form-control input-sm" id="doc_nombre" name="doc_nombre" value="">
                                   <input type="text" style="display: none;" id="doc_archivo" name="doc_archivo">

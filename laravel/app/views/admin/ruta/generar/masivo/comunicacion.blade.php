@@ -161,7 +161,7 @@ td, th{
                               <select class="form-control select" name="slct_areas" id="slct_areas">
                               </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 hidden">
                               <select class="form-control" name="slct_areast" id="slct_areast">
                               </select>
                             </div>
@@ -273,32 +273,16 @@ td, th{
                             <table id="t_archivo_generado" class="table table-bordered table-striped">
                                 <thead>
                                     <tr class="bg-navy">
-                                        <th style="width:120px;">Archivo PDF Generado</th>
-                                        <th style="width:80px;">Imagen</th>
+                                        <th style="width:120px;">Documento Digital</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  <tr class="archivo_base">
-                                      <td class='input-group'>
-                                          <input type="text" readonly class="form-control" id="pdf_nombre"  name="pdf_nombre_base" value="" readonly="">
-                                          <input type="text" style="display: none;" id="pdf_archivo" name="pdf_archivo_base">
-                                          <div class="input-group-btn">
-                                          <label class="btn btn-warning btn-flat">
-                                              <i class="fa fa-file-pdf-o fa-lg" style="margin-left:5px;"></i>
-                                              <input type="file" style="display: none;" onchange="masterG.onImagen(event,'#pdf_nombre','#pdf_archivo','#pdf_img');">
-                                          </label>
-                                          </div>
-                                      </td>
-                                      <td>
-                                          <a><img id="pdf_img" class="img-circle" style="height: 80px;width: 140px;border-radius: 8px;border: 1px solid grey;margin-top: 5px;padding: 8px"></a>
-                                      </td>
-                                  </tr>
                                   <tr>
                                     <td>
-                                      <input type="text" readonly="" class="form-control" id="documento" name="documento" value="">
+                                      <input type="text" readonly="" class="form-control" id="documento_0" name="documento" value="">
                                       <input type="hidden" id="txt_documento_id" name="txt_documento_id" value="">
-                                      <input type="hidden" id="txt_doc_digital_id" name="txt_doc_digital_id" value="">
-                                      <span class="btn btn-success" onclick="RegistraridsDelBoton(0)" data-toggle="modal" data-target="#listDocDigital" id="btn_list_digital" data-texto="documento" data-id="txt_doc_digital_id"><i class="glyphicon glyphicon-file"></i></span></td>
+                                      <input type="hidden" id="txt_doc_digital_id_0" name="txt_doc_digital_id" value="">
+                                      <span class="btn btn-success" onclick="RegistraridsDelBoton(0)" data-toggle="modal" data-target="#listDocDigital" id="btn_list_digital" data-texto="documento_0" data-id="txt_doc_digital_id_0"><i class="glyphicon glyphicon-file"></i></span></td>
                                   </tr>
                                 </tbody>
                             </table>

@@ -783,8 +783,8 @@ class DocumentoDigitalController extends \BaseController {
                         ]);
             }
             
-            $size = 80; // TAMAÑO EN PX 
-            $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.jssoluciones.pe/doc_digital/".$DocDigital->id);
+            $size = 200; // TAMAÑO EN PX 
+            $png = QrCode::format('png')->margin(0)->size($size)->merge($_ENV['URL_APP'].'/img/escudo.png',0.25,true)->generate($_ENV['URL_APP']."/doc_digital/".$DocDigital->id);
             $png = base64_encode($png);
 
             DB::commit();
@@ -836,8 +836,8 @@ class DocumentoDigitalController extends \BaseController {
         if ( Request::ajax() ) {
             $r = Input::all();
             $DocDigital = DocumentoDigital::find($r['doc_digital_id']);
-            $size = 80; // TAMAÑO EN PX 
-            $png = QrCode::format('png')->margin(0)->size($size)->generate("http://proceso.jssoluciones.pe/doc_digital/".$DocDigital->id);
+            $size = 200; // TAMAÑO EN PX 
+            $png = QrCode::format('png')->margin(0)->size($size)->merge($_ENV['URL_APP'].'/img/escudo.png',0.30,true)->generate($_ENV['URL_APP']."/doc_digital/".$DocDigital->id);
             $png = base64_encode($png);
 
             return Response::json(
