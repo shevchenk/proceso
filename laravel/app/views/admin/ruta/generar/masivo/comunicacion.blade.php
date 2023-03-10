@@ -309,7 +309,7 @@ td, th{
 
                 <div class="col-md-12 usuario" style="padding: 2% 4% 2% 4%;">
                   <fieldset style="max-width: 100% !important;border: 3px solid #ddd;padding: 15px;">
-                    <legend style="width: 8%">Sumilla</legend>
+                    <legend style="width: 8%">Asunto</legend>
                     <div class="col-md-12 form-group">
                       <div class="col-md-12">
                           <textarea name="txt_observacion" id="txt_observacion" rows="3" class="form-control"></textarea>
@@ -320,13 +320,13 @@ td, th{
 
                
 
-                <div class="col-md-12 form-group" style="text-align: right;padding-right: 4%;">                  
+                <div class="col-md-12 form-group hidden" style="text-align: right;padding-right: 4%;">                  
                   <span class="btn btn-warning btn-sm" onclick="generarPreTramite()">Generar</span>
                 {{--   <input type="submit" class="btn btn-primary btn-sm btnAction" id="" value="Guardar" onclick="generarPreTramite()"> --}}
                   {{-- <span class="btn btn-primary btn-sm">CANCELAR</span>              --}}   
                 </div>
                 <br><hr><br>
-                <div class="col-md-12" id="reporte">
+                <div class="col-md-12 hidden" id="reporte">
                     <div class="box-body table-responsive">
                         <table id="t_reporte" class="table table-bordered">
                             <thead>

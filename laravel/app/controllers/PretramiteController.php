@@ -659,6 +659,362 @@ class PretramiteController extends BaseController {
 		}
 	}
 
+	public function postCreateservicioareadig()
+	{ 
+		$array_data = Input::all();
+
+		$locales = array();
+		for( $i=0; $i < $array_data['numareas']; $i++ ){
+			$locales = array_unique(array_merge($locales, $array_data['local_destino'][$i])); //Identificando locales únicos
+		}
+		sort($locales);
+		$titulofinal_aux = ''; $titulofinal = ''; $codigo = array(); $fechahoy = date('Y-m-d H:i:s'); $DocDigitalAuto = array(); $url = ''; $archivo_acumulado = '';
+		
+		for( $l = 0; $l < count($locales); $l++ ){
+			DB::beginTransaction();
+			if( $l > 0 ){
+				if( $l == 1 ){
+					$titulofinal_aux = $pretramite->titulo;
+					$pretramite->titulo = $titulofinal_aux.'-001';
+					$pretramite->save();
+					$tablaRelacion->id_union = $titulofinal_aux.'-001';
+					$tablaRelacion->save();
+					DB::table('rutas_detalle as rd')
+					->join('rutas_detalle_verbo as rdv', 'rdv.ruta_detalle_id','=','rd.id')
+					->where('rd.ruta_id', $ruta->id)
+					->where('rdv.verbo_id', 1)
+					->where('rdv.doc_digital_id', $DocDigitalAuto->id)
+					->update(['documento' => $titulofinal_aux.'-001']);
+
+					DB::table('referidos')
+					->where('ruta_id', $ruta->id)
+					->where('doc_digital_id', $DocDigitalAuto->id)
+					->update(['referido' => $titulofinal_aux.'-001']);
+				}
+				$titulofinal = $titulofinal_aux.'-'.str_pad( ($l+1), 3, "0", STR_PAD_LEFT );
+			}
+
+			$pretramite = new Pretramite;			
+			$pretramite['clasificador_tramite_id'] = 0;
+
+			$pretramite['area_id_sol'] =  $array_data['areas'];
+			$pretramite['local_origen_id'] =  $array_data['local_origen_id'];
+			$pretramite['titulo'] = $titulofinal;
+			$pretramite['correlativo'] = $codigo->correlativo;
+			$pretramite->año = date("Y");
+
+			$pretramite['tipo_solicitante_id'] = 0;
+			$pretramite['tipo_documento_id'] = $documento_id;
+			$pretramite['tipo_tramite_id'] = 0;
+			$pretramite['documento'] = '';
+			$pretramite['nro_folios'] = 0;
+			$pretramite['area_id'] = $array_data['areas'];//Área de inicio
+			$pretramite['local_id'] = $locales[$l];
+			$pretramite['estado_atencion'] = 1;
+			$pretramite['fecha_pretramite'] = $fechahoy;
+			$pretramite['usuario_created_at'] = Auth::user()->id;
+			$pretramite['documento_id'] = $documento_id;
+			$pretramite['observacion'] = urldecode(trim($array_data['observacion']));
+			$cantidad=true;
+			$conteo=0;
+			$conteoMax=10;
+			//rutas_flujo, personas, flujos, documentos, clasificador_tramite => todas estas tablas con el valor "0"
+			
+			while ( $cantidad==true ) {
+				$cantidad=false;
+				try {
+					$pretramite->save();
+				} catch (Exception $e) {
+					$d=explode("duplicate",strtolower($e));
+					if(count($d)>1){
+						$cantidad=true;
+						$pretramite->correlativo++;
+						$titulo = $pretramite->correlativo;
+						$reemplazar = array( str_pad( $titulo, 6, "0", STR_PAD_LEFT ), str_pad( $titulo, 5, "0", STR_PAD_LEFT ),
+							str_pad( $titulo, 4, "0", STR_PAD_LEFT ), str_pad( $titulo, 3, "0", STR_PAD_LEFT ),
+							str_pad( $titulo, 2, "0", STR_PAD_LEFT ), str_pad( $titulo, 1, "0", STR_PAD_LEFT ),
+							date("Y"), date("y")
+						);
+						$titulofinal = str_replace( $buscar, $reemplazar, $documento->nemonico );
+						$pretramite->titulo = $titulofinal;
+					}
+					else{
+						$conteo=$conteoMax+1;
+					}
+				}
+				$conteo++;
+				if($conteo==$conteoMax){
+					$cantidad=false;
+				}
+			}
+
+			if( $conteo >= 10 ){
+				DB::rollback();
+				return  array(
+						'rst'=>2,
+						'msj'=>'Problemas al generar el correlativo, comuniquese con el área de TI',
+						'titulo' => $titulofinal,
+						'correlativo' => $pretramite->correlativo
+					);
+			}
+
+			if( $l == 0 AND trim($array_data['pdf_archivo_base'])!='' ){
+                $urld=explode(".", $array_data['pdf_nombre_base']);
+                $url = "upload/pretramite/pt-".$pretramite->id.".".end($urld);
+				$pretramite->ruta_archivo = $url;
+				$pretramite->save();
+                
+                Pretramite::FileToFile($array_data['pdf_archivo_base'], $url);
+            }
+			else{
+				$pretramite->ruta_archivo = $url;
+				$pretramite->save();
+			}
+			
+			/*tramite*/
+			if($pretramite->id){ // if registry was succesfully
+				$tramite = new Tramite;
+				$tramite['pretramite_id'] = $pretramite->id;
+				$tramite['area_id_sol'] = $pretramite->area_id_sol;
+				$tramite['local_origen_id'] = $pretramite->local_origen_id;
+				
+				$tramite['area_id'] = $pretramite->area_id;
+				$tramite['local_id'] = $pretramite->local_id;
+				$tramite['clasificador_tramite_id'] = $pretramite->clasificador_tramite_id;
+				$tramite['tipo_solicitante_id'] = $pretramite->tipo_solicitante_id;
+				$tramite['tipo_documento_id'] = $pretramite->tipo_documento_id;
+				$tramite['documento'] = $pretramite->documento;
+				$tramite['nro_folios'] = $pretramite->nro_folios;
+				$tramite['observacion'] = $pretramite->observacion;
+				$tramite['imagen'] = '';
+				$tramite['seguimiento'] = 0;
+				$tramite['fecha_tramite'] = $fechahoy;
+				$tramite['usuario_created_at'] = Auth::user()->id;
+				$tramite->save();
+				
+				$ruta_flujo = RutaFlujo::find(0);
+				$ruta_flujo_id = $ruta_flujo->id;
+				/* end get ruta flujo*/
+				/*proceso*/
+				$tablaRelacion=DB::table('tablas_relacion as tr')
+					->join(
+						'rutas as r',
+						'tr.id','=','r.tabla_relacion_id'
+					)
+					->where('tr.id_union', '=', $pretramite->titulo)
+					->where('r.ruta_flujo_id', '=', $ruta_flujo_id)
+					->where('tr.estado', '=', '1')
+					->where('r.estado', '=', '1')
+					->get();
+
+				if(count($tablaRelacion)>0){
+					DB::rollback();
+					return  array(
+							'rst'=>2,
+							'msj'=>'El trámite ya fue registrado anteriormente'
+						);
+				}
+				else{
+					$tablaRelacion=new TablaRelacion;
+					$tablaRelacion['software_id']=1;
+					$tablaRelacion['tramite_id']=$tramite->id;
+					$tablaRelacion['id_union']=$pretramite->titulo;
+					
+					$tablaRelacion['fecha_tramite']= $tramite->fecha_tramite; //Input::get('fecha_tramite');
+					$tablaRelacion['tipo_persona']=$tramite->tipo_solicitante_id;
+					$tablaRelacion['area_id']= $tramite->area_id_sol;
+
+					if( Input::has('referente') AND trim(Input::get('referente'))!='' ){
+						$tablaRelacion['referente']=Input::get('referente');
+					}
+
+					if( Input::has('responsable') AND trim(Input::get('responsable'))!='' ){
+						$tablaRelacion['responsable']=Input::get('responsable');
+					}
+					$tablaRelacion['sumilla']=$tramite->observacion;
+
+					$tablaRelacion['persona_autoriza_id']='';
+					$tablaRelacion['persona_responsable_id']='';
+
+					$tablaRelacion['usuario_created_at']=Auth::user()->id;
+					$tablaRelacion->save();
+
+					$rutaFlujo=$ruta_flujo;//RutaFlujo::find($ruta_flujo_id);
+
+					$ruta= new Ruta;
+					$ruta['tabla_relacion_id']=$tablaRelacion->id;
+					$ruta['fecha_inicio']= $tramite->fecha_tramite;
+					$ruta['ruta_flujo_id']=$rutaFlujo->id;
+					$ruta['flujo_id']=$rutaFlujo->flujo_id;
+					$ruta['persona_id']=$rutaFlujo->persona_id;
+					$ruta['area_id']=$tramite->area_id_sol;
+					$ruta['local_id']=$tramite->local_id;
+					$ruta['local_origen_id']=$tramite->local_origen_id;
+					$ruta['usuario_created_at']= Auth::user()->id;
+					$ruta->save();
+					
+					/************Agregado de referidos*************/
+					$referido=new Referido;
+					$referido['ruta_id']=$ruta->id;
+					$referido['tabla_relacion_id']=$tablaRelacion->id;
+					$referido['ruta_detalle_verbo_id']=0;
+					$referido['tipo']=0;
+					$referido['referido']=$tablaRelacion->id_union;
+					$referido['fecha_hora_referido']=$tablaRelacion->created_at;
+					$referido['usuario_referido']=$tablaRelacion->usuario_created_at;
+					$referido['usuario_created_at']=Auth::user()->id;
+					$referido->save();
+
+					if( isset($array_data['ruta_id_ref'][0]) ){
+						for( $i = 0; $i < count($array_data['ruta_id_ref']); $i++ ){
+							$referidoRelacion=new ReferidoRelacion;
+							$referidoRelacion['ruta_id']=$ruta->id;
+							$referidoRelacion['ruta_id_ref']=$array_data['ruta_id_ref'][$i];
+							$referidoRelacion['estado']=1;
+							$referidoRelacion['usuario_created_at'] = Auth::user()->id;
+							$referidoRelacion->save();
+						}
+					}
+					
+					/**********************************************/
+
+					$qrutaDetalle=DB::table('rutas_flujo_detalle')
+								->where('ruta_flujo_id', '=', $rutaFlujo->id)
+								->where('estado', '=', '1')
+								->orderBy('norden','ASC')
+								->get();
+					$validaactivar=0;
+					
+					$area = array($array_data['areas']);
+					$area = array_merge($area,$array_data['area']);					
+					$contador = 0; $ruta_detalle_id_aux = '';
+					$sql="SELECT CalcularFechaFinal( '".$fechahoy."', (1*1440), ".$pretramite->area_id_sol." ) fproy";
+					$fproy= DB::select($sql);
+					
+					foreach($area as $index => $val){
+						if( $index > 0 AND !in_array($locales[$l], $array_data['local_destino'][($index-1)]) ){ //Valida que el proceso solo tenga las áreas que contengan el local recorrido
+							continue;
+						}
+						$contador++;
+						$cero='';
+						if($contador<10){
+							$cero='0';
+						}
+						$rutaDetalle = new RutaDetalle;
+						$rutaDetalle['ruta_id']=$ruta->id;
+						$rutaDetalle['area_id']=$val;
+						$rutaDetalle['tiempo_id']=2;
+						$rutaDetalle['dtiempo']=1;
+						$rutaDetalle['norden']= $cero.$contador;
+
+						$rutaDetalle['fecha_inicio']=$fechahoy;
+						$rutaDetalle['fecha_proyectada']=$fproy[0]->fproy;
+						
+						if($contador == 1){
+							$rutaDetalle['dtiempo_final']=$fechahoy;
+							$rutaDetalle['tipo_respuesta_id']=1;
+							$rutaDetalle['tipo_respuesta_detalle_id']=1;
+							$rutaDetalle['observacion']="";
+						}
+						else{
+							$rutaDetalle['ruta_detalle_id_ant']=$ruta_detalle_id_aux;
+						}
+						
+						if ($contador < 3) {
+							$rutaDetalle['estado_ruta']=1;
+						}
+						elseif($contador >= 3){
+							$rutaDetalle['estado_ruta']=2;
+						}
+						
+						$rutaDetalle['usuario_created_at']= Auth::user()->id;
+						$rutaDetalle['usuario_updated_at']= Auth::user()->id;
+						$rutaDetalle['updated_at']=$fechahoy;
+						$rutaDetalle->save();
+
+						$array_verbos = array();
+						if($contador == 1){
+							/*****************************Genera los archivos de apoyo para los expedientes*********************/
+							if ( isset($array_data['pdf_archivo']) AND $l == 0 ) {
+								foreach( $array_data['pdf_archivo'] as $key => $archivo){
+									$url_archivo = "img/admin/ruta_detalle/".date("Y-m-d")."-".$rutaDetalle->id.'-'.$array_data['pdf_nombre'][$key];
+									Pretramite::FileToFile($archivo, $url_archivo);
+									if( $key == 0 ){
+										$archivo_acumulado = $url_archivo;
+									}
+									else{
+										$archivo_acumulado.= "|".$url_archivo;
+									}
+								}
+							}
+
+							$rutaDetalle->archivo = $archivo_acumulado;
+							$rutaDetalle->save();
+							/*****************************************************************************************************/
+							$ruta_detalle_id_aux = $rutaDetalle->ruta_detalle_id_ant;
+							$array_verbos = array(1,4);
+						}
+						else{
+							$array_verbos = array(2,14);
+						}
+					
+						foreach ($array_verbos as $key => $rdv) {
+							$verbo = Verbo::find($rdv);
+
+							$rutaDetalleVerbo = new RutaDetalleVerbo;
+							$rutaDetalleVerbo['ruta_detalle_id']= $rutaDetalle->id;
+							$rutaDetalleVerbo['nombre']= $verbo->nombre;
+							$rutaDetalleVerbo['condicion']= 0;
+							$rutaDetalleVerbo['rol_id']= 3;
+							$rutaDetalleVerbo['verbo_id']= $rdv;
+							$rutaDetalleVerbo['documento_id']= 0;
+							$rutaDetalleVerbo['orden']= ($key + 1);
+							$rutaDetalleVerbo['usuario_created_at']= Auth::user()->id;
+							$rutaDetalleVerbo->save();
+
+							if( $contador == 1 ){ 
+								if( $rdv == 1 ){
+									if( $l == 0 ){
+										$DocDigitalAuto = $this->DocDigitalAuto( $pretramite->ruta_archivo, $pretramite->area_id_sol, $documento_id, $titulofinal, $pretramite->correlativo );
+									}
+									$rutaDetalleVerbo['documento']= $titulofinal;
+									$rutaDetalleVerbo['doc_digital_id']= $DocDigitalAuto->id;
+
+									$referido=new Referido;
+									$referido['ruta_id']= $ruta->id;
+									$referido['ruta_detalle_id']= $rutaDetalle->id;
+									$referido['norden']= ($key + 1);
+									$referido['tabla_relacion_id']= $tablaRelacion->id;
+									$referido['doc_digital_id']= $DocDigitalAuto->id;
+									$referido['documento_id']= $documento_id;
+									$referido['estado_ruta']= 1;
+									$referido['tipo']= 1;
+									$referido['ruta_detalle_verbo_id']= $rutaDetalleVerbo->id;
+									$referido['referido']= $titulofinal;
+									$referido['fecha_hora_referido']= $rutaDetalleVerbo->created_at;
+									$referido['usuario_referido']= $rutaDetalleVerbo->usuario_created_at;
+									$referido['usuario_created_at']= $rutaDetalleVerbo->usuario_created_at;
+									$referido->save();
+								}
+								$rutaDetalleVerbo['usuario_updated_at']= Auth::user()->id;
+								$rutaDetalleVerbo['updated_at']= $fechahoy;
+								$rutaDetalleVerbo['finalizo']=1;
+								$rutaDetalleVerbo->save();
+							}
+						}
+					}
+				}
+			} //end if registry was succesfully
+			DB::commit();
+		}
+		return Response::json(
+            array(
+            'rst'=>1,
+            'msj'=>'Registro realizado correctamente',
+            )
+        );
+	}
+
 	public function postCreateservicioarea()
 	{ 
 		$array_data = Input::all();
