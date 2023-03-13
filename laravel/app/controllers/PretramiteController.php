@@ -669,9 +669,18 @@ class PretramiteController extends BaseController {
 		}
 		sort($locales);
 		$titulofinal_aux = ''; $titulofinal = ''; $codigo = array(); $fechahoy = date('Y-m-d H:i:s'); $DocDigitalAuto = array(); $url = ''; $archivo_acumulado = '';
-		
-		for( $l = 0; $l < count($locales); $l++ ){
+		$doc_digital_id = $array_data['doc_digital_id'];
+		$doc_digital = $array_data['documento'];
+		$DocumentoDigital = DocumentoDigital::find($doc_digital_id);
+
+		$url = $DocumentoDigital->doc_archivo;
+		if( trim($DocumentoDigital->doc_url) != '' AND trim($DocumentoDigital->doc_archivo) == '' ){
+			$url = $DocumentoDigital->doc_url;
+		}
+
+		for( $l = 0; $l < 1; $l++ ){ //count($locales)
 			DB::beginTransaction();
+			/*
 			if( $l > 0 ){
 				if( $l == 1 ){
 					$titulofinal_aux = $pretramite->titulo;
@@ -693,8 +702,25 @@ class PretramiteController extends BaseController {
 				}
 				$titulofinal = $titulofinal_aux.'-'.str_pad( ($l+1), 3, "0", STR_PAD_LEFT );
 			}
-
-			$pretramite = new Pretramite;			
+			*/
+			$pretramite = new Pretramite;
+			$documento_id = 0;//Input::get('documento_id');
+			if( $l == 0 ){
+				$codigo = Pretramite::Correlativo($documento_id);
+				$documento = DB::table('documentos')
+							->select('nombre', 'nemonico')
+							->where('id',$documento_id)
+							->first();
+				
+				$titulo = $codigo->correlativo;
+				$buscar = array('@@@@@@','@@@@@','@@@@','@@@','@@','@','####','##');
+				$reemplazar = array( str_pad( $titulo, 6, "0", STR_PAD_LEFT ), str_pad( $titulo, 5, "0", STR_PAD_LEFT ),
+					str_pad( $titulo, 4, "0", STR_PAD_LEFT ), str_pad( $titulo, 3, "0", STR_PAD_LEFT ),
+					str_pad( $titulo, 2, "0", STR_PAD_LEFT ), str_pad( $titulo, 1, "0", STR_PAD_LEFT ),
+					date("Y"), date("y")
+				);
+				$titulofinal = str_replace( $buscar, $reemplazar, $documento->nemonico );
+			}
 			$pretramite['clasificador_tramite_id'] = 0;
 
 			$pretramite['area_id_sol'] =  $array_data['areas'];
@@ -715,6 +741,7 @@ class PretramiteController extends BaseController {
 			$pretramite['usuario_created_at'] = Auth::user()->id;
 			$pretramite['documento_id'] = $documento_id;
 			$pretramite['observacion'] = urldecode(trim($array_data['observacion']));
+			$pretramite['ruta_archivo'] = $url;
 			$cantidad=true;
 			$conteo=0;
 			$conteoMax=10;
@@ -757,19 +784,6 @@ class PretramiteController extends BaseController {
 						'correlativo' => $pretramite->correlativo
 					);
 			}
-
-			if( $l == 0 AND trim($array_data['pdf_archivo_base'])!='' ){
-                $urld=explode(".", $array_data['pdf_nombre_base']);
-                $url = "upload/pretramite/pt-".$pretramite->id.".".end($urld);
-				$pretramite->ruta_archivo = $url;
-				$pretramite->save();
-                
-                Pretramite::FileToFile($array_data['pdf_archivo_base'], $url);
-            }
-			else{
-				$pretramite->ruta_archivo = $url;
-				$pretramite->save();
-			}
 			
 			/*tramite*/
 			if($pretramite->id){ // if registry was succesfully
@@ -801,7 +815,7 @@ class PretramiteController extends BaseController {
 						'rutas as r',
 						'tr.id','=','r.tabla_relacion_id'
 					)
-					->where('tr.id_union', '=', $pretramite->titulo)
+					->where('tr.id_union', '=', $doc_digital)
 					->where('r.ruta_flujo_id', '=', $ruta_flujo_id)
 					->where('tr.estado', '=', '1')
 					->where('r.estado', '=', '1')
@@ -818,7 +832,7 @@ class PretramiteController extends BaseController {
 					$tablaRelacion=new TablaRelacion;
 					$tablaRelacion['software_id']=1;
 					$tablaRelacion['tramite_id']=$tramite->id;
-					$tablaRelacion['id_union']=$pretramite->titulo;
+					$tablaRelacion['id_union']=$doc_digital;
 					
 					$tablaRelacion['fecha_tramite']= $tramite->fecha_tramite; //Input::get('fecha_tramite');
 					$tablaRelacion['tipo_persona']=$tramite->tipo_solicitante_id;
@@ -886,15 +900,15 @@ class PretramiteController extends BaseController {
 					$validaactivar=0;
 					
 					$area = array($array_data['areas']);
-					$area = array_merge($area,$array_data['area']);					
+					$area = array_merge($area,$array_data['area']);
 					$contador = 0; $ruta_detalle_id_aux = '';
 					$sql="SELECT CalcularFechaFinal( '".$fechahoy."', (1*1440), ".$pretramite->area_id_sol." ) fproy";
 					$fproy= DB::select($sql);
 					
 					foreach($area as $index => $val){
-						if( $index > 0 AND !in_array($locales[$l], $array_data['local_destino'][($index-1)]) ){ //Valida que el proceso solo tenga las áreas que contengan el local recorrido
+						/*if( $index > 0 AND !in_array($locales[$l], $array_data['local_destino'][($index-1)]) ){ //Valida que el proceso solo tenga las áreas que contengan el local recorrido
 							continue;
-						}
+						}*/
 						$contador++;
 						$cero='';
 						if($contador<10){
@@ -955,11 +969,22 @@ class PretramiteController extends BaseController {
 							$array_verbos = array(1,4);
 						}
 						else{
-							$array_verbos = array(2,14);
+							$aux_contador = $contador - 2;
+							if( isset($array_data['rpta'][$aux_contador]) AND $array_data['rpta'][$aux_contador] == 1 ){
+								$array_verbos = array(2,1,4);
+							}
+							else{
+								$array_verbos = array(2,14);
+							}
 						}
 					
 						foreach ($array_verbos as $key => $rdv) {
 							$verbo = Verbo::find($rdv);
+
+							$cero='';
+							if($key<9){
+								$cero='0';
+							}
 
 							$rutaDetalleVerbo = new RutaDetalleVerbo;
 							$rutaDetalleVerbo['ruta_detalle_id']= $rutaDetalle->id;
@@ -968,29 +993,29 @@ class PretramiteController extends BaseController {
 							$rutaDetalleVerbo['rol_id']= 3;
 							$rutaDetalleVerbo['verbo_id']= $rdv;
 							$rutaDetalleVerbo['documento_id']= 0;
-							$rutaDetalleVerbo['orden']= ($key + 1);
+							$rutaDetalleVerbo['orden']= $cero.($key + 1);
 							$rutaDetalleVerbo['usuario_created_at']= Auth::user()->id;
 							$rutaDetalleVerbo->save();
 
 							if( $contador == 1 ){ 
 								if( $rdv == 1 ){
-									if( $l == 0 ){
+									/*if( $l == 0 ){
 										$DocDigitalAuto = $this->DocDigitalAuto( $pretramite->ruta_archivo, $pretramite->area_id_sol, $documento_id, $titulofinal, $pretramite->correlativo );
-									}
-									$rutaDetalleVerbo['documento']= $titulofinal;
-									$rutaDetalleVerbo['doc_digital_id']= $DocDigitalAuto->id;
+									}*/
+									$rutaDetalleVerbo['documento']= $doc_digital; //$titulofinal;
+									$rutaDetalleVerbo['doc_digital_id']= $doc_digital_id; //$DocDigitalAuto->id;
 
 									$referido=new Referido;
 									$referido['ruta_id']= $ruta->id;
 									$referido['ruta_detalle_id']= $rutaDetalle->id;
 									$referido['norden']= ($key + 1);
 									$referido['tabla_relacion_id']= $tablaRelacion->id;
-									$referido['doc_digital_id']= $DocDigitalAuto->id;
+									$referido['doc_digital_id']= $doc_digital_id; //$DocDigitalAuto->id;
 									$referido['documento_id']= $documento_id;
 									$referido['estado_ruta']= 1;
 									$referido['tipo']= 1;
 									$referido['ruta_detalle_verbo_id']= $rutaDetalleVerbo->id;
-									$referido['referido']= $titulofinal;
+									$referido['referido']= $doc_digital; //$titulofinal;
 									$referido['fecha_hora_referido']= $rutaDetalleVerbo->created_at;
 									$referido['usuario_referido']= $rutaDetalleVerbo->usuario_created_at;
 									$referido['usuario_created_at']= $rutaDetalleVerbo->usuario_created_at;

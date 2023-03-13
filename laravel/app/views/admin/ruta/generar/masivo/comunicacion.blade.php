@@ -320,7 +320,7 @@ td, th{
 
                
 
-                <div class="col-md-12 form-group hidden" style="text-align: right;padding-right: 4%;">                  
+                <div class="col-md-12 form-group" style="text-align: right;padding-right: 4%;">                  
                   <span class="btn btn-warning btn-sm" onclick="generarPreTramite()">Generar</span>
                 {{--   <input type="submit" class="btn btn-primary btn-sm btnAction" id="" value="Guardar" onclick="generarPreTramite()"> --}}
                   {{-- <span class="btn btn-primary btn-sm">CANCELAR</span>              --}}   
