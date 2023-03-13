@@ -662,12 +662,17 @@ class PretramiteController extends BaseController {
 	public function postCreateservicioareadig()
 	{ 
 		$array_data = Input::all();
-
+		//dd($array_data);
 		$locales = array();
-		for( $i=0; $i < $array_data['numareas']; $i++ ){
-			$locales = array_unique(array_merge($locales, $array_data['local_destino'][$i])); //Identificando locales únicos
+		if( isset($array_data['numareas']) AND count($array_data['numareas']) > 0 ){
+			for( $i=0; $i < $array_data['numareas']; $i++ ){
+				$locales = array_unique(array_merge($locales, $array_data['local_destino'][$i])); //Identificando locales únicos
+			}
+			sort($locales);
 		}
-		sort($locales);
+		else{
+			array_push($locales, $array_data['local_origen_id']);
+		}
 		$titulofinal_aux = ''; $titulofinal = ''; $codigo = array(); $fechahoy = date('Y-m-d H:i:s'); $DocDigitalAuto = array(); $url = ''; $archivo_acumulado = '';
 		$doc_digital_id = $array_data['doc_digital_id'];
 		$doc_digital = $array_data['documento'];
@@ -899,11 +904,35 @@ class PretramiteController extends BaseController {
 								->get();
 					$validaactivar=0;
 					
+					$retorno = false;
 					$area = array($array_data['areas']);
-					$area = array_merge($area,$array_data['area']);
+					if( isset($array_data['area']) AND count($array_data['area'])>0 ){
+						$area = array_merge($area,$array_data['area']);
+						foreach( $array_data['rpta'] as $rptax ){
+							if( $rptax == 1 AND $retorno == false ){
+								$retorno = true;
+								array_push($area, $array_data['areas']);
+							}
+						}
+					}
+
 					$contador = 0; $ruta_detalle_id_aux = '';
-					$sql="SELECT CalcularFechaFinal( '".$fechahoy."', (1*1440), ".$pretramite->area_id_sol." ) fproy";
+					$dias = $array_data['dias'];
+					$sql="SELECT CalcularFechaFinal( '".$fechahoy."', (".$dias."*1440), ".$pretramite->area_id_sol." ) fproy";
 					$fproy= DB::select($sql);
+
+					if( isset($array_data['chk_todasareas']) AND $array_data['chk_todasareas'] == 'tareas' ){
+						$areas = DB::table('areas')->where('area_gestion_f', 1)->where('estado', 1)->where('id', '!=', $array_data['areas'])->get();
+						$area = array($array_data['areas']);
+						foreach($areas as $areax){
+							array_push($area, $areax->id);
+						}
+						if( isset($array_data['chk_rpta_total']) AND $array_data['chk_rpta_total'] == 'trpta' ){
+							array_push($area, $array_data['areas']);
+							$retorno = true;
+						}
+
+					}
 					
 					foreach($area as $index => $val){
 						/*if( $index > 0 AND !in_array($locales[$l], $array_data['local_destino'][($index-1)]) ){ //Valida que el proceso solo tenga las áreas que contengan el local recorrido
@@ -918,11 +947,14 @@ class PretramiteController extends BaseController {
 						$rutaDetalle['ruta_id']=$ruta->id;
 						$rutaDetalle['area_id']=$val;
 						$rutaDetalle['tiempo_id']=2;
-						$rutaDetalle['dtiempo']=1;
+						$rutaDetalle['dtiempo']=$dias;
 						$rutaDetalle['norden']= $cero.$contador;
 
-						$rutaDetalle['fecha_inicio']=$fechahoy;
-						$rutaDetalle['fecha_proyectada']=$fproy[0]->fproy;
+						if( $retorno==true AND $contador == count($area) ){} // No realiza fecha de inicio
+						else{
+							$rutaDetalle['fecha_inicio']=$fechahoy;
+							$rutaDetalle['fecha_proyectada']=$fproy[0]->fproy;
+						}
 						
 						if($contador == 1){
 							$rutaDetalle['dtiempo_final']=$fechahoy;
@@ -934,7 +966,7 @@ class PretramiteController extends BaseController {
 							$rutaDetalle['ruta_detalle_id_ant']=$ruta_detalle_id_aux;
 						}
 						
-						if ($contador < 3) {
+						if ($contador < 3 OR ($retorno==true AND $contador == count($area)) ){
 							$rutaDetalle['estado_ruta']=1;
 						}
 						elseif($contador >= 3){
@@ -970,7 +1002,11 @@ class PretramiteController extends BaseController {
 						}
 						else{
 							$aux_contador = $contador - 2;
-							if( isset($array_data['rpta'][$aux_contador]) AND $array_data['rpta'][$aux_contador] == 1 ){
+							if( ($retorno==true AND $contador == count($area)) ){
+								$array_verbos = array(2,14);
+							}
+							elseif( (isset($array_data['rpta'][$aux_contador]) AND $array_data['rpta'][$aux_contador] == 1) OR 
+								(isset($array_data['chk_todasareas']) AND $array_data['chk_todasareas'] == 'tareas' AND isset($array_data['chk_rpta_total']) AND $array_data['chk_rpta_total'] == 'trpta' ) ){
 								$array_verbos = array(2,1,4);
 							}
 							else{
@@ -1008,7 +1044,7 @@ class PretramiteController extends BaseController {
 									$referido=new Referido;
 									$referido['ruta_id']= $ruta->id;
 									$referido['ruta_detalle_id']= $rutaDetalle->id;
-									$referido['norden']= ($key + 1);
+									$referido['norden']= $rutaDetalleVerbo->orden;
 									$referido['tabla_relacion_id']= $tablaRelacion->id;
 									$referido['doc_digital_id']= $doc_digital_id; //$DocDigitalAuto->id;
 									$referido['documento_id']= $documento_id;

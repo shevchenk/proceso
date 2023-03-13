@@ -223,7 +223,7 @@ td, th{
                                       <thead>
                                           <tr class="bg-navy">
                                               <th colspan=2 style="width: 99%">Área(s) a comunicar</th>
-                                              <th><label><input class="chk2 form-control" type="checkbox" >Rpta?</label></th>
+                                              <th><label><input class="chk2 form-control" name="chk_rpta_total" value="trpta" type="checkbox" >Rpta?</label></th>
                                           </tr>
                                       </thead>
                                       <tbody id="tb_numareas"></tbody>
