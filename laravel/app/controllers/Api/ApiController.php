@@ -33,6 +33,9 @@ class ApiController extends \BaseController
             elseif($datos['opcion']=='CorregirMatricula'){
                 $result = $this->CorregirMatricula($datos);
             }
+            elseif($datos['opcion']=='MejorarMatricula'){
+                $result = $this->MejorarMatricula($datos);
+            }
             else{
                 $result = array();
             }
@@ -219,7 +222,8 @@ class ApiController extends \BaseController
         $datos = array(
             "opcion" => $r['opcion'],
             "matricula_id" => $r['matricula_id'],
-            "dni" => $r['dni']
+            "dni" => $r['dni'],
+            "observacion" => $r['obs_tesoreria']
         );
         $datos = json_encode($datos);
         $key = base64_encode(hash_hmac("sha256", $datos.date("Ymd"), $_ENV['KEY'], true));
@@ -243,7 +247,8 @@ class ApiController extends \BaseController
         $datos = array(
             "opcion" => $r['opcion'],
             "matricula_id" => $r['matricula_id'],
-            "dni" => $r['dni']
+            "dni" => $r['dni'],
+            "observacion" => $r['obs_tesoreria']
         );
         $datos = json_encode($datos);
         $key = base64_encode(hash_hmac("sha256", $datos.date("Ymd"), $_ENV['KEY'], true));
@@ -301,7 +306,8 @@ class ApiController extends \BaseController
         $datos = array(
             "opcion" => $r['opcion'],
             "matricula_id" => $r['matricula_id'],
-            "dni" => $r['dni']
+            "dni" => $r['dni'],
+            "observacion" => $r['obs_academica']
         );
         $datos = json_encode($datos);
         $key = base64_encode(hash_hmac("sha256", $datos.date("Ymd"), $_ENV['KEY'], true));
@@ -325,7 +331,8 @@ class ApiController extends \BaseController
         $datos = array(
             "opcion" => $r['opcion'],
             "matricula_id" => $r['matricula_id'],
-            "dni" => $r['dni']
+            "dni" => $r['dni'],
+            "observacion" => $r['obs_academica']
         );
         $datos = json_encode($datos);
         $key = base64_encode(hash_hmac("sha256", $datos.date("Ymd"), $_ENV['KEY'], true));
@@ -367,6 +374,65 @@ class ApiController extends \BaseController
                     $ptra = \Pretramite::find($tra->pretramite_id);
                     $ptra->estado_atencion = 2;
                     $ptra->observacion = $ptra->observacion." <b>( Trámite anulado por Coordinación Académica )</b>";
+                    $ptra->usuario_updated_at = $persona->id;
+                    $ptra->save();
+                }
+            }
+
+            DB::commit();
+            $result['anular'] = 1;
+        }
+        return $result;
+    }
+
+    public function MejorarMatricula($r)
+    {
+        $datos = array(
+            "opcion" => $r['opcion'],
+            "matricula_id" => $r['matricula_id'],
+            "dni" => $r['dni'],
+            "observacion" => $r['obs_tesoreria']
+        );
+        $datos = json_encode($datos);
+        $key = base64_encode(hash_hmac("sha256", $datos.date("Ymd"), $_ENV['KEY'], true));
+        
+        $parametros = array(
+            'key' => $key,
+            'datos' => $datos,
+        );
+        $url = $_ENV['URL_FC']."?".http_build_query($parametros);
+        $objArr = \Menu::curl($url);
+        $result['rst'] = 1;
+        if( isset($objArr->rst) AND $objArr->rst*1 == 1 ){ /*No realiza nada...*/ }
+        else{
+            $result['rst'] = 2;
+        }
+
+        if( $result['rst'] == 1 ){
+            $persona = \Persona::where('dni', $r['dni'])->first();
+            $ruta_id = $r['ruta_id'];
+            DB::beginTransaction();
+            
+            $r=\Ruta::find($ruta_id);
+            $r['estado']=0;
+            $r['usuario_updated_at']=$persona->id;
+            $r->save();
+
+            $tr=\TablaRelacion::find($r->tabla_relacion_id);
+            $tr['estado']=0;
+            $tr['usuario_updated_at']=$persona->id;
+            $tr->save();
+
+            if( isset($tr->tramite_id) AND trim($tr->tramite_id) != '' ){
+                $tra = \Tramite::find($tr->tramite_id);
+                $tra->estado = 0;
+                $tra->usuario_updated_at = $persona->id;
+                $tra->save();
+
+                if( isset($tra->pretramite_id) AND trim($tra->pretramite_id) != ''){
+                    $ptra = \Pretramite::find($tra->pretramite_id);
+                    $ptra->estado_atencion = 2;
+                    $ptra->observacion = $ptra->observacion." <b>( Trámite anulado por Tesorería )</b>";
                     $ptra->usuario_updated_at = $persona->id;
                     $ptra->save();
                 }

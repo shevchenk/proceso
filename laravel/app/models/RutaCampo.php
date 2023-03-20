@@ -99,13 +99,25 @@ class RutaCampo extends \Eloquent {
 
             if( isset($ruta[0]) AND isset($ruta[1]) AND $ruta[0] != '' AND $ruta[1] != '' ){ //Validación y ejecución de API
                 $RutaCampo = RutaCampo::where('ruta_id', $r['ruta_id'])->where('ruta_flujo_campo_id', $_ENV['IDSERVICIO'])->first();
+                $RutaCampoTeso = RutaCampo::where('ruta_id', $r['ruta_id'])->where('ruta_flujo_campo_id', $_ENV['IDSERVICIOTESO'])->first();
+                $RutaCampoAcad = RutaCampo::where('ruta_id', $r['ruta_id'])->where('ruta_flujo_campo_id', $_ENV['IDSERVICIOACAD'])->first();
                 $matricula_id = 0;
+                $obs_tesoreria = "";
+                $obs_academica = "";
                 if( isset($RutaCampo->campo_valor) ){
                     $matricula_id = $RutaCampo->campo_valor;
+                }
+                if( isset($RutaCampoTeso->campo_valor) ){
+                    $obs_tesoreria = $RutaCampo->campo_valor;
+                }
+                if( isset($RutaCampoAcad->campo_valor) ){
+                    $obs_academica = $RutaCampo->campo_valor;
                 }
                 $datos = array(
                     "opcion" => $ruta[1],
                     "matricula_id" => $matricula_id,
+                    "obs_tesoreria" => $obs_tesoreria,
+                    "obs_academica" => $obs_academica,
                     "ruta_id" => $r['ruta_id'],
                     "dni" => Auth::user()->dni
                 );
