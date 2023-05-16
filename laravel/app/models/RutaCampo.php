@@ -108,10 +108,10 @@ class RutaCampo extends \Eloquent {
                     $matricula_id = $RutaCampo->campo_valor;
                 }
                 if( isset($RutaCampoTeso->campo_valor) ){
-                    $obs_tesoreria = $RutaCampo->campo_valor;
+                    $obs_tesoreria = $RutaCampoTeso->campo_valor;
                 }
                 if( isset($RutaCampoAcad->campo_valor) ){
-                    $obs_academica = $RutaCampo->campo_valor;
+                    $obs_academica = $RutaCampoAcad->campo_valor;
                 }
                 $datos = array(
                     "opcion" => $ruta[1],
@@ -124,7 +124,6 @@ class RutaCampo extends \Eloquent {
 
                 $api = new Api\ApiController;
                 $objArr = $api->{$datos['opcion']}($datos);
-
                 if( isset($objArr['rst']) AND $objArr['rst']*1 == 1 ){ 
                     if( isset($objArr['anular']) AND $objArr['anular'] == 1 ){
                         $anular = 1;
