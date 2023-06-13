@@ -151,11 +151,11 @@ class Pretramite extends Eloquent {
     public static function getClasificadoresTramite(){
         $nivel_proceso = Auth::user()->nivel_proceso;
     	$clasificadores=DB::table('clasificador_tramite AS ct')
-                ->join('rutas_flujo_detalle AS rfd',function($join){
+                /*->join('rutas_flujo_detalle AS rfd',function($join){
                     $join->on('rfd.ruta_flujo_id','=','ct.ruta_flujo_id')
                     ->where('rfd.norden','=',2)
                     ->where('rfd.estado','=',1);
-                })
+                })*/
                 ->join('rutas_flujo_detalle AS rfd2',function($join){
                     $join->on('rfd2.ruta_flujo_id','=','ct.ruta_flujo_id')
                     ->where('rfd2.norden','=',1)
@@ -166,7 +166,7 @@ class Pretramite extends Eloquent {
                     $join->on('f.id', '=', 'rf.flujo_id')
                     ->where('f.nivel_proceso', '<=', $nivel_proceso);
                 })
-                ->select(DB::raw('ct.*, rfd.area_id'))
+                ->select(DB::raw('ct.*, rfd2.area_id'))
                 ->where( 
                     function($query){
                     	if ( Input::get('buscar') ) {
