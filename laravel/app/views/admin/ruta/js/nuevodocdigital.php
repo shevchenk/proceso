@@ -114,6 +114,9 @@ $(document).ready(function() {
 RegistraridsDelBoton = (id)=>{
     camposG.text = 'documento_' + id;
     camposG.id = 'txt_doc_digital_id_' + id;
+    $('#t_doc_digital').dataTable().fnDestroy();
+    $("#tb_doc_digital").html('');
+    $("#t_doc_digital").dataTable();
 }
 
 ListarDocumentos = (val)=>{
@@ -173,6 +176,7 @@ HTMLCargar=function(datos,campos){
     $('#t_doc_digital').dataTable().fnDestroy();
     $.each(datos,function(index,data){
         vistaEditar = '';
+        vistaCheck = '';
         if($.trim(data.ruta) == 0 && $.trim(data.rutadetallev) == 0){
             html+="<tr class='danger'>";
             vistaEditar = "<a class='btn btn-warning btn-sm' id='"+data.id+"' onclick='ActualizarDoc("+data.id+")'><i class='fa fa-edit'></i> </a>";
@@ -180,12 +184,14 @@ HTMLCargar=function(datos,campos){
             html+="<tr class='success'>";
         }
       
+        html+="<td>"+data.persona_c+"</td>";
         html+="<td>"+data.titulo+"</td>";
         //html+="<td>"+data.asunto+"</td>";
         vistaDoc = '';
 
         if( $.trim(data.doc_url) != '' || $.trim(data.doc_archivo) != '' ){
             vistaDoc = "<a class='btn btn-info btn-sm' id='"+data.id+"' onclick='verDocumento("+data.id+")'><i class='fa fa-eye'></i> </a>";
+            vistaCheck =  "<a class='btn btn-success btn-sm' c_text='"+c_text+"' c_id='"+c_id+"'  id='"+data.id+"' title='"+data.titulo+"' onclick='SelectDocDig(this)'><i class='glyphicon glyphicon-ok'></i> </a>";
         }
         
         html+="<td>"+
@@ -193,7 +199,7 @@ HTMLCargar=function(datos,campos){
             vistaEditar+
             "</td>";
         
-        html+="<td><a class='btn btn-success btn-sm' c_text='"+c_text+"' c_id='"+c_id+"'  id='"+data.id+"' title='"+data.titulo+"' onclick='SelectDocDig(this)'><i class='glyphicon glyphicon-ok'></i> </a></td>";
+        html+="<td>"+vistaCheck+"</td>";
         html+="</tr>";
     });
     $("#tb_doc_digital").html(html);

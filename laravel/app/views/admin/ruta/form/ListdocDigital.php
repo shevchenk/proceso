@@ -40,6 +40,7 @@
                         <table id="t_doc_digital" class="table table-bordered">
                             <thead class="bg-info">
                                 <tr>
+                                    <th style="width: 30%">Creador</th>
                                     <th style="width: 30%">Documento</th>
                                     <th style="width: 5%">Editar</th>
                                     <th style="width: 5%">Seleccionar</th>
@@ -50,6 +51,7 @@
                             </tbody>
                             <tfoot class="bg-info">
                                 <tr>
+                                    <th style="width: 30%">Creador</th>
                                     <th style="width: 30%">Documento</th>
                                     <th style="width: 5%">Editar</th>
                                     <th style="width: 5%">Seleccionar</th>
@@ -74,7 +76,7 @@
                             </div>
                             <div class="col-md-2">
                               <label>Correlativo:</label>
-                              <input type="text" maxlength="6" class="form-control txttittle" placeholder="Ingrese Titulo" name="txt_titulo" id="txt_titulo">
+                              <input type="text" maxlength="6" class="form-control txttittle" readonly placeholder="Ingrese Titulo" name="txt_titulo" id="txt_titulo">
                             </div>
                             <div class="col-md-2" style="display:none;">
                               <label>Nemónico:</label>

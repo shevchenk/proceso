@@ -803,7 +803,7 @@ class DocumentoDigitalController extends \BaseController {
             $extension = '';
             if( trim($r['doc_nombre'])!='' ){
                 $type=explode(".",$r['doc_nombre']);
-                $extension=".".$type[1];
+                $extension=".".end($type);
             }
             if( trim($r['doc_nombre'])!='' AND strtoupper($extension)!='.PDF' ){ 
                 return Response::json(array('rst'=>2, 'msj'=>'Archivo incorrecto, solo se permiten archivos con extensión ".PDF"', 'extensión'=>$extension));

@@ -161,7 +161,7 @@ cargarTabla = function(){
                          "</td>"+
                          "<td>"+
                             "<input type='hidden' name='rpta[]' id='rpta"+i+"' value='0'>"+
-                            "<label><input class='form-control' type='checkbox' id='chk_rpta"+i+"' onChange='ValidaRpta("+i+",this);'> Requiere Rpta?</label>"+
+                            //"<label><input class='form-control' type='checkbox' id='chk_rpta"+i+"' onChange='ValidaRpta("+i+",this);'> Requiere Rpta?</label>"+
                          "</td>"+
                     "</tr>";
             $("#tb_numareas").append(html);
