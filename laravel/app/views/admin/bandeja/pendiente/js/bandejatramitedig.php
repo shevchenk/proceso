@@ -20,12 +20,15 @@ var RolIdG='';
 var UsuarioId='';
 var fechaAux="";
 $(document).ready(function() {
+    $(".ultima-actividad").hide();
     $('#txt_observacion').attr('disabled','true');
     slctGlobal.listarSlct2('rol','slct_rol_modal',data);
     slctGlobal.listarSlct2('verbo','slct_verbo_modal',data);
     slctGlobal.listarSlct2('documento','slct_documento_modal',data);
+    slctGlobal.listarSlctFijo('area','slct_area_destino',null);
     $("#btn_close").click(Close_ruta);
     $("#btn_actualizar_campos").click(ActualizarCampos);
+    $("#btn_siguiente_area").click(ActualizarActividad);
 
     $('#rutaModal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget); // captura al boton
@@ -294,7 +297,7 @@ validacheck=function(val,idcheck){
     var verboaux="";
     var validacheck=0;
     var usuario=idcheck.split("_")[3];
-    if( usuario=='' || usuario=='0' || ( usuario!='' && usuario==UsuarioId ) || ( RolIdG==8 || RolIdG==9 ) ){
+    if( usuario=='' || usuario=='0' || ( usuario!='' && usuario==UsuarioId ) || ( ResponsableG == 1 ) ){
         if( val>0 ){
             $("#t_detalle_verbo input[type='checkbox']").removeAttr('disabled');
         }
@@ -349,9 +352,22 @@ mostrarDetalleHTML=function(datos){
     var data={ flujo_id:datos.flujo_id, estado:1,fecha_inicio:datos.fecha_inicio }
     var ids = [];
     $('#slct_tipo_respuesta,#slct_tipo_respuesta_detalle').multiselect('destroy');
-    
+    $(".ultima-actividad").hide();
+
+    var ultimo=Validar.VerificarUltimopaso({ruta_id:$('#ruta_id').val()});
+        $("#slct_area_destino, #slct_tiempo_destino, #txt_id_destino").val('')
+    if( typeof(ultimo.adic[0]) != 'undefined' && typeof(ultimo.adic[1]) == 'undefined'){
+        $("#slct_area_destino").val(ultimo.adic[0].area_id);
+        $("#slct_tiempo_destino").val(ultimo.adic[0].dtiempo);
+        $("#txt_id_destino").val(ultimo.adic[0].id);
+    }
+
+    if( (typeof(ultimo.adic[0]) != 'undefined' && typeof(ultimo.adic[1]) == 'undefined') || ultimo.rst == 1 ){
+        $(".ultima-actividad").show();
+    }
+
     /*add new ruta detalle verbo*/
-    var filtro={estado:1};
+    var filtro={estado:1, area_id: datos.area_id};
     slctGlobal.listarSlct2('documento','cbotipoDoc',filtro);
     slctGlobal.listarSlct2('rol','cboRoles',filtro);
     ruta_flujo_id2 = datos.ruta_flujo_id;
@@ -367,7 +383,8 @@ mostrarDetalleHTML=function(datos){
     // --
     if((!datos.rd_ruta_flujo_id * 1) > 0){
         var dataG={norden:datos.norden,ruta_id:datos.ruta_id};
-        slctGlobal.listarSlctFuncion('ruta','listarmicro','slct_micro',null,null,dataG);
+        //slctGlobal.listarSlctFuncion('ruta','listarmicro','slct_micro',null,null,dataG);
+        slctGlobal.listarSlctFijo2('ruta','listarmicro','slct_micro',dataG, null, null);
         $('#form_ruta_detalle #slct_micro').multiselect('destroy');
         $(".sectionmicro").css("display","");
         $("#btn_siguiente_rd").show().html('<i class="glyphicon glyphicon-check"></i>&nbsp;Activar Sub Proceso');
@@ -416,7 +433,7 @@ mostrarDetalleHTML=function(datos){
     }*/
     /*fin puede regresar al paso anterior*/
 
-    if( RolIdG==8 || RolIdG==9 ){
+    if( ResponsableG == 1 ){
         $("#slct_persona").attr("data-id",datos.id); //carta_deglose_id
         $("#slct_persona").val('');
         $('#slct_persona').multiselect('rebuild');
@@ -626,7 +643,7 @@ mostrarDetalleHTML=function(datos){
                 documento = detalle[i].split("=>")[8];
                 rol_id= detalle[i].split("=>")[14];
 
-                if(detalle[i].split("=>")[13] == 1 && detalle[i].split("=>")[2]=="Pendiente" && (RolIdG==8 || RolIdG==9)){
+                if(detalle[i].split("=>")[13] == 1 && detalle[i].split("=>")[2]=="Pendiente" && (ResponsableG == 1)){
                     orden = '<span id="btnDelete" name="btnDelete" class="btn btn-danger  btn-xs btnDelete" onclick="eliminardv('+detalle[i].split("=>")[0]+')"><i class="glyphicon glyphicon-trash"></i></span>';
                 }else{
                     orden = detalle[i].split("=>")[9];
@@ -640,7 +657,7 @@ mostrarDetalleHTML=function(datos){
                 if( detalle[i].split("=>")[2]!="Pendiente" ){
                     fecha=detalle[i].split("=>")[11];
                 }
-                else if( detalle[i].split("=>")[2]=="Pendiente" && (RolIdG==8 || RolIdG==9)){
+                else if( detalle[i].split("=>")[2]=="Pendiente" && (ResponsableG == 1)){
                     persona="<select class='slcPersona' data-id='"+detalle[i].split("=>")[0]+"' onChange='ActualizarPersona(this);'>"+$("#slct_persona").html()+"</select>";
                 }
 
@@ -720,10 +737,10 @@ mostrarDetalleHTML=function(datos){
                 html+= "</tr>";
                 $("#t_detalle_verbo").append(html);
                 html = "";
-               /* if( $.trim( detalle[i].split("=>")[12] )!='' && (RolIdG==8 || RolIdG==9) ){
+               /* if( $.trim( detalle[i].split("=>")[12] )!='' && (ResponsableG == 1) ){
                     $("#t_detalle_verbo select[data-id='"+detalle[i].split("=>")[0]+"'] option[value='"+detalle[i].split("=>")[12]+"']").attr("selected",true);
                 }*/
-                if($.trim( detalle[i].split("=>")[15] )!='' && (RolIdG==8 || RolIdG==9)){
+                if($.trim( detalle[i].split("=>")[15] )!='' && (ResponsableG == 1)){
                     $("#t_detalle_verbo select[data-id='"+detalle[i].split("=>")[0]+"'] option[value='"+detalle[i].split("=>")[15]+"']").attr('selected',true);
                  //   console.log($("#t_detalle_verbo select[data-id='"+detalle[i].split("=>")[0]+"'] option[value='"+detalle[i].split("=>")[15]+"']").html());
                 //    console.log(detalle[i].split("=>")[0]);
@@ -969,6 +986,36 @@ mostrarCamposHTML = (result) => {
         }
         
     });
+}
+
+ActualizarActividad = () => {
+    r = true;
+
+    if( $("#slct_area_destino").val() == '' ){
+        msjG.mensaje("warning","Seleccione el área de la actividad",4000);
+        $("#slct_area_destino").focus();
+        r = false;
+    }
+    else if( $("#slct_tiempo_destino").val() == '' ){
+        msjG.mensaje("warning","Seleccione número de días de la actividad",4000);
+        $("#slct_tiempo_destino").focus();
+        r = false;
+    }
+
+    if( r == true ){
+        Validar.actualizarActividad(actualizarActividadHTML);
+    }
+}
+
+actualizarActividadHTML = (obj)=> {
+    if(obj.rst==1){
+        var datos={ruta_detalle_id:$("#form_ruta_detalle #ruta_detalle_id").val()};
+        Validar.mostrarDetalle(datos,mostrarDetalleHTML);
+        msjG.mensaje("success",obj.msj,4000);
+    }
+    else{
+        msjG.mensaje("warning",obj.msj,4000);
+    }
 }
 
 ActualizarCampos = () => {

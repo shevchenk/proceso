@@ -188,7 +188,9 @@ var slctGlobal={
                     });
                 }
                 $("#"+slct).html(html);
-                accion(slct);
+                if( typeof(accion) != 'undefined' && accion!=null ){
+                    accion(slct);
+                }
             },
             error: function(){
                 msjG.mensaje('danger', '<?php echo trans("greetings.mensaje_error"); ?>', 6000);

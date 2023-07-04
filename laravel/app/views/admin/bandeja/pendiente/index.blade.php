@@ -433,18 +433,72 @@ table.bandeja>tbody>tr>td{
                                                 </div>
                                             </div>
 
-                                            <div class="sectionmicro">
-
-                                                <div class="col-md-3">
-                                                    <label class="control-label">Sub Procesos:</label>
-                                                    <select id="slct_micro" name="slct_micro">
-                                                        <option>Seleccione</option>
-                                                    </select>
+                                            <div class="col-md-5 table-responsive" style="margin-top:10px">
+                                                <div class="box box-danger">
+                                                    <div class="box-header with-border">
+                                                        <h3 class="box-title" tabindex="0" id="datos_personalizados">Sub Procesos</h3>
+                                                        <div class="box-tools pull-right">
+                                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="box-body col-md-12">
+                                                        <div class="sectionmicro">
+                                                            <div class="col-md-8">
+                                                                <select id="slct_micro" name="slct_micro" class="form-control">
+                                                                    <option>Seleccione</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <a class="btn btn-warning btn-sm"  id="btn_siguiente_rd" style="display: none;">
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <label class="control-label">&nbsp;&nbsp;&nbsp;</label><br>
-                                                    <a class="btn btn-success btn-sm"  id="btn_siguiente_rd" style="display: none;">
-                                                    </a>
+                                            </div>
+
+                                            <div class="col-md-5 table-responsive ultima-actividad" style="margin-top:10px">
+                                                <div class="box box-danger">
+                                                    <div class="box-header with-border">
+                                                        <h3 class="box-title" tabindex="0" id="datos_personalizados">Agregar/Editar última Actividad</h3>
+                                                        <div class="box-tools pull-right">
+                                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="box-body col-md-12">
+                                                        <div class="sectionmicro">
+                                                            <div class="col-md-6">
+                                                                <label>Área</label>
+                                                                <input type='hidden' id="txt_id_destino" name="txt_id_destino" value=''>
+                                                                <select id="slct_area_destino" name="slct_area_destino" class="form-control">
+                                                                    <option>Seleccione</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label>Días</label>
+                                                                <select id="slct_tiempo_destino" name="slct_tiempo_destino" class="form-control">
+                                                                    <option value=''>Seleccione</option>
+                                                                    <option value='1'>1</option>
+                                                                    <option value='2'>2</option>
+                                                                    <option value='3'>3</option>
+                                                                    <option value='4'>4</option>
+                                                                    <option value='5'>5</option>
+                                                                    <option value='6'>6</option>
+                                                                    <option value='7'>7</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <a class="btn btn-danger btn-sm"  id="btn_siguiente_area">
+                                                                    <i class="fa fa-plus"></i>Agregar <br><i class="fa fa-edit"></i>Editar
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-md-12 alert alert-warning">
+                                                                <b>Nota:</b> Solo podrá modificar la persona que ha creado la última actividad(La actividad que se muestra)
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -602,7 +656,7 @@ table.bandeja>tbody>tr>td{
                                             </div>                                        
                                         </div>
                                         <div class="col-sm-12">
-                                            <div class="col-sm-6 text-left">
+                                            <div class="col-sm-4 text-left">
                                                 <a class="btn btn-primary btn-sm" id="btn_guardar_todo">
                                                     <i class="fa fa-save fa-lg"></i>&nbsp;Guardar
                                                 </a>

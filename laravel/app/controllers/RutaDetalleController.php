@@ -127,11 +127,9 @@ class RutaDetalleController extends \BaseController
 
             $d = explode('|', $res->verbo);
             
-
-        $time[] = "init:".time();
-
-        $fList='';
-        $time[] = "archivos listos:".time();
+            $time[] = "init:".time();
+            $fList='';
+            $time[] = "archivos listos:".time();
         
         
             for ($i=0; $i < count($d); $i++) {
@@ -152,10 +150,6 @@ class RutaDetalleController extends \BaseController
 
             }
             $res->verbo = implode("|", $d);
-            
-
-
-
         }
 
 
@@ -906,6 +900,89 @@ class RutaDetalleController extends \BaseController
                 $rst=0;
                 $msj='';
             }
+
+            $validaPasoAdicional = RutaDetalle::where("ruta_id","=",Input::get("ruta_id"))
+                                    ->select('id', 'area_id', 'dtiempo')
+                                    ->where("condicion","=",0)
+                                    ->where("estado","=",1)
+                                    ->whereNull("fecha_inicio")
+                                    ->whereNull("dtiempo_final")
+                                    ->where('usuario_created_at', Auth::user()->id)
+                                    ->whereRaw('DATE(created_at)=CURDATE()')
+                                    ->orderBy('id', 'desc')
+                                    ->get();
+            
+            return Response::json(
+                array(
+                    'rst'   => $rst,
+                    'msj'   => $msj,
+                    'adic'  => $validaPasoAdicional,
+                )
+            );
+        }
+    }
+
+    public function postActualizaractividad(){
+        
+        if ( Request::ajax() ) {
+            $rst=0;
+            $msj = '';
+            $fechahoy = date('Y-m-d H:i:s');
+
+            DB::beginTransaction();
+            if( Input::has('ruta_detalle_id') AND Input::get('ruta_detalle_id')!= '' ){
+                $rutaDetalle = RutaDetalle::find(Input::get('ruta_detalle_id'));
+                $rutaDetalle->area_id = Input::get('area_id');
+                $rutaDetalle->dtiempo = Input::get('dtiempo');
+                $rutaDetalle->save();
+                $rst = 1;
+                $msj = 'Actividad actualizada';
+            }
+            else{
+                $auxRutaDetalle =   RutaDetalle::where('ruta_id', Input::get('ruta_id'))
+                                    ->where('estado', 1)
+                                    ->orderBy('id', 'desc')
+                                    ->first();
+                $contador = floor($auxRutaDetalle->norden)+1;
+                $cero = '';
+                if( $contador < 10 ){ $cero = '0'; }
+                $rutaDetalle = new RutaDetalle;
+                $rutaDetalle['ruta_id']=$auxRutaDetalle->ruta_id;
+                $rutaDetalle['area_id']=Input::get('area_id');
+                $rutaDetalle['tiempo_id']=2;
+                $rutaDetalle['dtiempo']=Input::get('dtiempo');
+                $rutaDetalle['norden']= $cero.$contador;
+                $rutaDetalle['ruta_detalle_id_ant']='';
+                
+                $rutaDetalle['usuario_created_at']= Auth::user()->id;
+                $rutaDetalle['usuario_updated_at']= Auth::user()->id;
+                $rutaDetalle['updated_at']=$fechahoy;
+                $rutaDetalle->save();
+
+                $array_verbos = array(2,14);					
+                foreach ($array_verbos as $key => $rdv) {
+                    $verbo = Verbo::find($rdv);
+
+                    $cero='';
+                    if($key<9){
+                        $cero='0';
+                    }
+
+                    $rutaDetalleVerbo = new RutaDetalleVerbo;
+                    $rutaDetalleVerbo['ruta_detalle_id']= $rutaDetalle->id;
+                    $rutaDetalleVerbo['nombre']= $verbo->nombre;
+                    $rutaDetalleVerbo['condicion']= 0;
+                    $rutaDetalleVerbo['rol_id']= 3;
+                    $rutaDetalleVerbo['verbo_id']= $rdv;
+                    $rutaDetalleVerbo['documento_id']= 0;
+                    $rutaDetalleVerbo['orden']= $cero.($key + 1);
+                    $rutaDetalleVerbo['usuario_created_at']= Auth::user()->id;
+                    $rutaDetalleVerbo->save();
+                }
+                $msj = 'Actividad creada';
+            }
+            DB::commit();
+            
             
             return Response::json(
                 array(
