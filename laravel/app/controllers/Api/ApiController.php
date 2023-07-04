@@ -177,6 +177,13 @@ class ApiController extends \BaseController
                 $campos[37] => $r['medio_captacion2'],
                 $campos[38] => $r['supervisor'],
                 $campos[39] => $r['updated_at'],
+
+                $campos[40] => $r['fecha_ins'],
+                $campos[41] => $r['fecha_mat'],
+                $campos[42] => $r['fecha_cur'],
+                $campos[43] => $r['fecha_pro'],
+                $campos[44] => $r['obs'],
+
             ),
         );
 
