@@ -75,8 +75,7 @@ class Area extends Base
                                                     )       )>0 ');
                         }
                         if ( Input::has('areagestion') ){
-                            $query->where('area_gestion','>','0')
-                            ->whereRaw('id!='.Auth::user()->area_id);
+                            $query->where('area_gestion','>','0');
                         }
                         if ( Input::has('areagestionf') ){
                             $query->where('area_gestion_f','>','0')
@@ -135,8 +134,7 @@ class Area extends Base
                         }
 
                         if ( Input::has('areagestion') ){
-                            $query->where('area_gestion','>','0')
-                            ->whereRaw('id!='.Auth::user()->area_id);
+                            $query->where('area_gestion','>','0');
                         }
                         if ( Input::has('areagestionf') ){
                             $query->where('area_gestion_f','>','0')
@@ -192,7 +190,7 @@ class Area extends Base
                         if ( Input::get('estado') ) {
                             $query->where('estado','=','1');
                         }
-                        if ( Input::has('areagestionall') ){
+                        if ( Input::has('areagestionall') or Input::has('areagestion') ){
                             $query->where('area_gestion','>','0');
                         }
                         if ( Input::has('areapersona') ){

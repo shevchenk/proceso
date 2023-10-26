@@ -31,7 +31,7 @@ $(document).ready(function() {
     slctGlobalHtml('cbo_tipodocumento, #slct_tipo_usuario, #cbo_tipotramite, #cbo_tipodoc','simple');
     slctGlobal.listarSlct('persona','cbo_persona','simple',null,{estado_persona:1});
     slctGlobal.listarSlct('empresa','cbo_empresa','simple',null,{estado:1});
-    slctGlobal.listarSlct('area','slct_areas','simple',null,{estado:1, areapersona:1});
+    slctGlobal.listarSlct('area','slct_areas','simple',null,{estado:1, areapersona:1, areagestion:1});
     slctGlobal.listarSlctFuncion('tiposolicitante','listar?pretramite=1','cbo_tiposolicitante','simple',null,{'estado':1,'validado':1});
     
     /*end inicializate selects*/

@@ -25,7 +25,7 @@ $(document).ready(function() {
     slctGlobal.listarSlct2('rol','slct_rol_modal',data);
     slctGlobal.listarSlct2('verbo','slct_verbo_modal',data);
     slctGlobal.listarSlct2('documento','slct_documento_modal',data);
-    slctGlobal.listarSlctFijo('area','slct_area_destino',null);
+    slctGlobal.listarSlct2('area','slct_area_destino',{estado:1,areagestion:1});
     $("#btn_close").click(Close_ruta);
     $("#btn_actualizar_campos").click(ActualizarCampos);
     $("#btn_siguiente_area").click(ActualizarActividad);

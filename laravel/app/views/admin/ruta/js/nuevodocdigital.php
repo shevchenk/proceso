@@ -4,7 +4,7 @@ var camposG = {
     id: ''
 };
 $(document).ready(function() {
-    slctGlobal.listarSlctFuncion('area','listara','slct_area_id','simple',null,{estado:1,areapersona:1});
+    slctGlobal.listarSlctFuncion('area','listara','slct_area_id','simple',null,{estado:1, areapersona:1, areagestion:1});
 /*    slctGlobal.listarSlctFuncion('plantilladoc','cargar','slct_plantilla','simple',null,{'area':1});
 
     slctGlobal.listarSlct('area','slct_areas','multiple',null,{estado:1,areagestion:1});

@@ -765,8 +765,9 @@ class RutaDetalleController extends \BaseController
         $array['ruta_id'] =" AND rd.ruta_id='".Input::get('ruta_id')."' ";
       }
       if( Input::has('norden') AND Input::get('norden')!='' ){
-        $array['norden'] =" AND rd.norden<='".Input::get('norden')."' ";
+        //$array['norden'] =" AND rd.norden<='".Input::get('norden')."' ";
       }
+      $array['norden']='';
 
       //$data = Reporte::VerNroPasosTramite($array);
       //$cant_pasos = $data[0]->cant;

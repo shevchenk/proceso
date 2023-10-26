@@ -13,8 +13,8 @@ $(document).ready(function() {
     var data={'persona':UsuarioId,'estado':1, 'hoy':1};
     Bandeja.MostrarTramites(data,HTMLTramite);
     /*end Inicializar tramites*/
-    slctGlobal.listarSlct('area','slct_areas','simple',null,{estado:1, areapersona:1});
-    slctGlobal.listarSlct('area','slct_areast','simple',null,{estado:1});
+    slctGlobal.listarSlct('area','slct_areas','simple',null,{estado:1, areapersona:1, areagestion:1});
+    slctGlobal.listarSlct('area','slct_areast','simple',null,{estado:1, areagestion:1});
     //slctGlobal.listarSlct('area','slct_areas_total','multiple',null,{estado:1});
     /*data = {estado:1, tipo:'Ingreso', solicitante: 'Interno'};
     slctGlobal.listarSlct('documento','slct_documento_id','simple',null,data);*/
