@@ -431,7 +431,12 @@ class ReporteFinalController extends BaseController
 
         if( Input::has('procesos') AND Input::get('procesos')!='' ){
           $proceso=trim(Input::get('procesos'));
-          $array['w'].=" AND f.id = '".$proceso."' ";
+          $sql = "SELECT GROUP_CONCAT(id) ids
+                  FROM rutas_flujo 
+                  WHERE flujo_id = ".$proceso;
+          $flujo= DB::select($sql);
+
+          $array['w'].=" AND (f.id ='".$proceso."' OR FIND_IN_SET(rd.ruta_flujo_id_dep,'".$flujo[0]->ids."')>0 ) ";
         }
 
         if( Input::has('tiempo_final') AND Input::get('tiempo_final')!='' ){
@@ -589,7 +594,12 @@ class ReporteFinalController extends BaseController
             $array['datos'] = " GROUP_CONCAT(rfc.campo, '|', IFNULL(rc.campo_valor,'') ORDER BY rfc.orden SEPARATOR '**') ";
             $array['left'] = "   LEFT JOIN rutas_flujo_campos rfc ON rfc.ruta_flujo_id = r.ruta_flujo_id AND rfc.tipo != 0 ".$estado."
                         LEFT JOIN rutas_campos rc ON rc.ruta_id = r.id AND rfc.id = rc.ruta_flujo_campo_id AND rc.estado = 1";
-            $array['w'].=" AND r.flujo_id = '".Input::get('flujo_id')."' ";
+            
+            $sql = "SELECT GROUP_CONCAT(id) ids
+                    FROM rutas_flujo 
+                    WHERE flujo_id = ".Input::get('flujo_id');
+            $flujo= DB::select($sql);
+            $array['w'].= " AND (r.flujo_id ='".Input::get('flujo_id')."' OR FIND_IN_SET(rd.ruta_flujo_id_dep,'".$flujo[0]->ids."')>0 ) ";
         }
 
       $array['w'].=" AND f.nivel_proceso <= ".Auth::user()->nivel_proceso." ";

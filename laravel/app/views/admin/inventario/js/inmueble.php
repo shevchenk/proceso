@@ -15,7 +15,8 @@ $(document).ready(function() {
     /*end Inicializar tramites*/
 
     /*inicializate selects*/
-    slctGlobal.listarSlct('local','slct_local','simple',null,data); 
+    //controlador,evento,slct,datos,val,accion
+    slctGlobal.listarSlctFijo2('local','listarlocales','slct_local', data, null,'simple'); 
 
     slctGlobalHtml('slct_estado','simple');
     slctGlobalHtml('slct_piso','simple');

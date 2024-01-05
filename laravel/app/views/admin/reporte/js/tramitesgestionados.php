@@ -198,7 +198,7 @@ $(document).ready(function() {
         autoclose: true,
         todayBtn: false
     });
-    slctGlobal.listarSlct('area','slct_area_id','multiple',null,{estado:1,areagestionf:1});
+    slctGlobal.listarSlct('area','slct_area_id','multiple',null,{estado:1});
 
     // Carga las AREAS por default
     Reporte.MostrarAreas();
@@ -626,6 +626,8 @@ function cargarElemento(idD,nombreArea){
 
 }
 
+eventoSlctGlobalSimple=function(slct,valores){
+};
 
 
     </script>

@@ -6,7 +6,7 @@ class Inmueble extends \Eloquent {
     public $table = "inventario_inmueble";
 
     public static function getCargar($area) {
-        $sql = "SELECT 1 as norden,a.nombre as area,CONCAT_WS(' ',p.paterno,p.materno,p.nombre) persona,il.nombre as 'local',ii.piso,ii.cod_patrimonial,ii.cod_interno, ii.descripcion,ii.oficina,ii.marca,ii.modelo,
+        $sql = "SELECT 1 as norden,a.nombre as area,CONCAT_WS(' ',p.paterno,p.materno,p.nombre) persona,il.local as 'local',ii.piso,ii.cod_patrimonial,ii.cod_interno, ii.descripcion,ii.oficina,ii.marca,ii.modelo,
                 ii.tipo,ii.color,ii.serie,ii.observacion,
                 CASE ii.situacion
                 WHEN 1 THEN 'MUY BUENO'
@@ -15,7 +15,7 @@ class Inmueble extends \Eloquent {
                 WHEN 4 THEN 'MALO' ELSE '-' END as situacion
                 FROM inventario_inmueble ii
                 INNER JOIN areas a ON ii.area_id=a.id
-                INNER JOIN inventario_local il ON il.id=ii.inventario_local_id
+                INNER JOIN locales il ON il.id=ii.inventario_local_id
                 INNER JOIN personas p ON p.id=ii.persona_id
                 WHERE ii.estado=1";
         if (Input::has('area_id')) {

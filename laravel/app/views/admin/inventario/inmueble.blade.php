@@ -145,7 +145,7 @@ td, th{
                     <div class="col-md-9">
                       <div class="col-md-2"><span>ENTIDAD: </span></div>
                       <div class="col-md-10">
-                        <input type="text" class="form-control mant" name="txt_entidad" id="txt_entidad" value="MUNICIPALIDAD DISTRITAL DE INDEPENDENCIA" readonly="readonly" style="text-align: center">
+                        <input type="text" class="form-control mant" name="txt_entidad" id="txt_entidad" value="ISAM" readonly="readonly" style="text-align: center">
                       </div>
                     </div>
                     <div class="col-md-3">
@@ -195,7 +195,9 @@ td, th{
                              <option value="">Seleccione modalidad</option>
                              <option value="1">FUNCIONARIO</option>
                              <option value="2">CAP (276)</option>
-                             <option value="3">CAS</option><option value="4">TERCERO</option><option value="5">728</option>
+                             <option value="3">CAS</option>
+                             <option value="4">TERCERO</option>
+                             <option value="5">728</option>
                            </select>
                         </div>
                       </div>

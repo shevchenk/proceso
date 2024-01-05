@@ -178,7 +178,12 @@ class VisualizacionTramite extends Eloquent
         }
 
         if ( isset($input['procesos']) AND trim($input['procesos']) != '') {
-            $flujo_id = " AND r.flujo_id ='". $input['procesos']."' ";
+            $sql = "SELECT GROUP_CONCAT(id) ids
+                    FROM rutas_flujo 
+                    WHERE flujo_id = ".$input['procesos'];
+            $flujo= DB::select($sql);
+
+            $flujo_id = " AND (r.flujo_id ='". $input['procesos']."' OR FIND_IN_SET(rd.ruta_flujo_id_dep,'".$flujo[0]->ids."')>0 ) ";
         }
         
         $flujo_id.= " AND f.nivel_proceso <= ".Auth::user()->nivel_proceso." ";
