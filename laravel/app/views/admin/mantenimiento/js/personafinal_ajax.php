@@ -25,7 +25,7 @@ var Persona={
                    
                     $('#t_personas').dataTable().fnDestroy();
                     MostrarAjax('persona');
-                    Persona.CargarPersonas(activarTabla);
+                    //Persona.CargarPersonas(activarTabla);
                     
                     msjG.mensaje('success',obj.msj,4000);
                     $('#personaModal .modal-footer [data-dismiss="modal"]').click();
