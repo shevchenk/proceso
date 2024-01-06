@@ -18,6 +18,11 @@ class ReporteTramiteController extends BaseController
         }
       }
 
+      if( Input::has('sumilla') AND trim(Input::get('sumilla'))!='' ){
+        $sumilla=trim(Input::get('sumilla'));
+        $array['where'].=" AND tr.sumilla LIKE '%".$sumilla."%' ";
+      }
+
       if( Input::has('solicitante_anu') AND Input::get('solicitante_anu')!='' ){
         $solicitante_anu=explode(" ",trim(Input::get('solicitante_anu')));
         for($i=0; $i<count($solicitante_anu); $i++){

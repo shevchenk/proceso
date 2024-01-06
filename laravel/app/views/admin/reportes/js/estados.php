@@ -46,7 +46,8 @@ valida=function(nro){
             $.trim( $("#slct_local_anu").val() )=='' &&
             $.trim( $("#slct_estado_anu").val() )=='' &&
             $.trim( $("#txt_tramite").val() )=='' &&
-            $.trim( $("#txt_solicitante_anu").val() )==''
+            $.trim( $("#txt_solicitante_anu").val() )=='' &&
+            $.trim( $("#txt_sumilla").val() )==''
         ){
             msjG.mensaje("warning","Debe ingresar almenos 1 filtro para iniciar la búsqueda.",5000);
             $("#txt_fecha_anulado").focus();

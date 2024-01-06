@@ -64,15 +64,22 @@
                                     <option value='Inconcluso'>Inconcluso</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="col-sm-12">
                             <!--*******************************-->
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <label class="control-label">Trámite:</label>
                                 <input style="text-align: center" type="text" class="form-control" placeholder="Tipo + Nro + Año  => Ej: EX {{ rand(3000,9999) }} {{ date('Y') }}" id="txt_tramite" name="txt_tramite"/>
                             </div>
 
-                            <div class="col-sm-5">
+                            <div class="col-sm-3">
                                 <label class="control-label">Solicitante:</label>
                                 <input style="text-align: center" type="text" class="form-control" placeholder="Paterno + Materno + Nombre => No interesa el orden" id="txt_solicitante_anu" name="txt_solicitante_anu"/>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label class="control-label">Sumilla:</label>
+                                <input style="text-align: center" type="text" class="form-control" placeholder="Sumilla" id="txt_sumilla" name="txt_sumilla"/>
                             </div>
                         </div>
 
