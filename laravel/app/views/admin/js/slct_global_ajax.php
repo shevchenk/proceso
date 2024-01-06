@@ -326,10 +326,8 @@ var dataTableG={
     },
     CargarDatos:function(id,controlador,funcion,columnDefs){
         $('#t_'+id).dataTable().fnDestroy();
+        
         $('#t_'+id)
-            .on( 'page.dt',   function () { $("body").append('<div class="overlay"></div><div class="loading-img"></div>'); } )
-            .on( 'search.dt', function () { $("body").append('<div class="overlay"></div><div class="loading-img"></div>'); } )
-            .on( 'order.dt',  function () { $("body").append('<div class="overlay"></div><div class="loading-img"></div>'); } )
             .DataTable( {
                 "processing": true,
                 "serverSide": true,
@@ -362,6 +360,7 @@ var dataTableG={
                         },
                 columnDefs
             } );
+        //$(".overlay,.loading-img").remove();
     },
 };
 

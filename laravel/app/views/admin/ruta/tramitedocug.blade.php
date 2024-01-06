@@ -410,4 +410,5 @@ td, th{
   @include( 'admin.ruta.form.rutaflujo' )
   @include( 'admin.ruta.form.ruta' )
   @include( 'admin.ruta.form.referente' )
+  @include( 'admin.ruta.form.persona2' )
 @stop

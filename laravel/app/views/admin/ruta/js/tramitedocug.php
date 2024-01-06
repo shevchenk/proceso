@@ -126,9 +126,9 @@ $(document).ready(function() {
         var tiposolicitante = $("#cbo_tiposolicitante").val();
         var pide_empresa = $("#cbo_tiposolicitante option:selected").attr('data-select');
         if( $.trim(pide_empresa) == '|0|'){
-            Bandeja.GetPersons({'apellido_nombre':1},HTMLPersonas);
+            $("#persona2Modal").modal('show');
         }else if( $.trim(pide_empresa) == '|1|'){
-            Bandeja.getEmpresasByPersona({'estado':1},ValidacionEmpresa);
+            //Bandeja.getEmpresasByPersona({'estado':1},ValidacionEmpresa);
         }
         else {
             solicitante = 'Indefinido';
@@ -231,11 +231,35 @@ $(document).ready(function() {
         });
     });
 
-    $('#selectPersona').on('show.bs.modal', function (event) {
-        $("#t_usuarios").dataTable().fnDestroy();
+    $('#persona2Modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // captura al boton
+      
+        var modal = $(this); //captura el modal
+
+        var idG={   nombre        :'onBlur|Nombre|#DCE6F1', //#DCE6F1
+                    paterno       :'onBlur|Apellido Paterno|#DCE6F1', //#DCE6F1
+                    materno       :'onBlur|Apellido Materno|#DCE6F1', //#DCE6F1                    
+                    dni           :'onBlur|DNI|#DCE6F1', //#DCE6F1
+                    email         :'0|EMAIL|#DCE6F1', //#DCE6F1
+                    id        :'1|[]|#DCE6F1', //#DCE6F1
+             };
+
+        var resG=dataTableG.CargarCab(idG);
+        cabeceraG=resG; // registra la cabecera
+        var resG=dataTableG.CargarCol(cabeceraG,columnDefsG,targetsG,0,'persona2','t_persona2');
+        columnDefsG=resG[0]; // registra las columnas del datatable
+        targetsG=resG[1]; // registra los contadores
+
+        $("#t_persona2, #t_usuarios").dataTable().fnDestroy();
     });
 
-    $('#selectPersona').on('hide.bs.modal', function (event) {
+    $('#persona2Modal').on('hide.bs.modal', function (event) {
+        var modal = $(this); //captura el modal
+        $("#t_persona2>thead>tr:eq(0), #t_persona2>tfoot>tr:eq(0)").html('');
+        cabeceraG=[]; // Cabecera del Datatable
+        columnDefsG=[]; // Columnas de la BD del datatable
+        targetsG=-1; // Posiciones de las columnas del datatable
+
         $("#t_usuarios").dataTable({
             "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
             "ordering": true,
@@ -258,7 +282,6 @@ $(document).ready(function() {
 
 
 });
-
 
 ValidarLimite = function(){
     let cant = $("#cbo_tipotramite option:selected").data('evento');
@@ -304,14 +327,28 @@ MostrarAjax=function(t){
             alert('Faltas datos');
         }
     } 
+    else if( t=="persona2" ){
+        if( columnDefsG.length>0 ){
+            dataTableG.CargarDatos(t,'persona','cargar',columnDefsG);
+        }
+        else{
+            alert('Faltas datos');
+        }
+    }
 };
 
 GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion fn
-   if(typeof(fn)!='undefined' && fn.col==2){
+    if(typeof(fn)!='undefined' && fn.col==2){ //Referido
       var estadohtml='';
       estadohtml='<span id="'+row.id+'" onClick="SeleccionaReferido(\''+row.id+'\',\''+row.ruta_id+'\',\''+row.tabla_relacion_id+'\',\''+row.ruta_detalle_id+'\',\''+row.referido+'\')" class="btn btn-success">Seleccionar</span>';
       return estadohtml;
-  }
+    }
+
+    if(typeof(fn)!='undefined' && fn.col==5){ //Persona
+      var estadohtml='';
+      estadohtml='<span id="'+row.id+'" onClick="selectUser2(\''+row.id+'\',\''+row.nombre+'\',\''+row.paterno+'\',\''+row.materno+'\',\''+row.dni+'\',\''+$.trim(row.email)+'\',\''+$.trim(row.celular)+'\',\''+$.trim(row.telefono)+'\',\''+$.trim(row.direccion)+'\')" class="btn btn-success">Seleccionar</span>';
+      return estadohtml;
+    }
 };
 
 SeleccionaReferido = (id, ruta_id, tabla_relacion_id, ruta_detalle_id, referido) => {
@@ -580,6 +617,27 @@ HTMLPersonas = function(data){
     }else{
         $(".empresa").addClass('hidden');
         msjG.mensaje("warning", 'Error',3000);
+    }
+}
+
+selectUser2 = function(iduser, nombre, paterno, materno, dni, email, celular, telefono, direccion){
+    console.log(CantidadG , $.trim($("#tb_usuarios").html()));
+    if( CantidadG != 1 || ( CantidadG == 1 && $.trim($("#tb_usuarios").html()) == '' ) ){
+            datos = {
+                id: iduser,
+                nombre: nombre,
+                paterno: paterno,
+                materno: materno,
+                dni: dni,
+                email: email,
+                celular: celular,
+                telefono: telefono,
+                direccion: direccion,
+            };
+            poblateData('persona',datos);
+    }
+    else{
+        msjG.mensaje("warning", 'El servicio seleccionado no puede contener más de 1 solicitante.',5000);
     }
 }
 
