@@ -3,6 +3,7 @@ var cabeceraG=[]; // Cabecera del Datatable
 var columnDefsG=[]; // Columnas de la BD del datatable
 var targetsG=-1; // Posiciones de las columnas del datatable
 var CantidadG = 0;
+var PersonasValG = [];
 $(document).ready(function() {
 
      $('#fecha_nacimiento').daterangepicker({
@@ -329,6 +330,7 @@ MostrarAjax=function(t){
     } 
     else if( t=="persona2" ){
         if( columnDefsG.length>0 ){
+            PersonasValG = [];
             dataTableG.CargarDatos(t,'persona','cargar',columnDefsG);
         }
         else{
@@ -345,8 +347,10 @@ GeneraFn=function(row,fn){ // No olvidar q es obligatorio cuando queire funcion 
     }
 
     if(typeof(fn)!='undefined' && fn.col==5){ //Persona
+        PersonasValG[row.id] = row;
+        console.log(PersonasValG);
       var estadohtml='';
-      estadohtml='<span id="'+row.id+'" onClick="selectUser2(\''+row.id+'\',\''+row.nombre+'\',\''+row.paterno+'\',\''+row.materno+'\',\''+row.dni+'\',\''+$.trim(row.email)+'\',\''+$.trim(row.celular)+'\',\''+$.trim(row.telefono)+'\',\''+$.trim(row.direccion)+'\')" class="btn btn-success">Seleccionar</span>';
+      estadohtml='<span id="'+row.id+'" onClick="selectUser2(\''+row.id+'\')" class="btn btn-success">Seleccionar</span>';
       return estadohtml;
     }
 };
@@ -620,19 +624,19 @@ HTMLPersonas = function(data){
     }
 }
 
-selectUser2 = function(iduser, nombre, paterno, materno, dni, email, celular, telefono, direccion){
+selectUser2 = function(iduser){
     console.log(CantidadG , $.trim($("#tb_usuarios").html()));
     if( CantidadG != 1 || ( CantidadG == 1 && $.trim($("#tb_usuarios").html()) == '' ) ){
             datos = {
                 id: iduser,
-                nombre: nombre,
-                paterno: paterno,
-                materno: materno,
-                dni: dni,
-                email: email,
-                celular: celular,
-                telefono: telefono,
-                direccion: direccion,
+                nombre: PersonasValG[iduser].nombre,
+                paterno: PersonasValG[iduser].paterno,
+                materno: PersonasValG[iduser].materno,
+                dni: PersonasValG[iduser].dni,
+                email: PersonasValG[iduser].email,
+                celular: PersonasValG[iduser].celular,
+                telefono: PersonasValG[iduser].telefono,
+                direccion: PersonasValG[iduser].direccion,
             };
             poblateData('persona',datos);
     }
